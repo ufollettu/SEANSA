@@ -1,18 +1,27 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Listings', {
+    return queryInterface.createTable('PCs', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      title: {
+      hw_id: {
         type: Sequelize.STRING
       },
-      description: {
-        type: Sequelize.TEXT
+      last_rx: {
+        type: Sequelize.DATE
+      },
+      ip: {
+        type: Sequelize.STRING
+      },
+      status: {
+        type: Sequelize.TINYINT
+      },
+      pc_date_time: {
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,
@@ -25,6 +34,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Listings');
+    return queryInterface.dropTable('PCs');
   }
 };
