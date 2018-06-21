@@ -1,0 +1,40 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": true,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "globals": {
+        "CONFIG": true,
+        "ReE": true,
+        "ReS": true,
+        "to": true,
+        "pe": true,
+        "TE": true
+    },
+    "rules": {
+        "indent": [
+            "off",
+            "tab"
+        ],
+        "linebreak-style": [
+            "off",
+            "windows"
+        ],
+        "quotes": [
+            "off",
+            "single"
+        ],
+        "semi": [
+            "warn",
+            "always"
+        ],
+        "no-console": "off",
+        "no-unused-vars": "off"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2017
+    }
+}

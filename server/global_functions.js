@@ -5,7 +5,7 @@ to = function(promise) {//global function that will help use handle promise reje
     }).catch(err =>
         [pe(err)]
     );
-}
+};
 
 pe = require('parse-error');//parses error so you can read error message and handle them accordingly
 
@@ -15,7 +15,7 @@ TE = function(err_message, log){ // TE stands for Throw Error
     }
 
     throw new Error(err_message);
-}
+};
 
 ReE = function(res, err, code){ // Error Web Response
     if(typeof err == 'object' && typeof err.message != 'undefined'){
@@ -25,7 +25,7 @@ ReE = function(res, err, code){ // Error Web Response
     if(typeof code !== 'undefined') res.statusCode = code;
 
     return res.json({success:false, error: err});
-}
+};
 
 ReS = function(res, data, code){ // Success Web Response
     let send_data = {success:true};

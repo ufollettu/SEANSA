@@ -11,7 +11,10 @@ module.exports = (sequelize, DataTypes) => {
     tel_referente: DataTypes.STRING,
     ts: DataTypes.DATE,
     deleted: DataTypes.TINYINT
-  }, {});
+  }, {
+    paranoid: true,
+    underscored: true
+  });
   Clienti.associate = function(models) {
     // associations can be defined here
   };

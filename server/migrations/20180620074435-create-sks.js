@@ -1,60 +1,60 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('sks', {
-      id: {
+    return queryInterface.createTable('sa_sks', {
+      SS_ID: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      key: {
+      SS_KEY: {
         type: Sequelize.STRING
       },
-      oem: {
+      SS_OEM: {
         type: Sequelize.TINYINT
       },
-      activation_date: {
+      SS_ACTIVATION_DATE: {
         type: Sequelize.DATE
       },
-      expire: {
+      SS_EXPIRE: {
         type: Sequelize.DATE
       },
-      created: {
+      SS_CREATED: {
         type: Sequelize.DATE
       },
-      last_edit: {
+      SS_LAST_EDIT: {
         type: Sequelize.DATE
       },
-      mismatch_count: {
+      SS_MISMATCH_COUNT: {
         type: Sequelize.INTEGER
       },
-      status: {
+      SS_STATUS: {
         type: Sequelize.TINYINT
       },
-      sc_id: {
+      SS_SC_ID: {
         type: Sequelize.INTEGER
       },
-      sp_id: {
+      SS_SP_ID: {
         type: Sequelize.INTEGER
       },
-      activated_by: {
+      SS_ACTIVATED_BY: {
         type: Sequelize.STRING
       },
-      activation_referent: {
+      SS_ACTIVATION_REFERENT: {
         type: Sequelize.TEXT
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('sks');
+    return queryInterface.dropTable('sa_sks');
   }
 };

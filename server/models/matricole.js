@@ -6,7 +6,10 @@ module.exports = (sequelize, DataTypes) => {
     dettagli: DataTypes.STRING,
     creation_date: DataTypes.DATE,
     last_update: DataTypes.DATE
-  }, {});
+  }, {
+    paranoid: true,
+    underscored: true
+  });
   Matricole.associate = function(models) {
     // associations can be defined here
   };

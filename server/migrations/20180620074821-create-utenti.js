@@ -1,48 +1,48 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('utentis', {
-      id: {
+    return queryInterface.createTable('sa_utenti', {
+      SU_ID: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      una: {
+      SU_UNA: {
         type: Sequelize.STRING
       },
-      paw: {
+      SU_PAW: {
         type: Sequelize.STRING
       },
-      level: {
+      SU_LEVEL: {
         type: Sequelize.INTEGER
       },
-      last_login: {
+      SU_LAST_LOGIN: {
         type: Sequelize.DATE
       },
-      creation: {
+      SU_CREATION: {
         type: Sequelize.DATE
       },
-      last_edit: {
+      SU_LAST_EDIT: {
         type: Sequelize.DATE
       },
-      deleted: {
+      SU_DELETED: {
         type: Sequelize.TINYINT
       },
-      last_ip: {
+      SU_LAST_IP: {
         type: Sequelize.STRING
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('utentis');
+    return queryInterface.dropTable('sa_utenti');
   }
 };

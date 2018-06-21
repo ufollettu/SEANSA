@@ -6,7 +6,10 @@ module.exports = (sequelize, DataTypes) => {
     ip: DataTypes.STRING,
     status: DataTypes.TINYINT,
     pc_date_time: DataTypes.DATE
-  }, {});
+  }, {
+    paranoid: true,
+    underscored: true
+  });
   PC.associate = function(models) {
     // associations can be defined here
   };
