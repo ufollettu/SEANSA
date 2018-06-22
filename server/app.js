@@ -16,6 +16,10 @@ const models = require('./models');
 const indexRouter = require('./routes/index.server.route');
 const utentiRouter = require('./routes/utenti.server.route');
 const sksRouter = require('./routes/sks.server.route');
+const pcRouter = require('./routes/pc.server.route');
+const matricoleRouter = require('./routes/matricole.server.route');
+const rinnoviRouter = require('./routes/rinnovi.server.route');
+const clientiRouter = require('./routes/clienti.server.route');
 
 const app = express();
 
@@ -42,8 +46,10 @@ models.sequelize.authenticate().then(() => {
     console.error('Unable to connect to SQL database:', err);
   });
   if(config.database === 'sequelize_dev'){
-    models.sequelize.sync();//creates tables from models
+    models.sequelize.sync()//creates tables from models
     // models.sequelize.sync({ force: true });//good for testing
+    .then()
+    .catch(err => console.assert(err));
   }
 // CORS
 app.use((req, res, next) => {
@@ -67,6 +73,10 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use('/utenti', utentiRouter);
 app.use('/sks', sksRouter);
+app.use('/pc', pcRouter);
+app.use('/matricole', matricoleRouter);
+app.use('/rinnovi', rinnoviRouter);
+app.use('/clienti', clientiRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

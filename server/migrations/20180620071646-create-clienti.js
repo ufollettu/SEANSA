@@ -1,54 +1,58 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Clientis', {
-      id: {
+    return queryInterface.createTable('sa_clienti', {
+      SC_ID: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER(10).UNSIGNED
       },
-      nome: {
-        type: Sequelize.STRING
-      },
-      piva: {
-        type: Sequelize.STRING
-      },
-      cod_fiscale: {
-        type: Sequelize.STRING
-      },
-      indirizzo: {
-        type: Sequelize.STRING
-      },
-      email: {
-        type: Sequelize.STRING
-      },
-      telefono: {
-        type: Sequelize.STRING
-      },
-      referente_nome: {
-        type: Sequelize.STRING
-      },
-      tel_referente: {
-        type: Sequelize.STRING
-      },
-      ts: {
-        type: Sequelize.DATE
-      },
-      deleted: {
-        type: Sequelize.TINYINT
-      },
-      created_at: {
+      SC_NOME: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.STRING(100)
       },
-      updated_at: {
+      SC_PIVA: {
+        type: Sequelize.STRING(50),
+        defaultValue: null
+      },
+      SC_COD_FISCALE: {
+        type: Sequelize.STRING(50),
+        defaultValue: null
+      },
+      SC_INDIRIZZO: {
+        type: Sequelize.STRING(200),
+        defaultValue: null
+      },
+      SC_EMAIL: {
+        type: Sequelize.STRING(50),
+        defaultValue: null
+      },
+      SC_TELEFONO: {
+        type: Sequelize.STRING(20),
+        defaultValue: null
+      },
+      SC_REFERENTE_NOME: {
+        type: Sequelize.STRING(100),
+        defaultValue: null
+      },
+      SC_TEL_REFERENTE: {
+        type: Sequelize.STRING(100),
+        defaultValue: null
+      },
+      SC_TS: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.NOW,
+        defaultValue: queryInterface.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+      },
+      SC_DELETED: {
+        allowNull: false,
+        type: Sequelize.TINYINT(1),
+        defaultValue: "0"
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Clientis');
+    return queryInterface.dropTable('sa_clienti');
   }
 };

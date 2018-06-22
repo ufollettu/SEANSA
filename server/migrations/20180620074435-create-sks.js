@@ -6,52 +6,60 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER(10).UNSIGNED
       },
       SS_KEY: {
-        type: Sequelize.STRING
+        allowNull: false,
+        type: Sequelize.STRING(500)
       },
       SS_OEM: {
-        type: Sequelize.TINYINT
+        allowNull: false,
+        type: Sequelize.TINYINT(1),
+        defaultValue: "0"
       },
       SS_ACTIVATION_DATE: {
-        type: Sequelize.DATE
+        type: Sequelize.NOW,
+        defaultValue: null
       },
       SS_EXPIRE: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: null
       },
       SS_CREATED: {
-        type: Sequelize.DATE
+        allowNull: false,
+        type: Sequelize.NOW,
+        defaultValue: "0000-00-00 00:00:00"
       },
       SS_LAST_EDIT: {
-        type: Sequelize.DATE
+        allowNull: false,
+        type: Sequelize.NOW,
+        defaultValue: queryInterface.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
       },
       SS_MISMATCH_COUNT: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER(11)
       },
       SS_STATUS: {
-        type: Sequelize.TINYINT
+        allowNull: false,
+        type: Sequelize.TINYINT(2),
+        defaultValue: "0"
       },
       SS_SC_ID: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER(10).UNSIGNED,
+        defaultValue: null
       },
       SS_SP_ID: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER(11),
       },
       SS_ACTIVATED_BY: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(50),
+        defaultValue: null
       },
       SS_ACTIVATION_REFERENT: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        defaultValue: null
       },
-      created_at: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updated_at: {
-        allowNull: false,
-        type: Sequelize.DATE
-      }
     });
   },
   down: (queryInterface, Sequelize) => {

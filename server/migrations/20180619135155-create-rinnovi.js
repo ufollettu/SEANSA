@@ -1,30 +1,25 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Rinnovis', {
-      id: {
+    return queryInterface.createTable('sa_rinnovi', {
+      SR_ID: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER(10).UNSIGNED
       },
-      ss_id: {
-        type: Sequelize.INTEGER
-      },
-      ts: {
-        type: Sequelize.DATE
-      },
-      created_at: {
+      SR_SS_ID: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.INTEGER(11)
       },
-      updated_at: {
+      SR_TS: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.NOW,
+        defaultValue: queryInterface.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Rinnovis');
+    return queryInterface.dropTable('sa_rinnovi');
   }
 };

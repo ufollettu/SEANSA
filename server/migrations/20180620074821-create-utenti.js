@@ -6,39 +6,41 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER(11)
       },
       SU_UNA: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(40),
+        allowNull: true
       },
       SU_PAW: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING(100),
+        allowNull: true
       },
       SU_LEVEL: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER(10).UNSIGNED,
+        allowNull: true,
+        defaultValue: "0"
       },
       SU_LAST_LOGIN: {
-        type: Sequelize.DATE
+        type: Sequelize.NOW,
+        defaultValue: null
       },
       SU_CREATION: {
-        type: Sequelize.DATE
+        type: Sequelize.NOW,
+        defaultValue: null
       },
       SU_LAST_EDIT: {
-        type: Sequelize.DATE
+        type: Sequelize.NOW,
+        defaultValue: null
       },
       SU_DELETED: {
-        type: Sequelize.TINYINT
+        type: Sequelize.TINYINT(1),
+        allowNull: true,
+        defaultValue: "0"
       },
       SU_LAST_IP: {
-        type: Sequelize.STRING
-      },
-      created_at: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updated_at: {
-        allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.STRING(20),
+        defaultValue: null
       }
     });
   },

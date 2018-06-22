@@ -1,39 +1,36 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Matricoles', {
-      id: {
+    return queryInterface.createTable('sa_matricole', {
+      sm_id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER(11)
       },
-      matricola: {
-        type: Sequelize.INTEGER
+      SM_MATRICOLA: {
+        allowNull: false,
+        type: Sequelize.INTEGER(11)
       },
-      ss_id: {
-        type: Sequelize.INTEGER
+      SM_SS_ID: {
+        allowNull: false,
+        type: Sequelize.INTEGER(11)
       },
-      dettagli: {
-        type: Sequelize.STRING
+      SM_DETTAGLI: {
+        type: Sequelize.STRING,
+        defaultValue: null
       },
-      creation_date: {
-        type: Sequelize.DATE
-      },
-      last_update: {
-        type: Sequelize.DATE
-      },
-      created_at: {
+      SM_CREATION_DATE: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updated_at: {
-        allowNull: false,
-        type: Sequelize.DATE
+      SM_LAST_UPDATE: {
+        type: Sequelize.NOW,
+        defaultValue: queryInterface.literal('CURRENT_TIMESTAMP')
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Matricoles');
+    return queryInterface.dropTable('sa_matricole');
   }
 };

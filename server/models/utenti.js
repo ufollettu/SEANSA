@@ -1,15 +1,46 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   var Utenti = sequelize.define('sa_utenti', {
-    SU_ID: { type: DataTypes.INTEGER, primaryKey: true},
-    SU_UNA: DataTypes.STRING,
-    SU_PAW: DataTypes.STRING,
-    SU_LEVEL: DataTypes.INTEGER,
-    SU_LAST_LOGIN: DataTypes.DATE,
-    SU_CREATION: DataTypes.DATE,
-    SU_LAST_EDIT: DataTypes.DATE,
-    SU_DELETED: DataTypes.TINYINT,
-    SU_LAST_IP: DataTypes.STRING
+    SU_ID: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER(11)
+    },
+    SU_UNA: {
+      type: DataTypes.STRING(40),
+      allowNull: true
+    },
+    SU_PAW: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    SU_LEVEL: {
+      type: DataTypes.INTEGER(10).UNSIGNED,
+      allowNull: true,
+      defaultValue: "0"
+    },
+    SU_LAST_LOGIN: {
+      type: DataTypes.NOW,
+      defaultValue: null
+    },
+    SU_CREATION: {
+      type: DataTypes.NOW,
+      defaultValue: null
+    },
+    SU_LAST_EDIT: {
+      type: DataTypes.NOW,
+      defaultValue: null
+    },
+    SU_DELETED: {
+      type: DataTypes.TINYINT(1),
+      allowNull: true,
+      defaultValue: "0"
+    },
+    SU_LAST_IP: {
+      type: DataTypes.STRING(20),
+      defaultValue: null
+    }
   }, {
     // don't add the timestamp attributes (updatedAt, createdAt)
     timestamps: false,

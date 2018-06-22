@@ -29,7 +29,7 @@ const create = async (req, res) => {
         SS_ACTIVATED_BY: activatedBy,
         SS_ACTIVATION_REFERENT:activationReferent
     }).then(function() {
-      res.send('utente creato');
+      res.send('sks creata');
     });
     // return ReS(res, {message:'utente creato'}, 204);
 };

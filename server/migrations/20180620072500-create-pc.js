@@ -1,39 +1,37 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('PCs', {
-      id: {
+    return queryInterface.createTable('sa_pc', {
+      SP_ID: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER(10).UNSIGNED
       },
-      hw_id: {
-        type: Sequelize.STRING
+      SP_HW_ID: {
+        type: Sequelize.STRING(10),
+        allowNull: false
       },
-      last_rx: {
-        type: Sequelize.DATE
+      SP_LAST_RX: {
+        type: Sequelize.DATE,
+        defaultValue: null
       },
-      ip: {
-        type: Sequelize.STRING
+      SP_IP: {
+        type: Sequelize.STRING(20),
+        defaultValue: null  
       },
-      status: {
-        type: Sequelize.TINYINT
-      },
-      pc_date_time: {
-        type: Sequelize.DATE
-      },
-      created_at: {
+      SP_STATUS: {
+        type: Sequelize.TINYINT(1),
         allowNull: false,
-        type: Sequelize.DATE
+        defaultValue: "0"
       },
-      updated_at: {
-        allowNull: false,
-        type: Sequelize.DATE
+      SP_PC_DATE_TIME: {
+        type: Sequelize.DATEONLY,
+        defaultValue: null
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('PCs');
+    return queryInterface.dropTable('sa_pc');
   }
 };
