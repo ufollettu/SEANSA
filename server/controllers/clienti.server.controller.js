@@ -2,31 +2,21 @@ var db = require('../models');
 
 const create = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    const nome = req.body.nome;
-    const pIva = req.body.pIva;
-    const codFiscale = req.body.codFiscale;
-    const indirizzo = req.body.indirizzo;
-    const email = req.body.email;
-    const telefono = req.body.telefono;
-    const referenteNome = req.body.referenteNome;
-    const telReferente = req.body.telReferente;
-    const ts = req.body.ts;
-    const deleted = req.body.deleted;
-   
-    db.clienti.create({
-        SC_NOME: nome,
-        SC_PIVA: pIva,
-        SC_COD_FISCALE: codFiscale,
-        SC_INDIRIZZO: indirizzo,
-        SC_EMAIL: email,
-        SC_TELEFONO: telefono,
-        SC_REFERENTE_NOME: referenteNome,
-        SC_TEL_REFERENTE: telReferente,
-        SC_TS: ts,
-        SC_DELETED: deleted
+    const data = {
+        SC_NOME: req.body.nome,
+        SC_PIVA: req.body.pIva,
+        SC_COD_FISCALE: req.body.codFiscale,
+        SC_INDIRIZZO: req.body.indirizzo,
+        SC_EMAIL: req.body.email,
+        SC_TELEFONO: req.body.telefono,
+        SC_REFERENTE_NOME: req.body.referenteNome,
+        SC_TEL_REFERENTE: req.body.telReferente,
+        SC_TS: req.body.ts,
+        SC_DELETED: req.body.deleted
+    };
 
-    }).then(function() {
-      res.send('cliente creato');
+    db.clienti.create(data).then(function () {
+        res.send('cliente creato');
     });
     // return ReS(res, {message:'utente creato'}, 204);
 };
@@ -34,28 +24,64 @@ module.exports.create = create;
 
 const get = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    
+
     db.clienti.findAll()
-    .then(cliente => {
-      res.json(cliente);
-    });
+        .then(cliente => {
+            res.json(cliente);
+        });
     // return ReS(res, {message:'lista utenti'}, 304);
 };
 module.exports.get = get;
 
-// const update = async (req, res) => {   
-//     return ReS(res, {message:'update utenti'}, 204);
-// };
-// module.exports.update = update;
+const updateAllFields = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    const id = req.params.id;
+    const newData = {
+        SC_NOME: req.body.nome,
+        SC_PIVA: req.body.pIva,
+        SC_COD_FISCALE: req.body.codFiscale,
+        SC_INDIRIZZO: req.body.indirizzo,
+        SC_EMAIL: req.body.email,
+        SC_TELEFONO: req.body.telefono,
+        SC_REFERENTE_NOME: req.body.referenteNome,
+        SC_TEL_REFERENTE: req.body.telReferente,
+        SC_TS: req.body.ts,
+        SC_DELETED: req.body.deleted
+    };
 
-// const remove = async (req, res) => {
-//     return ReS(res, {message:'Deleted utenti'}, 204);
-// };
-// module.exports.remove = remove;
+    db.clienti.update(newData, {
+            returning: true,
+            where: {
+                SC_ID: id
+            }
+        })
+        .then((clienti) => {
+            res.send(`updated cliente id: ${id}. New values is: ${newData}`);
+            // res.json(clienti);
+        })
+        .catch(err => res.send(err.errors));
+    // return ReS(res, {message:'lista utenti'}, 304);
+};
+module.exports.updateAllFields = updateAllFields;
 
+const updateDeleted = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    const id = req.params.id;
+    const newData = {
+        SC_DELETED: 1
+    };
 
-// const login = async function(req, res){
-
-//     return ReS(res, {message:'login utenti'}, 204);
-// };
-// module.exports.login = login;
+    db.clienti.update(newData, {
+            returning: true,
+            where: {
+                SC_ID: id
+            }
+        })
+        .then((clienti) => {
+            res.send(`updated cliente id: ${id}. New deleted value is: ${newData.SC_DELETED}`);
+            // res.json(pc);
+        })
+        .catch(err => res.send(err.errors));
+    // return ReS(res, {message:'lista utenti'}, 304);
+};
+module.exports.updateDeleted = updateDeleted;

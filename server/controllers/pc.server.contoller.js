@@ -2,20 +2,15 @@ var db = require('../models');
 
 const create = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    const hwId = req.body.hwId;
-    const lastRx = req.body.lastRx;
-    const ip = req.body.ip;
-    const status = req.body.status;
-    const pcDateTime = req.body.pcDateTime;
+    const data = {
+        SP_HW_ID: req.body.hwId,
+        SP_LAST_RX: req.body.lastRx,
+        SP_IP: req.body.ip,
+        SP_STATUS: req.body.status,
+        SP_PC_DATE_TIME: req.body.pcDateTime,
+    };
 
-    db.pc.create({
-        SP_HW_ID: hwId,
-        SP_LAST_RX: lastRx,
-        SP_IP: ip,
-        SP_STATUS: status,
-        SP_PC_DATE_TIME: pcDateTime,
-
-    }).then(function () {
+    db.pc.create(data).then(function () {
         res.send('pc creato');
     }).catch(err => res.send(err.errors));
     // return ReS(res, {message:'utente creato'}, 204);
@@ -85,7 +80,7 @@ const update = async (req, res) => {
     };
 
     db.pc.update(newData, {
-            // returning: true,
+            returning: true,
             where: {
                 SP_ID: id
             }
@@ -99,14 +94,61 @@ const update = async (req, res) => {
 };
 module.exports.update = update;
 
+const updateHwId = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    const hwId = req.params.hwId;
+    const newData = {
+        SP_LAST_RX: Date.now(),
+        SP_IP: req.body.ip,
+        SP_PC_DATE_TIME: req.body.pcDateTime,
+    };
 
-//   Post.update({
-//     updatedAt: null,
-//   }, {
-//     where: {
-//       deletedAt: {
-//         [Op.ne]: null
-//       }
-//     }
-//   });
-// UPDATE post SET updatedAt = null WHERE deletedAt NOT NULL;
+    db.pc.update(newData, {
+            returning: true,
+            where: {
+                SP_HW_ID: hwId
+            }
+        })
+        .then((pc) => {
+            res.send(`updated pc Hw id: ${hwId}. New data is: ${newData}`);
+            // res.json(pc);
+        })
+        .catch(err => res.send(err.errors));
+    // return ReS(res, {message:'lista utenti'}, 304);
+};
+module.exports.updateHwId = updateHwId;
+
+const updateStatus = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    const id = req.params.id;
+    const newData = {
+        SP_STATUS: req.body.status
+    };
+
+    db.pc.update(newData, {
+            returning: true,
+            where: {
+                SP_ID: id
+            }
+        })
+        .then((pc) => {
+            res.send(`updated pc id: ${id}. New status is: ${newData.SP_STATUS}`);
+            // res.json(pc);
+        })
+        .catch(err => res.send(err.errors));
+    // return ReS(res, {message:'lista utenti'}, 304);
+};
+module.exports.updateStatus = updateStatus;
+
+// fix...
+const getByStatusAndHwId = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    // const hwId = req.params.hwId;
+
+    db.pc.findAll({attributes: ['SP_ID']})
+        .then(pc => {
+            res.json(pc);
+        }).catch(err => res.send(err.errors));
+    // return ReS(res, {message:'lista utenti'}, 304);
+};
+module.exports.getByStatusAndHwId = getByStatusAndHwId;
