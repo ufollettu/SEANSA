@@ -1,5 +1,24 @@
 var db = require('../models');
 
+// List
+const list = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    db.pc.findAll()
+        .then(pcs => {
+            res.json(pcs);
+        }).catch(err => res.send(err.errors));
+};
+module.exports.list = list;
+
+// New
+const add = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send('add new item page');
+    // res.render('/new');
+};
+module.exports.add = add;
+
+// Create
 const create = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     const data = {
@@ -13,50 +32,59 @@ const create = async (req, res) => {
     db.pc.create(data).then(function () {
         res.send('pc creato');
     }).catch(err => res.send(err.errors));
-    // return ReS(res, {message:'utente creato'}, 204);
 };
 module.exports.create = create;
 
-const get = async (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-
-    db.pc.findAll()
-        .then(pcs => {
-            res.json(pcs);
-        }).catch(err => res.send(err.errors));
-    // return ReS(res, {message:'lista utenti'}, 304);
-};
-module.exports.get = get;
-
-const getById = async (req, res) => {
+// Show
+const show = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     const id = req.params.id;
-
     db.pc.findById(id)
         .then(pc => {
             res.json(pc);
         }).catch(err => res.send(err.errors));
-    // return ReS(res, {message:'lista utenti'}, 304);
 };
-module.exports.getById = getById;
+module.exports.show = show;
 
-const getByHwId = async (req, res) => {
+// Edit
+const edit = async (req, res) => {
+    const id = req.params.id;
+    db.pc.findById(id)
+        .then(pc => {
+            res.send("edit page");
+            // res.render("/edit", {pc: pc});
+        }).catch(err => res.send(err.errors));
+};
+
+module.exports.edit = edit;
+
+// Update
+const update = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    const hwId = req.params.id;
+    const id = req.params.id;
+    const newData = {
+        SP_HW_ID: req.body.hwId,
+        SP_LAST_RX: req.body.lastRx,
+        SP_IP: req.body.ip,
+        SP_STATUS: req.body.status,
+        SP_PC_DATE_TIME: req.body.pcDateTime,
+    };
 
-    db.pc.findAll({
+    db.pc.update(newData, {
+            returning: true,
             where: {
-                SP_HW_ID: hwId
+                SP_ID: id
             }
         })
-        .then(pc => {
-            res.json(pc);
-        }).catch(err => res.send(err.errors));
-    // return ReS(res, {message:'lista utenti'}, 304);
+        .then((pc) => {
+            res.send(`updated pc id: ${id}. New hw id is: ${newData}`);
+        })
+        .catch(err => res.send(err.errors));
 };
-module.exports.getByHwId = getByHwId;
+module.exports.update = update;
 
-const remove = async (req, res) => {
+// Destroy
+const destroy = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     const id = req.params.id;
 
@@ -68,87 +96,69 @@ const remove = async (req, res) => {
         .then(pc => {
             res.send(`removed pc id: ${id}`);
         }).catch(err => res.send(err.errors));
-    // return ReS(res, {message:'lista utenti'}, 304);
 };
-module.exports.remove = remove;
+module.exports.destroy = destroy;
 
-const update = async (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    const id = req.params.id;
-    const newData = {
-        SP_HW_ID : req.body.hwId
-    };
 
-    db.pc.update(newData, {
-            returning: true,
-            where: {
-                SP_ID: id
-            }
-        })
-        .then((pc) => {
-            res.send(`updated pc id: ${id}. New hw id is: ${newData.SP_HW_ID}`);
-            // res.json(pc);
-        })
-        .catch(err => res.send(err.errors));
-    // return ReS(res, {message:'lista utenti'}, 304);
-};
-module.exports.update = update;
+// const getByHwId = async (req, res) => {
+//     res.setHeader('Content-Type', 'application/json');
+//     const hwId = req.params.id;
 
-const updateHwId = async (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    const hwId = req.params.hwId;
-    const newData = {
-        SP_LAST_RX: Date.now(),
-        SP_IP: req.body.ip,
-        SP_PC_DATE_TIME: req.body.pcDateTime,
-    };
+//     db.pc.findAll({
+//             where: {
+//                 SP_HW_ID: hwId
+//             }
+//         })
+//         .then(pc => {
+//             res.json(pc);
+//         }).catch(err => res.send(err.errors));
+//     // return ReS(res, {message:'lista utenti'}, 304);
+// };
+// module.exports.getByHwId = getByHwId;
 
-    db.pc.update(newData, {
-            returning: true,
-            where: {
-                SP_HW_ID: hwId
-            }
-        })
-        .then((pc) => {
-            res.send(`updated pc Hw id: ${hwId}. New data is: ${newData}`);
-            // res.json(pc);
-        })
-        .catch(err => res.send(err.errors));
-    // return ReS(res, {message:'lista utenti'}, 304);
-};
-module.exports.updateHwId = updateHwId;
 
-const updateStatus = async (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    const id = req.params.id;
-    const newData = {
-        SP_STATUS: req.body.status
-    };
+// const updateHwId = async (req, res) => {
+//     res.setHeader('Content-Type', 'application/json');
+//     const hwId = req.params.hwId;
+//     const newData = {
+//         SP_LAST_RX: Date.now(),
+//         SP_IP: req.body.ip,
+//         SP_PC_DATE_TIME: req.body.pcDateTime,
+//     };
 
-    db.pc.update(newData, {
-            returning: true,
-            where: {
-                SP_ID: id
-            }
-        })
-        .then((pc) => {
-            res.send(`updated pc id: ${id}. New status is: ${newData.SP_STATUS}`);
-            // res.json(pc);
-        })
-        .catch(err => res.send(err.errors));
-    // return ReS(res, {message:'lista utenti'}, 304);
-};
-module.exports.updateStatus = updateStatus;
+//     db.pc.update(newData, {
+//             returning: true,
+//             where: {
+//                 SP_HW_ID: hwId
+//             }
+//         })
+//         .then((pc) => {
+//             res.send(`updated pc Hw id: ${hwId}. New data is: ${newData}`);
+//             // res.json(pc);
+//         })
+//         .catch(err => res.send(err.errors));
+//     // return ReS(res, {message:'lista utenti'}, 304);
+// };
+// module.exports.updateHwId = updateHwId;
 
-// fix...
-const getByStatusAndHwId = async (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    // const hwId = req.params.hwId;
+// const updateStatus = async (req, res) => {
+//     res.setHeader('Content-Type', 'application/json');
+//     const id = req.params.id;
+//     const newData = {
+//         SP_STATUS: req.body.status
+//     };
 
-    db.pc.findAll({attributes: ['SP_ID']})
-        .then(pc => {
-            res.json(pc);
-        }).catch(err => res.send(err.errors));
-    // return ReS(res, {message:'lista utenti'}, 304);
-};
-module.exports.getByStatusAndHwId = getByStatusAndHwId;
+//     db.pc.update(newData, {
+//             returning: true,
+//             where: {
+//                 SP_ID: id
+//             }
+//         })
+//         .then((pc) => {
+//             res.send(`updated pc id: ${id}. New status is: ${newData.SP_STATUS}`);
+//             // res.json(pc);
+//         })
+//         .catch(err => res.send(err.errors));
+//     // return ReS(res, {message:'lista utenti'}, 304);
+// };
+// module.exports.updateStatus = updateStatus;

@@ -1,51 +1,100 @@
 var db = require('../models');
 
+// List
+const list = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    db.matricole.findAll()
+        .then(matricoles => {
+            res.json(matricoles);
+        }).catch(err => res.send(err.errors));
+};
+module.exports.list = list;
+
+// New
+const add = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send('add new item page');
+    // res.render('/new');
+};
+module.exports.add = add;
+
+// Create
 const create = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    const matricola = req.body.matricola;
-    const ssId = req.body.ssId;
-    const dettagli = req.body.dettagli;
-    const creationDate = req.body.creationDate;
-    const lastUpdate = req.body.lastUpdate;
-   
-    db.matricole.create({
-        SM_MATRICOLA: matricola,
-        SM_SS_ID: ssId,
-        SM_DETTAGLI: dettagli,
-        SM_CREATION_DATE: creationDate,
-        SM_LAST_UPDATE: lastUpdate,
+    const data = {
+        SM_MATRICOLA: req.body.matricola,
+        SM_SS_ID: req.body.ssId,
+        SM_DETTAGLI: req.body.dettagli,
+        SM_CREATION_DATE: req.body.creationDate,
+        SM_LAST_UPDATE: req.body.lastUpdate,
+    };
 
-    }).then(function() {
-      res.send('matricola creata');
-    });
-    // return ReS(res, {message:'utente creato'}, 204);
+    db.matricole.create(data).then(function () {
+        res.send('matricola creata');
+    }).catch(err => res.send(err.errors));
 };
 module.exports.create = create;
 
-const get = async (req, res) => {
+// Show
+const show = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    
-    db.matricole.findAll()
-    .then(matricola => {
-      res.json(matricola);
-    });
-    // return ReS(res, {message:'lista utenti'}, 304);
+    const id = req.params.id;
+    db.matricole.findById(id)
+        .then(matricola => {
+            res.json(matricola);
+        }).catch(err => res.send(err.errors));
 };
-module.exports.get = get;
+module.exports.show = show;
 
-// const update = async (req, res) => {   
-//     return ReS(res, {message:'update utenti'}, 204);
-// };
-// module.exports.update = update;
+// Edit
+const edit = async (req, res) => {
+    const id = req.params.id;
+    db.matricole.findById(id)
+        .then(matricola => {
+            res.send("edit page");
+            // res.render("/edit", {matricola: matricola});
+        }).catch(err => res.send(err.errors));
+};
 
-// const remove = async (req, res) => {
-//     return ReS(res, {message:'Deleted utenti'}, 204);
-// };
-// module.exports.remove = remove;
+module.exports.edit = edit;
 
+// Update
+const update = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    const id = req.params.id;
+    const newData = {
+        SM_MATRICOLA: req.body.matricola,
+        SM_SS_ID: req.body.ssId,
+        SM_DETTAGLI: req.body.dettagli,
+        SM_CREATION_DATE: req.body.creationDate,
+        SM_LAST_UPDATE: req.body.lastUpdate,
+    };
 
-// const login = async function(req, res){
+    db.matricole.update(newData, {
+            returning: true,
+            where: {
+                sm_id: id
+            }
+        })
+        .then((matricola) => {
+            res.send(`updated matricola id: ${id}. New data is: ${newData}`);
+        })
+        .catch(err => res.send(err.errors));
+};
+module.exports.update = update;
 
-//     return ReS(res, {message:'login utenti'}, 204);
-// };
-// module.exports.login = login;
+// Destroy
+const destroy = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    const id = req.params.id;
+
+    db.matricole.destroy({
+            where: {
+                sm_id: id
+            }
+        })
+        .then(pc => {
+            res.send(`removed matricola id: ${id}`);
+        }).catch(err => res.send(err.errors));
+};
+module.exports.destroy = destroy;

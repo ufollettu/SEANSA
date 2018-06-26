@@ -3,16 +3,22 @@ const router = express.Router();
 
 const RinnoviController = require('./../controllers/rinnovi.server.controller');
 
-// const passport = require('passport');
+// // RESTful API
+// 
+// router.get('/',          Controller.list);       // Index
+// router.get('/new',       Controller.add);        // New
+// router.post('/',         Controller.create);     // Create
+// router.get('/:id',       Controller.show);       // Show
+// router.get('/:id/edit',  Controller.edit);       // Edit
+// router.put('/:id',       Controller.update);     // Update
+// router.delete('/:id',    Controller.destroy);    // Destroy
 
-// router.get('/', passport.authenticate('jwt', {
-//     session: false
-// }), UtentiController.get);
-
-router.post('/', RinnoviController.create); // C
-router.get('/', RinnoviController.get); // R
-// router.put('/', UtentiController.update); // U
-// router.delete('/', UtentiController.remove); // D
-// router.post('/login', UtentiController.login);
+router.get('/', RinnoviController.list); // Index
+router.get('/new', RinnoviController.add); // New
+router.post('/', RinnoviController.create); // Create
+router.get('/:id', RinnoviController.show); // Show
+router.get('/:id/edit', RinnoviController.edit); // Edit
+router.put('/:id', RinnoviController.update); // Update
+router.delete('/:id', RinnoviController.destroy); // Destroy
 
 module.exports = router;

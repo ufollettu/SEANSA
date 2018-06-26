@@ -21,15 +21,15 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: "0"
     },
     SU_LAST_LOGIN: {
-      type: DataTypes.NOW,
+      type: DataTypes.DATE,
       defaultValue: null
     },
     SU_CREATION: {
-      type: DataTypes.NOW,
+      type: DataTypes.DATE,
       defaultValue: null
     },
     SU_LAST_EDIT: {
-      type: DataTypes.NOW,
+      type: DataTypes.DATE,
       defaultValue: null
     },
     SU_DELETED: {

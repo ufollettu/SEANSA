@@ -1,56 +1,107 @@
 var db = require('../models');
 
+// List
+const list = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    db.utenti.findAll()
+        .then(utenti => {
+            res.json(utenti);
+        }).catch(err => res.send(err.errors));
+};
+module.exports.list = list;
+
+// New
+const add = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send('add new item page');
+    // res.render('/new');
+};
+module.exports.add = add;
+
+// Create
 const create = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    const una = req.body.una;
-    const paw = req.body.paw;
-    const level = req.body.level;
-    const lastLogin = req.body.lastLogin;
-    const creation = req.body.creation;
-    const lastEdit = req.body.lastEdit;
-    const deleted = req.body.deleted;
-    const lastIp = req.body.lastIp;
+    const data = {
+        SU_UNA: req.body.una,
+        SU_PAW: req.body.paw,
+        SU_LEVEL: req.body.level,
+        SU_LAST_LOGIN: req.body.lastLogin,
+        SU_CREATION: req.body.creation,
+        SU_LAST_EDIT: req.body.lastEdit,
+        SU_DELETED: req.body.deleted,
+        SU_LAST_IP: req.body.lastIp
+    };
 
-    db.utenti.create({
-        SU_UNA: una,
-        SU_PAW: paw,
-        SU_LEVEL: level,
-        SU_LAST_LOGIN: lastLogin,
-        SU_CREATION: creation,
-        SU_LAST_EDIT: lastEdit,
-        SU_DELETED: deleted,
-        SU_LAST_IP: lastIp
-    }).then(function() {
-      res.send('utente creato');
-    });
-    // return ReS(res, {message:'utente creato'}, 204);
+    db.utenti.create(data).then(function () {
+        // res.send('utente creato' + data.SU_ID);
+        res.json(data);
+    }).catch(err => res.send(err.errors));
 };
 module.exports.create = create;
 
-const get = async (req, res) => {
+// Show
+const show = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    
-    db.utenti.findAll()
-    .then(utenti => {
-      res.json(utenti);
-    });
-    // return ReS(res, {message:'lista utenti'}, 304);
+    const id = req.params.id;
+    db.utenti.findById(id)
+        .then(utente => {
+            res.json(utente);
+        }).catch(err => res.send(err.errors));
 };
-module.exports.get = get;
+module.exports.show = show;
 
-// const update = async (req, res) => {   
-//     return ReS(res, {message:'update utenti'}, 204);
-// };
-// module.exports.update = update;
+// Edit
+const edit = async (req, res) => {
+    const id = req.params.id;
+    db.utenti.findById(id)
+        .then(utente => {
+            res.send("edit page");
+            // res.render("/edit", {utente: utente});
+        }).catch(err => res.send(err.errors));
+};
 
-// const remove = async (req, res) => {
-//     return ReS(res, {message:'Deleted utenti'}, 204);
-// };
-// module.exports.remove = remove;
+module.exports.edit = edit;
 
+// Update
+const update = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    const id = req.params.id;
+    const newData = {
+        SU_UNA: req.body.una,
+        SU_PAW: req.body.paw,
+        SU_LEVEL: req.body.level,
+        SU_LAST_LOGIN: req.body.lastLogin,
+        SU_CREATION: req.body.creation,
+        SU_LAST_EDIT: req.body.lastEdit,
+        SU_DELETED: req.body.deleted,
+        SU_LAST_IP: req.body.lastIp
+    };
 
-// const login = async function(req, res){
+    db.utenti.update(newData, {
+            returning: true,
+            where: {
+                SU_ID: id
+            }
+        })
+        .then((utenti) => {
+            res.send(`updated utente id: ${id}. New data is: ${newData}`);
+        })
+        .catch(err => res.send(err.errors));
+};
+module.exports.update = update;
 
-//     return ReS(res, {message:'login utenti'}, 204);
-// };
-// module.exports.login = login;
+// Destroy
+const destroy = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    const id = req.params.id;
+
+    db.utenti.destroy({
+            where: {
+                SU_ID: id
+            }
+        })
+        .then(pc => {
+            res.send(`removed utente id: ${id}`);
+        }).catch(err => res.send(err.errors));
+};
+module.exports.destroy = destroy;

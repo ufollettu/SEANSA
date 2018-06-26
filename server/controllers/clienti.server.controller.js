@@ -1,5 +1,24 @@
 var db = require('../models');
 
+// List
+const list = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    db.clienti.findAll()
+        .then(clienti => {
+            res.json(clienti);
+        }).catch(err => res.send(err.errors));
+};
+module.exports.list = list;
+
+// New
+const add = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send('add new item page');
+    // res.render('/new');
+};
+module.exports.add = add;
+
+// Create
 const create = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     const data = {
@@ -16,24 +35,37 @@ const create = async (req, res) => {
     };
 
     db.clienti.create(data).then(function () {
-        res.send('cliente creato');
-    });
-    // return ReS(res, {message:'utente creato'}, 204);
+        // res.send('utente creato' + data.SU_ID);
+        res.json(data);
+    }).catch(err => res.send(err.errors));
 };
 module.exports.create = create;
 
-const get = async (req, res) => {
+// Show
+const show = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-
-    db.clienti.findAll()
+    const id = req.params.id;
+    db.clienti.findById(id)
         .then(cliente => {
             res.json(cliente);
-        });
-    // return ReS(res, {message:'lista utenti'}, 304);
+        }).catch(err => res.send(err.errors));
 };
-module.exports.get = get;
+module.exports.show = show;
 
-const updateAllFields = async (req, res) => {
+// Edit
+const edit = async (req, res) => {
+    const id = req.params.id;
+    db.clienti.findById(id)
+        .then(cliente => {
+            res.send("edit page");
+            // res.render("/edit", {cliente: cliente});
+        }).catch(err => res.send(err.errors));
+};
+
+module.exports.edit = edit;
+
+// Update
+const update = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     const id = req.params.id;
     const newData = {
@@ -56,32 +88,24 @@ const updateAllFields = async (req, res) => {
             }
         })
         .then((clienti) => {
-            res.send(`updated cliente id: ${id}. New values is: ${newData}`);
-            // res.json(clienti);
+            res.send(`updated cliente id: ${id}. New data is: ${newData}`);
         })
         .catch(err => res.send(err.errors));
-    // return ReS(res, {message:'lista utenti'}, 304);
 };
-module.exports.updateAllFields = updateAllFields;
+module.exports.update = update;
 
-const updateDeleted = async (req, res) => {
+// Destroy
+const destroy = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     const id = req.params.id;
-    const newData = {
-        SC_DELETED: 1
-    };
 
-    db.clienti.update(newData, {
-            returning: true,
+    db.clienti.destroy({
             where: {
                 SC_ID: id
             }
         })
-        .then((clienti) => {
-            res.send(`updated cliente id: ${id}. New deleted value is: ${newData.SC_DELETED}`);
-            // res.json(pc);
-        })
-        .catch(err => res.send(err.errors));
-    // return ReS(res, {message:'lista utenti'}, 304);
+        .then(pc => {
+            res.send(`removed cliente id: ${id}`);
+        }).catch(err => res.send(err.errors));
 };
-module.exports.updateDeleted = updateDeleted;
+module.exports.destroy = destroy;

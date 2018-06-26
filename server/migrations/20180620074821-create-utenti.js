@@ -22,15 +22,15 @@ module.exports = {
         defaultValue: "0"
       },
       SU_LAST_LOGIN: {
-        type: Sequelize.NOW,
+        type: Sequelize.DATE,
         defaultValue: null
       },
       SU_CREATION: {
-        type: Sequelize.NOW,
+        type: Sequelize.DATE,
         defaultValue: null
       },
       SU_LAST_EDIT: {
-        type: Sequelize.NOW,
+        type: Sequelize.DATE,
         defaultValue: null
       },
       SU_DELETED: {

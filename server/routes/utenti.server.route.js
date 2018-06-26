@@ -3,16 +3,22 @@ const router = express.Router();
 
 const UtentiController = require('./../controllers/utenti.server.controller');
 
-// const passport = require('passport');
+// // RESTful API
+// 
+// router.get('/',          Controller.list);       // Index
+// router.get('/new',       Controller.add);        // New
+// router.post('/',         Controller.create);     // Create
+// router.get('/:id',       Controller.show);       // Show
+// router.get('/:id/edit',  Controller.edit);       // Edit
+// router.put('/:id',       Controller.update);     // Update
+// router.delete('/:id',    Controller.destroy);    // Destroy
 
-// router.get('/', passport.authenticate('jwt', {
-//     session: false
-// }), UtentiController.get);
-
-router.post('/', UtentiController.create); // C
-router.get('/', UtentiController.get); // R
-// router.put('/', UtentiController.update); // U
-// router.delete('/', UtentiController.remove); // D
-// router.post('/login', UtentiController.login);
+router.get('/', UtentiController.list); // Index
+router.get('/new', UtentiController.add); // New
+router.post('/', UtentiController.create); // Create
+router.get('/:id', UtentiController.show); // Show
+router.get('/:id/edit', UtentiController.edit); // Edit
+router.put('/:id', UtentiController.update); // Update
+router.delete('/:id', UtentiController.destroy); // Destroy
 
 module.exports = router;

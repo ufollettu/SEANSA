@@ -41,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     SC_TS: {
       allowNull: false,
-      type: DataTypes.NOW,
+      type: DataTypes.DATE,
       defaultValue: sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
     },
     SC_DELETED: {

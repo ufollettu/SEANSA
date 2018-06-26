@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: "0"
     },
     SS_ACTIVATION_DATE: {
-      type: DataTypes.NOW,
+      type: DataTypes.DATE,
       defaultValue: null
     },
     SS_EXPIRE: {
@@ -25,12 +25,12 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: null
     },
     SS_CREATED: {
-      type: DataTypes.NOW,
+      type: DataTypes.DATE,
       allowNull: true,
       defaultValue: "0000-00-00 00:00:00"
     },
     SS_LAST_EDIT: {
-      type: DataTypes.NOW,
+      type: DataTypes.DATE,
       allowNull: true,
       defaultValue: sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
     },

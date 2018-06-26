@@ -1,64 +1,114 @@
 var db = require('../models');
 
+// List
+const list = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    db.sks.findAll()
+        .then(sks => {
+            res.json(sks);
+        }).catch(err => res.send(err.errors));
+};
+module.exports.list = list;
+
+// New
+const add = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send('add new item page');
+    // res.render('/new');
+};
+module.exports.add = add;
+
+// Create
 const create = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    const key = req.body.key;
-    const oem = req.body.oem;
-    const activationDate = req.body.activationDate;
-    const expire = req.body.expire;
-    const created = req.body.created;
-    const lastEdit = req.body.lastEdit;
-    const mismatchCount = req.body.mismatchCount;
-    const status = req.body.status;
-    const scId = req.body.scId;
-    const spId = req.body.spId;
-    const activatedBy = req.body.activatedBy;
-    const activationReferent = req.body.activationReferent;
-   
-    db.sks.create({
-        SS_KEY: key,
-        SS_OEM: oem,
-        SS_ACTIVATION_DATE: activationDate,
-        SS_EXPIRE: expire,
-        SS_CREATED: created,
-        SS_LAST_EDIT: lastEdit,
-        SS_MISMATCH_COUNT: mismatchCount,
-        SS_STATUS: status,
-        SS_SC_ID: scId,
-        SS_SP_ID: spId,
-        SS_ACTIVATED_BY: activatedBy,
-        SS_ACTIVATION_REFERENT:activationReferent
-    }).then(function() {
-      res.send('sks creata');
-    });
-    // return ReS(res, {message:'utente creato'}, 204);
+    const data = {
+        SS_KEY: req.body.key,
+        SS_OEM: req.body.oem,
+        SS_ACTIVATION_DATE: req.body.activationDate,
+        SS_EXPIRE: req.body.expire,
+        SS_CREATED: req.body.created,
+        SS_LAST_EDIT: req.body.lastEdit,
+        SS_MISMATCH_COUNT: req.body.mismatchCount,
+        SS_STATUS: req.body.status,
+        SS_SC_ID: req.body.scId,
+        SS_SP_ID: req.body.spId,
+        SS_ACTIVATED_BY: req.body.activatedBy,
+        SS_ACTIVATION_REFERENT: req.body.activationReferent
+    };
+
+    db.sks.create(data).then(function () {
+        res.send('sks creato');
+    }).catch(err => res.send(err.errors));
 };
 module.exports.create = create;
 
-const get = async (req, res) => {
+// Show
+const show = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    
-    db.sks.findAll()
-    .then(sks => {
-      res.json(sks);
-    });
-    // return ReS(res, {message:'lista utenti'}, 304);
+    const id = req.params.id;
+    db.sks.findById(id)
+        .then(sks => {
+            res.json(sks);
+        }).catch(err => res.send(err.errors));
 };
-module.exports.get = get;
+module.exports.show = show;
 
-// const update = async (req, res) => {   
-//     return ReS(res, {message:'update utenti'}, 204);
-// };
-// module.exports.update = update;
+// Edit
+const edit = async (req, res) => {
+    const id = req.params.id;
+    db.sks.findById(id)
+        .then(sks => {
+            res.send("edit page");
+            // res.render("/edit", {sks: sks});
+        }).catch(err => res.send(err.errors));
+};
 
-// const remove = async (req, res) => {
-//     return ReS(res, {message:'Deleted utenti'}, 204);
-// };
-// module.exports.remove = remove;
+module.exports.edit = edit;
 
+// Update
+const update = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    const id = req.params.id;
+    const newData = {
+        SS_KEY: req.body.key,
+        SS_OEM: req.body.oem,
+        SS_ACTIVATION_DATE: req.body.activationDate,
+        SS_EXPIRE: req.body.expire,
+        SS_CREATED: req.body.created,
+        SS_LAST_EDIT: req.body.lastEdit,
+        SS_MISMATCH_COUNT: req.body.mismatchCount,
+        SS_STATUS: req.body.status,
+        SS_SC_ID: req.body.scId,
+        SS_SP_ID: req.body.spId,
+        SS_ACTIVATED_BY: req.body.activatedBy,
+        SS_ACTIVATION_REFERENT: req.body.activationReferent
+    };
 
-// const login = async function(req, res){
+    db.sks.update(newData, {
+            returning: true,
+            where: {
+                SS_ID: id
+            }
+        })
+        .then((sks) => {
+            res.send(`updated sks id: ${id}. New data is: ${newData}`);
+        })
+        .catch(err => res.send(err.errors));
+};
+module.exports.update = update;
 
-//     return ReS(res, {message:'login utenti'}, 204);
-// };
-// module.exports.login = login;
+// Destroy
+const destroy = async (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    const id = req.params.id;
+
+    db.sks.destroy({
+            where: {
+                SS_ID: id
+            }
+        })
+        .then(pc => {
+            res.send(`removed sks id: ${id}`);
+        }).catch(err => res.send(err.errors));
+};
+module.exports.destroy = destroy;
