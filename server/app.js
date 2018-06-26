@@ -1,8 +1,10 @@
-// require('./config/config'); //instantiate configuration variables
+require('./config/config'); //instantiate configuration variables
 require('./global_functions'); //instantiate global functions
 
-const env = process.env.NODE_ENV || 'development';
-const config = require('./config/config.json')[env];
+console.log("Environment:", CONFIG.app);
+
+// const env = process.env.NODE_ENV || 'development';
+// const config = require('./config/config.json')[env];
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -40,14 +42,14 @@ app.use(passport.initialize());
 
 // DB
 models.sequelize.authenticate().then(() => {
-    console.log('Connected to SQL database');
+    console.log('Connected to SQL database', CONFIG.db_name);
   })
   .catch(err => {
-    console.error('Unable to connect to SQL database:', err);
+    console.error('Unable to connect to SQL database:', CONFIG.db_name, err);
   });
-  if(config.database === 'sequelize_dev'){
-    models.sequelize.sync()//creates tables from models
-    // models.sequelize.sync({ force: true });//good for testing
+  if(CONFIG.app==='dev'){
+    models.sequelize.sync()//creates table if they do not already exist
+    // models.sequelize.sync({ force: true });//deletes all tables then recreates them useful for testing and development purposes
     .then()
     .catch(err => console.assert(err));
   }
@@ -65,11 +67,8 @@ app.use((req, res, next) => {
     // Pass to next layer of middleware
     next();
 });
-// routes
-// app.use('/', function(req, res){
-// 	res.statusCode = 200;//send the appropriate status code
-// 	res.json({status:"success", message:"Parcel Pending API", data:{}})
-// });
+
+// Routes
 app.use('/', indexRouter);
 app.use('/utenti', utentiRouter);
 app.use('/sks', sksRouter);

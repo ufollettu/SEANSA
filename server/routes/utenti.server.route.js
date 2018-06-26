@@ -21,4 +21,6 @@ router.get('/:id/edit', UtentiController.edit); // Edit
 router.put('/:id', UtentiController.update); // Update
 router.delete('/:id', UtentiController.destroy); // Destroy
 
+// router.post('/login', UtentiController.login); // Login
+
 module.exports = router;
