@@ -32,3 +32,6 @@ benchmarks/graphs
 #env
 .env
 queries.php
+
+#SQL
+*.sql
