@@ -11,10 +11,13 @@ const path = require('path');
 const logger = require('morgan');
 const passport = require('passport');
 // const cookieParser  = require('cookie-parser');
+// require('./config/passport');
 
 const models = require('./models');
 
 // requiring routes
+const authRouter = require('./routes/auth.server.route');
+
 const indexRouter = require('./routes/index.server.route');
 const utentiRouter = require('./routes/utenti.server.route');
 const sksRouter = require('./routes/sks.server.route');
@@ -70,6 +73,9 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/', indexRouter);
+
+app.use('/auth', authRouter);
+
 app.use('/utenti', utentiRouter);
 app.use('/sks', sksRouter);
 app.use('/pc', pcRouter);
