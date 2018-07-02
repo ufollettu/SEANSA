@@ -42,6 +42,8 @@ app.use(express.urlencoded({
 
 //Passport
 app.use(passport.initialize());
+//load passport strategies
+require('./config/passport');
 
 // DB
 models.sequelize.authenticate().then(() => {

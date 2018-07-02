@@ -19,6 +19,7 @@ const add = async (req, res) => {
 module.exports.add = add;
 
 // Create
+/* Create is now managed by auth/signup route. */
 const create = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     const data = {

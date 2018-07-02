@@ -1,9 +1,17 @@
 const express = require('express');
 const router = express.Router();
+// const jwt = require('jsonwebtoken');
+const passport = require("passport");
+// const secretOrKey = CONFIG.jwt_encryption;
 
-const AuthController = require('./../controllers/auth.server.controller');
+const authController = require('../controllers/auth.server.controller');
 
-/* POST login. */
-router.post('/login', AuthController.login);
+router.get('/signin', authController.signinPage);
+router.get('/signup', authController.signupPage);
+
+router.post('/signin', authController.signin);
+router.post('/signup', passport.authenticate('signup', { session: false }), authController.signup);
+
+router.post('/logout', authController.logout);
 
 module.exports = router;

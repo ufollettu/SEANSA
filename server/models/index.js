@@ -1,12 +1,14 @@
 'use strict';
 
-var fs        = require('fs');
-var path      = require('path');
-var Sequelize = require('sequelize');
-var basename  = path.basename(__filename);
+const fs        = require('fs');
+const path      = require('path');
+const Sequelize = require('sequelize');
+const bcrypt = require('bcrypt');
+
+const basename  = path.basename(__filename);
 // var env       = process.env.NODE_ENV || 'development';
 // var config    = require(__dirname + '/../config/config.json')[env];
-var db        = {};
+const db        = {};
 
 const sequelize = new Sequelize(CONFIG.db_name, CONFIG.db_user, CONFIG.db_password, {
   host: CONFIG.db_host,
@@ -43,5 +45,16 @@ db.clienti = require('./clienti')(sequelize, Sequelize);
 db.pc = require('./pc')(sequelize, Sequelize);
 
 // Relations
+
+// Hooks
+db.utenti.hook('beforeCreate', async (user, options) => {
+  return await bcrypt.hash(user.SU_PAW, 10)
+    .then(hash => {
+      user.SU_PAW = hash;
+    })
+    .catch(err => {
+      throw new Error(err);
+    });
+});
 
 module.exports = db;

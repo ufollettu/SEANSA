@@ -14,5 +14,5 @@ CONFIG.db_password  = process.env.DB_PASSWORD   || '******';
 
 CONFIG.secret       = process.env.SECRET        || 'SuperActivatorSecretKey'
 
-CONFIG.jwt_encryption  = process.env.JWT_ENCRYPTION || 'jwt_please_change';
+CONFIG.jwt_encryption  = process.env.JWT_ENCRYPTION || 'segretissimo';
 CONFIG.jwt_expiration  = process.env.JWT_EXPIRATION || '10000';
