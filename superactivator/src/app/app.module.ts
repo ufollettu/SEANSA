@@ -22,6 +22,8 @@ import { ClientiDetailComponent } from './clienti-detail/clienti-detail.componen
 import { ClientiCreateComponent } from './clienti-create/clienti-create.component';
 import { ClientiEditComponent } from './clienti-edit/clienti-edit.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 
 const appRoutes: Routes = [
   { path: 'clienti', component: ClientiComponent, data: { title: 'Customers List' } },
@@ -37,7 +39,9 @@ const appRoutes: Routes = [
     ClientiComponent,
     ClientiDetailComponent,
     ClientiCreateComponent,
-    ClientiEditComponent
+    ClientiEditComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

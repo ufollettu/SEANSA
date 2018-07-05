@@ -1,3 +1,67 @@
-<p>
-  clienti-create works!
-</p>
+<div class="button-row">
+  <a mat-raised-button color="primary" [routerLink]="['/clienti']">
+    <mat-icon>list</mat-icon>
+  </a>
+</div>
+<form [formGroup]="clienteForm" (ngSubmit)="onFormSubmit(clienteForm.value)">
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Nome" formControlName="SC_NOME" [errorStateMatcher]="matcher">
+    <mat-error>
+      <span *ngIf="!clienteForm.get('SC_NOME').valid && clienteForm.get('SC_NOME').touched">Inserisci il Nome</span>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="P. IVA" formControlName="SC_PIVA" [errorStateMatcher]="matcher">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Cod. Fiscale" formControlName="SC_COD_FISCALE" [errorStateMatcher]="matcher">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Indirizzo" formControlName="SC_INDIRIZZO" [errorStateMatcher]="matcher">
+    <mat-error>
+      <span *ngIf="!clienteForm.get('SC_INDIRIZZO').valid && clienteForm.get('SC_INDIRIZZO').touched">Inserisci l'indirizzo</span>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="email" formControlName="SC_EMAIL" [errorStateMatcher]="matcher">
+    <mat-error>
+      <span *ngIf="!clienteForm.get('SC_EMAIL').valid && clienteForm.get('SC_EMAIL').touched">Inserisci l'email</span>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="N. telefono" formControlName="SC_TELEFONO" [errorStateMatcher]="matcher">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="nome referente" formControlName="SC_REFERENTE_NOME" [errorStateMatcher]="matcher">
+    <mat-error>
+      <span *ngIf="!clienteForm.get('SC_REFERENTE_NOME').valid && clienteForm.get('SC_REFERENTE_NOME').touched">Inserisci il nome referente</span>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="telefono referente" formControlName="SC_TEL_REFERENTE" [errorStateMatcher]="matcher">
+    <mat-error>
+      <span *ngIf="!clienteForm.get('SC_TEL_REFERENTE').valid && clienteForm.get('SC_TEL_REFERENTE').touched">Inserisci il telefono del referente</span>
+    </mat-error>
+  </mat-form-field>
+
+  <!-- <mat-form-field class="example-full-width">
+    <input matInput placeholder="Data inserimento" formControlName="SC_TS" [errorStateMatcher]="matcher">
+    <mat-error>
+      <span *ngIf="!clienteForm.get('SC_TS').valid && clienteForm.get('SC_TS').touched">Inserisci la data di inserimento</span>
+    </mat-error>
+  </mat-form-field> -->
+
+  <div class="button-row">
+    <button type="submit" [disabled]="!clienteForm.valid" mat-raised-button color="primary">
+      <mat-icon>save</mat-icon>
+    </button>
+  </div>
+</form>

@@ -14,3 +14,7 @@
   .button-row {
     margin: 10px 0;
   }
+
+  .mat-row {
+    cursor: pointer
+  }

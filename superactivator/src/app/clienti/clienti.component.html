@@ -28,16 +28,16 @@
     </ng-container>
 
     <!-- P.IVA Column -->
-    <ng-container matColumnDef="SC_PIVA">
+    <!-- <ng-container matColumnDef="SC_PIVA">
       <th mat-header-cell *matHeaderCellDef> P.IVA </th>
       <td mat-cell *matCellDef="let element"> {{element.SC_PIVA}} </td>
-    </ng-container>
+    </ng-container> -->
 
     <!-- Cod Fiscale Column -->
-    <ng-container matColumnDef="SC_COD_FISCALE">
+    <!-- <ng-container matColumnDef="SC_COD_FISCALE">
       <th mat-header-cell *matHeaderCellDef> Codice Fiscale </th>
       <td mat-cell *matCellDef="let element"> {{element.SC_COD_FISCALE}} </td>
-    </ng-container>
+    </ng-container> -->
 
     <!-- Indirizzo Column -->
     <ng-container matColumnDef="SC_INDIRIZZO">
@@ -58,12 +58,12 @@
     </ng-container>
 
     <!-- TS Column -->
-    <ng-container matColumnDef="SC_TS">
+    <!-- <ng-container matColumnDef="SC_TS">
       <th mat-header-cell *matHeaderCellDef> TS </th>
       <td mat-cell *matCellDef="let element"> {{element.SC_TS | date:'yyyy-MM-dd'}} </td>
-    </ng-container>
+    </ng-container> -->
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="['/clienti-details/', row._id]"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [routerLink]="['/clienti-details/', row.SC_ID]"></tr>
   </table>
 </div>

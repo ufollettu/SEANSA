@@ -21,22 +21,22 @@ module.exports.add = add;
 // Create
 const create = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    const data = {
-        SC_NOME: req.body.nome,
-        SC_PIVA: req.body.pIva,
-        SC_COD_FISCALE: req.body.codFiscale,
-        SC_INDIRIZZO: req.body.indirizzo,
-        SC_EMAIL: req.body.email,
-        SC_TELEFONO: req.body.telefono,
-        SC_REFERENTE_NOME: req.body.referenteNome,
-        SC_TEL_REFERENTE: req.body.telReferente,
-        SC_TS: req.body.ts,
-        SC_DELETED: req.body.deleted
-    };
+    const data = req.body;
+    // const data = {
+    //     SC_NOME: req.body.nome,
+    //     SC_PIVA: req.body.pIva,
+    //     SC_COD_FISCALE: req.body.codFiscale,
+    //     SC_INDIRIZZO: req.body.indirizzo,
+    //     SC_EMAIL: req.body.email,
+    //     SC_TELEFONO: req.body.telefono,
+    //     SC_REFERENTE_NOME: req.body.referenteNome,
+    //     SC_TEL_REFERENTE: req.body.telReferente,
+    //     SC_TS: req.body.ts,
+    //     SC_DELETED: req.body.deleted
+    // };
 
-    db.clienti.create(data).then(function () {
-        // res.send('utente creato' + data.SU_ID);
-        res.json(data);
+    db.clienti.create(data).then((customer) => {
+        res.json(customer);
     }).catch(err => res.send(err.errors));
 };
 module.exports.create = create;
@@ -68,29 +68,27 @@ module.exports.edit = edit;
 const update = async (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     const id = req.params.id;
-    const newData = {
-        SC_NOME: req.body.nome,
-        SC_PIVA: req.body.pIva,
-        SC_COD_FISCALE: req.body.codFiscale,
-        SC_INDIRIZZO: req.body.indirizzo,
-        SC_EMAIL: req.body.email,
-        SC_TELEFONO: req.body.telefono,
-        SC_REFERENTE_NOME: req.body.referenteNome,
-        SC_TEL_REFERENTE: req.body.telReferente,
-        SC_TS: req.body.ts,
-        SC_DELETED: req.body.deleted
-    };
+    const newData = req.body;
+    // const newData = {
+    //     SC_NOME: req.body.nome,
+    //     SC_PIVA: req.body.pIva,
+    //     SC_COD_FISCALE: req.body.codFiscale,
+    //     SC_INDIRIZZO: req.body.indirizzo,
+    //     SC_EMAIL: req.body.email,
+    //     SC_TELEFONO: req.body.telefono,
+    //     SC_REFERENTE_NOME: req.body.referenteNome,
+    //     SC_TEL_REFERENTE: req.body.telReferente,
+    //     SC_TS: req.body.ts,
+    //     SC_DELETED: req.body.deleted
+    // };
 
-    db.clienti.update(newData, {
-            returning: true,
-            where: {
-                SC_ID: id
-            }
-        })
-        .then((clienti) => {
-            res.send(`updated cliente id: ${id}. New data is: ${newData}`);
-        })
-        .catch(err => res.send(err.errors));
+    // TODO find solution to fix res.json --> now not returning istance
+    db.clienti.update(newData, {where: {SC_ID: id}})
+        .then(db.clienti.findById(req.params.id))
+        .then(cliente => {
+            console.log(cliente)
+            res.json(cliente);
+        }).catch(err => res.send(err.errors));
 };
 module.exports.update = update;
 
@@ -100,12 +98,12 @@ const destroy = async (req, res) => {
     const id = req.params.id;
 
     db.clienti.destroy({
-            where: {
-                SC_ID: id
-            }
-        })
-        .then(pc => {
-            res.send(`removed cliente id: ${id}`);
-        }).catch(err => res.send(err.errors));
+        where: {
+            SC_ID: id
+        }
+    }).then(cliente => {
+        // res.send(`removed cliente id: ${id}`);
+        res.json(cliente);
+    }).catch(err => res.send(err.errors));
 };
 module.exports.destroy = destroy;

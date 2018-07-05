@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApiService } from '../api.service';
+import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
+import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-clienti-create',
@@ -7,9 +11,42 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClientiCreateComponent implements OnInit {
 
-  constructor() { }
+  clienteForm: FormGroup;
+
+  SC_NOME = '';
+  SC_PIVA = '';
+  SC_COD_FISCALE = '';
+  SC_INDIRIZZO = '';
+  SC_EMAIL = '';
+  SC_TELEFONO = '';
+  SC_REFERENTE_NOME = '';
+  SC_TEL_REFERENTE = '';
+  SC_TS = '';
+
+  constructor(private router: Router, private api: ApiService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    this.clienteForm = this.formBuilder.group({
+      'SC_NOME' : [null, Validators.required],
+      'SC_PIVA' : [null],
+      'SC_COD_FISCALE' : [null],
+      'SC_INDIRIZZO' : [null, Validators.required],
+      'SC_EMAIL' : [null, [Validators.required, Validators.email]],
+      'SC_TELEFONO' : [null],
+      'SC_REFERENTE_NOME' : [null, Validators.required],
+      'SC_TEL_REFERENTE' : [null, Validators.required],
+      // 'SC_TS' : [null]
+    });
+  }
+
+  onFormSubmit(form: NgForm) {
+    this.api.postCustomer(form)
+      .subscribe(res => {
+          const id = res['SC_ID'];
+          this.router.navigate(['/clienti-details', id]);
+        }, (err) => {
+          console.log(err);
+        });
   }
 
 }
