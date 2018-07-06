@@ -82,12 +82,11 @@ const update = async (req, res) => {
     //     SC_DELETED: req.body.deleted
     // };
 
-    // TODO find solution to fix res.json --> now not returning istance
-    db.clienti.update(newData, {where: {SC_ID: id}})
-        .then(db.clienti.findById(req.params.id))
+    db.clienti.findById(id)
         .then(cliente => {
-            console.log(cliente)
-            res.json(cliente);
+            return cliente.update(newData).then((self) => {
+                res.json(self);
+            });
         }).catch(err => res.send(err.errors));
 };
 module.exports.update = update;
