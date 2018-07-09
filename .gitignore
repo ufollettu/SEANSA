@@ -37,3 +37,9 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+#db and env
+
+.env
+*.sql
+*.php

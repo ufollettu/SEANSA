@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../api.service';
 
 @Component({
@@ -11,7 +11,7 @@ export class ClientiDetailComponent implements OnInit {
 
   cliente = {};
 
-  constructor(private route: ActivatedRoute, private api: ApiService) { }
+  constructor(private route: ActivatedRoute, private api: ApiService, private router: Router) { }
 
   ngOnInit() {
     this.getCustomerDetails(this.route.snapshot.params['id']);
@@ -25,4 +25,14 @@ export class ClientiDetailComponent implements OnInit {
       });
   }
 
+  deleteCliente(id) {
+    this.api.deleteCustomer(id)
+      .subscribe(res => {
+        alert('cliente rimosso');
+          this.router.navigate(['/clienti']);
+        }, (err) => {
+          console.log(err);
+        }
+      );
+  }
 }
