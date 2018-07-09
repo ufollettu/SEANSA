@@ -17,15 +17,15 @@ require('./../config/passport');
 // router.delete('/:id',    Controller.destroy);    // Destroy
 
 router.get('/', passport.authenticate('jwt', {session: false}), UtentiController.list); // Index
-// router.get('/', UtentiController.list); // Index
-
+//router.get('/', UtentiController.list); // Index 
+ 
 router.get('/new', UtentiController.add); // New
 router.post('/', UtentiController.create); // Create
 router.get('/:id', UtentiController.show); // Show
-router.get('/:id/edit', UtentiController.edit); // Edit
+router.get('/:id/edit', UtentiController.edit); // Edit 
 router.put('/:id', UtentiController.update); // Update
-router.delete('/:id', UtentiController.destroy); // Destroy
+router.delete('/:id', UtentiController.destroy); // Destroy 
 
-// router.post('/login', UtentiController.login); // Login
+// router.post('/login', UtentiController.login); // Login 
 
 module.exports = router;

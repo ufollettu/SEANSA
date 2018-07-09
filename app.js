@@ -27,14 +27,14 @@ const matricoleRouter = require('./routes/matricole.server.route');
 const rinnoviRouter = require('./routes/rinnovi.server.route');
 const clientiRouter = require('./routes/clienti.server.route');
 
-const app = express();
+const app = express();  
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
-app.use(express.json());
+app.use(express.json()); 
 app.use(express.urlencoded({extended: false}));
 // app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'dist/client')));
@@ -76,7 +76,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/api/', indexRouter);
 
-app.use('/api/auth', authRouter);
+app.use('/api/auth', authRouter); 
 
 app.use('/api/utenti', utentiRouter);
 app.use('/api/sks', sksRouter);
