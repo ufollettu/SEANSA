@@ -58,6 +58,7 @@ export class ClientiTableComponent implements OnInit {
     this.api.deleteCustomer(id)
       .subscribe(res => {
         alert(`cliente ${id} rimosso`);
+        // TODO fix reload list after delete
         const index = this.clienti.indexOf(id, 0);
         if (index > -1) {
             this.clienti.splice(index, 1);
