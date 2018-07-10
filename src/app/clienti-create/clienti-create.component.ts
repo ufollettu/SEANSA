@@ -42,8 +42,9 @@ export class ClientiCreateComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.api.postCustomer(form)
       .subscribe(res => {
-          const id = res['SC_ID'];
-          this.router.navigate(['/clienti-details', id]);
+          // const id = res['SC_ID'];
+          alert(`cliente ${res['SC_NOME']} creato`);
+          this.router.navigate(['/clienti']);
         }, (err) => {
           console.log(err);
         });

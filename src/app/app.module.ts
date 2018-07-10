@@ -17,17 +17,19 @@ import {
 
 
 import { AppComponent } from './app.component';
-import { ClientiComponent } from './clienti/clienti.component';
-import { ClientiDetailComponent } from './clienti-detail/clienti-detail.component';
+// import { ClientiComponent } from './clienti/clienti.component';
+// import { ClientiDetailComponent } from './clienti-detail/clienti-detail.component';
+import { ClientiTableComponent } from './clienti-table/clienti-table.component';
 import { ClientiCreateComponent } from './clienti-create/clienti-create.component';
 import { ClientiEditComponent } from './clienti-edit/clienti-edit.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 
+
 const appRoutes: Routes = [
-  { path: 'clienti', component: ClientiComponent, data: { title: 'Customers List' } },
-  { path: 'clienti-details/:id', component: ClientiDetailComponent, data: { title: 'Customer Details' } },
+  { path: 'clienti', component: ClientiTableComponent, data: { title: 'Customers List' } },
+  // { path: 'clienti-details/:id', component: ClientiDetailComponent, data: { title: 'Customer Details' } },
   { path: 'clienti-create', component: ClientiCreateComponent, data: { title: 'Create Customer' } },
   { path: 'clienti-edit/:id', component: ClientiEditComponent, data: { title: 'Edit Customer' } },
   { path: '', redirectTo: '/clienti', pathMatch: 'full' }
@@ -36,12 +38,13 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    ClientiComponent,
-    ClientiDetailComponent,
+    // ClientiComponent,
+    // ClientiDetailComponent,
     ClientiCreateComponent,
     ClientiEditComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    ClientiTableComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

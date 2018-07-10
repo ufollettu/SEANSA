@@ -25,7 +25,7 @@ export class ClientiDetailComponent implements OnInit {
       });
   }
 
-  deleteCliente(id) {
+  deleteCustomer(id) {
     this.api.deleteCustomer(id)
       .subscribe(res => {
         alert('cliente rimosso');

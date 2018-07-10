@@ -61,8 +61,9 @@ export class ClientiEditComponent implements OnInit {
     this.api.updateCustomer(this.SC_ID, form)
       .subscribe(res => {
         console.log(res);
-        const id = res['SC_ID'];
-        this.router.navigate(['/clienti-details', id]);
+        // const id = res['SC_ID'];
+        alert(`cliente ${res['SC_NOME']} aggiornato`);
+        this.router.navigate(['/clienti']);
       }, (err) => {
         console.log(err);
       }
@@ -70,7 +71,7 @@ export class ClientiEditComponent implements OnInit {
   }
 
   clientiDetails() {
-    this.router.navigate(['/clienti-details', this.SC_ID]);
+    this.router.navigate(['/clienti']);
   }
 
 }
