@@ -23,7 +23,12 @@ export class SksEditComponent implements OnInit {
   SS_ACTIVATION_REFERENT = '';
   SS_LAST_EDIT = '';
 
-  constructor(private router: Router, private route: ActivatedRoute, private api: SksApiService, private formBuilder: FormBuilder) { }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private api: SksApiService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit() {
     this.getSks(this.route.snapshot.params['id']);
