@@ -1,3 +1,63 @@
-<p>
-  sks-create works!
-</p>
+<div class="button-row">
+  <a mat-raised-button color="primary" [routerLink]="['/sks']">
+    <mat-icon>list</mat-icon>
+  </a>
+</div>
+<form [formGroup]="sksForm" (ngSubmit)="onFormSubmit(sksForm.value)">
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Key" formControlName="SS_KEY" [errorStateMatcher]="matcher">
+    <mat-error>
+      <span *ngIf="!sksForm.get('SS_KEY').valid && sksForm.get('SS_KEY').touched">Inserisci la chiave</span>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="OEM" formControlName="SS_OEM" [errorStateMatcher]="matcher">
+    <mat-error>
+      <span *ngIf="!sksForm.get('SS_OEM').valid && sksForm.get('SS_OEM').touched">Inserisci l'OEM</span>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Data Attivazione" formControlName="SS_ACTIVATION_DATE" [errorStateMatcher]="matcher">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Expire date" formControlName="SS_EXPIRE" [errorStateMatcher]="matcher">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="id Pc" formControlName="SS_SP_ID" [errorStateMatcher]="matcher">
+    <mat-error>
+      <span *ngIf="!sksForm.get('SS_SP_ID').valid && sksForm.get('SS_SP_ID').touched">Inserisci l'id del PC</span>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+      <input matInput placeholder="id Cliente" formControlName="SS_SC_ID" [errorStateMatcher]="matcher">
+      <mat-error>
+        <span *ngIf="!sksForm.get('SS_SC_ID').valid && sksForm.get('SS_SC_ID').touched">Inserisci l'id del Cliente</span>
+      </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Attivato da" formControlName="SS_ACTIVATED_BY" [errorStateMatcher]="matcher">
+    <mat-error>
+      <span *ngIf="!sksForm.get('SS_ACTIVATED_BY').valid && sksForm.get('SS_ACTIVATED_BY').touched">Inserisci il nome di chi attiva la chiave</span>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Referente attivazione" formControlName="SS_ACTIVATION_REFERENT" [errorStateMatcher]="matcher">
+    <mat-error>
+      <span *ngIf="!sksForm.get('SS_ACTIVATION_REFERENT').valid && sksForm.get('SS_ACTIVATION_REFERENT').touched">Inserisci il nome del referente</span>
+    </mat-error>
+  </mat-form-field>
+
+  <div class="button-row">
+    <button type="submit" [disabled]="!sksForm.valid" mat-raised-button color="primary">
+      <mat-icon>save</mat-icon>
+    </button>
+  </div>
+</form>

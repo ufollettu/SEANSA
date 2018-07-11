@@ -1,3 +1,119 @@
-<p>
-  sks-table works!
-</p>
+<div class="button-row">
+  <a mat-raised-button color="primary" [routerLink]="['/sks-create']">
+    <mat-icon>add</mat-icon>
+  </a>
+</div>
+
+<div class="example-container mat-elevation-z8">
+  <!-- <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8"> -->
+  <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
+
+
+    <!-- <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
+        <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+        <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+      </ng-container> -->
+    <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="SS_KEY">
+      <th mat-header-cell *matHeaderCellDef> Sks Key </th>
+      <td mat-cell *matCellDef="let element" class="nome-col"> {{element.SS_KEY}} </td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="SS_OEM">
+      <th mat-header-cell *matHeaderCellDef> OEM </th>
+      <td mat-cell *matCellDef="let element"> {{element.SS_OEM}} </td>
+    </ng-container>
+
+    <!-- Phone Column -->
+    <ng-container matColumnDef="SS_ACTIVATION_DATE">
+      <th mat-header-cell *matHeaderCellDef> Data di Attivazione </th>
+      <td mat-cell *matCellDef="let element"> {{element.SS_ACTIVATION_DATE | date:'yyyy-MM-dd'}} </td>
+    </ng-container>
+
+    <!-- Indirizzo Column -->
+    <ng-container matColumnDef="SS_EXPIRE">
+      <th mat-header-cell *matHeaderCellDef> Expire date </th>
+      <td mat-cell *matCellDef="let element"> {{element.SS_EXPIRE | date:'yyyy-MM-dd'}} </td>
+    </ng-container>
+
+    <!-- Nome Referente Column -->
+    <ng-container matColumnDef="SS_STATUS">
+      <th mat-header-cell *matHeaderCellDef> Status </th>
+      <td mat-cell *matCellDef="let element"> {{element.SS_STATUS}} </td>
+    </ng-container>
+
+    <!-- Tel Referente Column -->
+    <ng-container matColumnDef="SS_ACTIVATED_BY">
+      <th mat-header-cell *matHeaderCellDef> Attivato da </th>
+      <td mat-cell *matCellDef="let element"> {{element.SS_ACTIVATED_BY}} </td>
+    </ng-container>
+
+    <!-- TS Column -->
+    <ng-container matColumnDef="SS_ACTIVATION_REFERENT">
+      <th mat-header-cell *matHeaderCellDef> Referente </th>
+      <td mat-cell *matCellDef="let element"> {{element.SS_ACTIVATION_REFERENT}} </td>
+    </ng-container>
+
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+        <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+          <div class="example-element-diagram">
+            <div class="example-element-name"> {{element.SS_KEY}} </div>
+            <div class="example-element-phone"> {{element.SS_ACTIVATED_BY}} </div>
+            <div class="example-element-email"> {{element.SS_ACTIVATION_REFERENT}} </div>
+          </div>
+          <div class="example-element-details">
+            <div class="example-element-piva">Id Cliente:
+              <span>{{element.SS_SC_ID}}</span>
+            </div>
+            <div class="example-element-codfiscale">Id PC:
+              <span>{{element.SS_SP_ID}}</span>
+            </div>
+            <!-- <div class="example-element-codfiscale">Status:
+                <span>{{element.SS_STATUS}}</span>
+              </div> -->
+            <!-- <div class="example-element-codfiscale">Attivato da:
+              <span>{{element.SS_ACTIVATED_BY}}</span>
+            </div> -->
+            <!-- <div class="example-element-codfiscale">Referente:
+              <span>{{element.SS_ACTIVATION_REFERENT}}</span>
+            </div> -->
+            <div class="example-element-lastupdate">Data Creazione:
+              <span>{{element.SS_CREATED | date:'yyyy-MM-dd'}}</span>
+            </div>
+            <div class="example-element-lastupdate">Data Attivazione:
+              <span>{{element.SS_ACTIVATION_DATE | date:'yyyy-MM-dd'}}</span>
+            </div>
+            <div class="example-element-lastupdate">Data Expire:
+              <span>{{element.SS_EXPIRE | date:'yyyy-MM-dd'}}</span>
+            </div>
+            <hr>
+            <div class="example-element-lastupdate">Last Edit:
+              <span>{{element.SS_LAST_EDIT | date:'yyyy-MM-dd'}}</span>
+            </div>
+          </div>
+          <div class="example-element-actions">
+            <a mat-raised-button color="primary" [routerLink]="['/sks-edit', element.SS_ID]">
+              <mat-icon>edit</mat-icon>
+            </a>
+            <a mat-raised-button color="warn" (click)="deleteSks(element.SS_ID)">
+              <mat-icon>delete</mat-icon>
+            </a>
+          </div>
+        </div>
+      </td>
+
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row" [class.example-expanded-row]="expandedElement === element"
+      (click)="expandedElement = element">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+  </table>
+</div>

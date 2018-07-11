@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ApiService } from '../../api.service';
+import { ClientiApiService } from '../../clienti/clienti-api.service';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 
 @Component({
@@ -23,7 +23,7 @@ export class ClientiEditComponent implements OnInit {
   SC_TEL_REFERENTE = '';
   SC_TS = '';
 
-  constructor(private router: Router, private route: ActivatedRoute, private api: ApiService, private formBuilder: FormBuilder) { }
+  constructor(private router: Router, private route: ActivatedRoute, private api: ClientiApiService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.getCustomer(this.route.snapshot.params['id']);

@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ClientiDataSource } from '../../clienti-data-source';
-import { ApiService } from '../../api.service';
+import { ClientiDataSource } from '../../clienti/clienti-data-source';
+import { ClientiApiService } from '../../clienti/clienti-api.service';
 
 @Component({
   selector: 'app-clienti-table',
@@ -17,23 +17,14 @@ import { ApiService } from '../../api.service';
 })
 export class ClientiTableComponent implements OnInit {
   clienti: any;
-  cliente = {};
 
   displayedColumns = ['SC_NOME', 'SC_INDIRIZZO', 'SC_EMAIL', 'SC_TELEFONO', 'SC_REFERENTE_NOME', 'SC_TEL_REFERENTE'];
   dataSource: any;
 
-  constructor(private api: ApiService, private changeDetectorRefs: ChangeDetectorRef) { }
+  constructor(private api: ClientiApiService, private changeDetectorRefs: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.refreshCustomersList();
-  }
-
-  getCustomerDetails(id) {
-    this.api.getCustomer(id)
-      .subscribe(data => {
-        console.log(data);
-        this.cliente = data;
-      });
   }
 
   refreshCustomersList() {
@@ -56,8 +47,7 @@ export class ClientiTableComponent implements OnInit {
         this.refreshCustomersList();
       }, (err) => {
         console.log(err);
-      }
-      );
+      });
   }
 
 }

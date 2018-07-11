@@ -11,7 +11,7 @@ const apiUrl = '/api/clienti';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class ClientiApiService {
 
   constructor(private http: HttpClient) { }
 

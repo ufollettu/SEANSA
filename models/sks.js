@@ -18,11 +18,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     SS_ACTIVATION_DATE: {
       type: DataTypes.DATE,
-      defaultValue: null
     },
     SS_EXPIRE: {
       type: DataTypes.DATE,
-      defaultValue: null
     },
     SS_CREATED: {
       type: DataTypes.DATE,
@@ -32,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     SS_LAST_EDIT: {
       type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
+      defaultValue: new Date()
     },
     SS_MISMATCH_COUNT: {
       type: DataTypes.INTEGER(11),
@@ -44,8 +42,8 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: "0"
     },
     SS_SC_ID: {
+      allowNull: false,
       type: DataTypes.INTEGER(10).UNSIGNED,
-      defaultValue: null
     },
     SS_SP_ID: {
       allowNull: false,
@@ -53,11 +51,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     SS_ACTIVATED_BY: {
       type: DataTypes.STRING(50),
-      defaultValue: null
     },
     SS_ACTIVATION_REFERENT: {
       type: DataTypes.TEXT,
-      defaultValue: null
     },
   }, {
     timestamps: false,

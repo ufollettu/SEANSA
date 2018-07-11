@@ -51,7 +51,7 @@ const appRoutes: Routes = [
     SksEditComponent
   ],
   imports: [
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, {useHash: true}),
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
