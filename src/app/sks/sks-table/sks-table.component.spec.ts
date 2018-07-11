@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClientiComponent } from './clienti.component';
+import { SksTableComponent } from './sks-table.component';
 
-describe('ClientiComponent', () => {
-  let component: ClientiComponent;
-  let fixture: ComponentFixture<ClientiComponent>;
+describe('SksTableComponent', () => {
+  let component: SksTableComponent;
+  let fixture: ComponentFixture<SksTableComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ClientiComponent ]
+      declarations: [ SksTableComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ClientiComponent);
+    fixture = TestBed.createComponent(SksTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

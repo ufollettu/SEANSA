@@ -1,8 +1,7 @@
-import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ClientiDataSource } from '../clienti-data-source';
-import { ApiService } from '../api.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ClientiDataSource } from '../../clienti-data-source';
+import { ApiService } from '../../api.service';
 
 @Component({
   selector: 'app-clienti-table',
@@ -19,21 +18,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ClientiTableComponent implements OnInit {
   clienti: any;
   cliente = {};
-  // id = this.route.snapshot.params['id'];
 
   displayedColumns = ['SC_NOME', 'SC_INDIRIZZO', 'SC_EMAIL', 'SC_TELEFONO', 'SC_REFERENTE_NOME', 'SC_TEL_REFERENTE'];
-  dataSource = new ClientiDataSource(this.api);
+  dataSource: any;
 
-  constructor(private route: ActivatedRoute, private api: ApiService, private router: Router) { }
+  constructor(private api: ApiService, private changeDetectorRefs: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.api.getCustomers()
-      .subscribe(res => {
-        console.log(res);
-        this.clienti = res;
-      }, err => {
-        console.log(err);
-      });
+    this.refreshCustomersList();
   }
 
   getCustomerDetails(id) {
@@ -49,21 +41,19 @@ export class ClientiTableComponent implements OnInit {
       .subscribe(res => {
         console.log(res);
         this.clienti = res;
+        this.dataSource = new ClientiDataSource(this.api);
+        this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);
       });
   }
 
   deleteCustomer(id) {
+
     this.api.deleteCustomer(id)
       .subscribe(res => {
         alert(`cliente ${id} rimosso`);
-        // TODO fix reload list after delete
-        const index = this.clienti.indexOf(id, 0);
-        if (index > -1) {
-            this.clienti.splice(index, 1);
-            this.refreshCustomersList();
-        }
+        this.refreshCustomersList();
       }, (err) => {
         console.log(err);
       }
