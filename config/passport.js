@@ -13,8 +13,8 @@ const db = require('../models');
 
 //Create a passport middleware to handle user registration
 passport.use('signup', new LocalStrategy({
-    usernameField: 'username',
-    passwordField: 'password',
+    usernameField: 'SU_UNA',
+    passwordField: 'SU_PAW',
     passReqToCallback: true // allows us to pass back the entire request to the callback
 }, async (req, username, password, next) => {
     db.utenti.findOne({ where: { SU_UNA: username } })
@@ -38,13 +38,13 @@ passport.use('signup', new LocalStrategy({
                         user ? next(null, user) : next(null, false);
                     }).catch(err => next(err));
             }
-        })
+        });
 }));
 
 // handle login logic
 passport.use('login', new LocalStrategy({
-    usernameField: 'username',
-    passwordField: 'password',
+    usernameField: 'SU_UNA',
+    passwordField: 'SU_PAW',
     passReqToCallback: true // allows us to pass back the entire request to the callback
 }, async (req, username, password, next) => {
     const isValidPassword = (userpass, password) => {
@@ -67,7 +67,7 @@ passport.use('login', new LocalStrategy({
 passport.use(new JwtStrategy(jwtOptions, async (jwt_payload, next) => {
     //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
     console.log('payload received', jwt_payload);
-    return user = db.utenti.findById(jwt_payload)
+    return db.utenti.findById(jwt_payload)
         .then(user => {
             user ? next(null, user) : next(null, false);
         }).catch(err => next(err));
