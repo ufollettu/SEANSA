@@ -1,41 +1,42 @@
 <div class="button-row">
-  <a mat-raised-button color="primary" (click)="utentiDetails()">
-      <mat-icon>arrow_back_ios</mat-icon>
-  </a>
+    <a mat-raised-button color="primary" (click)="utentiDetails()">
+        <mat-icon>arrow_back_ios</mat-icon>
+    </a>
 </div>
 <form [formGroup]="utenteForm" (ngSubmit)="onFormSubmit(utenteForm.value)">
 
-  <mat-form-field class="example-full-width">
-      <input matInput placeholder="Username" formControlName="SU_UNA" [errorStateMatcher]="matcher">
-      <mat-error>
-          <span *ngIf="!utenteForm.get('SU_UNA').valid && utenteForm.get('SU_UNA').touched">Inserisci username</span>
-      </mat-error>
-  </mat-form-field>
+    <mat-form-field class="example-full-width">
+        <input matInput placeholder="Username" formControlName="SU_UNA" [errorStateMatcher]="matcher">
+        <mat-error>
+            <span *ngIf="!utenteForm.get('SU_UNA').valid && utenteForm.get('SU_UNA').touched">Inserisci username</span>
+        </mat-error>
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-      <input matInput placeholder="Password" formControlName="SU_PAW" [errorStateMatcher]="matcher">
-      <mat-error>
-          <span *ngIf="!utenteForm.get('SU_PAW').valid && utenteForm.get('SU_PAW').touched">Inserisci password</span>
-      </mat-error>
-  </mat-form-field>
+    <mat-form-field class="example-full-width">
+        <input matInput placeholder="Password" formControlName="SU_PAW" [errorStateMatcher]="matcher">
+        <mat-error>
+            <span *ngIf="!utenteForm.get('SU_PAW').valid && utenteForm.get('SU_PAW').touched">Inserisci password</span>
+        </mat-error>
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-      <input matInput placeholder="Livello" formControlName="SU_LEVEL" [errorStateMatcher]="matcher">
-      <mat-error>
-          <span *ngIf="!utenteForm.get('SU_LEVEL').valid && utenteForm.get('SU_LEVEL').touched">Inserisci il livello</span>
-      </mat-error>
-  </mat-form-field>
+    <mat-form-field class="example-full-width">
+        <input matInput placeholder="Livello" formControlName="SU_LEVEL" [errorStateMatcher]="matcher">
+        <mat-error>
+            <span *ngIf="!utenteForm.get('SU_LEVEL').valid && utenteForm.get('SU_LEVEL').touched">Inserisci il livello</span>
+        </mat-error>
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-      <input matInput placeholder="Indirizzo IP" formControlName="SU_LAST_IP" [errorStateMatcher]="matcher" [(ngModel)]="ipAddress">
-      <mat-error>
-          <span *ngIf="!utenteForm.get('SU_LAST_IP').valid && utenteForm.get('SU_LAST_IP').touched">Inserisci l'IP</span>
-      </mat-error>
-  </mat-form-field>
+    <mat-form-field class="example-full-width">
+        <input matInput placeholder="Indirizzo IP" formControlName="SU_LAST_IP" [errorStateMatcher]="matcher" [(ngModel)]="ipAddress"
+            [readonly]="true">
+        <mat-error>
+            <span *ngIf="!utenteForm.get('SU_LAST_IP').valid && utenteForm.get('SU_LAST_IP').touched">Inserisci l'IP</span>
+        </mat-error>
+    </mat-form-field>
 
-  <div class="button-row">
-      <button type="submit" [disabled]="!utenteForm.valid" mat-raised-button color="primary">
-          <mat-icon>save</mat-icon>
-      </button>
-  </div>
+    <div class="button-row">
+        <button type="submit" [disabled]="!utenteForm.valid" mat-raised-button color="primary">
+            <mat-icon>save</mat-icon>
+        </button>
+    </div>
 </form>

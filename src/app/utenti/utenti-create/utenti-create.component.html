@@ -27,7 +27,8 @@
     </mat-form-field>
 
     <mat-form-field class="example-full-width">
-        <input matInput placeholder="Indirizzo IP" formControlName="SU_LAST_IP" [errorStateMatcher]="matcher" [(ngModel)]="ipAddress">
+        <input matInput placeholder="Indirizzo IP" formControlName="SU_LAST_IP" [errorStateMatcher]="matcher" [(ngModel)]="ipAddress"
+            [readonly]="true">
         <mat-error>
             <span *ngIf="!utenteForm.get('SU_LAST_IP').valid && utenteForm.get('SU_LAST_IP').touched">Inserisci l'IP</span>
         </mat-error>
