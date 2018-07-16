@@ -1,9 +1,8 @@
+import { AppMaterialModule } from './app-material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
 
 import { ClientiTableComponent } from './clienti/clienti-table/clienti-table.component';
 import { ClientiCreateComponent } from './clienti/clienti-create/clienti-create.component';
@@ -70,8 +69,37 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forRoot(appRoutes, {useHash: true})],
+  imports: [
+    RouterModule.forRoot(appRoutes, {useHash: true}),
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    AppMaterialModule
+  ],
   exports: [RouterModule],
-  declarations: []
+  declarations: [
+    ClientiTableComponent,
+    ClientiCreateComponent,
+    ClientiEditComponent,
+    SksTableComponent,
+    SksCreateComponent,
+    SksEditComponent,
+    RinnoviTableComponent,
+    RinnoviCreateComponent,
+    RinnoviEditComponent,
+    UtentiTableComponent,
+    UtentiCreateComponent,
+    UtentiEditComponent,
+    PcTableComponent,
+    PcCreateComponent,
+    PcEditComponent,
+    MatricoleTableComponent,
+    MatricoleCreateComponent,
+    MatricoleEditComponent,
+    RegisterComponent,
+    LoginComponent,
+    EventsComponent,
+    SpecialEventsComponent
+  ]
 })
 export class AppRoutingModule {}
