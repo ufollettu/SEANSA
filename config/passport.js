@@ -17,7 +17,7 @@ passport.use('signup', new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true // allows us to pass back the entire request to the callback
 }, async (req, username, password, next) => {
-    repository.findOne({ where: { SU_UNA: username } })
+    repository.findOne(username)
         .then(user => {
             if (user) {
                 return next(null, false, { message: 'That username is already taken' });
@@ -50,7 +50,7 @@ passport.use('login', new LocalStrategy({
     const isValidPassword = (userpass, password) => {
         return bcrypt.compare(password, userpass);
     }
-    return repository.findOne({ where: { SU_UNA: username } })
+    return repository.findOne(username)
         .then(user => {
             if (!user) {
                 return next(null, false, { message: 'User not found' });
