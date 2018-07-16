@@ -3,23 +3,23 @@ const db = require('../models');
 class Repository {
 
     findAll() {
-        return db.sks.findAll()
+        return db.utenti.findAll()
     }
 
     create(data) {
-        return db.sks.create(data)
+        return db.utenti.create(data)
     }
 
     findById(id) {
-        return db.sks.findById(id)
+        return db.utenti.findById(id)
     }
 
     findOne(data) {
-        return db.sks.findOne(data);
+        return db.utenti.findOne(data);
     }
 
     destroy(data) {
-        return db.sks.destroy(data)
+        return db.utenti.destroy(data)
     }
 
 }

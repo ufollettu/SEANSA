@@ -9,15 +9,15 @@ const jwtOptions = {};
 jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 jwtOptions.secretOrKey = CONFIG.jwt_encryption;
 
-const db = require('../models');
+const repository = require('../repositories/utenti.server.repository');
 
 //Create a passport middleware to handle user registration
 passport.use('signup', new LocalStrategy({
-    usernameField: 'SU_UNA',
-    passwordField: 'SU_PAW',
+    usernameField: 'username',
+    passwordField: 'password',
     passReqToCallback: true // allows us to pass back the entire request to the callback
 }, async (req, username, password, next) => {
-    db.utenti.findOne({ where: { SU_UNA: username } })
+    repository.findOne({ where: { SU_UNA: username } })
         .then(user => {
             if (user) {
                 return next(null, false, { message: 'That username is already taken' });
@@ -33,7 +33,7 @@ passport.use('signup', new LocalStrategy({
                     SU_LAST_IP: req.body.lastIp
                 };
                 //Save the information provided by the user to the the database
-                return db.utenti.create(data)
+                return repository.create(data)
                     .then(user => {
                         user ? next(null, user) : next(null, false);
                     }).catch(err => next(err));
@@ -43,14 +43,14 @@ passport.use('signup', new LocalStrategy({
 
 // handle login logic
 passport.use('login', new LocalStrategy({
-    usernameField: 'SU_UNA',
-    passwordField: 'SU_PAW',
+    usernameField: 'username',
+    passwordField: 'password',
     passReqToCallback: true // allows us to pass back the entire request to the callback
 }, async (req, username, password, next) => {
     const isValidPassword = (userpass, password) => {
         return bcrypt.compare(password, userpass);
     }
-    return db.utenti.findOne({ where: { SU_UNA: username } })
+    return repository.findOne({ where: { SU_UNA: username } })
         .then(user => {
             if (!user) {
                 return next(null, false, { message: 'User not found' });
@@ -67,7 +67,7 @@ passport.use('login', new LocalStrategy({
 passport.use(new JwtStrategy(jwtOptions, async (jwt_payload, next) => {
     //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
     console.log('payload received', jwt_payload);
-    return db.utenti.findById(jwt_payload)
+    return repository.findById(jwt_payload)
         .then(user => {
             user ? next(null, user) : next(null, false);
         }).catch(err => next(err));

@@ -13,6 +13,10 @@ class Repository {
     findById(id) {
         return db.clienti.findById(id)
     }
+    
+    findOne(data) {
+        return db.clienti.findOne(data);
+    }
 
     destroy(data) {
         return db.clienti.destroy(data)
