@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ClientiApiService } from '../../clienti/clienti-api.service';
+import { ClientiApiService } from '../clienti-api.service';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 
 @Component({

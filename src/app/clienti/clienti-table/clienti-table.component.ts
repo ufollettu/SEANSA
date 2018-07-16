@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ClientiDataSource } from '../../clienti/clienti-data-source';
-import { ClientiApiService } from '../../clienti/clienti-api.service';
+import { ClientiDataSource } from '../clienti-data-source';
+import { ClientiApiService } from '../clienti-api.service';
 
 @Component({
   selector: 'app-clienti-table',
@@ -40,7 +40,6 @@ export class ClientiTableComponent implements OnInit {
   }
 
   deleteCustomer(id) {
-
     this.api.deleteCustomer(id)
       .subscribe(res => {
         alert(`cliente ${id} rimosso`);
