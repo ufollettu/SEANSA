@@ -13,8 +13,8 @@ const db = require('../models');
 
 //Create a passport middleware to handle user registration
 passport.use('signup', new LocalStrategy({
-    usernameField: 'username',
-    passwordField: 'password',
+    usernameField: 'SU_UNA',
+    passwordField: 'SU_PAW',
     passReqToCallback: true // allows us to pass back the entire request to the callback
 }, async (req, username, password, next) => {
     db.utenti.findOne({ where: { SU_UNA: username } })
@@ -43,8 +43,8 @@ passport.use('signup', new LocalStrategy({
 
 // handle login logic
 passport.use('login', new LocalStrategy({
-    usernameField: 'username',
-    passwordField: 'password',
+    usernameField: 'SU_UNA',
+    passwordField: 'SU_PAW',
     passReqToCallback: true // allows us to pass back the entire request to the callback
 }, async (req, username, password, next) => {
     const isValidPassword = (userpass, password) => {
