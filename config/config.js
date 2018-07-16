@@ -12,7 +12,7 @@ CONFIG.db_name      = process.env.DB_NAME       || 'webgrit_superactivation';
 CONFIG.db_user      = process.env.DB_USER       || 'root';
 CONFIG.db_password  = process.env.DB_PASSWORD   || 'root';
 
-CONFIG.secret       = process.env.SECRET        || 'SuperActivatorSecretKey'
+CONFIG.secret       = process.env.SECRET        || 'SuperActivatorSecretKey';
 
 CONFIG.jwt_encryption  = process.env.JWT_ENCRYPTION || 'segretissimo';
 CONFIG.jwt_expiration  = process.env.JWT_EXPIRATION || '10000';
