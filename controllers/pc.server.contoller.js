@@ -1,4 +1,3 @@
-var db = require('../models');
 const repository = require('../repositories/pc.server.repository');
 
 // List
