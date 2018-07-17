@@ -13,11 +13,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     SP_LAST_RX: {
       type: DataTypes.DATE,
-      defaultValue: null
     },
     SP_IP: {
       type: DataTypes.STRING(20),
-      defaultValue: null  
     },
     SP_STATUS: {
       type: DataTypes.TINYINT(1),
@@ -26,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     SP_PC_DATE_TIME: {
       type: DataTypes.DATEONLY,
-      defaultValue: null
     }
   }, {
     timestamps: false,

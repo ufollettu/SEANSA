@@ -13,16 +13,16 @@ class Repository {
     return db.utenti.findById(id);
   }
 
-  // findOne(data) {
-  //     return db.utenti.findOne(data);
-  // }
-
   findOne(username) {
     return db.utenti.findOne({ where: { SU_UNA: username } });
   }
 
-  destroy(data) {
-    return db.utenti.destroy(data);
+  destroy(id) {
+    return db.utenti.destroy({
+      where: {
+          SU_ID: id
+      }
+  })
   }
 }
 

@@ -1,7 +1,7 @@
 import { PcApiService } from './pc-api.service';
 import { DataSource } from '@angular/cdk/table';
 
-export class SksDataSource extends DataSource<any> {
+export class PcDataSource extends DataSource<any> {
     constructor(private api: PcApiService) {
         super();
     }

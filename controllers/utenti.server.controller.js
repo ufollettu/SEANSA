@@ -63,11 +63,7 @@ module.exports.update = update;
 // Destroy
 const destroy = async (req, res) => {
     const id = req.params.id;
-    repository.destroy({
-        where: {
-            SU_ID: id
-        }
-    })
+    repository.destroy(id)
         .then(utente => {
             res.json(utente);
         }).catch(err => res.send(err.errors));

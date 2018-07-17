@@ -18,8 +18,12 @@ class Repository {
         return db.clienti.findOne(data);
     }
 
-    destroy(data) {
-        return db.clienti.destroy(data)
+    destroy(id) {
+        return db.clienti.destroy({
+            where: {
+                SC_ID: id
+            }
+        })
     }
 
 }

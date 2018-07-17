@@ -18,8 +18,12 @@ class Repository {
         return db.sks.findOne(data);
     }
 
-    destroy(data) {
-        return db.sks.destroy(data)
+    destroy(id) {
+        return db.sks.destroy({
+            where: {
+                SS_ID: id
+            }
+        })
     }
 
 }

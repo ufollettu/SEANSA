@@ -70,4 +70,11 @@ export class PcApiService {
         catchError(this.handleError)
       );
   }
+
+  getIpAddress() {
+    return this.http.get<{ip: string}>('https://jsonip.com')
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
 }
