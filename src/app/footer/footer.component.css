@@ -1,14 +1,18 @@
 .footer-info {
-    overflow: hidden;
     background-color: lightslategray;
-    /* position: fixed; */
-    /* top: 0; */
+    box-shadow: 0px 0px 6px 0px gray;
     width: 100%;
-    padding-top: 16px;
-    padding-bottom: 16px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     margin: 0;
     height: auto;
-    display: inline-block;
-    text-align: center;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
     color: whitesmoke;
+}
+
+span {
+    flex: 1;
+    text-align: center;
 }
