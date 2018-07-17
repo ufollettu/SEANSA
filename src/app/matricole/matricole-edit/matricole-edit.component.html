@@ -1,3 +1,31 @@
-<p>
-  matricole-edit works!
-</p>
+<div class="button-row">
+  <a mat-raised-button color="primary" (click)="matricoleDetails()">
+    <mat-icon>arrow_back_ios</mat-icon>
+  </a>
+</div>
+<form [formGroup]="matricoleForm" (ngSubmit)="onFormSubmit(matricoleForm.value)">
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Matricola" formControlName="SM_MATRICOLA" [errorStateMatcher]="matcher">
+    <mat-error>
+      <span *ngIf="!matricoleForm.get('SM_MATRICOLA').valid && matricoleForm.get('SM_MATRICOLA').touched">Inserisci la chiave</span>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Sks Key" formControlName="SM_SS_ID" [errorStateMatcher]="matcher">
+    <mat-error>
+      <span *ngIf="!matricoleForm.get('SM_SS_ID').valid && matricoleForm.get('SM_SS_ID').touched">Inserisci l'OEM</span>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Dettagli" formControlName="SM_DETTAGLI" [errorStateMatcher]="matcher">
+  </mat-form-field>
+
+  <div class="button-row">
+    <button type="submit" [disabled]="!matricoleForm.valid" mat-raised-button color="primary">
+      <mat-icon>save</mat-icon>
+    </button>
+  </div>
+</form>

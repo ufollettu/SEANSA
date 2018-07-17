@@ -3,8 +3,8 @@ const repository = require('../repositories/rinnovi.server.repository');
 // List
 const list = async (req, res) => {
     repository.findAll()
-        .then(rinnovis => {
-            res.json(rinnovis);
+        .then(rinnovi => {
+            res.json(rinnovi);
         }).catch(err => res.send(err.errors));
 };
 module.exports.list = list;
