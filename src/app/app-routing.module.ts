@@ -99,7 +99,7 @@ const appRoutes: Routes = [
     RegisterComponent,
     LoginComponent,
     EventsComponent,
-    SpecialEventsComponent
+    SpecialEventsComponent,
   ]
 })
 export class AppRoutingModule {}

@@ -9,12 +9,15 @@ import { AppMaterialModule } from './app-material.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    ProgressSpinnerComponent
   ],
   imports: [
     BrowserModule,

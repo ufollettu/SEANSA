@@ -1,5 +1,10 @@
 <app-header></app-header>
 <div class="main">
-    <router-outlet></router-outlet>
+    <div [hidden]="!loading" class="loader">
+        <app-progress-spinner></app-progress-spinner>
+    </div>
+    <div [hidden]="loading" class="router-output">
+        <router-outlet></router-outlet>
+    </div>
 </div>
 <app-footer></app-footer>
