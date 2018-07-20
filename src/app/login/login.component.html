@@ -1,3 +1,30 @@
-<p>
-  login works!
-</p>
+<div class="container">
+
+    <div class="button-row">
+      <a mat-raised-button color="primary" [routerLink]="['/']">
+        <mat-icon>arrow_back_ios</mat-icon>
+      </a>
+    </div>
+  
+    <form [formGroup]="utenteForm" (ngSubmit)="onFormSubmit(utenteForm.value)">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Username" formControlName="username" [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!utenteForm.get('username').valid && utenteForm.get('username').touched">Inserisci username</span>
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Password" formControlName="password" [errorStateMatcher]="matcher" type="password">
+        <mat-error>
+          <span *ngIf="!utenteForm.get('password').valid && utenteForm.get('password').touched">Inserisci password</span>
+        </mat-error>
+      </mat-form-field>
+  
+      <!-- <div class="button-row"> -->
+        <button type="submit" [disabled]="!utenteForm.valid" mat-raised-button color="primary">
+          <mat-icon>done</mat-icon>
+        </button>
+      <!-- </div> -->
+    </form>
+  </div>

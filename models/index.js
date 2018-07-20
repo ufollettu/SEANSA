@@ -3,7 +3,6 @@
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
-const bcrypt = require('bcryptjs');
 
 const basename = path.basename(__filename);
 // var env       = process.env.NODE_ENV || 'development';
@@ -47,21 +46,5 @@ db.pc = require('./pc')(sequelize, Sequelize);
 // Relations
 
 // Hooks
-db.utenti.hook('beforeCreate', async (user, options) => {
-  // return await bcrypt.hash(user.SU_PAW, 10)
-  // .then(hash => {
-  //   user.SU_PAW = hash;
-  // })
-  // .catch(err => {
-  //   throw new Error(err);
-  // });
-  return await bcrypt.genSalt(10, function (err, salt) {
-    bcrypt.hash(user.SU_PAW, salt, function (err, hash) {
-      if (err) throw new Error(err);
-      // Store hash in your password DB.
-      user.SU_PAW = hash;
-    });
-  });
-});
 
 module.exports = db;

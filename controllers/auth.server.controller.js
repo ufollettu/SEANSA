@@ -25,7 +25,7 @@ const signup = async (req, res, next) => {
       }
       return res.status(200).json({
         message: "Signup successful",
-        user: req.user
+        user: user
       });
     }
   )(req, res, next);
@@ -49,6 +49,7 @@ const signin = async (req, res, next) => {
         const token = jwt.sign(user.SU_ID, secretOrKey);
         // res.cookie("SESSIONID", token, {httpOnly:true});
         return res.status(200).json({
+          user: user,
           idToken: token,
           expiresIn: expireDate
         });

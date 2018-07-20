@@ -17,28 +17,34 @@ passport.use('signup', new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true // allows us to pass back the entire request to the callback
 }, async (req, username, password, next) => {
-    repository.findOne(username)
-        .then(user => {
-            if (user) {
-                return next(null, false, { message: 'That username is already taken' });
-            } else {
-                const data = {
-                    SU_UNA: username,
-                    SU_PAW: password,
-                    SU_LEVEL: req.body.level,
-                    SU_LAST_LOGIN: new Date(),
-                    SU_CREATION: new Date(),
-                    SU_LAST_EDIT: new Date(),
-                    SU_DELETED: req.body.deleted,
-                    SU_LAST_IP: req.body.lastIp
-                };
-                //Save the information provided by the user to the the database
-                return repository.create(data)
-                    .then(user => {
-                        user ? next(null, user) : next(null, false);
-                    }).catch(err => next(err));
-            }
+
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(password, salt, (err, hash) => {
+            // Store hash in your password DB.
+            repository.findOne(username)
+                .then(user => {
+                    if (user) {
+                        return next(null, false, { message: 'That username is already taken' });
+                    } else {
+                        const data = {
+                            SU_UNA: username,
+                            SU_PAW: hash,
+                            SU_LEVEL: req.body.level,
+                            SU_LAST_LOGIN: new Date(),
+                            SU_CREATION: new Date(),
+                            SU_LAST_EDIT: new Date(),
+                            SU_DELETED: req.body.deleted,
+                            SU_LAST_IP: req.body.lastIp
+                        };
+                        //Save the information provided by the user to the the database
+                        return repository.create(data)
+                            .then(user => {
+                                user ? next(null, user) : next(null, false);
+                            }).catch(err => next(err));
+                    }
+                });
         });
+    });
 }));
 
 // handle login logic
@@ -47,21 +53,40 @@ passport.use('login', new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true // allows us to pass back the entire request to the callback
 }, async (req, username, password, next) => {
-    const isValidPassword = (userpass, password) => {
-        return bcrypt.compare(password, userpass);
-    }
+
     return repository.findOne(username)
         .then(user => {
+            console.log('db: ' + user.SU_PAW)
+            console.log('client: ' + password);
+            console.log(!bcrypt.compare(password, user.SU_PAW))
+            
             if (!user) {
                 return next(null, false, { message: 'User not found' });
             }
-            if (!isValidPassword(user.SU_PAW, password)) {
+            if (!bcrypt.compare(password, user.SU_PAW)) {
                 return next(null, false, { message: 'Wrong Password' });
+            } else {
+                // Send the user information to the next middleware
+                return next(null, user, { message: 'Logged In Successfully' });
             }
-            // Send the user information to the next middleware
-            return next(null, user, { message: 'Logged In Successfully' });
         })
         .catch(err => next(err));
+
+    // const isValidPassword = (userpass, password) => {
+    //     return bcrypt.compare(password, userpass);
+    // }
+    // return repository.findOne(username)
+    //     .then(user => {
+    //         if (!user) {
+    //             return next(null, false, { message: 'User not found' });
+    //         }
+    //         if (!isValidPassword(user.SU_PAW, password)) {
+    //             return next(null, false, { message: 'Wrong Password' });
+    //         }
+    //         // Send the user information to the next middleware
+    //         return next(null, user, { message: 'Logged In Successfully' });
+    //     })
+    //     .catch(err => next(err));
 }));
 
 passport.use(new JwtStrategy(jwtOptions, async (jwt_payload, next) => {

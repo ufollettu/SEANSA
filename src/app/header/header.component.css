@@ -21,3 +21,19 @@
 .mat-raised-button:hover {
     background:lightgray;
 }
+
+.mat-accent {
+    background-color: rgb(107, 144, 168);
+}
+
+.routes-buttons {
+    width: 75%;
+    display: inline-block;
+    text-align: left;
+}
+
+.auth-buttons{
+    width: 20%;
+    display: inline-block;
+    text-align: right;
+}

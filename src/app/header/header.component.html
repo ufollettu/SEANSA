@@ -1,8 +1,17 @@
 <div class="header-buttons mat-elevation-z8">
-    <button mat-raised-button [routerLink]="['/clienti']">Clienti</button>
-    <button mat-raised-button [routerLink]="['/utenti']">Utenti</button>
-    <button mat-raised-button [routerLink]="['/matricole']">Matricole</button>
-    <button mat-raised-button [routerLink]="['/sks']">Sks</button>
-    <button mat-raised-button [routerLink]="['/pc']">Pc</button>
-    <button mat-raised-button [routerLink]="['/rinnovi']">Rinnovi</button>
+    <div class="routes-buttons">
+        <button mat-raised-button [routerLink]="['/clienti']" routerLinkActive="mat-accent">Clienti</button>
+        <button mat-raised-button [routerLink]="['/utenti']" routerLinkActive="mat-accent">Utenti</button>
+        <button mat-raised-button [routerLink]="['/matricole']" routerLinkActive="mat-accent">Matricole</button>
+        <button mat-raised-button [routerLink]="['/sks']" routerLinkActive="mat-accent">Sks</button>
+        <button mat-raised-button [routerLink]="['/pc']" routerLinkActive="mat-accent">Pc</button>
+        <button mat-raised-button [routerLink]="['/rinnovi']" routerLinkActive="mat-accent">Rinnovi</button>
+        <button mat-raised-button [routerLink]="['/events']" routerLinkActive="mat-accent">Events</button>
+        <button mat-raised-button [routerLink]="['/special']" routerLinkActive="mat-accent">Specials</button>
+
+    </div>
+    <div class="auth-buttons">
+        <button mat-raised-button [routerLink]="['/register']" routerLinkActive="mat-accent">Signup</button>
+        <button mat-raised-button [routerLink]="['/login']" routerLinkActive="mat-accent">Signin</button>
+    </div>
 </div>
