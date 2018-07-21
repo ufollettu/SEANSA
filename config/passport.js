@@ -74,7 +74,8 @@ passport.use("login", new LocalStrategy({
 );
 
 passport.use(new JwtStrategy(jwtOptions, async (jwt_payload, next) => {
-    //find the user in db if needed. This functionality may be omitted if you store everything you'll need in JWT payload.
+    // find the user in db if needed.
+    // This functionality may be omitted if you store everything you'll need in JWT payload.
     console.log("payload received", jwt_payload);
     return repository.findById(jwt_payload).then(user => {
         user ? next(null, user) : next(null, false);

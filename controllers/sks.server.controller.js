@@ -37,7 +37,7 @@ module.exports.show = show;
 // Edit
 const edit = async (req, res) => {
     const id = req.params.id;
-    db.sks.findById(id)
+    repository.findById(id)
         .then(sks => {
             res.send("edit page");
         }).catch(err => res.send(err.errors));

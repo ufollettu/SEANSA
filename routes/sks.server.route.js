@@ -4,7 +4,7 @@ const router = express.Router();
 const SksController = require('./../controllers/sks.server.controller');
 
 // // RESTful API
-// 
+//
 // router.get('/',          Controller.list);       // Index
 // router.get('/new',       Controller.add);        // New
 // router.post('/',         Controller.create);     // Create
