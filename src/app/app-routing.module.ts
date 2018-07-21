@@ -1,3 +1,4 @@
+import { AuthGuard } from './auth.guard';
 import { AppMaterialModule } from './app-material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -30,15 +31,14 @@ import { MatricoleEditComponent } from './matricole/matricole-edit/matricole-edi
 
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
-import { EventsComponent } from './events/events.component';
-import { SpecialEventsComponent } from './special-events/special-events.component';
 
 const appRoutes: Routes = [
+
   { path: 'rinnovi', component: RinnoviTableComponent, data: { title: 'rinnovi List' } },
   { path: 'rinnovi-create', component: RinnoviCreateComponent, data: { title: 'Create rinnovi' } },
   { path: 'rinnovi-edit/:id', component: RinnoviEditComponent, data: { title: 'Edit rinnovi' } },
 
-  { path: 'utenti', component: UtentiTableComponent, data: { title: 'utenti List' } },
+  { path: 'utenti', component: UtentiTableComponent, canActivate: [AuthGuard] },
   { path: 'utenti-create', component: UtentiCreateComponent, data: { title: 'Create utenti' } },
   { path: 'utenti-edit/:id', component: UtentiEditComponent, data: { title: 'Edit utenti' } },
 
@@ -58,8 +58,6 @@ const appRoutes: Routes = [
   { path: 'clienti-create', component: ClientiCreateComponent, data: { title: 'Create Customer' } },
   { path: 'clienti-edit/:id', component: ClientiEditComponent, data: { title: 'Edit Customer' } },
 
-  { path: 'events', component: EventsComponent, data: { title: 'Events' } },
-  { path: 'special', component: SpecialEventsComponent, data: { title: 'Special Events' } },
   { path: 'login', component: LoginComponent, data: { title: 'Signin' } },
   { path: 'register', component: RegisterComponent, data: { title: 'Signup' } },
 
@@ -97,9 +95,7 @@ const appRoutes: Routes = [
     MatricoleCreateComponent,
     MatricoleEditComponent,
     RegisterComponent,
-    LoginComponent,
-    EventsComponent,
-    SpecialEventsComponent,
+    LoginComponent
   ]
 })
 export class AppRoutingModule {}

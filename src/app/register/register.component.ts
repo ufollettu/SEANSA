@@ -45,7 +45,8 @@ export class RegisterComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.auth.registerUser(form)
     .subscribe(res => {
-      // console.log(res);
+      console.log(res);
+      localStorage.setItem('token', res['idToken']);
       alert(`utente ${res['user']['SU_UNA']} creato`);
       this.router.navigate(['/']);
     }, (err) => {

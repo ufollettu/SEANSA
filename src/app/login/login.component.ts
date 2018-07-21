@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
     this.auth.loginUser(form)
     .subscribe(res => {
       console.log(res);
+      localStorage.setItem('token', res['idToken']);
       alert(`benvenuto ${res['user']['SU_UNA']}!`);
       this.router.navigate(['/']);
     }, (err) => {
