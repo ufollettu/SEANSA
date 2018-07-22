@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { IpService } from './../ip.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, NgForm } from '../../../node_modules/@angular/forms';
@@ -51,6 +52,12 @@ export class RegisterComponent implements OnInit {
       this.router.navigate(['/clienti']);
     }, (err) => {
       console.log(err);
+      if (err instanceof HttpErrorResponse ) {
+        if (err.status === 422) {
+          alert('user exists');
+          this.router.navigate(['/register']);
+        }
+      }
     });
   }
 
