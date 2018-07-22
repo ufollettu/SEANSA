@@ -1,6 +1,6 @@
+import { IpService } from './../ip.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, NgForm } from '../../../node_modules/@angular/forms';
-import { UtentiApiService } from '../utenti/utenti-api.service';
 import { Router } from '../../../node_modules/@angular/router';
 import { AuthService } from '../auth.service';
 
@@ -24,7 +24,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private api: UtentiApiService,
+    private ipService: IpService,
     private formBuilder: FormBuilder,
     private auth: AuthService
   ) { }
@@ -55,10 +55,10 @@ export class RegisterComponent implements OnInit {
   }
 
   getIp() {
-    this.api.getIpAddress()
+    this.ipService.getIpAddress()
     .subscribe(data => {
       // console.log('ip', data.ip);
-      return this.ipAddress = data.ip;
+      return this.ipAddress = data['ip'];
     });
   }
 }

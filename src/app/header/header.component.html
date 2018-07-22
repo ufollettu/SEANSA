@@ -8,7 +8,8 @@
         <button mat-raised-button [routerLink]="['/rinnovi']" routerLinkActive="mat-accent">Rinnovi</button>
     </div>
     <div class="auth-buttons">
-        <button mat-raised-button [routerLink]="['/register']" routerLinkActive="mat-accent">Signup</button>
-        <button mat-raised-button [routerLink]="['/login']" routerLinkActive="mat-accent">Signin</button>
-    </div>
+        <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/register']" routerLinkActive="mat-accent">Signup</button>
+        <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/login']" routerLinkActive="mat-accent">Signin</button>
+        <button mat-raised-button *ngIf="!!authService.loggedIn()" (click)="onLogout()" routerLinkActive="mat-accent">Logout</button>
+      </div>
 </div>

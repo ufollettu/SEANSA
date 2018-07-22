@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { UtentiDataSource } from '../utenti-data-source';
@@ -22,7 +24,7 @@ export class UtentiTableComponent implements OnInit {
   displayedColumns = ['SU_UNA', 'SU_LEVEL', 'SU_LAST_IP', 'SU_LAST_LOGIN'];
   dataSource: any;
 
-  constructor(private api: UtentiApiService, private changeDetectorRefs: ChangeDetectorRef) { }
+  constructor(private api: UtentiApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
 
   ngOnInit() {
     this.refreshUsersList();
@@ -37,6 +39,11 @@ export class UtentiTableComponent implements OnInit {
         this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);
+        if (err instanceof HttpErrorResponse ) {
+          if (err.status === 401) {
+            this.router.navigate(['/login']);
+          }
+        }
       });
   }
 

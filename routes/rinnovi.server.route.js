@@ -14,9 +14,9 @@ const RinnoviController = require('./../controllers/rinnovi.server.controller');
 // router.put('/:id',       Controller.update);     // Update
 // router.delete('/:id',    Controller.destroy);    // Destroy
 
-router.get('/', RinnoviController.list); // Index
+router.get('/', verifyToken, RinnoviController.list); // Index
 router.get('/new', RinnoviController.add); // New
-router.post('/', verifyToken, RinnoviController.create); // Create
+router.post('/', RinnoviController.create); // Create
 router.get('/:id', RinnoviController.show); // Show
 router.get('/:id/edit', RinnoviController.edit); // Edit
 router.put('/:id', RinnoviController.update); // Update

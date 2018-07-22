@@ -38,7 +38,12 @@ const appRoutes: Routes = [
   { path: 'rinnovi-create', component: RinnoviCreateComponent, data: { title: 'Create rinnovi' } },
   { path: 'rinnovi-edit/:id', component: RinnoviEditComponent, data: { title: 'Edit rinnovi' } },
 
-  { path: 'utenti', component: UtentiTableComponent, canActivate: [AuthGuard] },
+  {
+    path: 'utenti',
+    component: UtentiTableComponent,
+    canActivate: [AuthGuard]
+  },
+
   { path: 'utenti-create', component: UtentiCreateComponent, data: { title: 'Create utenti' } },
   { path: 'utenti-edit/:id', component: UtentiEditComponent, data: { title: 'Edit utenti' } },
 

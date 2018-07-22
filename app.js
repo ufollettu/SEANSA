@@ -11,6 +11,7 @@ const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const passport = require('passport');
+// const cors = require('cors');
 // const cookieParser  = require('cookie-parser');
 // require('./config/passport');
 
@@ -27,14 +28,14 @@ const matricoleRouter = require('./routes/matricole.server.route');
 const rinnoviRouter = require('./routes/rinnovi.server.route');
 const clientiRouter = require('./routes/clienti.server.route');
 
-const app = express();  
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
-app.use(express.json()); 
+app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 // app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'dist/client')));
@@ -65,7 +66,7 @@ app.use((req, res, next) => {
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type, Authorization, Content-Type');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type, Authorization, Content-Type, authorization');
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -73,10 +74,12 @@ app.use((req, res, next) => {
     next();
 });
 
+// app.use(cors());
 // Routes
 app.use('/api/', indexRouter);
 
-app.use('/api/auth', authRouter); 
+// app.options('/api/auth', cors());
+app.use('/api/auth',  authRouter);
 
 app.use('/api/utenti', utentiRouter);
 app.use('/api/sks', sksRouter);
