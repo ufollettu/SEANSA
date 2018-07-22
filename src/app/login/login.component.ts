@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
       console.log(res);
       localStorage.setItem('token', res['idToken']);
       alert(`benvenuto ${res['user']['SU_UNA']}!`);
-      this.router.navigate(['/']);
+      this.router.navigate(['/clienti']);
     }, (err) => {
       console.log(err);
     });

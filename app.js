@@ -14,8 +14,10 @@ const passport = require('passport');
 // const cors = require('cors');
 // const cookieParser  = require('cookie-parser');
 // require('./config/passport');
+const verifyToken = require('./middleware').verifyToken;
 
 const models = require('./models');
+
 
 // requiring routes
 const authRouter = require('./routes/auth.server.route');
@@ -81,12 +83,12 @@ app.use('/api/', indexRouter);
 // app.options('/api/auth', cors());
 app.use('/api/auth',  authRouter);
 
-app.use('/api/utenti', utentiRouter);
-app.use('/api/sks', sksRouter);
-app.use('/api/pc', pcRouter);
-app.use('/api/matricole', matricoleRouter);
-app.use('/api/rinnovi', rinnoviRouter);
-app.use('/api/clienti', clientiRouter);
+app.use('/api/utenti', verifyToken, utentiRouter);
+app.use('/api/sks', verifyToken, sksRouter);
+app.use('/api/pc', verifyToken, pcRouter);
+app.use('/api/matricole', verifyToken, matricoleRouter);
+app.use('/api/rinnovi', verifyToken, rinnoviRouter);
+app.use('/api/clienti', verifyToken, clientiRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

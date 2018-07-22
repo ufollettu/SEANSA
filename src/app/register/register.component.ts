@@ -48,7 +48,7 @@ export class RegisterComponent implements OnInit {
       console.log(res);
       localStorage.setItem('token', res['idToken']);
       alert(`utente ${res['user']['SU_UNA']} creato`);
-      this.router.navigate(['/']);
+      this.router.navigate(['/clienti']);
     }, (err) => {
       console.log(err);
     });

@@ -1,3 +1,5 @@
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PcApiService } from '../pc-api.service';
@@ -23,7 +25,7 @@ export class PcTableComponent implements OnInit {
   displayedColumns = ['SP_HW_ID', 'SP_IP', 'SP_STATUS', 'SP_LAST_RX'];
   dataSource: any;
 
-  constructor(private api: PcApiService, private changeDetectorRefs: ChangeDetectorRef) { }
+  constructor(private api: PcApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
 
   ngOnInit() {
     this.refreshPcsList();
@@ -38,6 +40,11 @@ export class PcTableComponent implements OnInit {
         this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);
+        if (err instanceof HttpErrorResponse ) {
+          if (err.status === 401 || 500) {
+            this.router.navigate(['/login']);
+          }
+        }
       });
   }
 

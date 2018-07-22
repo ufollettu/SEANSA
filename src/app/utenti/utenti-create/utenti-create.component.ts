@@ -1,7 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, NgForm, FormControl, FormGroupDirective } from '@angular/forms';
 import { UtentiApiService } from '../utenti-api.service';
+import { IpService } from '../../ip.service';
+import { ErrorStateMatcher } from '@angular/material';
+
+/** Error when invalid control is dirty, touched, or submitted. */
+/** TODO copy error matcher in all components */
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 
 @Component({
   selector: 'app-utenti-create',
@@ -12,6 +23,7 @@ export class UtentiCreateComponent implements OnInit {
 
   ipAddress: any;
   utenteForm: FormGroup;
+  matcher = new MyErrorStateMatcher();
 
   SU_UNA: '';
   SU_PAW: '';
@@ -32,7 +44,7 @@ export class UtentiCreateComponent implements OnInit {
       'SU_LAST_LOGIN' : new Date(),
       'SU_CREATION': new Date(),
       'SU_LAST_EDIT': new Date(),
-      'SU_LAST_IP': [this.getIp(), Validators.required]
+      'SU_LAST_IP': [null, Validators.required]
     });
   }
 
@@ -45,13 +57,5 @@ export class UtentiCreateComponent implements OnInit {
         }, (err) => {
           console.log(err);
         });
-  }
-
-  getIp() {
-    this.api.getIpAddress()
-    .subscribe(data => {
-      console.log('ip', data.ip);
-      return this.ipAddress = data.ip;
-    });
   }
 }

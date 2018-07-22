@@ -27,7 +27,9 @@ export class RinnoviApiService {
         `body was: ${error.error}`);
     }
     // return an observable with a user-facing error message
-    return throwError('Something bad happened; please try again later.');
+    // return throwError('Something bad happened; please try again later.');
+    return throwError(error);
+
   }
 
   private extractData(res: Response) {

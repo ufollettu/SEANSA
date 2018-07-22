@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { SksApiService } from '../sks-api.service';
@@ -21,7 +23,7 @@ export class SksTableComponent implements OnInit {
   displayedColumns = ['SS_KEY', 'SS_OEM', 'SS_ACTIVATION_DATE', 'SS_EXPIRE', 'SS_ACTIVATED_BY', 'SS_ACTIVATION_REFERENT', 'SS_STATUS'];
   dataSource: any;
 
-  constructor(private api: SksApiService, private changeDetectorRefs: ChangeDetectorRef) { }
+  constructor(private api: SksApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
 
   ngOnInit() {
     this.refreshSkssList();
@@ -36,6 +38,11 @@ export class SksTableComponent implements OnInit {
         this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);
+        if (err instanceof HttpErrorResponse ) {
+          if (err.status === 401 || 500) {
+            this.router.navigate(['/login']);
+          }
+        }
       });
   }
 

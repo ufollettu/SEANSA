@@ -40,7 +40,7 @@ export class UtentiTableComponent implements OnInit {
       }, err => {
         console.log(err);
         if (err instanceof HttpErrorResponse ) {
-          if (err.status === 401) {
+          if (err.status === 401 || 500) {
             this.router.navigate(['/login']);
           }
         }

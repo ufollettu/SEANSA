@@ -18,7 +18,7 @@ require('./../config/passport');
 // router.delete('/:id',    Controller.destroy);    // Destroy
 
 // router.get('/', passport.authenticate('jwt', {session: false}), UtentiController.list); // Index
-router.get('/', verifyToken, UtentiController.list); // Index
+router.get('/', UtentiController.list); // Index
 
 router.get('/new', UtentiController.add); // New
 router.post('/', UtentiController.create); // Create

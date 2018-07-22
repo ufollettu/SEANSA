@@ -34,40 +34,35 @@ import { LoginComponent } from './login/login.component';
 
 const appRoutes: Routes = [
 
-  { path: 'rinnovi', component: RinnoviTableComponent, data: { title: 'rinnovi List' } },
-  { path: 'rinnovi-create', component: RinnoviCreateComponent, data: { title: 'Create rinnovi' } },
-  { path: 'rinnovi-edit/:id', component: RinnoviEditComponent, data: { title: 'Edit rinnovi' } },
+  { path: 'rinnovi', component: RinnoviTableComponent, canActivate: [AuthGuard] },
+  { path: 'rinnovi-create', component: RinnoviCreateComponent, canActivate: [AuthGuard] },
+  { path: 'rinnovi-edit/:id', component: RinnoviEditComponent, canActivate: [AuthGuard] },
 
-  {
-    path: 'utenti',
-    component: UtentiTableComponent,
-    canActivate: [AuthGuard]
-  },
+  { path: 'utenti', component: UtentiTableComponent, canActivate: [AuthGuard]},
+  { path: 'utenti-create', component: UtentiCreateComponent, canActivate: [AuthGuard] },
+  { path: 'utenti-edit/:id', component: UtentiEditComponent, canActivate: [AuthGuard] },
 
-  { path: 'utenti-create', component: UtentiCreateComponent, data: { title: 'Create utenti' } },
-  { path: 'utenti-edit/:id', component: UtentiEditComponent, data: { title: 'Edit utenti' } },
+  { path: 'matricole', component: MatricoleTableComponent, canActivate: [AuthGuard] },
+  { path: 'matricole-create', component: MatricoleCreateComponent, canActivate: [AuthGuard] },
+  { path: 'matricole-edit/:id', component: MatricoleEditComponent, canActivate: [AuthGuard] },
 
-  { path: 'matricole', component: MatricoleTableComponent, data: { title: 'matricole List' } },
-  { path: 'matricole-create', component: MatricoleCreateComponent, data: { title: 'Create matricole' } },
-  { path: 'matricole-edit/:id', component: MatricoleEditComponent, data: { title: 'Edit matricole' } },
+  { path: 'pc', component: PcTableComponent, canActivate: [AuthGuard] },
+  { path: 'pc-create', component: PcCreateComponent, canActivate: [AuthGuard] },
+  { path: 'pc-edit/:id', component: PcEditComponent, canActivate: [AuthGuard] },
 
-  { path: 'pc', component: PcTableComponent, data: { title: 'pc List' } },
-  { path: 'pc-create', component: PcCreateComponent, data: { title: 'Create pc' } },
-  { path: 'pc-edit/:id', component: PcEditComponent, data: { title: 'Edit pc' } },
+  { path: 'sks', component: SksTableComponent, canActivate: [AuthGuard] },
+  { path: 'sks-create', component: SksCreateComponent, canActivate: [AuthGuard] },
+  { path: 'sks-edit/:id', component: SksEditComponent, canActivate: [AuthGuard] },
 
-  { path: 'sks', component: SksTableComponent, data: { title: 'Sks List' } },
-  { path: 'sks-create', component: SksCreateComponent, data: { title: 'Create Sks' } },
-  { path: 'sks-edit/:id', component: SksEditComponent, data: { title: 'Edit Sks' } },
+  { path: 'clienti', component: ClientiTableComponent, canActivate: [AuthGuard] },
+  { path: 'clienti-create', component: ClientiCreateComponent, canActivate: [AuthGuard] },
+  { path: 'clienti-edit/:id', component: ClientiEditComponent, canActivate: [AuthGuard] },
 
-  { path: 'clienti', component: ClientiTableComponent, data: { title: 'Customers List' } },
-  { path: 'clienti-create', component: ClientiCreateComponent, data: { title: 'Create Customer' } },
-  { path: 'clienti-edit/:id', component: ClientiEditComponent, data: { title: 'Edit Customer' } },
-
-  { path: 'login', component: LoginComponent, data: { title: 'Signin' } },
-  { path: 'register', component: RegisterComponent, data: { title: 'Signup' } },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
 
   // { path: '', redirectTo: '/events', pathMatch: 'full' }
-  { path: '', redirectTo: '/clienti', pathMatch: 'full' }
+  { path: '', redirectTo: '/login', pathMatch: 'full' }
 
 ];
 

@@ -1,15 +1,20 @@
 <div class="header-buttons mat-elevation-z8">
-    <div class="routes-buttons">
-        <button mat-raised-button [routerLink]="['/clienti']" routerLinkActive="mat-accent">Clienti</button>
-        <button mat-raised-button [routerLink]="['/utenti']" routerLinkActive="mat-accent">Utenti</button>
-        <button mat-raised-button [routerLink]="['/matricole']" routerLinkActive="mat-accent">Matricole</button>
-        <button mat-raised-button [routerLink]="['/sks']" routerLinkActive="mat-accent">Sks</button>
-        <button mat-raised-button [routerLink]="['/pc']" routerLinkActive="mat-accent">Pc</button>
-        <button mat-raised-button [routerLink]="['/rinnovi']" routerLinkActive="mat-accent">Rinnovi</button>
-    </div>
-    <div class="auth-buttons">
-        <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/register']" routerLinkActive="mat-accent">Signup</button>
-        <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/login']" routerLinkActive="mat-accent">Signin</button>
-        <button mat-raised-button *ngIf="!!authService.loggedIn()" (click)="onLogout()" routerLinkActive="mat-accent">Logout</button>
-      </div>
+  <div class="routes-buttons" *ngIf="!authService.loggedIn()">
+    <mat-card>
+      <h1 >Welcome to Superactivator</h1>
+    </mat-card>
+  </div>
+  <div class="routes-buttons" *ngIf="!!authService.loggedIn()">
+    <button mat-raised-button [routerLink]="['/clienti']" routerLinkActive="mat-accent">Clienti</button>
+    <button mat-raised-button [routerLink]="['/utenti']" routerLinkActive="mat-accent">Utenti</button>
+    <button mat-raised-button [routerLink]="['/matricole']" routerLinkActive="mat-accent">Matricole</button>
+    <button mat-raised-button [routerLink]="['/sks']" routerLinkActive="mat-accent">Sks</button>
+    <button mat-raised-button [routerLink]="['/pc']" routerLinkActive="mat-accent">Pc</button>
+    <button mat-raised-button [routerLink]="['/rinnovi']" routerLinkActive="mat-accent">Rinnovi</button>
+  </div>
+  <div class="auth-buttons">
+    <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/register']" routerLinkActive="mat-accent">Signup</button>
+    <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/login']" routerLinkActive="mat-accent">Signin</button>
+    <button mat-raised-button *ngIf="!!authService.loggedIn()" (click)="onLogout()" routerLinkActive="mat-accent">Logout</button>
+  </div>
 </div>

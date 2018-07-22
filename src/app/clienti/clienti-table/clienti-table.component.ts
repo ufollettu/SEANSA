@@ -1,3 +1,5 @@
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ClientiDataSource } from '../clienti-data-source';
@@ -21,7 +23,7 @@ export class ClientiTableComponent implements OnInit {
   displayedColumns = ['SC_NOME', 'SC_INDIRIZZO', 'SC_EMAIL', 'SC_TELEFONO', 'SC_REFERENTE_NOME', 'SC_TEL_REFERENTE'];
   dataSource: any;
 
-  constructor(private api: ClientiApiService, private changeDetectorRefs: ChangeDetectorRef) { }
+  constructor(private api: ClientiApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
 
   ngOnInit() {
     this.refreshCustomersList();
@@ -36,6 +38,11 @@ export class ClientiTableComponent implements OnInit {
         this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);
+        if (err instanceof HttpErrorResponse ) {
+          if (err.status === 401 || 500) {
+            this.router.navigate(['/login']);
+          }
+        }
       });
   }
 

@@ -1,3 +1,5 @@
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { RinnoviApiService } from '../rinnovi-api.service';
@@ -23,7 +25,7 @@ export class RinnoviTableComponent implements OnInit {
   displayedColumns = ['SR_SS_ID', 'SR_TS'];
   dataSource: any;
 
-  constructor(private api: RinnoviApiService, private changeDetectorRefs: ChangeDetectorRef) { }
+  constructor(private api: RinnoviApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
 
   ngOnInit() {
     this.refreshRinnoviList();
@@ -38,6 +40,11 @@ export class RinnoviTableComponent implements OnInit {
         this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);
+        if (err instanceof HttpErrorResponse ) {
+          if (err.status === 401 || 500) {
+            this.router.navigate(['/login']);
+          }
+        }
       });
   }
 

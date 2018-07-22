@@ -1,7 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatricoleApiService } from '../matricole-api.service';
 import { MatricoleDataSource } from '../matricole-data-source';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -23,7 +25,7 @@ export class MatricoleTableComponent implements OnInit {
   displayedColumns = ['SM_MATRICOLA', 'SM_SS_ID', 'SM_DETTAGLI', 'SM_CREATION_DATE'];
   dataSource: any;
 
-  constructor(private api: MatricoleApiService,  private changeDetectorRefs: ChangeDetectorRef) { }
+  constructor(private api: MatricoleApiService,  private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
 
   ngOnInit() {
     this.refreshMatricoleList();
@@ -38,6 +40,11 @@ export class MatricoleTableComponent implements OnInit {
         this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);
+        if (err instanceof HttpErrorResponse ) {
+          if (err.status === 401 || 500) {
+            this.router.navigate(['/login']);
+          }
+        }
       });
   }
 

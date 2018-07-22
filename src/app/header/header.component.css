@@ -26,6 +26,13 @@
     background-color: rgb(107, 144, 168);
 }
 
+mat-card {
+  width: 75%;
+  padding: 16px;
+  display: inline-block;
+  text-align: center;
+}
+
 .routes-buttons {
     width: 75%;
     display: inline-block;

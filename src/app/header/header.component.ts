@@ -1,3 +1,4 @@
+// import { trigger, state, transition, style, animate } from '@angular/animations';
 import { Router } from '@angular/router';
 import { AuthService } from './../auth.service';
 import { Component, OnInit } from '@angular/core';
