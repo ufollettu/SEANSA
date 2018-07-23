@@ -13,7 +13,7 @@ import { DataService } from '../data.service';
 })
 export class LoginComponent implements OnInit {
 
-  message: string;
+  // userId: string;
   utenteForm: FormGroup;
 
   SU_UNA: '';
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.data.currentMessage.subscribe(message => this.message = message);
+    // this.data.currentId.subscribe(userId => this.message = message);
     // this.getIp();
     this.utenteForm = this.formBuilder.group({
       'username': [null, Validators.required],
@@ -48,6 +48,7 @@ export class LoginComponent implements OnInit {
       .subscribe(user => {
         // console.log(user);
         alert(`benvenuto ${user['SU_UNA']}!`);
+        this.sendUser(user);
         this.router.navigate(['/clienti']);
       });
 
@@ -55,14 +56,14 @@ export class LoginComponent implements OnInit {
       console.log(err);
       if (err instanceof HttpErrorResponse ) {
         if (err.status === 422) {
-          alert('user do not exists');
+          alert('wrong user or password');
           this.router.navigate(['/register']);
         }
       }
     });
   }
 
-  // newMessage() {
-  //   this.data.changeMessage('Hello from Sibling');
-  // }
+  sendUser(user) {
+    this.data.changeUser(user);
+  }
 }
