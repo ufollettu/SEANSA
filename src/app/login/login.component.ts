@@ -4,6 +4,7 @@ import { Router } from '../../../node_modules/@angular/router';
 import { AuthService } from '../auth.service';
 import { HttpErrorResponse } from '../../../node_modules/@angular/common/http';
 import { UtentiApiService } from '../utenti/utenti-api.service';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-login',
@@ -12,6 +13,7 @@ import { UtentiApiService } from '../utenti/utenti-api.service';
 })
 export class LoginComponent implements OnInit {
 
+  message: string;
   utenteForm: FormGroup;
 
   SU_UNA: '';
@@ -21,10 +23,12 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private auth: AuthService,
-    private userApi: UtentiApiService
+    private userApi: UtentiApiService,
+    private data: DataService
   ) { }
 
   ngOnInit() {
+    this.data.currentMessage.subscribe(message => this.message = message);
     // this.getIp();
     this.utenteForm = this.formBuilder.group({
       'username': [null, Validators.required],
@@ -57,4 +61,8 @@ export class LoginComponent implements OnInit {
       }
     });
   }
+
+  // newMessage() {
+  //   this.data.changeMessage('Hello from Sibling');
+  // }
 }

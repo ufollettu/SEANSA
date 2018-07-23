@@ -31,6 +31,7 @@ import { MatricoleEditComponent } from './matricole/matricole-edit/matricole-edi
 
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const appRoutes: Routes = [
 
@@ -60,6 +61,8 @@ const appRoutes: Routes = [
 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'changepassword', component: ChangePasswordComponent },
+
 
   // { path: '', redirectTo: '/events', pathMatch: 'full' }
   { path: '', redirectTo: '/login', pathMatch: 'full' }
@@ -95,7 +98,8 @@ const appRoutes: Routes = [
     MatricoleCreateComponent,
     MatricoleEditComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    ChangePasswordComponent
   ]
 })
 export class AppRoutingModule {}
