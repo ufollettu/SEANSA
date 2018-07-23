@@ -48,12 +48,23 @@ export class UtentiTableComponent implements OnInit {
   }
 
   deleteUser(id) {
-    this.api.deleteUtente(id)
+    const deleted = 1;
+    this.api.updateUtente(id, {'SU_DELETED': deleted})
       .subscribe(res => {
-        alert(`utente ${id} rimosso`);
+        console.log(res);
+        // const id = res['SC_ID'];
+        alert(`utente ${res['SU_UNA']} rimosso`);
         this.refreshUsersList();
       }, (err) => {
         console.log(err);
       });
+
+    // this.api.deleteUtente(id)
+    //   .subscribe(res => {
+    //     alert(`utente ${id} rimosso`);
+    //     this.refreshUsersList();
+    //   }, (err) => {
+    //     console.log(err);
+    //   });
   }
 }

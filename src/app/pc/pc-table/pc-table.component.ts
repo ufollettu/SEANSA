@@ -21,6 +21,7 @@ import { PcDataSource } from '../pc-data-source';
 export class PcTableComponent implements OnInit {
 
   pc: any;
+  isBanned = false;
 
   displayedColumns = ['SP_HW_ID', 'SP_IP', 'SP_STATUS', 'SP_LAST_RX'];
   dataSource: any;
@@ -40,7 +41,7 @@ export class PcTableComponent implements OnInit {
         this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);
-        if (err instanceof HttpErrorResponse ) {
+        if (err instanceof HttpErrorResponse) {
           if (err.status === 401 || 500) {
             this.router.navigate(['/login']);
           }
@@ -48,14 +49,35 @@ export class PcTableComponent implements OnInit {
       });
   }
 
-  deletePc(id) {
-    this.api.deletePc(id)
+  // deletePc(id) {
+  //   this.api.deletePc(id)
+  //     .subscribe(res => {
+  //       alert(`pc ${id} rimosso`);
+  //       this.refreshPcsList();
+  //     }, (err) => {
+  //       console.log(err);
+  //     });
+  // }
+
+  banPc(id) {
+    const status = 1;
+    this.api.updatePc(id, {'SP_STATUS': status})
       .subscribe(res => {
-        alert(`pc ${id} rimosso`);
+        alert(`pc ${res.SP_HW_ID} bannato`);
         this.refreshPcsList();
       }, (err) => {
         console.log(err);
       });
   }
 
+  unbanPc(id) {
+    const status = 0;
+    this.api.updatePc(id, {'SP_STATUS': status})
+      .subscribe(res => {
+        alert(`pc ${res.SP_HW_ID} sbannato`);
+        this.refreshPcsList();
+      }, (err) => {
+        console.log(err);
+      });
+  }
 }

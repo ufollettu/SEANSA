@@ -6,6 +6,14 @@ class Repository {
         return db.clienti.findAll()
     }
 
+    findNotDeleted() {
+        return db.clienti.findAll({
+            where: {
+                SC_DELETED: 0
+            }
+        });
+    }
+
     create(data) {
         return db.clienti.create(data)
     }
@@ -13,7 +21,7 @@ class Repository {
     findById(id) {
         return db.clienti.findById(id)
     }
-    
+
     findOne(data) {
         return db.clienti.findOne(data);
     }

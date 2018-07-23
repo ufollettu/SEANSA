@@ -2,7 +2,8 @@ const repository = require('../repositories/utenti.server.repository');
 
 // List
 const list = async (req, res) => {
-    repository.findAll()
+    // repository.findAll()
+    repository.findNotDeleted()
         .then(utenti => {
             res.json(utenti);
         }).catch(err => res.send(err.errors));

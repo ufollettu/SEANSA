@@ -40,8 +40,8 @@
         <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
           <div class="example-element-diagram">
             <div class="example-element-name"> {{element.SP_HW_ID}} </div>
-            <div class="example-element-phone"> {{element.SP_IP}} </div>
-            <div class="example-element-email"> {{element.SP_STATUS}} </div>
+            <div class="example-element-phone"> PC IP Address: {{element.SP_IP}} </div>
+            <div class="example-element-email"> Banned Status: {{element.SP_STATUS===0 ? 'not banned': 'banned'}} </div>
           </div>
           <div class="example-element-details">
             <div class="example-element-lastupdate">Ultima ricezione:
@@ -52,11 +52,17 @@
             </div>
           </div>
           <div class="example-element-actions">
-            <a mat-raised-button color="primary" [routerLink]="['/pc-edit', element.SP_ID]">
+            <!-- <a mat-raised-button color="primary" [routerLink]="['/pc-edit', element.SP_ID]">
               <mat-icon>edit</mat-icon>
             </a>
             <a mat-raised-button color="warn" (click)="deletePc(element.SP_ID)">
               <mat-icon>delete</mat-icon>
+            </a> -->
+            <a mat-raised-button matTooltip="Ban PC" color="warn" (click)="banPc(element.SP_ID)" *ngIf="element.SP_STATUS===0">
+              <mat-icon>not_interested</mat-icon>
+            </a>
+            <a mat-raised-button matTooltip="Unban PC" color="primary" (click)="unbanPc(element.SP_ID)" *ngIf="element.SP_STATUS!==0">
+              <mat-icon>offline_pin</mat-icon>
             </a>
           </div>
         </div>

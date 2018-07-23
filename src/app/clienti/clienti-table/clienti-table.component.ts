@@ -38,7 +38,7 @@ export class ClientiTableComponent implements OnInit {
         this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);
-        if (err instanceof HttpErrorResponse ) {
+        if (err instanceof HttpErrorResponse) {
           if (err.status === 401 || 500) {
             this.router.navigate(['/login']);
           }
@@ -47,13 +47,23 @@ export class ClientiTableComponent implements OnInit {
   }
 
   deleteCustomer(id) {
-    this.api.deleteCustomer(id)
+    const deleted = 1;
+    this.api.updateCustomer(id, {'SC_DELETED': deleted})
       .subscribe(res => {
-        alert(`cliente ${id} rimosso`);
+        console.log(res);
+        // const id = res['SC_ID'];
+        alert(`cliente ${res['SC_NOME']} rimosso`);
         this.refreshCustomersList();
       }, (err) => {
         console.log(err);
       });
+    //   this.api.deleteCustomer(id)
+    //     .subscribe(res => {
+    //       alert(`cliente ${id} rimosso`);
+    //       this.refreshCustomersList();
+    //     }, (err) => {
+    //       console.log(err);
+    //     });
   }
 
 }

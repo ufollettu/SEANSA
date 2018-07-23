@@ -2,7 +2,8 @@ const repository = require('../repositories/clienti.server.repository');
 
 // List
 const list = async (req, res) => {
-    repository.findAll()
+    // repository.findAll()
+    repository.findNotDeleted()
         .then(clienti => {
             res.json(clienti);
         }).catch(err => res.send(err.errors));
@@ -66,4 +67,19 @@ const destroy = async (req, res) => {
             res.json(cliente);
         }).catch(err => res.send(err.errors));
 };
+
 module.exports.destroy = destroy;
+
+// // set deleted value = 1
+// const setDelete = async (req, res) => {
+//     const id = req.params.id;
+//     const newData = req.body;
+//     repository.findById(id)
+//         .then(cliente => {
+//             return cliente.update(newData).then((self) => {
+//                 res.json(self);
+//             });
+//         }).catch(err => res.send(err.errors));
+// };
+
+// module.exports.setDelete = setDelete;

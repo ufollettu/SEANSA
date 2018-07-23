@@ -5,6 +5,14 @@ class Repository {
     return db.utenti.findAll();
   }
 
+  findNotDeleted() {
+    return db.utenti.findAll({
+        where: {
+            SU_DELETED: 0
+        }
+    });
+}
+
   create(data) {
     return db.utenti.create(data);
   }
