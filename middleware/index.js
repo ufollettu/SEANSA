@@ -23,3 +23,5 @@ function verifyToken(req, res, next) {
 module.exports = {
   verifyToken
 };
+
+// TODO add guard to prevent unauthorized uses to non SU users

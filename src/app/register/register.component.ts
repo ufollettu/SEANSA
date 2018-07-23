@@ -55,7 +55,7 @@ export class RegisterComponent implements OnInit {
       if (err instanceof HttpErrorResponse ) {
         if (err.status === 422) {
           alert('user exists');
-          this.router.navigate(['/register']);
+          this.router.navigate(['/login']);
         }
       }
     });

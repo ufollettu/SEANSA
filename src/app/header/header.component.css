@@ -26,11 +26,12 @@
     background-color: rgb(107, 144, 168);
 }
 
-mat-card {
+.site-title {
   width: 75%;
   padding: 16px;
   display: inline-block;
   text-align: center;
+  margin: 0, auto;
 }
 
 .routes-buttons {
