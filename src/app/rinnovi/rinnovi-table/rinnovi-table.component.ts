@@ -22,7 +22,7 @@ export class RinnoviTableComponent implements OnInit {
 
   rinnovi: any;
 
-  displayedColumns = ['SR_SS_ID', 'SR_TS'];
+  displayedColumns = ['KeyId', 'Chiave', 'Timestamp'];
   dataSource: any;
 
   constructor(private api: RinnoviApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
@@ -48,13 +48,13 @@ export class RinnoviTableComponent implements OnInit {
       });
   }
 
-  deleteRinnovo(id) {
-    this.api.deleteRinnovo(id)
-      .subscribe(res => {
-        alert(`rinnovo ${id} rimosso`);
-        this.refreshRinnoviList();
-      }, (err) => {
-        console.log(err);
-      });
-  }
+  // deleteRinnovo(id) {
+  //   this.api.deleteRinnovo(id)
+  //     .subscribe(res => {
+  //       alert(`rinnovo ${id} rimosso`);
+  //       this.refreshRinnoviList();
+  //     }, (err) => {
+  //       console.log(err);
+  //     });
+  // }
 }
