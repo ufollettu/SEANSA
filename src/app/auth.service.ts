@@ -7,6 +7,7 @@ const httpOptions = {
 };
 const registerUrl = '/api/auth/signup';
 const loginUrl = '/api/auth/signin';
+const changePwdUrl = '/api/auth/changepwd';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,10 @@ export class AuthService {
 
   registerUser(user) {
     return this.http.post(registerUrl, user);
+  }
+
+  changePwd(user) {
+    return this.http.put(changePwdUrl, user);
   }
 
   loginUser(user) {

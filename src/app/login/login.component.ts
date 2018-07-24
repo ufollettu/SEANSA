@@ -13,7 +13,7 @@ import { DataService } from '../data.service';
 })
 export class LoginComponent implements OnInit {
 
-  // userId: string;
+  user: object;
   utenteForm: FormGroup;
 
   SU_UNA: '';
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.data.currentId.subscribe(userId => this.message = message);
+    this.data.currentUser.subscribe(user => this.user = user);
     // this.getIp();
     this.utenteForm = this.formBuilder.group({
       'username': [null, Validators.required],
@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
       if (err instanceof HttpErrorResponse ) {
         if (err.status === 422) {
           alert('wrong user or password');
-          this.router.navigate(['/register']);
+          this.router.navigate(['/login']);
         }
       }
     });

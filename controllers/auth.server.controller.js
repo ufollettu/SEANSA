@@ -9,6 +9,12 @@ const signupPage = async (req, res) => {
 
 module.exports.signupPage = signupPage;
 
+const changePwdPage = async (req, res) => {
+  res.send("change password");
+};
+
+module.exports.changePwdPage = changePwdPage;
+
 const signinPage = async (req, res) => {
   res.send("signin");
 };
@@ -36,6 +42,27 @@ const signup = async (req, res, next) => {
 
 module.exports.signup = signup;
 
+const changepwd = async (req, res, next) => {
+  passport.authenticate("changepwd", { session: false }, async (err, user, info) => {
+      if (err || !user) {
+        return res.status(422).json({
+          message: info ? info.message : "changing password failed",
+          user: user
+        });
+      }
+      const token = jwt.sign(user.SU_ID, secretOrKey);
+      return res.status(200).json({
+        message: "password changed successfully",
+        user: user,
+        idToken: token,
+        expiresIn: expireDate
+      });
+    }
+  )(req, res, next);
+};
+
+module.exports.changepwd = changepwd;
+
 const signin = async (req, res, next) => {
   passport.authenticate("login", { session: false }, (err, user, info) => {
       if (err || !user) {
@@ -57,8 +84,8 @@ const signin = async (req, res, next) => {
 
 module.exports.signin = signin;
 
-const logout = async () => {
-  // we need to destroy token in client end!!
-};
+// const logout = async () => {
+//   // we need to destroy token in client end!!
+// };
 
-module.exports.logout = logout;
+// module.exports.logout = logout;

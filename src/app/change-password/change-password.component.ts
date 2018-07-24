@@ -3,6 +3,8 @@ import { DataService } from "../data.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { UtentiApiService } from "../utenti/utenti-api.service";
 import { FormBuilder, FormGroup, Validators, NgForm } from "@angular/forms";
+import { AuthService } from "../auth.service";
+import { HttpErrorResponse } from "../../../node_modules/@angular/common/http";
 
 @Component({
   selector: "app-change-password",
@@ -10,18 +12,18 @@ import { FormBuilder, FormGroup, Validators, NgForm } from "@angular/forms";
   styleUrls: ["./change-password.component.css"]
 })
 export class ChangePasswordComponent implements OnInit {
+
   user: object;
-  ipAddress: any;
   utenteForm: FormGroup;
 
   SU_ID: '';
-  SU_UNA: '';
-  SU_PAW: '';
+  username: '';
+  password: '';
 
   constructor(
     private data: DataService,
     private router: Router,
-    private route: ActivatedRoute,
+    private auth: AuthService,
     private api: UtentiApiService,
     private formBuilder: FormBuilder
   ) {}
@@ -33,9 +35,9 @@ export class ChangePasswordComponent implements OnInit {
     });
 
     this.utenteForm = this.formBuilder.group({
-      SU_UNA: [null, Validators.required],
-      SU_PAW: [null, Validators.required],
-      SU_LAST_EDIT: new Date()
+      'username': [null, Validators.required],
+      'password': [null, Validators.required],
+      'SU_LAST_EDIT': new Date()
     });
   }
 
@@ -45,24 +47,27 @@ export class ChangePasswordComponent implements OnInit {
       .subscribe(data => {
         this.SU_ID = data.SU_ID;
         this.utenteForm.setValue({
-          SU_UNA: data.SU_UNA,
-          SU_PAW: data.SU_PAW,
+          username: data.SU_UNA,
+          password: data.SU_PAW,
           SU_LAST_EDIT: new Date(),
         });
       });
   }
 
   onFormSubmit(form: NgForm) {
-    this.api.updateUtente(this.user['SU_ID'], form).subscribe(
-      res => {
-        console.log(res);
-        // const id = res['SC_ID'];
-        alert(`password utente ${res['SU_UNA']} modificata`);
-        this.router.navigate(['/utenti']);
-      },
-      err => {
-        console.log(err);
+    this.auth.changePwd(form)
+    .subscribe(res => {
+      console.log(res);
+      localStorage.setItem('token', res['idToken']);
+      alert(`password utente ${res['user']['SU_UNA']} cambiata correttamente`);
+      this.router.navigate(['/clienti']);
+    }, (err) => {
+      if (err instanceof HttpErrorResponse ) {
+        if (err.status === 422) {
+          alert('error changing password');
+          this.router.navigate(['/changepwd']);
+        }
       }
-    );
+    });
   }
 }

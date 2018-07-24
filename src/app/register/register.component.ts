@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, NgForm } from '../../../node_modules/@angular/forms';
 import { Router } from '../../../node_modules/@angular/router';
 import { AuthService } from '../auth.service';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-register',
@@ -12,6 +13,7 @@ import { AuthService } from '../auth.service';
 })
 export class RegisterComponent implements OnInit {
 
+  user: object;
   ipAddress: any;
   utenteForm: FormGroup;
 
@@ -27,10 +29,12 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private ipService: IpService,
     private formBuilder: FormBuilder,
+    private data: DataService,
     private auth: AuthService
   ) { }
 
   ngOnInit() {
+    this.data.currentUser.subscribe(user => this.user = user);
     // this.getIp();
     this.utenteForm = this.formBuilder.group({
       'username': [null, Validators.required],
@@ -49,6 +53,7 @@ export class RegisterComponent implements OnInit {
       console.log(res);
       localStorage.setItem('token', res['idToken']);
       alert(`utente ${res['user']['SU_UNA']} creato`);
+      this.sendUser(res['user']);
       this.router.navigate(['/clienti']);
     }, (err) => {
       console.log(err);
@@ -67,5 +72,9 @@ export class RegisterComponent implements OnInit {
       // console.log('ip', data.ip);
       return this.ipAddress = data['ip'];
     });
+  }
+
+  sendUser(user) {
+    this.data.changeUser(user);
   }
 }

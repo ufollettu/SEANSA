@@ -61,7 +61,7 @@ const appRoutes: Routes = [
 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'changepassword', component: ChangePasswordComponent },
+  { path: 'changepassword', component: ChangePasswordComponent, canActivate: [AuthGuard] },
 
 
   // { path: '', redirectTo: '/events', pathMatch: 'full' }
