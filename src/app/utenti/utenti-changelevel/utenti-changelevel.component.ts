@@ -34,6 +34,17 @@ export class UtentiChangelevelComponent implements OnInit {
   // SU_CREATION: '';
   // SU_LAST_EDIT: '';
   // SU_LAST_IP: '';
+  levelControl = new FormControl('', [Validators.required]);
+  levels = [
+    { name: '0', description: '0 - Creazione nuovo utente' },
+    { name: '1', description: '1 - Reset password di qualsiasi utente' },
+    { name: '2', description: '2 - Eliminazione di qualsiasi utente' },
+    { name: '3', description: '3 - Modifica livello di qualsiasi utente' },
+    { name: '4', description: '4 - Rinnovo delle licenze' },
+    { name: '5', description: '5 - Gestione completa delle licenze' },
+    { name: '6', description: '6 - Gestione completa dei clienti' },
+    { name: '7', description: '7 - Gestione completa dei PC' }
+  ];
 
   constructor(private router: Router, private route: ActivatedRoute, private api: UtentiApiService, private formBuilder: FormBuilder) { }
 
@@ -43,7 +54,8 @@ export class UtentiChangelevelComponent implements OnInit {
     this.utenteForm = this.formBuilder.group({
       'SU_UNA': [null, Validators.required],
       // 'SU_PAW': [null, Validators.required],
-      'SU_LEVEL': [0, Validators.required],
+      'SU_LEVEL': this.levelControl,
+      // 'SU_LEVEL': [0, Validators.required],
       // 'SU_LAST_LOGIN' : new Date(),
       // 'SU_CREATION': new Date(),
       'SU_LAST_EDIT': new Date(),
@@ -66,14 +78,15 @@ export class UtentiChangelevelComponent implements OnInit {
   }
 
   onFormSubmit(form: NgForm) {
+    console.log(this.SU_ID);
     this.api.updateUtente(this.SU_ID, form)
       .subscribe(res => {
-          // const id = res['SC_ID'];
-          alert(`livello utente ${res['SU_UNA']} modificato`);
-          this.router.navigate(['/utenti']);
-        }, (err) => {
-          console.log(err);
-        });
+        console.log(res);
+        alert(`livello utente ${res['SU_UNA']} modificato`);
+        this.router.navigate(['/utenti']);
+      }, (err) => {
+        console.log(err);
+      });
   }
 
 }

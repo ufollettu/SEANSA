@@ -12,11 +12,22 @@
         </mat-error>
     </mat-form-field>
 
-    <mat-form-field class="example-full-width">
+    <!-- <mat-form-field class="example-full-width">
         <input matInput placeholder="Livello" formControlName="SU_LEVEL" [errorStateMatcher]="matcher">
         <mat-error>
             <span *ngIf="!utenteForm.get('SU_LEVEL').valid && utenteForm.get('SU_LEVEL').touched">Inserisci il livello</span>
         </mat-error>
+    </mat-form-field> -->
+
+    <mat-form-field class="example-full-width">
+        <mat-select placeholder="Livello" [formControl]="levelControl" [errorStateMatcher]="matcher">
+            <mat-option>--</mat-option>
+            <mat-option *ngFor="let level of levels" [value]="level">{{level.description}}</mat-option>
+        </mat-select>
+        <mat-error>
+            <span *ngIf="!utenteForm.get('SU_LEVEL').valid && utenteForm.get('SU_LEVEL').touched">Inserisci il livello</span>
+        </mat-error>
+        <mat-hint>{{levelControl.value?.name}}</mat-hint>
     </mat-form-field>
 
     <div class="button-row">

@@ -90,35 +90,44 @@ const update = async (req, res) => {
     const newData = req.body;
     const username = newData.SU_UNA;
     const password = newData.SU_PAW;
+    const level = newData.SU_LEVEL;
 
     if (password) {
         bcrypt.hash(password, 10, (err, hash) => {
             // Store hash in your password DB.
             repository.findById(id)
+                .then(utente => {
+                    const data = {
+                        SU_UNA: username,
+                        SU_PAW: hash,
+                        SU_LAST_EDIT: new Date(),
+                    };
+                    //Save the information provided by the user to the the database
+                    return utente.update(data).then((self) => {
+                        res.json(self);
+                    });
+                }).catch(err => res.send(err.errors));
+        });
+    } else if (level) {
+        repository.findById(id)
             .then(utente => {
                 const data = {
                     SU_UNA: username,
-                    SU_PAW: hash,
-                    SU_LEVEL: req.body.level,
-                    // SU_LAST_LOGIN: new Date(),
-                    // SU_CREATION: new Date(),
+                    SU_LEVEL: level.name,
                     SU_LAST_EDIT: new Date(),
-                    // SU_DELETED: req.body.deleted,
-                    // SU_LAST_IP: req.body.lastIp
                 };
                 //Save the information provided by the user to the the database
                 return utente.update(data).then((self) => {
                     res.json(self);
                 });
             }).catch(err => res.send(err.errors));
-        });
     } else {
         repository.findById(id)
-        .then(utente => {
-            return utente.update(newData).then((self) => {
-                res.json(self);
-            });
-        }).catch(err => res.send(err.errors));
+            .then(utente => {
+                return utente.update(newData).then((self) => {
+                    res.json(self);
+                });
+            }).catch(err => res.send(err.errors));
     }
 };
 module.exports.update = update;
