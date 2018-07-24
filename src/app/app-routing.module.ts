@@ -19,7 +19,9 @@ import { RinnoviEditComponent } from './rinnovi/rinnovi-edit/rinnovi-edit.compon
 
 import { UtentiTableComponent } from './utenti/utenti-table/utenti-table.component';
 import { UtentiCreateComponent } from './utenti/utenti-create/utenti-create.component';
-import { UtentiEditComponent } from './utenti/utenti-edit/utenti-edit.component';
+// import { UtentiEditComponent } from './utenti/utenti-edit/utenti-edit.component';
+import { UtentiResetpwdComponent } from './utenti/utenti-resetpwd/utenti-resetpwd.component';
+import { UtentiChangelevelComponent } from './utenti/utenti-changelevel/utenti-changelevel.component';
 
 import { PcTableComponent } from './pc/pc-table/pc-table.component';
 import { PcCreateComponent } from './pc/pc-create/pc-create.component';
@@ -33,6 +35,7 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 
+
 const appRoutes: Routes = [
 
   { path: 'rinnovi', component: RinnoviTableComponent, canActivate: [AuthGuard] },
@@ -41,7 +44,10 @@ const appRoutes: Routes = [
 
   { path: 'utenti', component: UtentiTableComponent, canActivate: [AuthGuard]},
   { path: 'utenti-create', component: UtentiCreateComponent, canActivate: [AuthGuard] },
-  { path: 'utenti-edit/:id', component: UtentiEditComponent, canActivate: [AuthGuard] },
+  // { path: 'utenti-edit/:id', component: UtentiEditComponent, canActivate: [AuthGuard] },
+  { path: 'utenti-resetpwd/:id', component: UtentiResetpwdComponent, canActivate: [AuthGuard] },
+  { path: 'utenti-changelevel/:id', component: UtentiChangelevelComponent, canActivate: [AuthGuard] },
+
 
   { path: 'matricole', component: MatricoleTableComponent, canActivate: [AuthGuard] },
   { path: 'matricole-create', component: MatricoleCreateComponent, canActivate: [AuthGuard] },
@@ -90,7 +96,9 @@ const appRoutes: Routes = [
     RinnoviEditComponent,
     UtentiTableComponent,
     UtentiCreateComponent,
-    UtentiEditComponent,
+    // UtentiEditComponent,
+    UtentiResetpwdComponent,
+    UtentiChangelevelComponent,
     PcTableComponent,
     PcCreateComponent,
     PcEditComponent,
@@ -99,7 +107,8 @@ const appRoutes: Routes = [
     MatricoleEditComponent,
     RegisterComponent,
     LoginComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+
   ]
 })
 export class AppRoutingModule {}

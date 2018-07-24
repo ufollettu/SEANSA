@@ -44,7 +44,7 @@ export class RegisterComponent implements OnInit {
       'SU_CREATION': new Date(),
       'SU_LAST_EDIT': new Date(),
       'deleted': [0],
-      'lastIp': [this.getIp(), Validators.required]
+      'lastIp': [null]
     });
   }
 
@@ -61,17 +61,9 @@ export class RegisterComponent implements OnInit {
       if (err instanceof HttpErrorResponse ) {
         if (err.status === 422) {
           alert('user exists');
-          this.router.navigate(['/login']);
+          this.router.navigate(['/register']);
         }
       }
-    });
-  }
-
-  getIp() {
-    this.ipService.getIpAddress()
-    .subscribe(data => {
-      // console.log('ip', data.ip);
-      return this.ipAddress = data['ip'];
     });
   }
 
