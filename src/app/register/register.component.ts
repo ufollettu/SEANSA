@@ -39,10 +39,11 @@ export class RegisterComponent implements OnInit {
     this.utenteForm = this.formBuilder.group({
       'username': [null, Validators.required],
       'password': [null, Validators.required],
-      'level': [null, Validators.required],
+      'level': [0],
       'SU_LAST_LOGIN' : new Date(),
       'SU_CREATION': new Date(),
       'SU_LAST_EDIT': new Date(),
+      'deleted': [0],
       'lastIp': [this.getIp(), Validators.required]
     });
   }

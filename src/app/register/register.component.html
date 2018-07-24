@@ -20,7 +20,7 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field class="example-full-width">
+        <!-- <mat-form-field class="example-full-width">
           <input matInput placeholder="Livello" formControlName="level" [errorStateMatcher]="matcher">
           <mat-error>
             <span *ngIf="!utenteForm.get('level').valid && utenteForm.get('level').touched">Inserisci il livello</span>
@@ -33,7 +33,8 @@
           <mat-error>
             <span *ngIf="!utenteForm.get('lastIp').valid && utenteForm.get('lastIp').touched">Inserisci l'IP</span>
           </mat-error>
-        </mat-form-field>
+        </mat-form-field> -->
+
         <button mat-button type="submit" [disabled]="!utenteForm.valid" mat-raised-button color="primary">
             <mat-icon>save</mat-icon>
           </button>
