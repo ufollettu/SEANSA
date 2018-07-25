@@ -48,7 +48,7 @@ export class ClientiTableComponent implements OnInit {
 
   deleteCustomer(id) {
     const deleted = 1;
-    this.api.updateCustomer(id, {'SC_DELETED': deleted})
+    this.api.updateCustomer(id, { 'SC_DELETED': deleted })
       .subscribe(res => {
         console.log(res);
         // const id = res['SC_ID'];
@@ -56,6 +56,11 @@ export class ClientiTableComponent implements OnInit {
         this.refreshCustomersList();
       }, (err) => {
         console.log(err);
+        if (err instanceof HttpErrorResponse) {
+          if (err.status === 401 || 500) {
+            this.router.navigate(['/login']);
+          }
+        }
       });
     //   this.api.deleteCustomer(id)
     //     .subscribe(res => {
