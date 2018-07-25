@@ -43,6 +43,7 @@ const signup = async (req, res, next) => {
 module.exports.signup = signup;
 
 const changepwd = async (req, res, next) => {
+  console.log(req.userId);
   passport.authenticate("changepwd", { session: false }, async (err, user, info) => {
       if (err || !user) {
         return res.status(422).json({

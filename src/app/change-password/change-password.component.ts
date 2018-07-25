@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { DataService } from "../data.service";
-import { Router, ActivatedRoute } from "@angular/router";
-import { UtentiApiService } from "../utenti/utenti-api.service";
+import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators, NgForm } from "@angular/forms";
 import { AuthService } from "../auth.service";
 import { HttpErrorResponse } from "../../../node_modules/@angular/common/http";
@@ -24,16 +23,17 @@ export class ChangePasswordComponent implements OnInit {
     private data: DataService,
     private router: Router,
     private auth: AuthService,
-    private api: UtentiApiService,
     private formBuilder: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.data.currentUser.subscribe(user => {
-      this.user = user;
-      this.getCustomer(this.user['SU_ID']);
+    this.data.getUserFromToken().subscribe(utente => {
+      this.user = utente;
+      console.log(utente['SU_ID']);
     });
+    // this.data.currentUser.subscribe(user => { this.user = user; });
 
+    this.getUtente();
     this.utenteForm = this.formBuilder.group({
       'username': [null, Validators.required],
       'password': [null, Validators.required],
@@ -42,32 +42,37 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   // TODO change with some passport method --> do not hash pwd yet
-  getCustomer(id) {
-    this.api.getUtente(id)
-      .subscribe(data => {
-        this.SU_ID = data.SU_ID;
-        this.utenteForm.setValue({
-          username: data.SU_UNA,
-          password: data.SU_PAW,
-          SU_LAST_EDIT: new Date(),
-        });
+  getUtente() {
+    this.data.getUserFromToken().subscribe(utente => {
+      console.log(utente['SU_ID']);
+      this.SU_ID = utente.SU_ID;
+      this.utenteForm.setValue({
+        username: utente.SU_UNA,
+        password: utente.SU_PAW,
+        SU_LAST_EDIT: new Date(),
       });
+    });
   }
 
   onFormSubmit(form: NgForm) {
     this.auth.changePwd(form)
-    .subscribe(res => {
-      console.log(res);
-      localStorage.setItem('token', res['idToken']);
-      alert(`password utente ${res['user']['SU_UNA']} cambiata correttamente`);
-      this.router.navigate(['/clienti']);
-    }, (err) => {
-      if (err instanceof HttpErrorResponse ) {
-        if (err.status === 422) {
-          alert('error changing password');
-          this.router.navigate(['/changepwd']);
+      .subscribe(res => {
+        console.log(res['user']);
+        localStorage.setItem('token', res['idToken']);
+        alert(`password utente ${res['user']['SU_UNA']} cambiata correttamente`);
+        this.sendUser(res['user']);
+        this.router.navigate(['/clienti']);
+      }, (err) => {
+        if (err instanceof HttpErrorResponse) {
+          if (err.status === 422) {
+            alert('error changing password');
+            this.router.navigate(['/changepwd']);
+          }
         }
-      }
-    });
+      });
+  }
+
+  sendUser(user) {
+    this.data.changeUser(user);
   }
 }
