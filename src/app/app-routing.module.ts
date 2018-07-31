@@ -35,6 +35,10 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 
+import { RolesTableComponent } from './roles/roles-table/roles-table.component';
+import { RolesCreateComponent } from './roles/roles-create/roles-create.component';
+import { RolesEditComponent } from './roles/roles-edit/roles-edit.component';
+
 
 const appRoutes: Routes = [
 
@@ -48,6 +52,8 @@ const appRoutes: Routes = [
   { path: 'utenti-resetpwd/:id', component: UtentiResetpwdComponent, canActivate: [AuthGuard] },
   { path: 'utenti-changelevel/:id', component: UtentiChangelevelComponent, canActivate: [AuthGuard] },
 
+  { path: 'roles-create/:id', component: RolesCreateComponent, canActivate: [AuthGuard] },
+  { path: 'roles-update/:id', component: RolesEditComponent, canActivate: [AuthGuard] },
 
   { path: 'matricole', component: MatricoleTableComponent, canActivate: [AuthGuard] },
   { path: 'matricole-create', component: MatricoleCreateComponent, canActivate: [AuthGuard] },
@@ -110,6 +116,9 @@ const appRoutes: Routes = [
     RegisterComponent,
     LoginComponent,
     ChangePasswordComponent,
+    RolesTableComponent,
+    RolesCreateComponent,
+    RolesEditComponent,
 
   ]
 })

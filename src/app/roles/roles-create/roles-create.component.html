@@ -1,0 +1,31 @@
+<div class="button-row">
+  <a mat-raised-button color="primary" [routerLink]="['/utenti']">
+      <mat-icon>list</mat-icon>
+  </a>
+</div>
+<form [formGroup]="keyForm" (ngSubmit)="onFormSubmit(keyForm.value)">
+
+  <mat-form-field class="example-full-width">
+      <input matInput placeholder="Username" formControlName="SU_UNA" [errorStateMatcher]="matcher" [readonly]="true">
+      <mat-error>
+          <span *ngIf="!keyForm.get('SU_UNA').valid && keyForm.get('SU_UNA').touched">Inserisci username</span>
+      </mat-error>
+  </mat-form-field>
+<!-- 
+  <mat-form-field class="example-full-width">
+      <mat-select placeholder="Livello" [formControl]="levelControl" [errorStateMatcher]="matcher">
+          <mat-option>--</mat-option>
+          <mat-option *ngFor="let level of levels" [value]="level">{{level.description}}</mat-option>
+      </mat-select>
+      <mat-error>
+          <span *ngIf="!keyForm.get('UP_P_ID').valid && keyForm.get('UP_P_ID').touched">Inserisci il livello</span>
+      </mat-error>
+      <mat-hint>{{levelControl.value?.name}}</mat-hint>
+  </mat-form-field> -->
+
+  <div class="button-row">
+      <button type="submit" [disabled]="!keyForm.valid" mat-raised-button color="primary">
+          <mat-icon>save</mat-icon>
+      </button>
+  </div>
+</form>

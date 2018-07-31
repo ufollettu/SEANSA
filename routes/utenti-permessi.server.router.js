@@ -1,16 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-// const verifyToken = require('../middleware').verifyToken;
 const can = require('../middleware').can;
-const allow = require('../middleware').allow;
-const disallow = require('../middleware').disallow;
 
 const UtentiPermessiController = require('./../controllers/utenti-permessi.server.controller');
 
 router.get('/', can(1), UtentiPermessiController.list); // Index
-router.post('/', can(1), allow(), UtentiPermessiController.list); // Create
-router.delete('/', can(1), disallow(), UtentiPermessiController.list); // Destroy
+router.post('/', can(1), UtentiPermessiController.create); // Create
+router.get('/:id', can(1), UtentiPermessiController.show); // Show
+router.put('/:id', can(1), UtentiPermessiController.update); // Update
+router.delete('/:id', can(1), UtentiPermessiController.destroy); // Destroy
 
 module.exports = router;
 
