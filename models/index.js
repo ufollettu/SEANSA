@@ -44,6 +44,7 @@ db.rinnovi = require('./rinnovi')(sequelize, Sequelize);
 db.sks = require('./sks')(sequelize, Sequelize);
 db.clienti = require('./clienti')(sequelize, Sequelize);
 db.pc = require('./pc')(sequelize, Sequelize);
+db.utentiPermessi = require('./utenti-permessi')(sequelize, Sequelize);
 
 // Relations
 

@@ -29,6 +29,7 @@ const pcRouter = require('./routes/pc.server.route');
 const matricoleRouter = require('./routes/matricole.server.route');
 const rinnoviRouter = require('./routes/rinnovi.server.route');
 const clientiRouter = require('./routes/clienti.server.route');
+const utentiPermessiRouter = require('./routes/utenti-permessi.server.router');
 
 const app = express();
 
@@ -81,7 +82,8 @@ app.use((req, res, next) => {
 app.use('/api/', indexRouter);
 
 // app.options('/api/auth', cors());
-app.use('/api/auth',  authRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/roles', verifyToken, utentiPermessiRouter);
 
 app.use('/api/utenti', verifyToken, utentiRouter);
 app.use('/api/sks', verifyToken, sksRouter);
@@ -89,6 +91,7 @@ app.use('/api/pc', verifyToken, pcRouter);
 app.use('/api/matricole', verifyToken, matricoleRouter);
 app.use('/api/rinnovi', verifyToken, rinnoviRouter);
 app.use('/api/clienti', verifyToken, clientiRouter);
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

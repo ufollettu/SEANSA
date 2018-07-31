@@ -1,4 +1,6 @@
 const jwt = require("jsonwebtoken");
+const users_permissions_repo = require("../repositories/utenti-permessi.server.repository");
+const user_repo = require("../repositories/utenti.server.repository");
 
 function verifyToken(req, res, next) {
   if (!req.headers.authorization) {
@@ -20,35 +22,57 @@ function verifyToken(req, res, next) {
   next();
 }
 
-function roleAuthorization(roles) {
-  // return function (req, res, next) {
+function can(permissionId, userId) {
 
-  //   // change
-  //   var user = req.user;
+  return (req, res, next) => {
+      userId = userId || req.userId || 0;
+      // call the db: here we using a repo with sequelize ORM
+      users_permissions_repo.findOne(userId, permissionId).then(res => {
+          if (!res) {
+              throw new Error('non autorizzato')
+          } else if (res) {
+              next()
+          }
+      }).catch(err => {
+          res.status(401).send(err.message);
+      })
+  }
+}
 
-  //   // change
-  //   User.findById(user._id, function (err, foundUser) {
+function allow(permissionId, userId) {
+  return (req, res, next) => {
+      const data = req.body || { UP_U_ID: userId, UP_P_ID: permissionId } || {}
+      // call the db: here we using a repo with sequelize ORM
+      user_repo.findById(userId).then(utente => {
+          // create a new permission association
+          users_permissions_repo.create(data).then(result => {
+              // res.json(result);
+              next();
+          }).catch(err => res.send(err.errors));
+      })
+  };
+}
 
-  //     if (err) {
-  //       res.status(422).json({ error: 'No user found.' });
-  //       return next(err);
-  //     }
-
-  //     if (roles.indexOf(foundUser.role) > -1) {
-  //       return next();
-  //     }
-
-  //     res.status(401).json({ error: 'You are not authorized to view this content' });
-  //     return next('Unauthorized');
-
-  //   });
-
-  // }
+function disallow(permissionId, userId) {
+  return (req, res, next) => {
+      const data = req.body || { UP_U_ID: userId, UP_P_ID: permissionId } || {}
+      // call the db: here we using a repo with sequelize ORM
+      user_repo.findById(userId).then(utente => {
+          // delete a founded permission association
+          users_permissions_repo.destroy(data).then(affectedRows => {
+              // console.log(result); // no result!
+              // res.status(200).send(`destroyed ${affectedRows} rows` );
+              next();
+          }).catch(err => res.send(err.errors));
+      })
+  };
 }
 
 module.exports = {
   verifyToken,
-  roleAuthorization
+  can,
+  allow,
+  disallow
 };
 
 // TODO add guard to prevent unauthorized uses to non SU users
