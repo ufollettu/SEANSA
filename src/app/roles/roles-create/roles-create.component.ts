@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import {
   FormBuilder,
@@ -35,7 +35,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: "./roles-create.component.html",
   styleUrls: ["./roles-create.component.css"]
 })
-export class RolesCreateComponent implements OnInit, OnChanges {
+export class RolesCreateComponent implements OnInit {
 
   checked = false;
   ipAddress: any;
@@ -45,7 +45,7 @@ export class RolesCreateComponent implements OnInit, OnChanges {
   // UP_ID: '';
   // UP_U_ID: '';
   // UP_P_ID: '';
-  permArr: object[];
+  permArr = [];
     // permArr = [
     //   { UP_ID: 5, UP_U_ID: 83, UP_P_ID: 0 },
     //   { UP_ID: 6, UP_U_ID: 83, UP_P_ID: 1 },
@@ -73,11 +73,8 @@ export class RolesCreateComponent implements OnInit, OnChanges {
     private api: RolesApiService,
     private userApi: UtentiApiService,
     private formBuilder: FormBuilder
-  ) { }
+  ) {}
 
-  ngOnChanges() {
-    this.getCustomer(this.route.snapshot.params["id"]);
-  }
 
   ngOnInit() {
     this.getCustomer(this.route.snapshot.params["id"]);
@@ -88,7 +85,7 @@ export class RolesCreateComponent implements OnInit, OnChanges {
   }
 
   getCustomer(id) {
-    this.userApi.getUtente(id).subscribe(utente => {
+    return this.userApi.getUtente(id).subscribe(utente => {
       console.log(utente);
       this.keyForm.setValue({ SU_UNA: utente.SU_UNA });
       this.api.getKey(utente.SU_ID).subscribe(key => {

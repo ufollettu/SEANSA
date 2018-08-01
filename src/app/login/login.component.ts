@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, NgForm } from '../../../node_modules/@angular/forms';
-import { Router } from '../../../node_modules/@angular/router';
+import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { HttpErrorResponse } from '../../../node_modules/@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { UtentiApiService } from '../utenti/utenti-api.service';
 import { DataService } from '../data.service';
 

@@ -3,7 +3,7 @@ import { DataService } from "../data.service";
 import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators, NgForm } from "@angular/forms";
 import { AuthService } from "../auth.service";
-import { HttpErrorResponse } from "../../../node_modules/@angular/common/http";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: "app-change-password",

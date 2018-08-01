@@ -22,3 +22,15 @@
 <section *ngFor="let level of levels">
     <mat-checkbox [checked]="permArr && permArr[level.name]?.UP_P_ID === level.name">{{level.description}}</mat-checkbox>
 </section>
+
+<!-- <section *ngFor="let level of levels">
+    <ng-container *ngFor="let perm of permArr">
+        <div *ngIf="permArr">
+            <mat-checkbox [checked]=true *ngIf="level.name == perm.UP_P_ID; else notChecked">{{level.description}}</mat-checkbox>
+            <ng-template #notChecked>
+                <mat-checkbox>{{level.description}}</mat-checkbox>
+            </ng-template>
+        </div>
+    </ng-container>
+    <hr>
+</section> -->
