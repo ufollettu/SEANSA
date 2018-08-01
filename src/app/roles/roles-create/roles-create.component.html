@@ -11,6 +11,12 @@
             <span *ngIf="!keyForm.get('SU_UNA').valid && keyForm.get('SU_UNA').touched">Inserisci username</span>
         </mat-error>
     </mat-form-field>
+    
+    <div>
+        <section *ngFor="let level of levels">
+            <mat-checkbox [checked]="permArr && permArr[level.name]?.UP_P_ID === level.name">{{level.description}}</mat-checkbox>
+        </section>
+    </div>
 
     <div class="button-row">
         <button type="submit" [disabled]="!keyForm.valid" mat-raised-button color="primary">
@@ -19,9 +25,6 @@
     </div>
 </form>
 
-<section *ngFor="let level of levels">
-    <mat-checkbox [checked]="permArr && permArr[level.name]?.UP_P_ID === level.name">{{level.description}}</mat-checkbox>
-</section>
 
 <!-- <section *ngFor="let level of levels">
     <ng-container *ngFor="let perm of permArr">

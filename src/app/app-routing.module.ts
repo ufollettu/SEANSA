@@ -39,6 +39,8 @@ import { RolesTableComponent } from './roles/roles-table/roles-table.component';
 import { RolesCreateComponent } from './roles/roles-create/roles-create.component';
 import { RolesEditComponent } from './roles/roles-edit/roles-edit.component';
 
+import { ApiResolverService } from './api-resolver.service';
+
 
 const appRoutes: Routes = [
 
@@ -46,13 +48,20 @@ const appRoutes: Routes = [
   { path: 'rinnovi-create', component: RinnoviCreateComponent, canActivate: [AuthGuard] },
   { path: 'rinnovi-edit/:id', component: RinnoviEditComponent, canActivate: [AuthGuard] },
 
-  { path: 'utenti', component: UtentiTableComponent, canActivate: [AuthGuard]},
+  { path: 'utenti', component: UtentiTableComponent, canActivate: [AuthGuard] },
   { path: 'utenti-create', component: UtentiCreateComponent, canActivate: [AuthGuard] },
   // { path: 'utenti-edit/:id', component: UtentiEditComponent, canActivate: [AuthGuard] },
   { path: 'utenti-resetpwd/:id', component: UtentiResetpwdComponent, canActivate: [AuthGuard] },
   { path: 'utenti-changelevel/:id', component: UtentiChangelevelComponent, canActivate: [AuthGuard] },
 
-  { path: 'roles-create/:id', component: RolesCreateComponent, canActivate: [AuthGuard] },
+  {
+    path: 'roles-create/:id',
+    component: RolesCreateComponent,
+    canActivate: [AuthGuard],
+    resolve: {
+      cres: ApiResolverService
+    }
+  },
   { path: 'roles-update/:id', component: RolesEditComponent, canActivate: [AuthGuard] },
 
   { path: 'matricole', component: MatricoleTableComponent, canActivate: [AuthGuard] },
@@ -85,13 +94,14 @@ const appRoutes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(appRoutes, {useHash: true}),
+    RouterModule.forRoot(appRoutes, { useHash: true }),
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     AppMaterialModule
   ],
   exports: [RouterModule],
+  providers: [ApiResolverService],
   declarations: [
     ClientiTableComponent,
     ClientiCreateComponent,
@@ -122,4 +132,4 @@ const appRoutes: Routes = [
 
   ]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

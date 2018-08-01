@@ -13,6 +13,9 @@ import { RolesApiService } from "../roles-api.service";
 import { IpService } from "../../ip.service";
 import { ErrorStateMatcher } from "@angular/material";
 import { UtentiApiService } from "../../utenti/utenti-api.service";
+import { ApiResolverService } from '../../api-resolver.service';
+import { catchError, tap, map } from 'rxjs/operators';
+
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */
@@ -41,7 +44,7 @@ export class RolesCreateComponent implements OnInit {
   ipAddress: any;
   keyForm: FormGroup;
   matcher = new MyErrorStateMatcher();
-
+  isLoaded = false;
   // UP_ID: '';
   // UP_U_ID: '';
   // UP_P_ID: '';
@@ -72,12 +75,19 @@ export class RolesCreateComponent implements OnInit {
     private route: ActivatedRoute,
     private api: RolesApiService,
     private userApi: UtentiApiService,
-    private formBuilder: FormBuilder
-  ) {}
+    private formBuilder: FormBuilder,
+    private resolver: ApiResolverService
+  ) {
+    this.route.data.pipe(
+      map(data => data.cres)).subscribe((res) => {
+      console.log(res);
+    });
+  }
 
 
   ngOnInit() {
-    this.getCustomer(this.route.snapshot.params["id"]);
+    console.log('component is initialized');
+    // this.getCustomer(this.route.snapshot.params["id"]);
     this.keyForm = this.formBuilder.group({
       SU_UNA: [null, Validators.required]
       // 'UP_P_ID': [null, Validators.required]
@@ -91,6 +101,7 @@ export class RolesCreateComponent implements OnInit {
       this.api.getKey(utente.SU_ID).subscribe(key => {
         this.permArr = key;
         console.log(this.permArr);
+        this.isLoaded = true;
 
         // this.keyForm.setValue({
         //   UP_P_ID: key.UP_P_ID,
