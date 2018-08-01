@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnChanges } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import {
   FormBuilder,
@@ -35,8 +35,9 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   templateUrl: "./roles-create.component.html",
   styleUrls: ["./roles-create.component.css"]
 })
-export class RolesCreateComponent implements OnInit {
+export class RolesCreateComponent implements OnInit, OnChanges {
 
+  checked = false;
   ipAddress: any;
   keyForm: FormGroup;
   matcher = new MyErrorStateMatcher();
@@ -45,51 +46,61 @@ export class RolesCreateComponent implements OnInit {
   // UP_U_ID: '';
   // UP_P_ID: '';
   permArr: object[];
+    // permArr = [
+    //   { UP_ID: 5, UP_U_ID: 83, UP_P_ID: 0 },
+    //   { UP_ID: 6, UP_U_ID: 83, UP_P_ID: 1 },
+    //   { UP_ID: 7, UP_U_ID: 83, UP_P_ID: 2 }
+    //   ];
+
   SU_UNA: "";
   // SU_LEVEL: '';
 
   levelControl = new FormControl("", [Validators.required]);
-      levels = [
-        { name: 0, description: "Creazione nuovo utente" },
-        { name: 1, description: "Reset password di qualsiasi utente" },
-        { name: 2, description: "Eliminazione di qualsiasi utente" },
-        { name: 3, description: "Modifica livello di qualsiasi utente" },
-        { name: 4, description: "Rinnovo delle licenze" },
-        { name: 5, description: "Gestione completa delle licenze" },
-        { name: 6, description: "Gestione completa dei clienti" },
-        { name: 7, description: "Gestione completa dei PC" }
-      ];
+  levels = [
+    { name: 0, description: "Creazione nuovo utente" },
+    { name: 1, description: "Reset password di qualsiasi utente" },
+    { name: 2, description: "Eliminazione di qualsiasi utente" },
+    { name: 3, description: "Modifica livello di qualsiasi utente" },
+    { name: 4, description: "Rinnovo delle licenze" },
+    { name: 5, description: "Gestione completa delle licenze" },
+    { name: 6, description: "Gestione completa dei clienti" },
+    { name: 7, description: "Gestione completa dei PC" }
+  ];
 
-      constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private api: RolesApiService,
-        private userApi: UtentiApiService,
-        private formBuilder: FormBuilder
-      ) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private api: RolesApiService,
+    private userApi: UtentiApiService,
+    private formBuilder: FormBuilder
+  ) { }
 
-      ngOnInit() {
-        this.getCustomer(this.route.snapshot.params["id"]);
-        this.keyForm = this.formBuilder.group({
-          SU_UNA: [null, Validators.required]
-          // 'UP_P_ID': [null, Validators.required]
-        });
-      }
+  ngOnChanges() {
+    this.getCustomer(this.route.snapshot.params["id"]);
+  }
 
-      getCustomer(id) {
-        this.userApi.getUtente(id).subscribe(utente => {
-          console.log(utente);
-          this.keyForm.setValue({ SU_UNA: utente.SU_UNA });
-          this.api.getKey(utente.SU_ID).subscribe(key => {
-            this.permArr = key;
-            console.log(this.permArr);
+  ngOnInit() {
+    this.getCustomer(this.route.snapshot.params["id"]);
+    this.keyForm = this.formBuilder.group({
+      SU_UNA: [null, Validators.required]
+      // 'UP_P_ID': [null, Validators.required]
+    });
+  }
 
-            // this.keyForm.setValue({
-            //   UP_P_ID: key.UP_P_ID,
-            // });
-          });
-        });
-      }
+  getCustomer(id) {
+    this.userApi.getUtente(id).subscribe(utente => {
+      console.log(utente);
+      this.keyForm.setValue({ SU_UNA: utente.SU_UNA });
+      this.api.getKey(utente.SU_ID).subscribe(key => {
+        this.permArr = key;
+        console.log(this.permArr);
+
+        // this.keyForm.setValue({
+        //   UP_P_ID: key.UP_P_ID,
+        // });
+      });
+    });
+  }
 
   // onFormSubmit(form: NgForm) {
   //   console.log(this.UP_ID);
@@ -103,3 +114,9 @@ export class RolesCreateComponent implements OnInit {
   //     });
   // }
 }
+
+    // [
+      // { UP_ID: 5, UP_U_ID: 83, UP_P_ID: 0 },
+      // { UP_ID: 6, UP_U_ID: 83, UP_P_ID: 1 },
+      // { UP_ID: 7, UP_U_ID: 83, UP_P_ID: 2 }
+    // ]
