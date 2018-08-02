@@ -6,7 +6,8 @@ import {
   Validators,
   NgForm,
   FormControl,
-  FormGroupDirective
+  FormGroupDirective,
+  FormArray
 } from "@angular/forms";
 // import { UtentiApiService } from '../../utenti/utenti-api.service';
 import { RolesApiService } from "../roles-api.service";
@@ -61,17 +62,18 @@ export class RolesCreateComponent implements OnInit {
   ) {
     this.route.data.pipe(
       map(data => data.cres)).subscribe((res) => {
-      this.permArr = res;
-      console.log(this.permArr);
-    });
+        this.permArr = res;
+        console.log(this.permArr);
+      });
+    this.checkPermArr();
+
   }
 
 
   ngOnInit() {
     this.keyForm = this.formBuilder.group({
-      SU_UNA: [null, Validators.required]
+      permsLev: this.formBuilder.array(this.levels)
     });
-    this.checkPermArr();
   }
 
   checkPermArr() {
@@ -82,6 +84,10 @@ export class RolesCreateComponent implements OnInit {
         }
       });
     });
+  }
+
+  onFormSubmit(form: NgForm) {
+    console.log(form);
   }
 
   // onFormSubmit(form: NgForm) {

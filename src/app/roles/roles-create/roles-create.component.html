@@ -5,16 +5,12 @@
 </div>
 <form [formGroup]="keyForm" (ngSubmit)="onFormSubmit(keyForm.value)">
 
-    <div>
-        <section *ngFor="let level of levels">
-            <div >
-                <mat-checkbox [checked]="level.selected">{{level.description}}</mat-checkbox>
-            </div>
-        </section>
-    </div>
+    <section *ngFor="let level of levels">
+        <mat-checkbox [checked]="level.selected">{{level.description}}</mat-checkbox>
+    </section>
 
     <div class="button-row">
-        <button type="submit" [disabled]="!keyForm.valid" mat-raised-button color="primary">
+        <button type="submit" mat-raised-button color="primary">
             <mat-icon>save</mat-icon>
         </button>
     </div>
