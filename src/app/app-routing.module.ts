@@ -62,7 +62,14 @@ const appRoutes: Routes = [
       cres: ApiResolverService
     }
   },
-  { path: 'roles-update/:id', component: RolesEditComponent, canActivate: [AuthGuard] },
+  {
+    path: 'roles-edit/:id',
+    component: RolesEditComponent,
+    canActivate: [AuthGuard],
+    resolve: {
+      cres: ApiResolverService
+    }
+  },
 
   { path: 'matricole', component: MatricoleTableComponent, canActivate: [AuthGuard] },
   { path: 'matricole-create', component: MatricoleCreateComponent, canActivate: [AuthGuard] },
@@ -84,8 +91,6 @@ const appRoutes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'changepassword', component: ChangePasswordComponent, canActivate: [AuthGuard] },
 
-
-  // { path: '', redirectTo: '/events', pathMatch: 'full' }
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login', pathMatch: 'full' }
 
@@ -101,7 +106,6 @@ const appRoutes: Routes = [
     AppMaterialModule
   ],
   exports: [RouterModule],
-  providers: [ApiResolverService],
   declarations: [
     ClientiTableComponent,
     ClientiCreateComponent,
@@ -114,7 +118,6 @@ const appRoutes: Routes = [
     RinnoviEditComponent,
     UtentiTableComponent,
     UtentiCreateComponent,
-    // UtentiEditComponent,
     UtentiResetpwdComponent,
     UtentiChangelevelComponent,
     PcTableComponent,

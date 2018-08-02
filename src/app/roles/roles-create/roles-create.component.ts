@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import {
   FormBuilder,
   FormGroup,
@@ -10,11 +10,8 @@ import {
 } from "@angular/forms";
 // import { UtentiApiService } from '../../utenti/utenti-api.service';
 import { RolesApiService } from "../roles-api.service";
-import { IpService } from "../../ip.service";
 import { ErrorStateMatcher } from "@angular/material";
-import { UtentiApiService } from "../../utenti/utenti-api.service";
-import { ApiResolverService } from '../../api-resolver.service';
-import { catchError, tap, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -40,72 +37,49 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class RolesCreateComponent implements OnInit {
 
-  checked = false;
-  ipAddress: any;
   keyForm: FormGroup;
   matcher = new MyErrorStateMatcher();
-  isLoaded = false;
-  // UP_ID: '';
-  // UP_U_ID: '';
-  // UP_P_ID: '';
-  permArr = [];
-    // permArr = [
-    //   { UP_ID: 5, UP_U_ID: 83, UP_P_ID: 0 },
-    //   { UP_ID: 6, UP_U_ID: 83, UP_P_ID: 1 },
-    //   { UP_ID: 7, UP_U_ID: 83, UP_P_ID: 2 }
-    //   ];
 
-  SU_UNA: "";
-  // SU_LEVEL: '';
+  permArr = [];
 
   levelControl = new FormControl("", [Validators.required]);
   levels = [
-    { name: 0, description: "Creazione nuovo utente" },
-    { name: 1, description: "Reset password di qualsiasi utente" },
-    { name: 2, description: "Eliminazione di qualsiasi utente" },
-    { name: 3, description: "Modifica livello di qualsiasi utente" },
-    { name: 4, description: "Rinnovo delle licenze" },
-    { name: 5, description: "Gestione completa delle licenze" },
-    { name: 6, description: "Gestione completa dei clienti" },
-    { name: 7, description: "Gestione completa dei PC" }
+    { name: 0, selected: false, description: "Creazione nuovo utente" },
+    { name: 1, selected: false, description: "Reset password di qualsiasi utente" },
+    { name: 2, selected: false, description: "Eliminazione di qualsiasi utente" },
+    { name: 3, selected: false, description: "Modifica livello di qualsiasi utente" },
+    { name: 4, selected: false, description: "Rinnovo delle licenze" },
+    { name: 5, selected: false, description: "Gestione completa delle licenze" },
+    { name: 6, selected: false, description: "Gestione completa dei clienti" },
+    { name: 7, selected: false, description: "Gestione completa dei PC" }
   ];
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
     private api: RolesApiService,
-    private userApi: UtentiApiService,
     private formBuilder: FormBuilder,
-    private resolver: ApiResolverService
   ) {
     this.route.data.pipe(
       map(data => data.cres)).subscribe((res) => {
-      console.log(res);
+      this.permArr = res;
+      console.log(this.permArr);
     });
   }
 
 
   ngOnInit() {
-    console.log('component is initialized');
-    // this.getCustomer(this.route.snapshot.params["id"]);
     this.keyForm = this.formBuilder.group({
       SU_UNA: [null, Validators.required]
-      // 'UP_P_ID': [null, Validators.required]
     });
+    this.checkPermArr();
   }
 
-  getCustomer(id) {
-    return this.userApi.getUtente(id).subscribe(utente => {
-      console.log(utente);
-      this.keyForm.setValue({ SU_UNA: utente.SU_UNA });
-      this.api.getKey(utente.SU_ID).subscribe(key => {
-        this.permArr = key;
-        console.log(this.permArr);
-        this.isLoaded = true;
-
-        // this.keyForm.setValue({
-        //   UP_P_ID: key.UP_P_ID,
-        // });
+  checkPermArr() {
+    this.permArr.forEach(perm => {
+      this.levels.forEach(level => {
+        if (perm.UP_P_ID === level.name) {
+          level.selected = true;
+        }
       });
     });
   }
@@ -122,9 +96,3 @@ export class RolesCreateComponent implements OnInit {
   //     });
   // }
 }
-
-    // [
-      // { UP_ID: 5, UP_U_ID: 83, UP_P_ID: 0 },
-      // { UP_ID: 6, UP_U_ID: 83, UP_P_ID: 1 },
-      // { UP_ID: 7, UP_U_ID: 83, UP_P_ID: 2 }
-    // ]
