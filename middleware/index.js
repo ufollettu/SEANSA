@@ -15,10 +15,12 @@ function verifyToken(req, res, next) {
     if (!jwtPayload) {
         return res.status(401).send('token not match request');
     }
-    req.userId = jwtPayload;
-    // req.user.SU_ID = jwtPayload;
+    req.userId = jwtPayload.userId;
+    req.permString = jwtPayload.permString;
 
-    console.log(`User id from jwt: ${jwtPayload}`);
+    console.log(`User id from jwt: ${jwtPayload.userId}`);
+    console.log(`Permission string from jwt: ${jwtPayload.permString}`);
+
     next();
 }
 
