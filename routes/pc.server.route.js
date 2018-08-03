@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const can = require('../middleware').can;
 
 const PcController = require('./../controllers/pc.server.contoller');
 
@@ -15,12 +16,12 @@ const PcController = require('./../controllers/pc.server.contoller');
 
 
 router.get('/', PcController.list); // Index
-router.get('/new', PcController.add); // New
-router.post('/', PcController.create); // Create
+// router.get('/new', PcController.add); // New
+router.post('/', can(7), PcController.create); // Create
 router.get('/:id', PcController.show); // Show
-router.get('/:id/edit', PcController.edit); // Edit
-router.put('/:id', PcController.update); // Update
-router.delete('/:id', PcController.destroy); // Destroy
+// router.get('/:id/edit', PcController.edit); // Edit
+router.put('/:id', can(7), PcController.update); // Update
+router.delete('/:id', can(7), PcController.destroy); // Destroy
 
 // router.put('/:id', PcController.updateStatus); // U SP_STATUS by SP_ID
 // router.get('/hwid/:id', PcController.getByHwId); // R by SP_HW_ID

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const verifyToken = require('../middleware').verifyToken;
+const can = require('../middleware').can;
 
 const RinnoviController = require('./../controllers/rinnovi.server.controller');
 
@@ -15,11 +15,11 @@ const RinnoviController = require('./../controllers/rinnovi.server.controller');
 // router.delete('/:id',    Controller.destroy);    // Destroy
 
 router.get('/', RinnoviController.list); // Index
-router.get('/new', RinnoviController.add); // New
-router.post('/', RinnoviController.create); // Create
+// router.get('/new', RinnoviController.add); // New
+router.post('/', can(5), RinnoviController.create); // Create
 router.get('/:id', RinnoviController.show); // Show
-router.get('/:id/edit', RinnoviController.edit); // Edit
-router.put('/:id', RinnoviController.update); // Update
-router.delete('/:id', RinnoviController.destroy); // Destroy
+// router.get('/:id/edit', RinnoviController.edit); // Edit
+router.put('/:id', can(4), RinnoviController.update); // Update
+router.delete('/:id', can(5), RinnoviController.destroy); // Destroy
 
 module.exports = router;

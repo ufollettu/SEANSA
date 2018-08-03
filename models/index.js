@@ -48,6 +48,7 @@ db.utentiPermessi = require('./utenti-permessi')(sequelize, Sequelize);
 
 // Relations
 
+// db.utenti.hasMany(db.utentiPermessi, { foreignKey: 'UP_U_ID' });
 // Hooks
 
 module.exports = db;
