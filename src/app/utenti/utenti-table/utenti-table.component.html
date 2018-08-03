@@ -67,15 +67,11 @@
             <a mat-raised-button matTooltip="Reset Password" matTooltipPosition="right" color="primary" [routerLink]="['/utenti-resetpwd', element.SU_ID]">
               <mat-icon>vpn_key</mat-icon>
             </a>
-            <p>
+            <p></p>
             <a mat-raised-button matTooltip="Modifica Livello" matTooltipPosition="right" color="accent" [routerLink]="['/roles-edit', element.SU_ID]">
               <mat-icon>account_circle</mat-icon>
             </a>
-            <br>
-            <a mat-raised-button matTooltip="Test Crea Livello" matTooltipPosition="right" color="primary" [routerLink]="['/roles-create', element.SU_ID]">
-              <mat-icon>account_circle</mat-icon>
-            </a>
-            <p>
+            <p></p>
             <a mat-raised-button matTooltip="Elimina utente" matTooltipPosition="right" color="warn" (click)="deleteUser(element.SU_ID)">
               <mat-icon>delete</mat-icon>
             </a>

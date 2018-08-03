@@ -25,11 +25,23 @@ class Repository {
 
   destroy(id) {
     return db.utentiPermessi.destroy({
-        where: {
-            UP_ID: id
-        }
+      where: {
+        UP_ID: id
+      }
     })
-}
+  }
+
+  bulkDestroy(userId) {
+    return db.utentiPermessi.destroy({
+      where: {
+        UP_U_ID: userId
+      }
+    })
+  }
+
+  bulkCreate(data) {
+    return db.utentiPermessi.bulkCreate(data)
+  }
 
 }
 

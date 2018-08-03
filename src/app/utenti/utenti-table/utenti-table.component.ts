@@ -53,6 +53,7 @@ export class UtentiTableComponent implements OnInit {
       .subscribe(res => {
         console.log(res);
         // const id = res['SC_ID'];
+        confirm(`vuoi davvero eliminare l'utente ${res['SU_UNA']} `);
         alert(`utente ${res['SU_UNA']} rimosso`);
         this.refreshUsersList();
       }, (err) => {

@@ -1,14 +1,15 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import {
   FormBuilder,
   FormGroup,
   Validators,
   NgForm,
   FormControl,
-  FormGroupDirective
+  FormGroupDirective,
+  FormArray
 } from "@angular/forms";
-// import { UtentiApiService } from '../../utenti/utenti-api.service';
+
 import { RolesApiService } from "../roles-api.service";
 import { ErrorStateMatcher } from "@angular/material";
 import { map } from 'rxjs/operators';
@@ -39,7 +40,7 @@ export class RolesEditComponent implements OnInit {
 
   keyForm: FormGroup;
   matcher = new MyErrorStateMatcher();
-
+  userId;
   permArr = [];
 
   levelControl = new FormControl("", [Validators.required]);
@@ -56,22 +57,26 @@ export class RolesEditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private api: RolesApiService,
     private formBuilder: FormBuilder,
   ) {
     this.route.data.pipe(
       map(data => data.cres)).subscribe((res) => {
-      this.permArr = res;
-      console.log(this.permArr);
-    });
+        this.permArr = res;
+        console.log(this.permArr);
+      });
+    this.checkPermArr();
+    this.userId = this.route.snapshot.params['id'];
   }
 
 
   ngOnInit() {
+    // Create a new array with a form control for each order
+    const controls = this.levels.map(c => new FormControl(c.selected));
     this.keyForm = this.formBuilder.group({
-      SU_UNA: [null, Validators.required]
+      permsLev: new FormArray(controls)
     });
-    this.checkPermArr();
   }
 
   checkPermArr() {
@@ -84,15 +89,27 @@ export class RolesEditComponent implements OnInit {
     });
   }
 
-  // onFormSubmit(form: NgForm) {
-  //   console.log(this.UP_ID);
-  //   this.api.updateKey(this.UP_ID, form)
-  //     .subscribe(res => {
-  //       console.log(res);
-  //       alert(`livello utente ${res['UP_U_ID']} modificato`);
-  //       this.router.navigate(['/utenti']);
-  //     }, (err) => {
-  //       console.log(err);
-  //     });
-  // }
+  onFormSubmit() {
+    const selectedPermName = this.keyForm.value.permsLev
+      .map((v, i) => v ? this.levels[i].name : null)
+      .filter(v => v !== null);
+    // console.log(selectedPermName);
+    const newPerms = this.mapForDb(selectedPermName);
+    // console.log(newPerms);
+    this.api.updateKeys(this.userId, newPerms)
+      .subscribe(res => {
+        console.log(res);
+        alert(`permessi utente Id: ${this.userId} modificati`);
+        this.router.navigate(['/utenti']);
+      });
+  }
+
+  mapForDb(newPerms) {
+    const newKeys = [];
+    newPerms.forEach(newPerm => {
+      const data = { UP_U_ID: parseInt(this.userId, 0), UP_P_ID: newPerm };
+      newKeys.push(data);
+    });
+    return newKeys;
+  }
 }

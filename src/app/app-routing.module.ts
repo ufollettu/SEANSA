@@ -19,9 +19,9 @@ import { RinnoviEditComponent } from './rinnovi/rinnovi-edit/rinnovi-edit.compon
 
 import { UtentiTableComponent } from './utenti/utenti-table/utenti-table.component';
 import { UtentiCreateComponent } from './utenti/utenti-create/utenti-create.component';
-// import { UtentiEditComponent } from './utenti/utenti-edit/utenti-edit.component';
 import { UtentiResetpwdComponent } from './utenti/utenti-resetpwd/utenti-resetpwd.component';
-import { UtentiChangelevelComponent } from './utenti/utenti-changelevel/utenti-changelevel.component';
+
+import { RolesEditComponent } from './roles/roles-edit/roles-edit.component';
 
 import { PcTableComponent } from './pc/pc-table/pc-table.component';
 import { PcCreateComponent } from './pc/pc-create/pc-create.component';
@@ -34,10 +34,6 @@ import { MatricoleEditComponent } from './matricole/matricole-edit/matricole-edi
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
-
-import { RolesTableComponent } from './roles/roles-table/roles-table.component';
-import { RolesCreateComponent } from './roles/roles-create/roles-create.component';
-import { RolesEditComponent } from './roles/roles-edit/roles-edit.component';
 
 import { ApiResolverService } from './api-resolver.service';
 
@@ -52,16 +48,7 @@ const appRoutes: Routes = [
   { path: 'utenti-create', component: UtentiCreateComponent, canActivate: [AuthGuard] },
   // { path: 'utenti-edit/:id', component: UtentiEditComponent, canActivate: [AuthGuard] },
   { path: 'utenti-resetpwd/:id', component: UtentiResetpwdComponent, canActivate: [AuthGuard] },
-  { path: 'utenti-changelevel/:id', component: UtentiChangelevelComponent, canActivate: [AuthGuard] },
 
-  {
-    path: 'roles-create/:id',
-    component: RolesCreateComponent,
-    canActivate: [AuthGuard],
-    resolve: {
-      cres: ApiResolverService
-    }
-  },
   {
     path: 'roles-edit/:id',
     component: RolesEditComponent,
@@ -119,7 +106,6 @@ const appRoutes: Routes = [
     UtentiTableComponent,
     UtentiCreateComponent,
     UtentiResetpwdComponent,
-    UtentiChangelevelComponent,
     PcTableComponent,
     PcCreateComponent,
     PcEditComponent,
@@ -129,10 +115,7 @@ const appRoutes: Routes = [
     RegisterComponent,
     LoginComponent,
     ChangePasswordComponent,
-    RolesTableComponent,
-    RolesCreateComponent,
-    RolesEditComponent,
-
+    RolesEditComponent
   ]
 })
 export class AppRoutingModule { }

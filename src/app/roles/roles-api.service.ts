@@ -38,27 +38,27 @@ export class RolesApiService {
     return body || {};
   }
 
-  getKeys(): Observable<any> {
-    return this.http.get(apiUrl, httpOptions).pipe(
-      map(this.extractData),
-      catchError(this.handleError));
-  }
+  // getKeys(): Observable<any> {
+  //   return this.http.get(apiUrl, httpOptions).pipe(
+  //     map(this.extractData),
+  //     catchError(this.handleError));
+  // }
 
-  getKey(id: string): Observable<any> {
-    const url = `${apiUrl}/${id}`;
-    return this.http.get(url, httpOptions).pipe(
-      map(this.extractData),
-      catchError(this.handleError));
-  }
+  // getKey(id: string): Observable<any> {
+  //   const url = `${apiUrl}/${id}`;
+  //   return this.http.get(url, httpOptions).pipe(
+  //     map(this.extractData),
+  //     catchError(this.handleError));
+  // }
 
-  postKey(data): Observable<any> {
-    return this.http.post(apiUrl, data, httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
+  // postKey(data): Observable<any> {
+  //   return this.http.post(apiUrl, data, httpOptions)
+  //     .pipe(
+  //       catchError(this.handleError)
+  //     );
+  // }
 
-  updateKey(id: string, data): Observable<any> {
+  updateKeys(id: string, data): Observable<any> {
     const url = `${apiUrl}/${id}`;
     return this.http.put(url, data, httpOptions)
       .pipe(
@@ -66,11 +66,11 @@ export class RolesApiService {
       );
   }
 
-  deleteKey(id: string): Observable<{}> {
-    const url = `${apiUrl}/${id}`;
-    return this.http.delete(url, httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
+  // deleteKey(id: string): Observable<{}> {
+  //   const url = `${apiUrl}/${id}`;
+  //   return this.http.delete(url, httpOptions)
+  //     .pipe(
+  //       catchError(this.handleError)
+  //     );
+  // }
 }
