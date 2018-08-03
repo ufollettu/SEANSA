@@ -6,6 +6,8 @@ const router = express.Router();
 
 const authController = require('../controllers/auth.server.controller');
 const verifyToken = require('../middleware').verifyToken;
+const can = require('../middleware').can;
+
 
 // router.get('/signin', authController.signinPage);
 // router.get('/signup', authController.signupPage);
@@ -15,7 +17,7 @@ const verifyToken = require('../middleware').verifyToken;
 
 router.post('/signin', authController.signin);
 router.post('/signup', authController.signup);
-router.put('/changepwd', verifyToken, authController.changepwd);
+router.put('/changepwd', verifyToken, can(1), authController.changepwd);
 
 // router.post('/logout', authController.logout);
 

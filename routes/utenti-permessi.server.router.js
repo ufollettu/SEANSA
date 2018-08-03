@@ -7,8 +7,8 @@ const UtentiPermessiController = require('./../controllers/utenti-permessi.serve
 
 // router.get('/', can(1), UtentiPermessiController.list); // Index
 // router.post('/', can(1), UtentiPermessiController.create); // Create
-router.get('/:id', can(1), UtentiPermessiController.show); // Show
-router.put('/:id', can(1), UtentiPermessiController.update); // Update
+router.get('/:id', can(3), UtentiPermessiController.show); // Show
+router.put('/:id', can(3), UtentiPermessiController.update); // Update
 // router.delete('/:id', can(1), UtentiPermessiController.destroy); // Destroy
 
 module.exports = router;

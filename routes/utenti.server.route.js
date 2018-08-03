@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const verifyToken = require('../middleware').verifyToken;
+const can = require('../middleware').can;
 
 const UtentiController = require('./../controllers/utenti.server.controller');
 
@@ -20,12 +21,12 @@ require('./../config/passport');
 // router.get('/', passport.authenticate('jwt', {session: false}), UtentiController.list); // Index
 router.get('/', UtentiController.list); // Index
 
-router.get('/new', UtentiController.add); // New
-router.post('/', UtentiController.create); // Create
+// router.get('/new', UtentiController.add); // New
+router.post('/', can(0), UtentiController.create); // Create
 router.get('/:id', UtentiController.show); // Show
-router.get('/:id/edit', UtentiController.edit); // Edit
-router.put('/:id', UtentiController.update); // Update
-router.delete('/:id', UtentiController.destroy); // Destroy
+// router.get('/:id/edit', UtentiController.edit); // Edit
+router.put('/:id', can(1), UtentiController.update); // Update
+router.delete('/:id', can(2), UtentiController.destroy); // Destroy
 
 // router.post('/login', UtentiController.login); // Login
 
