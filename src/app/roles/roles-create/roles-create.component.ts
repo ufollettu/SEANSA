@@ -40,7 +40,7 @@ export class RolesCreateComponent implements OnInit {
 
   keyForm: FormGroup;
   matcher = new MyErrorStateMatcher();
-
+  userId;
   permArr = [];
 
   levelControl = new FormControl("", [Validators.required]);
@@ -66,13 +66,15 @@ export class RolesCreateComponent implements OnInit {
         console.log(this.permArr);
       });
     this.checkPermArr();
-
+    this.userId = this.route.snapshot.params['id'];
   }
 
 
   ngOnInit() {
+    // Create a new array with a form control for each order
+    const controls = this.levels.map(c => new FormControl(c.selected));
     this.keyForm = this.formBuilder.group({
-      permsLev: this.formBuilder.array(this.levels)
+      permsLev: new FormArray(controls)
     });
   }
 
@@ -86,8 +88,22 @@ export class RolesCreateComponent implements OnInit {
     });
   }
 
-  onFormSubmit(form: NgForm) {
-    console.log(form);
+  onFormSubmit() {
+    const selectedPermName = this.keyForm.value.permsLev
+      .map((v, i) => v ? this.levels[i].name : null)
+      .filter(v => v !== null);
+    // console.log(selectedPermName);
+    const newPerms = this.mapForDb(selectedPermName);
+    console.log(newPerms);
+  }
+
+  mapForDb(newPerms) {
+    const newKeys = [];
+    newPerms.forEach(newPerm => {
+      const data = { UP_U_ID: parseInt(this.userId, 0), UP_P_ID: newPerm };
+      newKeys.push(data);
+    });
+    return newKeys;
   }
 
   // onFormSubmit(form: NgForm) {

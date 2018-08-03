@@ -3,10 +3,10 @@
         <mat-icon>list</mat-icon>
     </a>
 </div>
-<form [formGroup]="keyForm" (ngSubmit)="onFormSubmit(keyForm.value)">
+<form [formGroup]="keyForm" (ngSubmit)="onFormSubmit()">
 
-    <section *ngFor="let level of levels">
-        <mat-checkbox [checked]="level.selected">{{level.description}}</mat-checkbox>
+    <section formArrayName="permsLev" *ngFor="let level of keyForm.controls.permsLev.controls; let i = index">
+        <mat-checkbox [checked]="levels[i].selected" [formControlName]="i">{{levels[i].description}}</mat-checkbox>
     </section>
 
     <div class="button-row">
