@@ -21,7 +21,7 @@ export class UtentiTableComponent implements OnInit {
 
   utenti: any;
 
-  displayedColumns = ['SU_UNA', 'SU_LEVEL', 'SU_LAST_IP', 'SU_LAST_LOGIN'];
+  displayedColumns = ['SU_UNA', 'SU_LAST_IP', 'SU_LAST_LOGIN'];
   dataSource: any;
 
   constructor(private api: UtentiApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
@@ -39,7 +39,7 @@ export class UtentiTableComponent implements OnInit {
         this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);
-        if (err instanceof HttpErrorResponse ) {
+        if (err instanceof HttpErrorResponse) {
           if (err.status === 401 || 500) {
             this.router.navigate(['/login']);
           }
@@ -48,22 +48,25 @@ export class UtentiTableComponent implements OnInit {
   }
 
   deleteUser(id) {
-    const deleted = 1;
-    this.api.updateUtente(id, {'SU_DELETED': deleted})
-      .subscribe(res => {
-        console.log(res);
-        // const id = res['SC_ID'];
-        confirm(`vuoi davvero eliminare l'utente ${res['SU_UNA']} `);
-        alert(`utente ${res['SU_UNA']} rimosso`);
-        this.refreshUsersList();
-      }, (err) => {
-        console.log(err);
-        if (err instanceof HttpErrorResponse) {
-          if (err.status === 401 || 500) {
-            this.router.navigate(['/login']);
+    const conf = confirm(`sei sicuro?`);
+    if (conf) {
+      const deleted = 1;
+      this.api.updateUtente(id, { 'SU_DELETED': deleted })
+        .subscribe(res => {
+          console.log(res);
+          // const id = res['SC_ID'];
+          alert(`utente ${res['SU_UNA']} rimosso`);
+          this.refreshUsersList();
+        }, (err) => {
+          console.log(err);
+          if (err instanceof HttpErrorResponse) {
+            if (err.status === 401 || 500) {
+              this.router.navigate(['/login']);
+            }
           }
-        }
-      });
+        });
+    }
+
 
     // this.api.deleteUtente(id)
     //   .subscribe(res => {

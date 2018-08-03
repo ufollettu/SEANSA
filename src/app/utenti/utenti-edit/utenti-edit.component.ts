@@ -16,7 +16,6 @@ export class UtentiEditComponent implements OnInit {
   SU_ID: '';
   SU_UNA: '';
   SU_PAW: '';
-  SU_LEVEL: '';
   // SU_LAST_LOGIN: '';
   // SU_CREATION: '';
   // SU_LAST_EDIT: '';
@@ -29,7 +28,6 @@ export class UtentiEditComponent implements OnInit {
     this.utenteForm = this.formBuilder.group({
       'SU_UNA': [null, Validators.required],
       'SU_PAW': [null, Validators.required],
-      'SU_LEVEL': [null, Validators.required],
       // 'SU_LAST_LOGIN' : new Date(),
       // 'SU_CREATION': new Date(),
       'SU_LAST_EDIT': new Date(),
@@ -44,7 +42,6 @@ export class UtentiEditComponent implements OnInit {
         this.utenteForm.setValue({
           SU_UNA: data.SU_UNA,
           SU_PAW: data.SU_PAW,
-          SU_LEVEL: data.SU_LEVEL,
           SU_LAST_EDIT: new Date(),
           SU_LAST_IP: data.SU_LAST_IP
         });

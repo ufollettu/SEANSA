@@ -16,18 +16,6 @@
       <td mat-cell *matCellDef="let element" class="nome-col"> {{element.SU_UNA}} </td>
     </ng-container>
 
-    <!-- Pwd Column -->
-    <!-- <ng-container matColumnDef="SU_PAW">
-      <th mat-header-cell *matHeaderCellDef> Password </th>
-      <td mat-cell *matCellDef="let element" class="nome-col"> {{element.SU_PAW}} </td>
-    </ng-container> -->
-
-    <!-- Email Column -->
-    <ng-container matColumnDef="SU_LEVEL">
-      <th mat-header-cell *matHeaderCellDef> Livello </th>
-      <td mat-cell *matCellDef="let element"> {{element.SU_LEVEL}} </td>
-    </ng-container>
-
     <!-- Phone Column -->
     <ng-container matColumnDef="SU_LAST_IP">
       <th mat-header-cell *matHeaderCellDef> Last IP </th>
@@ -46,7 +34,6 @@
         <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
           <div class="example-element-diagram">
             <div class="example-element-name"> {{element.SU_UNA}} </div>
-            <div class="example-element-email"> {{element.SU_LEVEL}} </div>
             <div class="example-element-phone"> {{element.SU_LAST_IP}} </div>
           </div>
           <div class="example-element-details">

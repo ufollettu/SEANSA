@@ -16,11 +16,6 @@ module.exports = {
         type: Sequelize.STRING(100),
         allowNull: true
       },
-      SU_LEVEL: {
-        type: Sequelize.INTEGER(10).UNSIGNED,
-        allowNull: true,
-        defaultValue: "0"
-      },
       SU_LAST_LOGIN: {
         type: Sequelize.DATE,
         defaultValue: null

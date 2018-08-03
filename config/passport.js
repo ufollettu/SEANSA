@@ -29,7 +29,6 @@ passport.use("signup", new LocalStrategy({
           const data = {
             SU_UNA: username,
             SU_PAW: hash,
-            SU_LEVEL: req.body.level,
             SU_LAST_LOGIN: new Date(),
             SU_CREATION: new Date(),
             SU_LAST_EDIT: new Date(),

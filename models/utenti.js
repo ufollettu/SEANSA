@@ -15,11 +15,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(100),
       allowNull: true
     },
-    SU_LEVEL: {
-      type: DataTypes.INTEGER(10).UNSIGNED,
-      allowNull: true,
-      defaultValue: "0"
-    },
     SU_LAST_LOGIN: {
       type: DataTypes.DATE,
       defaultValue: null

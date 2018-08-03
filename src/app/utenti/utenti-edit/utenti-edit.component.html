@@ -20,13 +20,6 @@
     </mat-form-field>
 
     <mat-form-field class="example-full-width">
-        <input matInput placeholder="Livello" formControlName="SU_LEVEL" [errorStateMatcher]="matcher">
-        <mat-error>
-            <span *ngIf="!utenteForm.get('SU_LEVEL').valid && utenteForm.get('SU_LEVEL').touched">Inserisci il livello</span>
-        </mat-error>
-    </mat-form-field>
-
-    <mat-form-field class="example-full-width">
         <input matInput placeholder="Indirizzo IP" formControlName="SU_LAST_IP" [errorStateMatcher]="matcher" [(ngModel)]="ipAddress"
             [readonly]="true">
         <mat-error>
