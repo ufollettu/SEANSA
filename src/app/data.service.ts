@@ -17,11 +17,12 @@ export class DataService {
 
   getUserFromToken() {
     const authService = this.injector.get(AuthService);
-    const token: string = authService.getToken();
+    const token = authService.getToken();
 
     const userIdToken = jwt_decode(token);
+    console.log(userIdToken);
 
-    return this.api.getUtente(userIdToken);
+    return this.api.getUtente(userIdToken.userId);
   }
 
   changeUser(user: object) {
