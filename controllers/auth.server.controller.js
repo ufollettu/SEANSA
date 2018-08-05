@@ -32,19 +32,20 @@ const signup = async (req, res, next) => {
       }
 
       permRepository.findByUsername(user.SU_ID).then((keys) => {
-        console.log(keys)
-      })
-
-      const payload = {
-        "userId": user.SU_ID,
-        "permString": "01234567"
-      }
-      const token = jwt.sign(payload, secretOrKey);
-      return res.status(200).json({
-        message: "Signup successful",
-        user: user,
-        idToken: token,
-        expiresIn: expireDate
+        const perms = keys.map((key, index) => {
+          return key.UP_P_ID;
+        });
+        const payload = {
+          "userId": user.SU_ID,
+          "permArr": perms
+        };
+        const token = jwt.sign(payload, secretOrKey);
+        return res.status(200).json({
+          message: "Login successful",
+          user: user,
+          idToken: token,
+          expiresIn: expireDate
+        });
       });
     }
   )(req, res, next);
@@ -61,21 +62,22 @@ const changepwd = async (req, res, next) => {
           user: user
         });
       }
-      
-      permRepository.findByUsername(user.SU_ID).then((keys) => {
-        console.log(keys)
-      })
 
-      const payload = {
-        "userId": user.SU_ID,
-        "permString": "01234567"
-      }
-      const token = jwt.sign(payload, secretOrKey);
-      return res.status(200).json({
-        message: "password changed successfully",
-        user: user,
-        idToken: token,
-        expiresIn: expireDate
+      permRepository.findByUsername(user.SU_ID).then((keys) => {
+        const perms = keys.map((key, index) => {
+          return key.UP_P_ID;
+        });
+        const payload = {
+          "userId": user.SU_ID,
+          "permArr": perms
+        };
+        const token = jwt.sign(payload, secretOrKey);
+        return res.status(200).json({
+          message: "Login successful",
+          user: user,
+          idToken: token,
+          expiresIn: expireDate
+        });
       });
     }
   )(req, res, next);
@@ -92,22 +94,21 @@ const signin = async (req, res, next) => {
         });
       }
 
-      let k = [];
       permRepository.findByUsername(user.SU_ID).then((keys) => {
-        k = keys
-      })
-
-
-      const payload = {
-        "userId": user.SU_ID,
-        "permString": k
-      }
-      const token = jwt.sign(payload, secretOrKey);
-      return res.status(200).json({
-        message: "Login successful",
-        user: user,
-        idToken: token,
-        expiresIn: expireDate
+        const perms = keys.map((key, index) => {
+          return key.UP_P_ID;
+        });
+        const payload = {
+          "userId": user.SU_ID,
+          "permArr": perms
+        };
+        const token = jwt.sign(payload, secretOrKey);
+        return res.status(200).json({
+          message: "Login successful",
+          user: user,
+          idToken: token,
+          expiresIn: expireDate
+        });
       });
     }
   )(req, res, next);

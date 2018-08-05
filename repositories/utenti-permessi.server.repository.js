@@ -15,8 +15,8 @@ class Repository {
     return db.utentiPermessi.findById(id)
   }
 
-  findByUsername(username) {
-    return db.utentiPermessi.findAll({ where: { UP_U_ID: username } });
+  findByUsername(userId) {
+    return db.utentiPermessi.findAll({ where: { UP_U_ID: userId } });
   }
 
   findOne(userId, permissionId) {

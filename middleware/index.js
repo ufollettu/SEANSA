@@ -26,26 +26,26 @@ function verifyToken(req, res, next) {
 
 function can(permissionId, userId) {
     return (req, res, next) => {
-        userId = req.userId;
+        userId = req.userId || userId;
         console.log(`permission Id: ${permissionId}`);
         console.log(`user Id: ${userId}`);
 
         // call the db: here we using a repo with sequelize ORM
         users_permissions_repo.findOne(userId, permissionId).then(res => {
             if (!res) {
-                throw new Error('non hai il permesso per utilizzare questa risorsa')
+                throw new Error('non hai il permesso per utilizzare questa risorsa');
             } else if (res) {
-                next()
+                next();
             }
         }).catch(err => {
             res.status(401).send(err.message);
-        })
-    }
+        });
+    };
 }
 
 function allow(permissionId, userId) {
     return (req, res, next) => {
-        const data = req.body || { UP_U_ID: userId, UP_P_ID: permissionId } || {}
+        const data = req.body || { UP_U_ID: userId, UP_P_ID: permissionId } || {};
         // call the db: here we using a repo with sequelize ORM
         user_repo.findById(userId).then(utente => {
             // create a new permission association
@@ -53,13 +53,13 @@ function allow(permissionId, userId) {
                 // res.json(result);
                 next();
             }).catch(err => res.send(err.errors));
-        })
+        });
     };
 }
 
 function disallow(permissionId, userId) {
     return (req, res, next) => {
-        const data = req.body || { UP_U_ID: userId, UP_P_ID: permissionId } || {}
+        const data = req.body || { UP_U_ID: userId, UP_P_ID: permissionId } || {};
         // call the db: here we using a repo with sequelize ORM
         user_repo.findById(userId).then(utente => {
             // delete a founded permission association
@@ -68,7 +68,7 @@ function disallow(permissionId, userId) {
                 // res.status(200).send(`destroyed ${affectedRows} rows` );
                 next();
             }).catch(err => res.send(err.errors));
-        })
+        });
     };
 }
 
