@@ -48,7 +48,7 @@ export class ChangePasswordComponent implements OnInit {
       this.SU_ID = utente.SU_ID;
       this.utenteForm.setValue({
         username: utente.SU_UNA,
-        password: utente.SU_PAW,
+        password: '',
         SU_LAST_EDIT: new Date(),
       });
     });

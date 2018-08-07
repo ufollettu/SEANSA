@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { AuthService } from './auth.service';
 import { UtentiApiService } from './utenti/utenti-api.service';
 import * as jwt_decode from "jwt-decode";
+import { distinctUntilChanged } from '../../node_modules/rxjs/operators';
 
 
 @Injectable({
@@ -11,7 +12,7 @@ import * as jwt_decode from "jwt-decode";
 export class DataService {
 
   private userSource = new BehaviorSubject({});
-  currentUser = this.userSource.asObservable();
+  currentUser = this.userSource.asObservable().pipe(distinctUntilChanged());
 
   constructor(private injector: Injector, private api: UtentiApiService) { }
 
