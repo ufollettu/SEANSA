@@ -25,7 +25,7 @@ router.get('/', UtentiController.list); // Index
 router.post('/', can(0), UtentiController.create); // Create
 router.get('/:id', UtentiController.show); // Show
 // router.get('/:id/edit', UtentiController.edit); // Edit
-router.put('/:id', can(1), UtentiController.update); // Update
+router.put('/:id', UtentiController.update); // Update
 router.delete('/:id', can(2), UtentiController.destroy); // Destroy
 
 // router.post('/login', UtentiController.login); // Login

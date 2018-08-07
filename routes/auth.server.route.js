@@ -17,7 +17,7 @@ const can = require('../middleware').can;
 
 router.post('/signin', authController.signin);
 router.post('/signup', authController.signup);
-router.put('/changepwd', verifyToken, can(1), authController.changepwd);
+router.put('/changepwd', verifyToken, authController.changepwd);
 
 // router.post('/logout', authController.logout);
 

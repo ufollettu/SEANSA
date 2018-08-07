@@ -15,6 +15,10 @@ export class DataService {
 
   constructor(private injector: Injector, private api: UtentiApiService) { }
 
+  getUser() {
+    return this.currentUser;
+  }
+
   getUserFromToken() {
     const authService = this.injector.get(AuthService);
     const token = authService.getToken();
