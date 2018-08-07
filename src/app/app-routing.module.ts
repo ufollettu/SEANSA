@@ -38,6 +38,7 @@ import { LoginComponent } from './login/login.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 
 import { ApiResolverService } from './api-resolver.service';
+import { CheckPermissionsDirective } from './check-permissions.directive';
 
 
 const appRoutes: Routes = [
@@ -117,7 +118,8 @@ const appRoutes: Routes = [
     RegisterComponent,
     LoginComponent,
     ChangePasswordComponent,
-    RolesEditComponent
+    RolesEditComponent,
+    CheckPermissionsDirective
   ]
 })
 export class AppRoutingModule { }
