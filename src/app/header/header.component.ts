@@ -22,8 +22,9 @@ export class HeaderComponent implements OnInit {
   getUser() {
     this.data.getUser().subscribe(utente => {
       this.user = utente;
+      console.log(this.user);
     });
-    this.sendUser(this.user);
+    // this.sendUser(this.user);
   }
 
   onLogout() {

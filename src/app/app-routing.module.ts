@@ -1,4 +1,6 @@
 import { AuthGuard } from './auth.guard';
+import { PermsGuard } from './perms.guard';
+
 import { AppMaterialModule } from './app-material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -41,13 +43,13 @@ import { ApiResolverService } from './api-resolver.service';
 const appRoutes: Routes = [
 
   { path: 'rinnovi', component: RinnoviTableComponent, canActivate: [AuthGuard] },
-  { path: 'rinnovi-create', component: RinnoviCreateComponent, canActivate: [AuthGuard] },
-  { path: 'rinnovi-edit/:id', component: RinnoviEditComponent, canActivate: [AuthGuard] },
+  { path: 'rinnovi-create', component: RinnoviCreateComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 5 } },
+  { path: 'rinnovi-edit/:id', component: RinnoviEditComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 4 } },
 
   { path: 'utenti', component: UtentiTableComponent, canActivate: [AuthGuard] },
-  { path: 'utenti-create', component: UtentiCreateComponent, canActivate: [AuthGuard] },
-  // { path: 'utenti-edit/:id', component: UtentiEditComponent, canActivate: [AuthGuard] },
-  { path: 'utenti-resetpwd/:id', component: UtentiResetpwdComponent, canActivate: [AuthGuard] },
+  { path: 'utenti-create', component: UtentiCreateComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 0 } },
+  { path: 'utenti-resetpwd/:id', component: UtentiResetpwdComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 1 } },
+  // { path: 'utenti-delete/:id', component: UtentiDeleteComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 2 } },
 
   {
     path: 'roles-edit/:id',
@@ -63,16 +65,16 @@ const appRoutes: Routes = [
   { path: 'matricole-edit/:id', component: MatricoleEditComponent, canActivate: [AuthGuard] },
 
   { path: 'pc', component: PcTableComponent, canActivate: [AuthGuard] },
-  { path: 'pc-create', component: PcCreateComponent, canActivate: [AuthGuard] },
-  { path: 'pc-edit/:id', component: PcEditComponent, canActivate: [AuthGuard] },
+  { path: 'pc-create', component: PcCreateComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 7 } },
+  { path: 'pc-edit/:id', component: PcEditComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 7 } },
 
   { path: 'sks', component: SksTableComponent, canActivate: [AuthGuard] },
   { path: 'sks-create', component: SksCreateComponent, canActivate: [AuthGuard] },
   { path: 'sks-edit/:id', component: SksEditComponent, canActivate: [AuthGuard] },
 
   { path: 'clienti', component: ClientiTableComponent, canActivate: [AuthGuard] },
-  { path: 'clienti-create', component: ClientiCreateComponent, canActivate: [AuthGuard] },
-  { path: 'clienti-edit/:id', component: ClientiEditComponent, canActivate: [AuthGuard] },
+  { path: 'clienti-create', component: ClientiCreateComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 6 } },
+  { path: 'clienti-edit/:id', component: ClientiEditComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 6 } },
 
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
