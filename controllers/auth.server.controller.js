@@ -39,7 +39,7 @@ const signup = async (req, res, next) => {
           "userId": user.SU_ID,
           "permArr": perms
         };
-        const token = jwt.sign(payload, secretOrKey);
+        const token = jwt.sign(payload, secretOrKey, { expiresIn: expireDate });
         return res.status(200).json({
           message: "Login successful",
           user: user,
@@ -71,7 +71,7 @@ const changepwd = async (req, res, next) => {
           "userId": user.SU_ID,
           "permArr": perms
         };
-        const token = jwt.sign(payload, secretOrKey);
+        const token = jwt.sign(payload, secretOrKey, { expiresIn: expireDate });
         return res.status(200).json({
           message: "Login successful",
           user: user,
@@ -102,7 +102,7 @@ const signin = async (req, res, next) => {
           "userId": user.SU_ID,
           "permArr": perms
         };
-        const token = jwt.sign(payload, secretOrKey);
+        const token = jwt.sign(payload, secretOrKey, { expiresIn: expireDate });
         return res.status(200).json({
           message: "Login successful",
           user: user,
