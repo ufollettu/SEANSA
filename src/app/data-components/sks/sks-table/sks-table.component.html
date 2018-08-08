@@ -68,15 +68,6 @@
             <div class="example-element-codfiscale">Id PC:
               <span>{{element.SS_SP_ID}}</span>
             </div>
-            <!-- <div class="example-element-codfiscale">Status:
-                <span>{{element.SS_STATUS}}</span>
-              </div> -->
-            <!-- <div class="example-element-codfiscale">Attivato da:
-              <span>{{element.SS_ACTIVATED_BY}}</span>
-            </div> -->
-            <!-- <div class="example-element-codfiscale">Referente:
-              <span>{{element.SS_ACTIVATION_REFERENT}}</span>
-            </div> -->
             <div class="example-element-lastupdate">Data Creazione:
               <span>{{element.SS_CREATED | date:'yyyy-MM-dd'}}</span>
             </div>
@@ -92,10 +83,10 @@
             </div>
           </div>
           <div class="example-element-actions">
-            <a mat-raised-button color="primary" [routerLink]="['/sks-edit', element.SS_ID]">
+            <a mat-raised-button color="primary" [routerLink]="['/sks-edit', element.SS_ID]" [appCheckPermissions]="4">
               <mat-icon>edit</mat-icon>
             </a>
-            <a mat-raised-button color="warn" (click)="deleteSks(element.SS_ID)">
+            <a mat-raised-button color="warn" (click)="deleteSks(element.SS_ID)" [appCheckPermissions]="5">
               <mat-icon>delete</mat-icon>
             </a>
           </div>
@@ -113,7 +104,7 @@
 </div>
 
 <div class="button-row">
-  <a mat-raised-button color="primary" [routerLink]="['/sks-create']">
+  <a mat-raised-button color="primary" [routerLink]="['/sks-create']" [appCheckPermissions]="5">
     <mat-icon>add</mat-icon>
   </a>
 </div>

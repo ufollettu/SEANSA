@@ -33,7 +33,7 @@ export class UtentiTableComponent implements OnInit {
   refreshUsersList() {
     this.api.getUtenti()
       .subscribe(res => {
-        console.log(res);
+        // console.log(res);
         this.utenti = res;
         this.dataSource = new UtentiDataSource(this.api);
         this.changeDetectorRefs.detectChanges();
@@ -53,7 +53,7 @@ export class UtentiTableComponent implements OnInit {
       const deleted = 1;
       this.api.updateUtente(id, { 'SU_DELETED': deleted })
         .subscribe(res => {
-          console.log(res);
+          // console.log(res);
           // const id = res['SC_ID'];
           alert(`utente ${res['SU_UNA']} rimosso`);
           this.refreshUsersList();

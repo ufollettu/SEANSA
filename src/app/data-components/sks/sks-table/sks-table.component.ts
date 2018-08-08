@@ -32,13 +32,13 @@ export class SksTableComponent implements OnInit {
   refreshSkssList() {
     this.api.getSkss()
       .subscribe(res => {
-        console.log(res);
+        // console.log(res);
         this.sks = res;
         this.dataSource = new SksDataSource(this.api);
         this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);
-        if (err instanceof HttpErrorResponse ) {
+        if (err instanceof HttpErrorResponse) {
           if (err.status === 401 || 500) {
             this.router.navigate(['/login']);
           }

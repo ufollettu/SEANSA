@@ -38,28 +38,31 @@
           </div>
           <div class="example-element-details">
             <div class="example-element-piva"> Last Login:
-              <span>{{element.SU_LAST_LOGIN  | date:'yyyy-MM-dd'}}</span>
+              <span>{{element.SU_LAST_LOGIN | date:'yyyy-MM-dd'}}</span>
             </div>
             <div class="example-element-codfiscale">Data Creazione:
-              <span>{{element.SU_CREATION  | date:'yyyy-MM-dd'}}</span>
+              <span>{{element.SU_CREATION | date:'yyyy-MM-dd'}}</span>
             </div>
             <div class="example-element-codfiscale">Data Ultima Modifica:
-              <span>{{element.SU_LAST_EDIT  | date:'yyyy-MM-dd'}}</span>
+              <span>{{element.SU_LAST_EDIT | date:'yyyy-MM-dd'}}</span>
             </div>
           </div>
           <div class="example-element-actions">
             <!-- <a mat-raised-button matTooltip="Ban PC" color="primary" [routerLink]="['/utenti-edit', element.SU_ID]">
               <mat-icon>edit</mat-icon>
             </a> -->
-            <a mat-raised-button matTooltip="Reset Password" matTooltipPosition="right" color="primary" [routerLink]="['/utenti-resetpwd', element.SU_ID]">
+            <a mat-raised-button matTooltip="Reset Password" matTooltipPosition="right" color="primary" [routerLink]="['/utenti-resetpwd', element.SU_ID]"
+              [appCheckPermissions]="1">
               <mat-icon>vpn_key</mat-icon>
             </a>
             <p></p>
-            <a mat-raised-button matTooltip="Modifica Livello" matTooltipPosition="right" color="accent" [routerLink]="['/roles-edit', element.SU_ID]">
+            <a mat-raised-button matTooltip="Modifica Livello" matTooltipPosition="right" color="accent" [routerLink]="['/roles-edit', element.SU_ID]"
+              [appCheckPermissions]="3">
               <mat-icon>account_circle</mat-icon>
             </a>
             <p></p>
-            <a mat-raised-button matTooltip="Elimina utente" matTooltipPosition="right" color="warn" (click)="deleteUser(element.SU_ID)">
+            <a mat-raised-button matTooltip="Elimina utente" matTooltipPosition="right" color="warn" (click)="deleteUser(element.SU_ID)"
+              [appCheckPermissions]="2">
               <mat-icon>delete</mat-icon>
             </a>
           </div>
@@ -76,7 +79,7 @@
   </table>
 </div>
 
-<div class="button-row">
+<div class="button-row" [appCheckPermissions]="0">
   <a mat-raised-button matTooltip="Crea nuovo utente" color="primary" [routerLink]="['/utenti-create']">
     <mat-icon>add</mat-icon>
   </a>

@@ -32,7 +32,7 @@ export class ClientiTableComponent implements OnInit {
   refreshCustomersList() {
     this.api.getCustomers()
       .subscribe(res => {
-        console.log(res);
+        // console.log(res);
         this.clienti = res;
         this.dataSource = new ClientiDataSource(this.api);
         this.changeDetectorRefs.detectChanges();
@@ -50,7 +50,7 @@ export class ClientiTableComponent implements OnInit {
     const deleted = 1;
     this.api.updateCustomer(id, { 'SC_DELETED': deleted })
       .subscribe(res => {
-        console.log(res);
+        // console.log(res);
         // const id = res['SC_ID'];
         alert(`cliente ${res['SC_NOME']} rimosso`);
         this.refreshCustomersList();

@@ -35,7 +35,7 @@ export class PcTableComponent implements OnInit {
   refreshPcsList() {
     this.api.getPcs()
       .subscribe(res => {
-        console.log(res);
+        // console.log(res);
         this.pc = res;
         this.dataSource = new PcDataSource(this.api);
         this.changeDetectorRefs.detectChanges();
@@ -61,7 +61,7 @@ export class PcTableComponent implements OnInit {
 
   banPc(id) {
     const status = 1;
-    this.api.updatePc(id, {'SP_STATUS': status})
+    this.api.updatePc(id, { 'SP_STATUS': status })
       .subscribe(res => {
         alert(`pc ${res.SP_HW_ID} bannato`);
         this.refreshPcsList();
@@ -72,7 +72,7 @@ export class PcTableComponent implements OnInit {
 
   unbanPc(id) {
     const status = 0;
-    this.api.updatePc(id, {'SP_STATUS': status})
+    this.api.updatePc(id, { 'SP_STATUS': status })
       .subscribe(res => {
         alert(`pc ${res.SP_HW_ID} sbannato`);
         this.refreshPcsList();

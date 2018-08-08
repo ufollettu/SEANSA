@@ -14,14 +14,13 @@ export class CheckPermissionsDirective {
     private renderer: Renderer2
   ) {
     this.getPerms();
-    console.log(this.permissions);
   }
 
   @Input() set appCheckPermissions(perm: number) {
     if (this.permissions.includes(perm)) {
-      console.log('ok');
+      // console.log('ok');
     } else {
-      console.log('non autorizzato');
+      // console.log('non autorizzato');
       this.renderer.setStyle(this.element.nativeElement, 'display', 'none');
     }
   }

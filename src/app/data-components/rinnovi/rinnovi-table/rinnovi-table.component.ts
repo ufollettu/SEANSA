@@ -34,13 +34,13 @@ export class RinnoviTableComponent implements OnInit {
   refreshRinnoviList() {
     this.api.getRinnovi()
       .subscribe(res => {
-        console.log(res);
+        // console.log(res);
         this.rinnovi = res;
         this.dataSource = new RinnoviDataSource(this.api);
         this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);
-        if (err instanceof HttpErrorResponse ) {
+        if (err instanceof HttpErrorResponse) {
           if (err.status === 401 || 500) {
             this.router.navigate(['/login']);
           }
