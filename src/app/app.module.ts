@@ -1,4 +1,4 @@
-import { TokenInterceptorService } from './token-interceptor.service';
+import { TokenInterceptorService } from './services/token-interceptor.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -8,9 +8,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppMaterialModule } from './app-material.module';
 
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
-import { ProgressSpinnerComponent } from './progress-spinner/progress-spinner.component';
+import { HeaderComponent } from './layout-components/header/header.component';
+import { FooterComponent } from './layout-components/footer/footer.component';
+import { ProgressSpinnerComponent } from './layout-components/progress-spinner/progress-spinner.component';
 
 
 @NgModule({

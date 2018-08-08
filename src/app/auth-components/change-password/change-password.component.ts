@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { DataService } from "../data.service";
+import { DataService } from "../../services/data.service";
 import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators, NgForm } from "@angular/forms";
-import { AuthService } from "../auth.service";
+import { AuthService } from "../../services/auth.service";
 import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({

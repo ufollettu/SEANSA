@@ -1,10 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { IpService } from './../ip.service';
+import { IpService } from '../../services/ip.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth.service';
-import { DataService } from '../data.service';
+import { AuthService } from '../../services/auth.service';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-register',

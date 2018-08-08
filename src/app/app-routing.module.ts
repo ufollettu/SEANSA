@@ -1,5 +1,5 @@
-import { AuthGuard } from './auth.guard';
-import { PermsGuard } from './perms.guard';
+import { AuthGuard } from './guards/auth.guard';
+import { PermsGuard } from './guards/perms.guard';
 
 import { AppMaterialModule } from './app-material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -7,38 +7,38 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ClientiTableComponent } from './clienti/clienti-table/clienti-table.component';
-import { ClientiCreateComponent } from './clienti/clienti-create/clienti-create.component';
-import { ClientiEditComponent } from './clienti/clienti-edit/clienti-edit.component';
+import { ClientiTableComponent } from './data-components/clienti/clienti-table/clienti-table.component';
+import { ClientiCreateComponent } from './data-components/clienti/clienti-create/clienti-create.component';
+import { ClientiEditComponent } from './data-components/clienti/clienti-edit/clienti-edit.component';
 
-import { SksTableComponent } from './sks/sks-table/sks-table.component';
-import { SksCreateComponent } from './sks/sks-create/sks-create.component';
-import { SksEditComponent } from './sks/sks-edit/sks-edit.component';
+import { SksTableComponent } from './data-components/sks/sks-table/sks-table.component';
+import { SksCreateComponent } from './data-components/sks/sks-create/sks-create.component';
+import { SksEditComponent } from './data-components/sks/sks-edit/sks-edit.component';
 
-import { RinnoviTableComponent } from './rinnovi/rinnovi-table/rinnovi-table.component';
-import { RinnoviCreateComponent } from './rinnovi/rinnovi-create/rinnovi-create.component';
-import { RinnoviEditComponent } from './rinnovi/rinnovi-edit/rinnovi-edit.component';
+import { RinnoviTableComponent } from './data-components/rinnovi/rinnovi-table/rinnovi-table.component';
+import { RinnoviCreateComponent } from './data-components/rinnovi/rinnovi-create/rinnovi-create.component';
+import { RinnoviEditComponent } from './data-components/rinnovi/rinnovi-edit/rinnovi-edit.component';
 
-import { UtentiTableComponent } from './utenti/utenti-table/utenti-table.component';
-import { UtentiCreateComponent } from './utenti/utenti-create/utenti-create.component';
-import { UtentiResetpwdComponent } from './utenti/utenti-resetpwd/utenti-resetpwd.component';
+import { UtentiTableComponent } from './data-components/utenti/utenti-table/utenti-table.component';
+import { UtentiCreateComponent } from './data-components/utenti/utenti-create/utenti-create.component';
+import { UtentiResetpwdComponent } from './data-components/utenti/utenti-resetpwd/utenti-resetpwd.component';
 
-import { RolesEditComponent } from './roles/roles-edit/roles-edit.component';
+import { RolesEditComponent } from './auth-components/roles/roles-edit/roles-edit.component';
 
-import { PcTableComponent } from './pc/pc-table/pc-table.component';
-import { PcCreateComponent } from './pc/pc-create/pc-create.component';
-import { PcEditComponent } from './pc/pc-edit/pc-edit.component';
+import { PcTableComponent } from './data-components/pc/pc-table/pc-table.component';
+import { PcCreateComponent } from './data-components/pc/pc-create/pc-create.component';
+import { PcEditComponent } from './data-components/pc/pc-edit/pc-edit.component';
 
-import { MatricoleTableComponent } from './matricole/matricole-table/matricole-table.component';
-import { MatricoleCreateComponent } from './matricole/matricole-create/matricole-create.component';
-import { MatricoleEditComponent } from './matricole/matricole-edit/matricole-edit.component';
+import { MatricoleTableComponent } from './data-components/matricole/matricole-table/matricole-table.component';
+import { MatricoleCreateComponent } from './data-components/matricole/matricole-create/matricole-create.component';
+import { MatricoleEditComponent } from './data-components/matricole/matricole-edit/matricole-edit.component';
 
-import { RegisterComponent } from './register/register.component';
-import { LoginComponent } from './login/login.component';
-import { ChangePasswordComponent } from './change-password/change-password.component';
+import { RegisterComponent } from './auth-components/register/register.component';
+import { LoginComponent } from './auth-components/login/login.component';
+import { ChangePasswordComponent } from './auth-components/change-password/change-password.component';
 
-import { ApiResolverService } from './api-resolver.service';
-import { CheckPermissionsDirective } from './check-permissions.directive';
+import { ApiResolverService } from './services/api-resolver.service';
+import { CheckPermissionsDirective } from './directives/check-permissions.directive';
 
 
 const appRoutes: Routes = [

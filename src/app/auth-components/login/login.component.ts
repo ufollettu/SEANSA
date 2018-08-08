@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { UtentiApiService } from '../utenti/utenti-api.service';
-import { DataService } from '../data.service';
+import { UtentiApiService } from '../../data-components/utenti/utenti-api.service';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-login',

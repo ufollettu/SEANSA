@@ -1,8 +1,8 @@
 // import { trigger, state, transition, style, animate } from '@angular/animations';
 import { Router } from '@angular/router';
-import { AuthService } from './../auth.service';
+import { AuthService } from '../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../data.service';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-header',

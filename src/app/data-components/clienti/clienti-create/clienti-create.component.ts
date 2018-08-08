@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ClientiApiService } from '../../clienti/clienti-api.service';
+import { ClientiApiService } from '../clienti-api.service';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 
 @Component({
@@ -26,14 +26,14 @@ export class ClientiCreateComponent implements OnInit {
 
   ngOnInit() {
     this.clienteForm = this.formBuilder.group({
-      'SC_NOME' : [null, Validators.required],
-      'SC_PIVA' : [null],
-      'SC_COD_FISCALE' : [null],
-      'SC_INDIRIZZO' : [null, Validators.required],
-      'SC_EMAIL' : [null, [Validators.required, Validators.email]],
-      'SC_TELEFONO' : [null],
-      'SC_REFERENTE_NOME' : [null, Validators.required],
-      'SC_TEL_REFERENTE' : [null, Validators.required],
+      'SC_NOME': [null, Validators.required],
+      'SC_PIVA': [null],
+      'SC_COD_FISCALE': [null],
+      'SC_INDIRIZZO': [null, Validators.required],
+      'SC_EMAIL': [null, [Validators.required, Validators.email]],
+      'SC_TELEFONO': [null],
+      'SC_REFERENTE_NOME': [null, Validators.required],
+      'SC_TEL_REFERENTE': [null, Validators.required],
       // 'SC_TS' : [null]
     });
   }
@@ -41,12 +41,12 @@ export class ClientiCreateComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.api.postCustomer(form)
       .subscribe(res => {
-          // const id = res['SC_ID'];
-          alert(`cliente ${res['SC_NOME']} creato`);
-          this.router.navigate(['/clienti']);
-        }, (err) => {
-          console.log(err);
-        });
+        // const id = res['SC_ID'];
+        alert(`cliente ${res['SC_NOME']} creato`);
+        this.router.navigate(['/clienti']);
+      }, (err) => {
+        console.log(err);
+      });
   }
 
 }
