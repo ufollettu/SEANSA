@@ -11,12 +11,14 @@ import { DataService } from '../../services/data.service';
 })
 export class HeaderComponent implements OnInit {
   user: object;
+  username: string;
 
   constructor(private router: Router, private authService: AuthService, private data: DataService) { }
 
 
   ngOnInit() {
     this.getUser();
+    this.getUserFromLocalStorage();
   }
 
   getUser() {
@@ -33,5 +35,9 @@ export class HeaderComponent implements OnInit {
 
   sendUser(user) {
     this.data.changeUser(user);
+  }
+
+  getUserFromLocalStorage() {
+    this.username = localStorage.getItem('userName');
   }
 }

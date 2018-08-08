@@ -1,20 +1,20 @@
 <div class="header-buttons mat-elevation-z8">
   <div class="site-title" *ngIf="!authService.loggedIn()">
     <mat-card>
-      <h1 >Welcome to Superactivator</h1>
+      <h1>Welcome to Superactivator</h1>
     </mat-card>
   </div>
   <div class="routes-buttons" *ngIf="!!authService.loggedIn()">
     <div class="navbuttons">
-        <button mat-raised-button [routerLink]="['/clienti']" routerLinkActive="mat-accent">Clienti</button>
-        <button mat-raised-button [routerLink]="['/utenti']" routerLinkActive="mat-accent">Utenti</button>
-        <!-- <button mat-raised-button [routerLink]="['/matricole']" routerLinkActive="mat-accent">Matricole</button> -->
-        <button mat-raised-button [routerLink]="['/sks']" routerLinkActive="mat-accent">Sks</button>
-        <button mat-raised-button [routerLink]="['/pc']" routerLinkActive="mat-accent">Pc</button>
-        <button mat-raised-button [routerLink]="['/rinnovi']" routerLinkActive="mat-accent">Rinnovi</button>
+      <button mat-raised-button [routerLink]="['/clienti']" routerLinkActive="mat-accent">Clienti</button>
+      <button mat-raised-button [routerLink]="['/utenti']" routerLinkActive="mat-accent">Utenti</button>
+      <!-- <button mat-raised-button [routerLink]="['/matricole']" routerLinkActive="mat-accent">Matricole</button> -->
+      <button mat-raised-button [routerLink]="['/sks']" routerLinkActive="mat-accent">Sks</button>
+      <button mat-raised-button [routerLink]="['/pc']" routerLinkActive="mat-accent">Pc</button>
+      <button mat-raised-button [routerLink]="['/rinnovi']" routerLinkActive="mat-accent">Rinnovi</button>
     </div>
     <div class="welcome">
-      <span>You are logged as: {{user.SU_UNA}}</span>
+      <span>You are logged as: {{user.SU_UNA || username}}</span>
     </div>
   </div>
   <div class="auth-buttons">

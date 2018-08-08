@@ -38,29 +38,30 @@ export class LoginComponent implements OnInit {
 
   onFormSubmit(form: NgForm) {
     this.auth.loginUser(form)
-    .subscribe(res => {
-      localStorage.setItem('token', res['idToken']);
+      .subscribe(res => {
+        localStorage.setItem('token', res['idToken']);
 
-      const userId = res['user']['SU_ID'];
-      const lastLoginDate = Date.now();
+        const userId = res['user']['SU_ID'];
+        const lastLoginDate = Date.now();
 
-      this.userApi.updateUtente(userId, {'SU_LAST_LOGIN': lastLoginDate})
-      .subscribe(user => {
-        // console.log(user);
-        alert(`benvenuto ${user['SU_UNA']}!`);
-        this.sendUser(user);
-        this.router.navigate(['/clienti']);
-      });
+        this.userApi.updateUtente(userId, { 'SU_LAST_LOGIN': lastLoginDate })
+          .subscribe(user => {
+            // console.log(user);
+            alert(`benvenuto ${user['SU_UNA']}!`);
+            localStorage.setItem('userName', user['SU_UNA']);
+            this.sendUser(user);
+            this.router.navigate(['/clienti']);
+          });
 
-    }, (err) => {
-      console.log(err);
-      if (err instanceof HttpErrorResponse ) {
-        if (err.status === 422) {
-          alert('wrong user or password');
-          this.router.navigate(['/login']);
+      }, (err) => {
+        console.log(err);
+        if (err instanceof HttpErrorResponse) {
+          if (err.status === 422) {
+            alert('wrong user or password');
+            this.router.navigate(['/login']);
+          }
         }
-      }
-    });
+      });
   }
 
   sendUser(user) {
