@@ -47,9 +47,21 @@
 }
 
 .navbuttons {
-    width: 70%;
+    width: 50%;
     display: inline-block;
     text-align: left;
+}
+
+.logo-wrapper {
+    width: 20%;
+    display: inline-block;
+    text-align: left;
+}
+
+.logo {
+    margin-bottom: -30px;
+    width: 90%;
+    bottom: 0;
 }
 
 .welcome {
@@ -60,3 +72,4 @@
     font-size: 16px;
     color: whitesmoke;
 }
+

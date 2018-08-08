@@ -12,9 +12,9 @@ import { DataService } from '../../services/data.service';
 export class HeaderComponent implements OnInit {
   user: object;
   username: string;
+  imagePath: string;
 
   constructor(private router: Router, private authService: AuthService, private data: DataService) { }
-
 
   ngOnInit() {
     this.getUser();
@@ -25,6 +25,8 @@ export class HeaderComponent implements OnInit {
     this.data.getUser().subscribe(utente => {
       this.user = utente;
       console.log(this.user);
+      this.getLogo(utente['SU_UNA']);
+
     });
     // this.sendUser(this.user);
   }
@@ -38,6 +40,21 @@ export class HeaderComponent implements OnInit {
   }
 
   getUserFromLocalStorage() {
-    this.username = localStorage.getItem('userName');
+    const localUsername = localStorage.getItem('userName');
+    this.username = localUsername;
+    this.getLogo(localUsername);
   }
+
+  getLogo(username) {
+    if (username === 'cane') {
+      this.imagePath = '../../../assets/images/raniero.png';
+    } else if (username === 'gatto') {
+      this.imagePath = '../../../assets/images/toyota.png';
+    }
+  }
+
+  // with db call
+  // getLogoTest(user) {
+  //   this.imagePath = user['img'];
+  // }
 }

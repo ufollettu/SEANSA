@@ -47,13 +47,15 @@ export class SksTableComponent implements OnInit {
   }
 
   deleteSks(id) {
-    this.api.deleteSks(id)
-      .subscribe(res => {
-        alert(`sks ${id} rimossa`);
-        this.refreshSkssList();
-      }, (err) => {
-        console.log(err);
-      });
+    const conf = confirm(`sei sicuro?`);
+    if (conf) {
+      this.api.deleteSks(id)
+        .subscribe(res => {
+          alert(`sks ${id} rimossa`);
+          this.refreshSkssList();
+        }, (err) => {
+          console.log(err);
+        });
+    }
   }
-
 }

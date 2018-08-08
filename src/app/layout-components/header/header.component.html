@@ -13,6 +13,9 @@
       <button mat-raised-button [routerLink]="['/pc']" routerLinkActive="mat-accent">Pc</button>
       <button mat-raised-button [routerLink]="['/rinnovi']" routerLinkActive="mat-accent">Rinnovi</button>
     </div>
+    <div class="logo-wrapper">
+      <img class="logo" [src]="imagePath">
+    </div>
     <div class="welcome">
       <span>You are logged as: {{user.SU_UNA || username}}</span>
     </div>
