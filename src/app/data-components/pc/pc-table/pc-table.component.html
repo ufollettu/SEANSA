@@ -51,13 +51,7 @@
               <span>{{element.SP_PC_DATE_TIME | date:'yyyy-MM-dd'}}</span>
             </div>
           </div>
-          <div class="example-element-actions">
-            <!-- <a mat-raised-button color="primary" [routerLink]="['/pc-edit', element.SP_ID]">
-              <mat-icon>edit</mat-icon>
-            </a>
-            <a mat-raised-button color="warn" (click)="deletePc(element.SP_ID)">
-              <mat-icon>delete</mat-icon>
-            </a> -->
+          <div class="example-element-actions" [appCheckPermissions]="7">
             <a mat-raised-button matTooltip="Ban PC" color="warn" (click)="banPc(element.SP_ID)" *ngIf="element.SP_STATUS===0">
               <mat-icon>not_interested</mat-icon>
             </a>
