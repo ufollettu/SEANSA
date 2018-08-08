@@ -25,7 +25,7 @@ export class PcCreateComponent implements OnInit {
     this.pcForm = this.formBuilder.group({
       'SP_HW_ID': [null, Validators.required],
       'SP_LAST_RX': new Date(),
-      'SP_IP': [this.getIp(), Validators.required],
+      'SP_IP': [null, Validators.required],
       'SP_STATUS': [null, Validators.required],
       'SP_PC_DATE_TIME': new Date()
     });
@@ -34,20 +34,20 @@ export class PcCreateComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.api.postPc(form)
       .subscribe(res => {
-          // const id = res['SC_ID'];
-          alert(`pc ${res['SP_HW_ID']} creato`);
-          this.router.navigate(['/pc']);
-        }, (err) => {
-          console.log(err);
-        });
+        // const id = res['SC_ID'];
+        alert(`pc ${res['SP_HW_ID']} creato`);
+        this.router.navigate(['/pc']);
+      }, (err) => {
+        console.log(err);
+      });
   }
 
   getIp() {
     this.api.getIpAddress()
-    .subscribe(data => {
-      console.log('ip', data.ip);
-      return this.ipAddress = data.ip;
-    });
+      .subscribe(data => {
+        console.log('ip', data.ip);
+        return this.ipAddress = data.ip;
+      });
   }
 
 }

@@ -1,35 +1,39 @@
-<div class="button-row">
-  <a mat-raised-button color="primary" (click)="pcDetails()">
-      <mat-icon>arrow_back_ios</mat-icon>
-  </a>
+<div class="container">
+    <mat-card>
+        <div class="button-row">
+            <a mat-raised-button color="primary" (click)="pcDetails()">
+                <mat-icon>arrow_back_ios</mat-icon>
+            </a>
+        </div>
+        <form [formGroup]="pcForm" (ngSubmit)="onFormSubmit(pcForm.value)">
+
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="Hardware Id" formControlName="SP_HW_ID" [errorStateMatcher]="matcher">
+                <mat-error>
+                    <span *ngIf="!pcForm.get('SP_HW_ID').valid && pcForm.get('SP_HW_ID').touched">Inserisci il codice HW del PC</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="Status" formControlName="SP_STATUS" [errorStateMatcher]="matcher">
+                <mat-error>
+                    <span *ngIf="!pcForm.get('SP_STATUS').valid && pcForm.get('SP_STATUS').touched">Inserisci lo status</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="Indirizzo IP" formControlName="SP_IP" [errorStateMatcher]="matcher" [(ngModel)]="ipAddress"
+                    [readonly]="true">
+                <mat-error>
+                    <span *ngIf="!pcForm.get('SP_IP').valid && pcForm.get('SP_IP').touched">Inserisci l'IP</span>
+                </mat-error>
+            </mat-form-field>
+
+            <div class="button-row">
+                <button type="submit" [disabled]="!pcForm.valid" mat-raised-button color="primary">
+                    <mat-icon>save</mat-icon>
+                </button>
+            </div>
+        </form>
+    </mat-card>
 </div>
-<form [formGroup]="pcForm" (ngSubmit)="onFormSubmit(pcForm.value)">
-
-  <mat-form-field class="example-full-width">
-      <input matInput placeholder="Hardware Id" formControlName="SP_HW_ID" [errorStateMatcher]="matcher">
-      <mat-error>
-          <span *ngIf="!pcForm.get('SP_HW_ID').valid && pcForm.get('SP_HW_ID').touched">Inserisci il codice HW del PC</span>
-      </mat-error>
-  </mat-form-field>
-
-  <mat-form-field class="example-full-width">
-      <input matInput placeholder="Status" formControlName="SP_STATUS" [errorStateMatcher]="matcher">
-      <mat-error>
-          <span *ngIf="!pcForm.get('SP_STATUS').valid && pcForm.get('SP_STATUS').touched">Inserisci lo status</span>
-      </mat-error>
-  </mat-form-field>
-
-  <mat-form-field class="example-full-width">
-      <input matInput placeholder="Indirizzo IP" formControlName="SP_IP" [errorStateMatcher]="matcher" [(ngModel)]="ipAddress"
-          [readonly]="true">
-      <mat-error>
-          <span *ngIf="!pcForm.get('SP_IP').valid && pcForm.get('SP_IP').touched">Inserisci l'IP</span>
-      </mat-error>
-  </mat-form-field>
-
-  <div class="button-row">
-      <button type="submit" [disabled]="!pcForm.valid" mat-raised-button color="primary">
-          <mat-icon>save</mat-icon>
-      </button>
-  </div>
-</form>
