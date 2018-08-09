@@ -20,8 +20,8 @@ const models = require('./models');
 
 
 // requiring routes
+const rcvPcRouter = require('./routes/rcvpc.server.route');
 const authRouter = require('./routes/auth.server.route');
-
 const indexRouter = require('./routes/index.server.route');
 const utentiRouter = require('./routes/utenti.server.route');
 const sksRouter = require('./routes/sks.server.route');
@@ -39,7 +39,7 @@ app.set('view engine', 'hbs');
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 // app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'dist/client')));
 app.use('/', express.static(path.join(__dirname, 'dist/client')));
@@ -52,16 +52,16 @@ require('./config/passport');
 // DB
 models.sequelize.authenticate().then(() => {
     console.log('Connected to SQL database', CONFIG.db_name);
-  })
-  .catch(err => {
-    console.error('Unable to connect to SQL database:', CONFIG.db_name, err);
-  });
-  if(CONFIG.app==='dev'){
+})
+    .catch(err => {
+        console.error('Unable to connect to SQL database:', CONFIG.db_name, err);
+    });
+if (CONFIG.app === 'dev') {
     models.sequelize.sync()//creates table if they do not already exist
-    // models.sequelize.sync({ force: true });//deletes all tables then recreates them useful for testing and development purposes
-    .then()
-    .catch(err => console.assert(err));
-  }
+        // models.sequelize.sync({ force: true });//deletes all tables then recreates them useful for testing and development purposes
+        .then()
+        .catch(err => console.assert(err));
+}
 // CORS
 app.use((req, res, next) => {
     // Website you wish to allow to connect
@@ -77,11 +77,12 @@ app.use((req, res, next) => {
     next();
 });
 
-// app.use(cors());
-// Routes
+// receive PC routes
+app.use('/rcv_pc', rcvPcRouter);
+
+// API Routes
 app.use('/api/', indexRouter);
 
-// app.options('/api/auth', cors());
 app.use('/api/auth', authRouter);
 app.use('/api/roles', verifyToken, utentiPermessiRouter);
 
@@ -91,7 +92,6 @@ app.use('/api/pc', verifyToken, pcRouter);
 app.use('/api/matricole', verifyToken, matricoleRouter);
 app.use('/api/rinnovi', verifyToken, rinnoviRouter);
 app.use('/api/clienti', verifyToken, clientiRouter);
-
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

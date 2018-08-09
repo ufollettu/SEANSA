@@ -72,11 +72,52 @@ function disallow(permissionId, userId) {
     };
 }
 
+function codeToGod(stringToCode) {
+    // if (strlen($StringToCode) == 0) {
+    //     return "";
+    // }
+
+    // $AllBy = unpack('C*', $StringToCode);
+    // $StringToCode = "";
+
+    // for ($i = 1; $i <= count($AllBy); $i++) {
+    //     $All4B[0] = ($AllBy[$i] & 3) | (rand(0, 3) << 2) | (rand(0, 3) << 4) | (rand(0, 3) << 6);
+    //     $All4B[1] = (rand(0, 3)) | ($AllBy[$i] & 12) | (rand(0, 3) << 4) | (rand(0, 3) << 6);
+    //     $All4B[2] = (rand(0, 3)) | ((rand(0, 3) << 2) & 3) | ($AllBy[$i] & 48) | (rand(0, 3) << 6);
+    //     $All4B[3] = (rand(0, 3)) | ((rand(0, 3) << 2) & 3) | ((rand(0, 3) << 4) & 3) | ($AllBy[$i] & 192);
+
+
+    //     $StringToCode = $StringToCode.str_replace('-', '', bin2hex(join(array_map("chr", $All4B))));
+    // }
+    // return $StringToCode;
+}
+
+function decodeToMortal(stringToCode) {
+    // if (strlen($StringToCode) == 0) {
+    //     return "";
+    // }    
+
+    // for($i=0; $i< strlen($StringToCode)/2; $i++){
+    //     $bin = hex2bin(substr($StringToCode, $i * 2, 2));
+    //     $AllBy[$i] = ord($bin);
+    // }
+
+    // $StringToCode = "";
+
+    // for ($i=0; $i< count($AllBy); $i=$i+4) {
+    //     $All4B = ($AllBy[$i] & 3) | ($AllBy[$i + 1] & 12) | ($AllBy[$i + 2] & 48) | ($AllBy[$i + 3] & 192);
+    //     $StringToCode = $StringToCode . chr($All4B);
+    // }
+    // return $StringToCode;
+}
+
 module.exports = {
     verifyToken,
     can,
     allow,
-    disallow
+    disallow,
+    codeToGod,
+    decodeToMortal
 };
 
 // TODO add guard to prevent unauthorized uses to non SU users

@@ -13,6 +13,15 @@ class Repository {
     return db.pc.findById(id);
   }
 
+  findOne(hwId) {
+    return db.pc.findOne({
+      where: {
+        SP_STATUS: 0,
+        SP_HW_ID: hwId
+      }
+    })
+  }
+
   destroy(id) {
     return db.pc.destroy({
       where: {
