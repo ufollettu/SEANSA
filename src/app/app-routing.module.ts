@@ -39,6 +39,7 @@ import { ChangePasswordComponent } from './auth-components/change-password/chang
 
 import { ApiResolverService } from './services/api-resolver.service';
 import { CheckPermissionsDirective } from './directives/check-permissions.directive';
+import { CustomizeComponent } from './customize/customize.component';
 
 
 const appRoutes: Routes = [
@@ -80,6 +81,7 @@ const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'changepassword', component: ChangePasswordComponent, canActivate: [AuthGuard] },
+  { path: 'customize', component: CustomizeComponent, canActivate: [AuthGuard] },
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login', pathMatch: 'full' }
@@ -119,7 +121,8 @@ const appRoutes: Routes = [
     LoginComponent,
     ChangePasswordComponent,
     RolesEditComponent,
-    CheckPermissionsDirective
+    CheckPermissionsDirective,
+    CustomizeComponent
   ]
 })
 export class AppRoutingModule { }

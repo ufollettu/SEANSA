@@ -1,5 +1,8 @@
 const pcRepo = require("../repositories/pc.server.repository");
 const repository = require('../repositories/rcvpc.server.repository');
+const codeToGod = require('../middleware').codeToGod;
+const decodeToMortal = require('../middleware').decodeToMortal;
+
 
 // List
 // const list = async (req, res) => {

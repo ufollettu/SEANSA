@@ -73,10 +73,9 @@ function disallow(permissionId, userId) {
 }
 
 function codeToGod(stringToCode) {
-    // if (strlen($StringToCode) == 0) {
-    //     return "";
-    // }
-
+    if (stringToCode.length == 0) {
+        return "";
+    }
     // $AllBy = unpack('C*', $StringToCode);
     // $StringToCode = "";
 
@@ -93,9 +92,9 @@ function codeToGod(stringToCode) {
 }
 
 function decodeToMortal(stringToCode) {
-    // if (strlen($StringToCode) == 0) {
-    //     return "";
-    // }    
+    if (stringToCode.length == 0) {
+        return "";
+    }
 
     // for($i=0; $i< strlen($StringToCode)/2; $i++){
     //     $bin = hex2bin(substr($StringToCode, $i * 2, 2));
@@ -111,13 +110,33 @@ function decodeToMortal(stringToCode) {
     // return $StringToCode;
 }
 
+function generateValidKey(key) {
+    // $lolcheck = 'lolkey';
+    // for($i=0; $i<10 ; $i=$i+2) {
+    //     $validKey = $validKey . $key[$i] . $lolcheck[$b++];
+    // }
+    // return $validKey;
+}
+
+function checkValidKey(checkkey, patkey) {
+    // $lolcheck = 'lolkey';
+    // for($i=0; $i<9 ; $i=$i+2) {
+    //     if($checkkey[$i] != $patkey[$i] || $patkey[$i+1] != $lolcheck[$b++]) {
+    //         return 'KO';
+    //     }
+    // }
+    // return 'OK';
+}
+
 module.exports = {
     verifyToken,
     can,
     allow,
     disallow,
     codeToGod,
-    decodeToMortal
+    decodeToMortal,
+    generateValidKey,
+    checkValidKey
 };
 
 // TODO add guard to prevent unauthorized uses to non SU users
