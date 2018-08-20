@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const users_permissions_repo = require("../repositories/utenti-permessi.server.repository");
 const user_repo = require("../repositories/utenti.server.repository");
-var bytes = require('utf8-bytes');
 
 function verifyToken(req, res, next) {
     if (!req.headers.authorization) {
@@ -73,85 +72,11 @@ function disallow(permissionId, userId) {
     };
 }
 
-// TODO test with software transimission
-function codeToGod(stringToCode) {
-    if (stringToCode.length == 0) {
-        return "";
-    }
-    const allBy = bytes(stringToCode);
-    let all4B = [];
-    let result = '';
-
-    for (let i = 1; i <= allBy.length; i++) {
-        all4B[0] = (allBy[i] & 3) | (Math.floor(Math.random() * 4) << 2) | (Math.floor(Math.random() * 4) << 4) | (Math.floor(Math.random() * 4) << 6);
-        all4B[1] = (Math.floor(Math.random() * 4)) | (allBy[i] & 12) | (Math.floor(Math.random() * 4) << 4) | (Math.floor(Math.random() * 4) << 6);
-        all4B[2] = (Math.floor(Math.random() * 4)) | ((Math.floor(Math.random() * 4) << 2) & 3) | (allBy[i] & 48) | (Math.floor(Math.random() * 4) << 6);
-        all4B[3] = (Math.floor(Math.random() * 4)) | ((Math.floor(Math.random() * 4) << 2) & 3) | ((Math.floor(Math.random() * 4) << 4) & 3) | (allBy[i] & 192);
-
-        // TODO check for working
-        result = result + all4B.toString().replace("-", '');
-    }
-    return result;
-}
-
-// TODO test with software transimission
-function decodeToMortal(stringToCode) {
-    if (stringToCode.length == 0) {
-        return "";
-    }
-
-    let result = '';
-    let allBy = [];
-
-    for (let i = 0; i < stringToCode.length / 2; i++) {
-        const bin = hex2bin(stringToCode.substring(i * 2, 2));
-        allBy[i] = str.charCodeAt(bin);
-    }
-
-    for (let i = 0; i < allBy.length; i = i + 4) {
-        const all4B = (allBy[i] & 3) | (allBy[i + 1] & 12) | (allBy[i + 2] & 48) | (allBy[$i + 3] & 192);
-        result = result + String.fromCharCode(all4B);
-    }
-
-    return result;
-
-}
-
-function hex2bin(hex) {
-    var bytes = [];
-    for (var i = 0; i < hex.length - 1; i += 2) {
-        bytes.push(parseInt(hex.substr(i, 2), 16));
-    }
-    return String.fromCharCode.apply(String, bytes);
-}
-
-function generateValidKey(key) {
-    // $lolcheck = 'lolkey';
-    // for($i=0; $i<10 ; $i=$i+2) {
-    //     $validKey = $validKey . $key[$i] . $lolcheck[$b++];
-    // }
-    // return $validKey;
-}
-
-function checkValidKey(checkkey, patkey) {
-    // $lolcheck = 'lolkey';
-    // for($i=0; $i<9 ; $i=$i+2) {
-    //     if($checkkey[$i] != $patkey[$i] || $patkey[$i+1] != $lolcheck[$b++]) {
-    //         return 'KO';
-    //     }
-    // }
-    // return 'OK';
-}
-
 module.exports = {
     verifyToken,
     can,
     allow,
-    disallow,
-    codeToGod,
-    decodeToMortal,
-    generateValidKey,
-    checkValidKey
+    disallow
 };
 
 // TODO add guard to prevent unauthorized uses to non SU users
