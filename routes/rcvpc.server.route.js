@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const helpers = require('../helpers');
+const licenseHelper = require('../helpers/licence_helper');
 
-// router.get('/', rcvPcController.list);
+// router.post('/', licenseHelper.checkLicense);
+// router.post('/', licenseHelper.generateLicense);
+// router.post('/', licenseHelper.registerLicense);
 
 module.exports = router;
