@@ -42,10 +42,12 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "request-ip": "^2.1.1",
     "rxjs": "^6.0.0",
     "sequelize": "^4.37.10",
     "sequelize-cli": "^4.0.0",
     "serve-favicon": "^2.5.0",
+    "utf8-bytes": "0.0.1",
     "validator": "^10.3.0",
     "zone.js": "^0.8.26"
   },

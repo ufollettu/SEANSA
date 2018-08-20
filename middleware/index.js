@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const users_permissions_repo = require("../repositories/utenti-permessi.server.repository");
 const user_repo = require("../repositories/utenti.server.repository");
+var bytes = require('utf8-bytes');
 
 function verifyToken(req, res, next) {
     if (!req.headers.authorization) {
@@ -72,42 +73,56 @@ function disallow(permissionId, userId) {
     };
 }
 
+// TODO test with software transimission
 function codeToGod(stringToCode) {
     if (stringToCode.length == 0) {
         return "";
     }
-    // $AllBy = unpack('C*', $StringToCode);
-    // $StringToCode = "";
+    const allBy = bytes(stringToCode);
+    let all4B = [];
+    let result = '';
 
-    // for ($i = 1; $i <= count($AllBy); $i++) {
-    //     $All4B[0] = ($AllBy[$i] & 3) | (rand(0, 3) << 2) | (rand(0, 3) << 4) | (rand(0, 3) << 6);
-    //     $All4B[1] = (rand(0, 3)) | ($AllBy[$i] & 12) | (rand(0, 3) << 4) | (rand(0, 3) << 6);
-    //     $All4B[2] = (rand(0, 3)) | ((rand(0, 3) << 2) & 3) | ($AllBy[$i] & 48) | (rand(0, 3) << 6);
-    //     $All4B[3] = (rand(0, 3)) | ((rand(0, 3) << 2) & 3) | ((rand(0, 3) << 4) & 3) | ($AllBy[$i] & 192);
+    for (let i = 1; i <= allBy.length; i++) {
+        all4B[0] = (allBy[i] & 3) | (Math.floor(Math.random() * 4) << 2) | (Math.floor(Math.random() * 4) << 4) | (Math.floor(Math.random() * 4) << 6);
+        all4B[1] = (Math.floor(Math.random() * 4)) | (allBy[i] & 12) | (Math.floor(Math.random() * 4) << 4) | (Math.floor(Math.random() * 4) << 6);
+        all4B[2] = (Math.floor(Math.random() * 4)) | ((Math.floor(Math.random() * 4) << 2) & 3) | (allBy[i] & 48) | (Math.floor(Math.random() * 4) << 6);
+        all4B[3] = (Math.floor(Math.random() * 4)) | ((Math.floor(Math.random() * 4) << 2) & 3) | ((Math.floor(Math.random() * 4) << 4) & 3) | (allBy[i] & 192);
 
-
-    //     $StringToCode = $StringToCode.str_replace('-', '', bin2hex(join(array_map("chr", $All4B))));
-    // }
-    // return $StringToCode;
+        // TODO check for working
+        result = result + all4B.toString().replace("-", '');
+    }
+    return result;
 }
 
+// TODO test with software transimission
 function decodeToMortal(stringToCode) {
     if (stringToCode.length == 0) {
         return "";
     }
 
-    // for($i=0; $i< strlen($StringToCode)/2; $i++){
-    //     $bin = hex2bin(substr($StringToCode, $i * 2, 2));
-    //     $AllBy[$i] = ord($bin);
-    // }
+    let result = '';
+    let allBy = [];
 
-    // $StringToCode = "";
+    for (let i = 0; i < stringToCode.length / 2; i++) {
+        const bin = hex2bin(stringToCode.substring(i * 2, 2));
+        allBy[i] = str.charCodeAt(bin);
+    }
 
-    // for ($i=0; $i< count($AllBy); $i=$i+4) {
-    //     $All4B = ($AllBy[$i] & 3) | ($AllBy[$i + 1] & 12) | ($AllBy[$i + 2] & 48) | ($AllBy[$i + 3] & 192);
-    //     $StringToCode = $StringToCode . chr($All4B);
-    // }
-    // return $StringToCode;
+    for (let i = 0; i < allBy.length; i = i + 4) {
+        const all4B = (allBy[i] & 3) | (allBy[i + 1] & 12) | (allBy[i + 2] & 48) | (allBy[$i + 3] & 192);
+        result = result + String.fromCharCode(all4B);
+    }
+
+    return result;
+
+}
+
+function hex2bin(hex) {
+    var bytes = [];
+    for (var i = 0; i < hex.length - 1; i += 2) {
+        bytes.push(parseInt(hex.substr(i, 2), 16));
+    }
+    return String.fromCharCode.apply(String, bytes);
 }
 
 function generateValidKey(key) {

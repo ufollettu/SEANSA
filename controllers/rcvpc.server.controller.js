@@ -1,5 +1,6 @@
 const pcRepo = require("../repositories/pc.server.repository");
 const repository = require('../repositories/rcvpc.server.repository');
+const requestIp = require('request-ip');
 const codeToGod = require('../middleware').codeToGod;
 const decodeToMortal = require('../middleware').decodeToMortal;
 
@@ -43,12 +44,15 @@ const show = async (req, res) => {
         pcRepo.findOne(key[0]['SP_HW_ID'])
           .then(hwid => {
             if (hwid) {
+              // TODO update pc rx date
+              // const ip = requestIp.getClientIp(req);
+              // pcRepo.updatePcRx(hwid, ip, today)
               res.json(key);
             } else {
               throw new Error('pc banned')
             }
           })
-        // TODO update pc rx date
+
       }
     } else {
       throw new Error('key not exists')

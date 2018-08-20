@@ -29,6 +29,11 @@ class Repository {
       }
     })
   }
+
+  updatePcRx(hwId, ip, date) {
+    const query = "UPDATE `SA_PC` set `SP_LAST_RX`=" + now() + "',  `SP_IP`='" + ip + "',  `SP_PC_DATE_TIME`='" + date + "'  WHERE `SP_HW_ID` = '" + hwId + "'";
+    return db.pc.query(query, { type: Sequelize.QueryTypes.SELECT })
+  }
 }
 
 var repository = new Repository();
