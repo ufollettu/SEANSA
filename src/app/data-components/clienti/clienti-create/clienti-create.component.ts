@@ -2,11 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClientiApiService } from '../clienti-api.service';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
+import { slideInOutAnimation } from '../../../animations';
 
 @Component({
   selector: 'app-clienti-create',
   templateUrl: './clienti-create.component.html',
-  styleUrls: ['./clienti-create.component.css']
+  styleUrls: ['./clienti-create.component.css'],
+  // make slide in/out animation available to this component
+  animations: [slideInOutAnimation],
+  // attach the slide in/out animation to the host (root) element of this component
+  // tslint:disable-next-line:use-host-property-decorator
+  host: { '[@slideInOutAnimation]': '' }
 })
 export class ClientiCreateComponent implements OnInit {
 

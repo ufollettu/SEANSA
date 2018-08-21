@@ -2,11 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { SksApiService } from '../sks-api.service';
+import { slideInOutAnimation } from '../../../animations';
 
 @Component({
   selector: 'app-sks-edit',
   templateUrl: './sks-edit.component.html',
-  styleUrls: ['./sks-edit.component.css']
+  styleUrls: ['./sks-edit.component.css'],
+  // make slide in/out animation available to this component
+  animations: [slideInOutAnimation],
+  // attach the slide in/out animation to the host (root) element of this component
+  // tslint:disable-next-line:use-host-property-decorator
+  host: { '[@slideInOutAnimation]': '' }
 })
 export class SksEditComponent implements OnInit {
 
@@ -33,14 +39,14 @@ export class SksEditComponent implements OnInit {
   ngOnInit() {
     this.getSks(this.route.snapshot.params['id']);
     this.sksForm = this.formBuilder.group({
-      'SS_KEY' : [null, Validators.required],
-      'SS_OEM' : [null, Validators.required],
-      'SS_ACTIVATION_DATE' : [null],
-      'SS_EXPIRE' : [null],
-      'SS_SP_ID' : [null, [Validators.required]],
-      'SS_SC_ID' : [null, [Validators.required]],
-      'SS_ACTIVATED_BY' : [null, Validators.required],
-      'SS_ACTIVATION_REFERENT' : [null, Validators.required],
+      'SS_KEY': [null, Validators.required],
+      'SS_OEM': [null, Validators.required],
+      'SS_ACTIVATION_DATE': [null],
+      'SS_EXPIRE': [null],
+      'SS_SP_ID': [null, [Validators.required]],
+      'SS_SC_ID': [null, [Validators.required]],
+      'SS_ACTIVATED_BY': [null, Validators.required],
+      'SS_ACTIVATION_REFERENT': [null, Validators.required],
       // 'SS_LAST_EDIT' : [null]
     });
   }

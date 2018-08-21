@@ -2,11 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { RinnoviApiService } from '../rinnovi-api.service';
+import { slideInOutAnimation } from '../../../animations';
 
 @Component({
   selector: 'app-rinnovi-edit',
   templateUrl: './rinnovi-edit.component.html',
-  styleUrls: ['./rinnovi-edit.component.css']
+  styleUrls: ['./rinnovi-edit.component.css'],
+  // make slide in/out animation available to this component
+  animations: [slideInOutAnimation],
+  // attach the slide in/out animation to the host (root) element of this component
+  // tslint:disable-next-line:use-host-property-decorator
+  host: { '[@slideInOutAnimation]': '' }
 })
 export class RinnoviEditComponent implements OnInit {
 
@@ -26,9 +32,9 @@ export class RinnoviEditComponent implements OnInit {
   ngOnInit() {
     this.getRinnovo(this.route.snapshot.params['id']);
     this.rinnoviForm = this.formBuilder.group({
-      'SR_SS_ID' : [null, Validators.required],
+      'SR_SS_ID': [null, Validators.required],
       // TODO: controllare funzione per gestire scadenza rinnovi
-      'SR_TS' : new Date(),
+      'SR_TS': new Date(),
     });
   }
 

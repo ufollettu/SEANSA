@@ -2,11 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UtentiApiService } from '../utenti-api.service';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
+import { slideInOutAnimation } from '../../../animations';
 
 @Component({
   selector: 'app-utenti-edit',
   templateUrl: './utenti-edit.component.html',
-  styleUrls: ['./utenti-edit.component.css']
+  styleUrls: ['./utenti-edit.component.css'],
+  // make slide in/out animation available to this component
+  animations: [slideInOutAnimation],
+  // attach the slide in/out animation to the host (root) element of this component
+  // tslint:disable-next-line:use-host-property-decorator
+  host: { '[@slideInOutAnimation]': '' }
 })
 export class UtentiEditComponent implements OnInit {
 

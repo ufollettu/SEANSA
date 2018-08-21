@@ -4,11 +4,17 @@ import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators, NgForm } from "@angular/forms";
 import { AuthService } from "../../services/auth.service";
 import { HttpErrorResponse } from "@angular/common/http";
+import { slideInOutAnimation } from "../../animations";
 
 @Component({
   selector: "app-change-password",
   templateUrl: "./change-password.component.html",
-  styleUrls: ["./change-password.component.css"]
+  styleUrls: ["./change-password.component.css"],
+  // make slide in/out animation available to this component
+  animations: [slideInOutAnimation],
+  // attach the slide in/out animation to the host (root) element of this component
+  // tslint:disable-next-line:use-host-property-decorator
+  host: { '[@slideInOutAnimation]': '' }
 })
 export class ChangePasswordComponent implements OnInit {
 

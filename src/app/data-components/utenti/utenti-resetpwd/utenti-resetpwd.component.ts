@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, NgForm, FormControl, FormGroupDirec
 import { UtentiApiService } from '../utenti-api.service';
 import { IpService } from '../../../services/ip.service';
 import { ErrorStateMatcher } from '@angular/material';
+import { slideInOutAnimation } from '../../../animations';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */
@@ -17,7 +18,12 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 @Component({
   selector: 'app-utenti-resetpwd',
   templateUrl: './utenti-resetpwd.component.html',
-  styleUrls: ['./utenti-resetpwd.component.css']
+  styleUrls: ['./utenti-resetpwd.component.css'],
+  // make slide in/out animation available to this component
+  animations: [slideInOutAnimation],
+  // attach the slide in/out animation to the host (root) element of this component
+  // tslint:disable-next-line:use-host-property-decorator
+  host: { '[@slideInOutAnimation]': '' }
 })
 export class UtentiResetpwdComponent implements OnInit {
 
@@ -67,12 +73,12 @@ export class UtentiResetpwdComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.api.updateUtente(this.SU_ID, form)
       .subscribe(res => {
-          console.log(res);
-          alert(`password utente ${res['SU_UNA']} aggiornata`);
-          this.router.navigate(['/utenti']);
-        }, (err) => {
-          console.log(err);
-        });
+        console.log(res);
+        alert(`password utente ${res['SU_UNA']} aggiornata`);
+        this.router.navigate(['/utenti']);
+      }, (err) => {
+        console.log(err);
+      });
   }
 
 }

@@ -2,11 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatricoleApiService } from '../matricole-api.service';
+import { slideInOutAnimation } from '../../../animations';
 
 @Component({
   selector: 'app-matricole-edit',
   templateUrl: './matricole-edit.component.html',
-  styleUrls: ['./matricole-edit.component.css']
+  styleUrls: ['./matricole-edit.component.css'],
+  // make slide in/out animation available to this component
+  animations: [slideInOutAnimation],
+  // attach the slide in/out animation to the host (root) element of this component
+  // tslint:disable-next-line:use-host-property-decorator
+  host: { '[@slideInOutAnimation]': '' }
 })
 export class MatricoleEditComponent implements OnInit {
 
@@ -24,11 +30,11 @@ export class MatricoleEditComponent implements OnInit {
   ngOnInit() {
     this.getMatricola(this.route.snapshot.params['id']);
     this.matricoleForm = this.formBuilder.group({
-      'SM_MATRICOLA' : [null, Validators.required],
-      'SM_SS_ID' : [null, Validators.required],
-      'SM_DETTAGLI' : [null],
-      'SM_CREATION_DATE' : [null],
-      'SM_LAST_UPDATE' : [null, [Validators.required]]
+      'SM_MATRICOLA': [null, Validators.required],
+      'SM_SS_ID': [null, Validators.required],
+      'SM_DETTAGLI': [null],
+      'SM_CREATION_DATE': [null],
+      'SM_LAST_UPDATE': [null, [Validators.required]]
     });
   }
 

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, NgForm, FormControl, FormGroupDirec
 import { UtentiApiService } from '../utenti-api.service';
 import { IpService } from '../../../services/ip.service';
 import { ErrorStateMatcher } from '@angular/material';
+import { slideInOutAnimation } from '../../../animations';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */
@@ -17,7 +18,12 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 @Component({
   selector: 'app-utenti-create',
   templateUrl: './utenti-create.component.html',
-  styleUrls: ['./utenti-create.component.css']
+  styleUrls: ['./utenti-create.component.css'],
+  // make slide in/out animation available to this component
+  animations: [slideInOutAnimation],
+  // attach the slide in/out animation to the host (root) element of this component
+  // tslint:disable-next-line:use-host-property-decorator
+  host: { '[@slideInOutAnimation]': '' }
 })
 export class UtentiCreateComponent implements OnInit {
 
@@ -40,7 +46,7 @@ export class UtentiCreateComponent implements OnInit {
       'SU_UNA': [null, Validators.required],
       'SU_PAW': [null, Validators.required],
       'SU_LEVEL': [0],
-      'SU_LAST_LOGIN' : new Date(),
+      'SU_LAST_LOGIN': new Date(),
       'SU_CREATION': new Date(),
       'SU_LAST_EDIT': new Date(),
       'SU_LAST_IP': [null]
@@ -50,11 +56,11 @@ export class UtentiCreateComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.api.postUtente(form)
       .subscribe(res => {
-          // const id = res['SC_ID'];
-          alert(`utente ${res['SU_UNA']} creato`);
-          this.router.navigate(['/utenti']);
-        }, (err) => {
-          console.log(err);
-        });
+        // const id = res['SC_ID'];
+        alert(`utente ${res['SU_UNA']} creato`);
+        this.router.navigate(['/utenti']);
+      }, (err) => {
+        console.log(err);
+      });
   }
 }

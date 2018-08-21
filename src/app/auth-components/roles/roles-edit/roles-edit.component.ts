@@ -13,6 +13,7 @@ import {
 import { RolesApiService } from "../roles-api.service";
 import { ErrorStateMatcher } from "@angular/material";
 import { map } from 'rxjs/operators';
+import { slideInOutAnimation } from "../../../animations";
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -34,7 +35,12 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 @Component({
   selector: 'app-roles-edit',
   templateUrl: './roles-edit.component.html',
-  styleUrls: ['./roles-edit.component.css']
+  styleUrls: ['./roles-edit.component.css'],
+  // make slide in/out animation available to this component
+  animations: [slideInOutAnimation],
+  // attach the slide in/out animation to the host (root) element of this component
+  // tslint:disable-next-line:use-host-property-decorator
+  host: { '[@slideInOutAnimation]': '' }
 })
 export class RolesEditComponent implements OnInit {
 

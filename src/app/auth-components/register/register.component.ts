@@ -5,11 +5,17 @@ import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { DataService } from '../../services/data.service';
+import { slideInOutAnimation } from '../../animations';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
+  // make slide in/out animation available to this component
+  animations: [slideInOutAnimation],
+  // attach the slide in/out animation to the host (root) element of this component
+  // tslint:disable-next-line:use-host-property-decorator
+  host: { '[@slideInOutAnimation]': '' }
 })
 export class RegisterComponent implements OnInit {
 
@@ -40,7 +46,7 @@ export class RegisterComponent implements OnInit {
       'username': [null, Validators.required],
       'password': [null, Validators.required],
       'level': [0],
-      'SU_LAST_LOGIN' : new Date(),
+      'SU_LAST_LOGIN': new Date(),
       'SU_CREATION': new Date(),
       'SU_LAST_EDIT': new Date(),
       'deleted': [0],
@@ -50,21 +56,21 @@ export class RegisterComponent implements OnInit {
 
   onFormSubmit(form: NgForm) {
     this.auth.registerUser(form)
-    .subscribe(res => {
-      console.log(res);
-      localStorage.setItem('token', res['idToken']);
-      alert(`utente ${res['user']['SU_UNA']} creato`);
-      this.sendUser(res['user']);
-      this.router.navigate(['/clienti']);
-    }, (err) => {
-      console.log(err);
-      if (err instanceof HttpErrorResponse ) {
-        if (err.status === 422) {
-          alert('user exists');
-          this.router.navigate(['/register']);
+      .subscribe(res => {
+        console.log(res);
+        localStorage.setItem('token', res['idToken']);
+        alert(`utente ${res['user']['SU_UNA']} creato`);
+        this.sendUser(res['user']);
+        this.router.navigate(['/clienti']);
+      }, (err) => {
+        console.log(err);
+        if (err instanceof HttpErrorResponse) {
+          if (err.status === 422) {
+            alert('user exists');
+            this.router.navigate(['/register']);
+          }
         }
-      }
-    });
+      });
   }
 
   sendUser(user) {

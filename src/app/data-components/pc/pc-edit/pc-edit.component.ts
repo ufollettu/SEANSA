@@ -2,12 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PcApiService } from '../pc-api.service';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
+import { slideInOutAnimation } from '../../../animations';
 
 
 @Component({
   selector: 'app-pc-edit',
   templateUrl: './pc-edit.component.html',
-  styleUrls: ['./pc-edit.component.css']
+  styleUrls: ['./pc-edit.component.css'],
+  // make slide in/out animation available to this component
+  animations: [slideInOutAnimation],
+  // attach the slide in/out animation to the host (root) element of this component
+  // tslint:disable-next-line:use-host-property-decorator
+  host: { '[@slideInOutAnimation]': '' }
 })
 export class PcEditComponent implements OnInit {
 
