@@ -5,9 +5,9 @@ import { Router } from '@angular/router';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-const registerUrl = '/api/auth/signup';
-const loginUrl = '/api/auth/signin';
-const changePwdUrl = '/api/auth/changepwd';
+const registerUrl = 'http://localhost:3000/api/auth/signup';
+const loginUrl = 'http://localhost:3000/api/auth/signin';
+const changePwdUrl = 'http://localhost:3000/api/auth/changepwd';
 
 @Injectable({
   providedIn: 'root'

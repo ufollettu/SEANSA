@@ -6,7 +6,7 @@ import { catchError, tap, map } from 'rxjs/operators';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-const apiUrl = '/api/sks';
+const apiUrl = 'http://localhost:3000/api/sks';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class SksApiService {
     // return an observable with a user-facing error message
     // return throwError('Something bad happened; please try again later.');
     return throwError(error);
-    }
+  }
 
   private extractData(res: Response) {
     const body = res;

@@ -6,7 +6,7 @@ import { catchError, tap, map } from 'rxjs/operators';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-const apiUrl = '/api/pc';
+const apiUrl = 'http://localhost:3000/api/pc';
 
 @Injectable({
   providedIn: 'root'
@@ -74,7 +74,7 @@ export class PcApiService {
   }
 
   getIpAddress() {
-    return this.http.get<{ip: string}>('https://jsonip.com')
+    return this.http.get<{ ip: string }>('https://jsonip.com')
       .pipe(
         catchError(this.handleError)
       );

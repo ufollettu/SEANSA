@@ -3,7 +3,7 @@ import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/r
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const apiUrl = '/api/roles';
+const apiUrl = 'http://localhost:3000/api/roles';
 
 @Injectable({
   providedIn: 'root'
