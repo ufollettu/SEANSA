@@ -34,3 +34,7 @@ mat-form-field {
   .button-row {
     margin: 10px 0;
   }
+
+  .mat-stroked-button {
+    margin-right: 8px;
+  }

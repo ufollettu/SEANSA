@@ -1,11 +1,5 @@
 <div class="container">
   <mat-card>
-
-    <div class="button-row">
-      <a mat-raised-button color="primary" (click)="clientiDetails()">
-        <mat-icon>arrow_back_ios</mat-icon>
-      </a>
-    </div>
     <form [formGroup]="clienteForm" (ngSubmit)="onFormSubmit(clienteForm.value)">
 
       <mat-form-field class="example-full-width">
@@ -63,6 +57,9 @@
     </mat-form-field> -->
 
       <div class="button-row">
+        <a mat-stroked-button color="basic" (click)="clientiDetails()" class="mat-stroked-button">
+          <mat-icon>keyboard_backspace</mat-icon>
+        </a>
         <button type="submit" [disabled]="!clienteForm.valid" mat-raised-button color="primary">
           <mat-icon>save</mat-icon>
         </button>

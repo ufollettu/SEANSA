@@ -46,14 +46,14 @@ function randomPassword(len) {
 }
 
 // Show
-// const show = async (req, res) => {
-//     const id = req.params.id;
-//     repository.findById(id)
-//         .then(sks => {
-//             res.json(sks);
-//         }).catch(err => res.send(err.errors));
-// };
-// module.exports.show = show;
+const show = async (req, res) => {
+    const id = req.params.id;
+    repository.findById(id)
+        .then(sks => {
+            res.json(sks);
+        }).catch(err => res.send(err.errors));
+};
+module.exports.show = show;
 
 // Edit
 // const edit = async (req, res) => {

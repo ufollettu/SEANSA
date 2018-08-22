@@ -1,17 +1,15 @@
 <div class="container">
     <mat-card>
-        <div class="button-row">
-            <a mat-raised-button color="primary" [routerLink]="['/utenti']">
-                <mat-icon>list</mat-icon>
-            </a>
-        </div>
         <form [formGroup]="keyForm" (ngSubmit)="onFormSubmit()">
 
             <section formArrayName="permsLev" *ngFor="let level of keyForm.controls.permsLev.controls; let i = index">
                 <mat-checkbox [checked]="levels[i].selected" [formControlName]="i">{{levels[i].description}}</mat-checkbox>
             </section>
-
+            <hr>
             <div class="button-row">
+                <a mat-stroked-button color="basic" [routerLink]="['/utenti']" class="mat-stroked-button">
+                    <mat-icon>keyboard_backspace</mat-icon>
+                </a>
                 <button type="submit" mat-raised-button color="primary">
                     <mat-icon>save</mat-icon>
                 </button>

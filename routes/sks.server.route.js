@@ -16,7 +16,7 @@ const SksController = require('./../controllers/sks.server.controller');
 router.get('/', SksController.list); // Index
 // router.get('/new', SksController.add); // New
 router.post('/', SksController.create); // Create
-// router.get('/:id', SksController.show); // Show
+router.get('/:id', SksController.show); // Show
 // router.get('/:id/edit', SksController.edit); // Edit
 router.put('/:id', SksController.update); // Update
 router.delete('/:id', SksController.destroy); // Destroy
