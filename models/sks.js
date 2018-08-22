@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     SS_STATUS: {
       type: DataTypes.TINYINT(2),
       allowNull: true,
-      defaultValue: "0"
+      defaultValue: "1"
     },
     SS_SC_ID: {
       allowNull: false,
@@ -48,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
     SS_SP_ID: {
       allowNull: false,
       type: DataTypes.INTEGER(11),
+      defaultValue: "0"
     },
     SS_ACTIVATED_BY: {
       type: DataTypes.STRING(50),
@@ -56,12 +57,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
     },
   }, {
-    timestamps: false,
-    paranoid: true,
-    underscored: true,
-    freezeTableName: true,
-    tableName: 'sa_sks',
-  });
+      timestamps: false,
+      paranoid: true,
+      underscored: true,
+      freezeTableName: true,
+      tableName: 'sa_sks',
+    });
   Sks.associate = function (models) {
     // associations can be defined here
   };

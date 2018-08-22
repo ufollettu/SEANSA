@@ -14,10 +14,10 @@ const SksController = require('./../controllers/sks.server.controller');
 // router.delete('/:id',    Controller.destroy);    // Destroy
 
 router.get('/', SksController.list); // Index
-router.get('/new', SksController.add); // New
+// router.get('/new', SksController.add); // New
 router.post('/', SksController.create); // Create
-router.get('/:id', SksController.show); // Show
-router.get('/:id/edit', SksController.edit); // Edit
+// router.get('/:id', SksController.show); // Show
+// router.get('/:id/edit', SksController.edit); // Edit
 router.put('/:id', SksController.update); // Update
 router.delete('/:id', SksController.destroy); // Destroy
 

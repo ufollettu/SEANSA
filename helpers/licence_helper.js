@@ -4,6 +4,11 @@ const requestIp = require('request-ip');
 const bytes = require('utf8-bytes');
 
 class LicenseHelper {
+
+    constructor(CheckResult) {
+        this.licCheckResult = CheckResult
+    }
+
     // TODO test with software transimission
     codeToGod(stringToCode) {
         if (stringToCode.length == 0) {
@@ -74,10 +79,8 @@ class LicenseHelper {
     }
 
     checksetBanned(hwId) {
-
         pcRepo.findOne(hwId)
             .then((pc) => {
-
                 if (!pc) {
                     return 0;
                 }
@@ -99,7 +102,6 @@ class LicenseHelper {
     updatePcRx(hwId, ip, nowDate) {
         pcRepo.updatePcRx(hwId, ip, nowDate)
             .spread((results, metadata) => {
-
                 if (!results) {
                     return 0;
                 }
@@ -109,46 +111,39 @@ class LicenseHelper {
 
     checkLicense(license, hwId, oem, rcvDate, nowDate, ip, res) {
         const expDate = rcvDate;
-        // console.log(expDate);
-        // res.send('ok');
-
         repository.findLicense(license).then(key => {
-            // console.log(key);
             if (this.updatePcRx(hwId, ip, nowDate) == 0) {
-                throw new Error('server error')
+                return this.licCheckResult.server_error;
             }
             if (this.checksetBanned(hwId) == 0) {
-                throw new Error('pc banned')
+                return this.licCheckResult.hwid_banned;
             }
-
             if (key[0]) {
-
                 if (!key[0]['SP_HW_ID']) {
-                    throw new Error('key virgin')
+                    return this.licCheckResult.key_virgin
                 } else if (key[0]['SS_STATUS'] < 1) {
-                    throw new Error('key not allowed')
+                    return this.licCheckResult.key_unallowed;
                 } else if (key[0]['SP_HW_ID'] != hwId) {
                     if (this.setKeyMismatched(key[0]['SS_ID'] == 1)) {
-                        throw new Error('key moved')
+                        return this.licCheckResult.key_moved;
                     }
                 } else if (key[0]['SS_EXPIRE'] < expDate || expDate < key[0]['SP_PC_DATE_TIME']) {
-
                     if (this.setKeyMismatched(key[0]['SS_ID'] == 1)) {
-                        throw new Error('dates hacked')
+                        return this.licCheckResult.dates_hacked;
                     } else {
-                        throw new Error('server error')
+                        return this.licCheckResult.server_error;
                     }
                 } else if (key[0]['SS_OEM'] != oem || key[0]['SS_EXPIRE'] > expDate) {
-                    throw new Error('key info to update')
+                    return this.licCheckResult.key_info_to_update;
                 } else if (key[0]['SS_EXPIRE'] <= nowDate) {
-                    throw new Error('key expired')
+                    return this.licCheckResult.key_expired
                 }
                 res.send('key ok');
-                return 'key ok';
+                return this.licCheckResult.key_ok
             } else {
-                throw new Error('key not exists')
+                return this.licCheckResult.key_insesistente;
             }
-        }).catch(err => console.log(err.message));
+        }).catch(err => res.send(err.errors));
     }
 
     generateLicense(license, hwId, reqCode, rcvNowDate, ip, res) {
@@ -160,7 +155,7 @@ class LicenseHelper {
                 const keyCode = generateValidKey(decodeToMortal(reqCode));
                 let patchKey = keyCode;
                 if (keyCode.length != 10 || checkValidKey(keyCode, patchKey) == 'KO') {
-                    throw new Error('invalid req code');
+                    return this.licCheckResult.invalid_reqcode;
                 } else {
                     let oem = '';
                     switch (foundOem[0]['SS_OEM']) {
@@ -186,9 +181,9 @@ class LicenseHelper {
                     return key;
                 }
             } else {
-                throw new Error('key not exists')
+                return this.licCheckResult.key_insesistente;
             }
-        }).catch(err => console.log(err.message));
+        }).catch(err => res.send(err.errors));
     }
 
     registerLicense(license, hwId, reqKey, pcDate, customerName, referenteName, referentePhone, ip, res) {
@@ -204,28 +199,44 @@ class LicenseHelper {
                     }
                     pcRepo.create(data)
                         .then((newPc) => {
+                            if (!newPc) {
+                                return this.licCheckResult.server_error;
+                            }
                             pcId = newPc['SP_ID']
                         }).catch(err => res.send(err.errors));
                 } else {
                     pcId = pc['SP_ID']
                 }
-
                 if (typeof pcId === 'undefined' || pcId.length == 0 || pcId == 0) {
-                    throw new Error('server error');
+                    return this.licCheckResult.server_error;
                 }
                 repository.updateLicense(pcId, customerName, referenteName, referentePhone, license)
                     .then((result) => {
                         if (!result) {
-                            throw new Error('server error');
+                            return this.licCheckResult.server_error;
                         }
                         return generateLicense(license, hwId, reqKey, pcDate, ip);
                     });
-            }).catch(err => console.log(err.message));
+            }).catch(err => res.send(err.errors));
     }
 
 }
 
-const licenseHelper = new LicenseHelper();
+const licCheckResult = {
+    key_insesistente: 0,
+    key_info_to_update: 1,
+    server_error: 2,
+    key_unallowed: 3,
+    dates_hacked: 4,
+    key_moved: 5,
+    key_virgin: 6,
+    key_ok: 7,
+    key_expired: 8,
+    invalid_reqcode: 9,
+    hwid_banned: 10
+}
+
+const licenseHelper = new LicenseHelper(licCheckResult);
 
 const switchMode = async (req, res) => {
     // console.log(req.body);

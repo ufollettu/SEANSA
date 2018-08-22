@@ -7,43 +7,78 @@
     </div>
     <form [formGroup]="sksForm" (ngSubmit)="onFormSubmit(sksForm.value)">
 
-      <mat-form-field class="example-full-width">
+      <!-- <mat-form-field class="example-full-width">
         <input matInput placeholder="Key" formControlName="SS_KEY" [errorStateMatcher]="matcher">
         <mat-error>
           <span *ngIf="!sksForm.get('SS_KEY').valid && sksForm.get('SS_KEY').touched">Inserisci la chiave</span>
         </mat-error>
-      </mat-form-field>
+      </mat-form-field> -->
+
+      <!-- <mat-form-field class="example-full-width">
+        <input matInput placeholder="OEM" formControlName="SS_OEM" [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!sksForm.get('SS_OEM').valid && sksForm.get('SS_OEM').touched">Inserisci l'OEM</span>
+        </mat-error>
+      </mat-form-field> -->
 
       <mat-form-field class="example-full-width">
-        <input matInput placeholder="OEM" formControlName="SS_OEM" [errorStateMatcher]="matcher">
+        <mat-select placeholder="OEM" formControlName="SS_OEM" [errorStateMatcher]="matcher">
+          <mat-option *ngFor="let oem of oems" [value]="oem.value" matTooltip="{{oem.description}}" matTooltipPosition="right">
+            {{oem.name}}
+          </mat-option>
+        </mat-select>
         <mat-error>
           <span *ngIf="!sksForm.get('SS_OEM').valid && sksForm.get('SS_OEM').touched">Inserisci l'OEM</span>
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field class="example-full-width">
+
+      <!-- <mat-form-field class="example-full-width">
         <input matInput placeholder="Data Attivazione" formControlName="SS_ACTIVATION_DATE" [errorStateMatcher]="matcher">
-      </mat-form-field>
+      </mat-form-field> -->
 
-      <mat-form-field class="example-full-width">
+      <!-- <mat-form-field class="example-full-width">
         <input matInput placeholder="Expire date" formControlName="SS_EXPIRE" [errorStateMatcher]="matcher">
-      </mat-form-field>
+        <mat-error>
+          <span *ngIf="!sksForm.get('SS_EXPIRE').valid && sksForm.get('SS_EXPIRE').touched">Inserisci la data di scadenza</span>
+        </mat-error>
+      </mat-form-field> -->
 
       <mat-form-field class="example-full-width">
+        <input matInput [matDatepicker]="picker" placeholder="Expire date" formControlName="SS_EXPIRE" [errorStateMatcher]="matcher">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error>
+          <span *ngIf="!sksForm.get('SS_EXPIRE').valid && sksForm.get('SS_EXPIRE').touched">Inserisci la data di scadenza</span>
+        </mat-error>
+      </mat-form-field>
+
+      <!-- <mat-form-field class="example-full-width">
         <input matInput placeholder="id Pc" formControlName="SS_SP_ID" [errorStateMatcher]="matcher">
         <mat-error>
           <span *ngIf="!sksForm.get('SS_SP_ID').valid && sksForm.get('SS_SP_ID').touched">Inserisci l'id del PC</span>
         </mat-error>
-      </mat-form-field>
+      </mat-form-field> -->
 
-      <mat-form-field class="example-full-width">
+      <!-- <mat-form-field class="example-full-width">
         <input matInput placeholder="id Cliente" formControlName="SS_SC_ID" [errorStateMatcher]="matcher">
         <mat-error>
           <span *ngIf="!sksForm.get('SS_SC_ID').valid && sksForm.get('SS_SC_ID').touched">Inserisci l'id del Cliente</span>
         </mat-error>
-      </mat-form-field>
+      </mat-form-field> -->
 
       <mat-form-field class="example-full-width">
+        <mat-select placeholder="Cliente" formControlName="SS_SC_ID" [errorStateMatcher]="matcher">
+          <mat-option *ngFor="let cliente of clienti" [value]="cliente.value">
+            {{cliente.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error>
+          <span *ngIf="!sksForm.get('SS_SC_ID').valid && sksForm.get('SS_SC_ID').touched">Inserisci il Cliente</span>
+        </mat-error>
+      </mat-form-field>
+
+      <!-- <mat-form-field class="example-full-width">
         <input matInput placeholder="Attivato da" formControlName="SS_ACTIVATED_BY" [errorStateMatcher]="matcher">
         <mat-error>
           <span *ngIf="!sksForm.get('SS_ACTIVATED_BY').valid && sksForm.get('SS_ACTIVATED_BY').touched">Inserisci il nome di chi attiva la chiave</span>
@@ -55,7 +90,7 @@
         <mat-error>
           <span *ngIf="!sksForm.get('SS_ACTIVATION_REFERENT').valid && sksForm.get('SS_ACTIVATION_REFERENT').touched">Inserisci il nome del referente</span>
         </mat-error>
-      </mat-form-field>
+      </mat-form-field> -->
 
       <div class="button-row">
         <button type="submit" [disabled]="!sksForm.valid" mat-raised-button color="primary">
