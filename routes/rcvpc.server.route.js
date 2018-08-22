@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-const licenseHelper = require('../helpers/licence_helper');
+const switchMode = require('../helpers/licence_helper');
 
-// router.post('/', licenseHelper.checkLicense);
-// router.post('/', licenseHelper.generateLicense);
-// router.post('/', licenseHelper.registerLicense);
+router.post('/', switchMode);
+
 
 module.exports = router;

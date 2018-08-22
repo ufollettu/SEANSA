@@ -21,7 +21,7 @@ class Repository {
 
   updateMismatchCount(id) {
     const query = "UPDATE `SA_SKS` SET `SS_MISMATCH_COUNT`=(`SS_MISMATCH_COUNT`+1), `SS_STATUS`=0  WHERE `SS_ID` = " + id;
-    return sequelize.query(query, { type: Sequelize.QueryTypes.SELECT })
+    return sequelize.query(query)
   }
 }
 

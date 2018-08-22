@@ -74,8 +74,10 @@ class LicenseHelper {
     }
 
     checksetBanned(hwId) {
+
         pcRepo.findOne(hwId)
             .then((pc) => {
+
                 if (!pc) {
                     return 0;
                 }
@@ -85,7 +87,7 @@ class LicenseHelper {
 
     setKeyMismatched(id) {
         repository.updateMismatchCount(id)
-            .then((result) => {
+            .spread((results, metadata) => {
                 if (!result) {
                     console.log('errore di disattivazione');
                     return 0;
@@ -94,36 +96,54 @@ class LicenseHelper {
             }).catch(err => console.log(err.message))
     }
 
-    checkLicense(license, hwId, oem, rcvDate, nowDate, req) {
-        const expDate = rcvDate.toISOString().slice(0, 10);
-        const ip = requestIp.getClientIp(req); // set req somewhere
+    updatePcRx(hwId, ip, nowDate) {
+        pcRepo.updatePcRx(hwId, ip, nowDate)
+            .spread((results, metadata) => {
+
+                if (!results) {
+                    return 0;
+                }
+                return 1
+            }).catch(err => console.log(err.message));
+    }
+
+    checkLicense(license, hwId, oem, rcvDate, nowDate, ip, res) {
+        const expDate = rcvDate;
+        // console.log(expDate);
+        // res.send('ok');
+
         repository.findLicense(license).then(key => {
-            if (pcRepo.updatePcRx(hwId, ip, nowDate) == 0) {
+            // console.log(key);
+            if (this.updatePcRx(hwId, ip, nowDate) == 0) {
                 throw new Error('server error')
             }
-            if (checksetBanned(hwId) == 0) {
+            if (this.checksetBanned(hwId) == 0) {
                 throw new Error('pc banned')
             }
+
             if (key[0]) {
+
                 if (!key[0]['SP_HW_ID']) {
                     throw new Error('key virgin')
                 } else if (key[0]['SS_STATUS'] < 1) {
                     throw new Error('key not allowed')
                 } else if (key[0]['SP_HW_ID'] != hwId) {
-                    if (setKeyMismatched(key[0]['SS_ID'] == 1)) {
+                    if (this.setKeyMismatched(key[0]['SS_ID'] == 1)) {
                         throw new Error('key moved')
                     }
-                } else if (key[0]['SS_EXPIRE'] < expDate || key[0]['SS_EXPIRE'] < key[0]['SP_PC_DATE_TIME']) {
-                    if (setKeyMismatched(key[0]['SS_ID'] == 1)) {
+                } else if (key[0]['SS_EXPIRE'] < expDate || expDate < key[0]['SP_PC_DATE_TIME']) {
+
+                    if (this.setKeyMismatched(key[0]['SS_ID'] == 1)) {
                         throw new Error('dates hacked')
                     } else {
                         throw new Error('server error')
                     }
                 } else if (key[0]['SS_OEM'] != oem || key[0]['SS_EXPIRE'] > expDate) {
                     throw new Error('key info to update')
-                } else if (key[0]['SS_EXPIRE'] <= expDate) {
+                } else if (key[0]['SS_EXPIRE'] <= nowDate) {
                     throw new Error('key expired')
                 }
+                res.send('key ok');
                 return 'key ok';
             } else {
                 throw new Error('key not exists')
@@ -131,9 +151,8 @@ class LicenseHelper {
         }).catch(err => console.log(err.message));
     }
 
-    generateLicense(license, hwId, reqCode, rcvNowDate) {
-        const ip = requestIp.getClientIp(req); // set req somewhere
-        const nowDate = rcvNowDate.toISOString().slice(0, 10);
+    generateLicense(license, hwId, reqCode, rcvNowDate, ip, res) {
+        const nowDate = rcvNowDate;
         pcRepo.updatePcRx(hwId, ip, nowDate);
 
         repository.findOem(license, hwId).then((foundOem) => {
@@ -172,7 +191,7 @@ class LicenseHelper {
         }).catch(err => console.log(err.message));
     }
 
-    registerLicense(license, hwId, reqKey, pcDate, customerName, referenteName, referentePhone) {
+    registerLicense(license, hwId, reqKey, pcDate, customerName, referenteName, referentePhone, ip, res) {
         pcRepo.findOne(hwId)
             .then((pc) => {
                 let pcId = '';
@@ -180,18 +199,18 @@ class LicenseHelper {
                     const data = {
                         SP_HW_ID: hwId,
                         SP_LAST_RX: new Date.now(),
-                        SP_IP: requestIp.getClientIp(req), // set req somewhere
+                        SP_IP: ip,
                         SP_PC_DATE_TIME: new Date().toISOString().slice(0, 10)
                     }
                     pcRepo.create(data)
                         .then((newPc) => {
-                            pcIp = newPc['SP_ID']
+                            pcId = newPc['SP_ID']
                         }).catch(err => res.send(err.errors));
                 } else {
                     pcId = pc['SP_ID']
                 }
 
-                if (typeof pcIp === 'undefined' || pcIp.length == 0 || pcIp == 0) {
+                if (typeof pcId === 'undefined' || pcId.length == 0 || pcId == 0) {
                     throw new Error('server error');
                 }
                 repository.updateLicense(pcId, customerName, referenteName, referentePhone, license)
@@ -199,7 +218,7 @@ class LicenseHelper {
                         if (!result) {
                             throw new Error('server error');
                         }
-                        return generateLicense(license, hwId, reqKey, pcDate);
+                        return generateLicense(license, hwId, reqKey, pcDate, ip);
                     });
             }).catch(err => console.log(err.message));
     }
@@ -208,4 +227,39 @@ class LicenseHelper {
 
 const licenseHelper = new LicenseHelper();
 
-module.exports = licenseHelper;
+const switchMode = async (req, res) => {
+    // console.log(req.body);
+    const ip = requestIp.getClientIp(req);
+    const tipo = req.body.tipo;
+    const modo = req.body.modo;
+    const license = req.body.lic;
+    const hwId = req.body.hwid;
+    const oem = req.body.oem;
+    const expire = req.body.expire;
+    const nowDate = req.body.nowdate;
+    const reqCode = req.body.reqkey;
+    const customerName = req.body.SC_NOME;
+    const referenteName = req.body.SC_REFERENTE_NOME;
+    const referentePhone = req.body.SC_TEL_REFERENTE;
+    // const alloweds = req.body.alloweds;
+    // const rnd = req.body.rnd;
+
+    switch (tipo) {
+        case "1":
+            {
+                if (modo == "1") {
+                    licenseHelper.checkLicense(license, hwId, oem, expire, nowDate, ip, res)
+                }
+                else if (modo == "2") {
+                    licenseHelper.generateLicense(license, hwId, reqCode, nowDate, ip, res);
+                }
+                else if (modo == "3") {
+                    licenseHelper.registerLicense(license, hwId, reqCode, nowdate, customerName, referenteName, referentePhone, ip, res)
+                }
+
+                break;
+            }
+    }
+}
+
+module.exports = switchMode;
