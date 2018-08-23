@@ -46,6 +46,28 @@ export class SksTableComponent implements OnInit {
       });
   }
 
+  enableSks(id) {
+    const status = 0;
+    this.api.updateSks(id, { 'SS_STATUS': status })
+      .subscribe(res => {
+        alert(`chiave ${res.SS_KEY} disabilitata`);
+        this.refreshSkssList();
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+  disableSks(id) {
+    const status = 1;
+    this.api.updateSks(id, { 'SS_STATUS': status })
+      .subscribe(res => {
+        alert(`chiave ${res.SS_KEY} abilitata`);
+        this.refreshSkssList();
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
   deleteSks(id) {
     const conf = confirm(`sei sicuro?`);
     if (conf) {

@@ -83,15 +83,32 @@
             </div>
           </div>
           <div class="example-element-actions">
-            <a mat-raised-button color="primary" [routerLink]="['/sks-edit', element.SS_ID]" [appCheckPermissions]="4">
-              <mat-icon>edit</mat-icon>
-            </a>
-            <p></p>
-            <a mat-raised-button color="accent" [routerLink]="['/sks-renew', element.SS_ID]" [appCheckPermissions]="4">
+            <a mat-raised-button matTooltip="Rinnova chiave" matTooltipPosition="right" color="accent" [routerLink]="['/sks-renew', element.SS_ID]"
+              [appCheckPermissions]="4">
               <mat-icon>autorenew</mat-icon>
             </a>
             <p></p>
-            <a mat-raised-button color="warn" (click)="deleteSks(element.SS_ID)" [appCheckPermissions]="5">
+            <a mat-raised-button matTooltip="Modifica chiave" matTooltipPosition="right" color="primary" [routerLink]="['/sks-edit', element.SS_ID]"
+              [appCheckPermissions]="5">
+              <mat-icon>edit</mat-icon>
+            </a>
+            <p></p>
+            <a mat-raised-button matTooltip="Disassocia PC" matTooltipPosition="right" color="warn" [routerLink]="['/sks-edit', element.SS_ID]"
+              [appCheckPermissions]="5">
+              <mat-icon>desktop_access_disabled</mat-icon>
+            </a>
+            <p></p>
+            <a mat-raised-button matTooltip="Disabilita chiave" matTooltipPosition="right" color="warn" (click)="enableSks(element.SS_ID)"
+              *ngIf="element.SS_STATUS!==0" [appCheckPermissions]="5">
+              <mat-icon>not_interested</mat-icon>
+            </a>
+            <a mat-raised-button matTooltip="Abilita chiave" matTooltipPosition="right" color="primary" (click)="disableSks(element.SS_ID)"
+              *ngIf="element.SS_STATUS===0" [appCheckPermissions]="5">
+              <mat-icon>offline_pin</mat-icon>
+            </a>
+            <p></p>
+            <a mat-raised-button matTooltip="Elimina chiave" matTooltipPosition="right" color="warn" (click)="deleteSks(element.SS_ID)"
+              [appCheckPermissions]="5">
               <mat-icon>delete</mat-icon>
             </a>
           </div>

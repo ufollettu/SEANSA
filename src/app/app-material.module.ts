@@ -38,6 +38,8 @@ import {
   MatTreeModule
 } from '@angular/material';
 
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+
 @NgModule({
   exports: [
     MatFormFieldModule,
@@ -60,6 +62,7 @@ import {
     MatListModule,
     MatMenuModule,
     MatNativeDateModule,
+    MatMomentDateModule,
     MatPaginatorModule,
     MatProgressBarModule,
     MatProgressSpinnerModule,
