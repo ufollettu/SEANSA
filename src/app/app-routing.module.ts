@@ -40,6 +40,7 @@ import { ChangePasswordComponent } from './auth-components/change-password/chang
 import { ApiResolverService } from './services/api-resolver.service';
 import { CheckPermissionsDirective } from './directives/check-permissions.directive';
 import { CustomizeComponent } from './customize/customize.component';
+import { SksRenewComponent } from './data-components/sks/sks-renew/sks-renew.component';
 
 
 const appRoutes: Routes = [
@@ -73,6 +74,8 @@ const appRoutes: Routes = [
   { path: 'sks', component: SksTableComponent, canActivate: [AuthGuard] },
   { path: 'sks-create', component: SksCreateComponent, canActivate: [AuthGuard] },
   { path: 'sks-edit/:id', component: SksEditComponent, canActivate: [AuthGuard] },
+  { path: 'sks-renew/:id', component: SksRenewComponent, canActivate: [AuthGuard] },
+
 
   { path: 'clienti', component: ClientiTableComponent, canActivate: [AuthGuard] },
   { path: 'clienti-create', component: ClientiCreateComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 6 } },
@@ -122,7 +125,8 @@ const appRoutes: Routes = [
     ChangePasswordComponent,
     RolesEditComponent,
     CheckPermissionsDirective,
-    CustomizeComponent
+    CustomizeComponent,
+    SksRenewComponent
   ]
 })
 export class AppRoutingModule { }

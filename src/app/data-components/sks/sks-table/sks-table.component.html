@@ -87,6 +87,10 @@
               <mat-icon>edit</mat-icon>
             </a>
             <p></p>
+            <a mat-raised-button color="accent" [routerLink]="['/sks-renew', element.SS_ID]" [appCheckPermissions]="4">
+              <mat-icon>autorenew</mat-icon>
+            </a>
+            <p></p>
             <a mat-raised-button color="warn" (click)="deleteSks(element.SS_ID)" [appCheckPermissions]="5">
               <mat-icon>delete</mat-icon>
             </a>
