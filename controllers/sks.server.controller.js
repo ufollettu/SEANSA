@@ -1,4 +1,5 @@
 const repository = require('../repositories/sks.server.repository');
+const randomPassword = require('../helpers/pwd-generator');
 
 // List
 const list = async (req, res) => {
@@ -32,18 +33,6 @@ const create = async (req, res) => {
     }).catch(err => res.send(err.errors));
 };
 module.exports.create = create;
-
-
-function randomPassword(len) {
-    const alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-    let pass = [];
-    const alphaLength = alphabet.length - 1;
-    for (let i = 0; i < len; i++) {
-        let n = Math.floor((Math.random() * alphaLength) + 0);
-        pass.push(alphabet[n]);
-    }
-    return pass.join("");
-}
 
 // Show
 const show = async (req, res) => {
