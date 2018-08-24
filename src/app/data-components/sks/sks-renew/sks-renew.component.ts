@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SksApiService } from '../sks-api.service';
 import { slideInOutAnimation } from '../../../animations';
 import { ClientiApiService } from '../../clienti/clienti-api.service';
+import { RinnoviApiService } from '../../rinnovi/rinnovi-api.service';
 
 @Component({
   selector: 'app-sks-renew',
@@ -35,6 +36,7 @@ export class SksRenewComponent implements OnInit {
     private route: ActivatedRoute,
     private api: SksApiService,
     private clientiApi: ClientiApiService,
+    private rinnoviApi: RinnoviApiService,
     private formBuilder: FormBuilder
   ) { }
 
@@ -74,14 +76,27 @@ export class SksRenewComponent implements OnInit {
     this.api.updateSks(this.SS_ID, form)
       .subscribe(res => {
         console.log(res);
-        // const id = res['SC_ID'];
-        // TODO: set local date format and change date display
+        // const id = res['SS_ID'];
+        this.insertRinnovo(res['SS_ID']);
         alert(`Sks key ${res['SS_KEY']} aggiornata`);
         this.router.navigate(['/sks']);
       }, (err) => {
         console.log(err);
       }
       );
+  }
+
+  insertRinnovo(sksId) {
+    const data = {
+      'SR_SS_ID': sksId,
+      'SR_TS': new Date().toISOString().replace(/([^T]+)T([^\.]+).*/g, '$1 $2')
+    };
+    this.rinnoviApi.postRinnovo(data)
+      .subscribe(res => {
+        console.log(res);
+      }, (err) => {
+        console.log(err);
+      });
   }
 
   sksDetails() {

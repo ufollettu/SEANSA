@@ -4,6 +4,8 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { SksApiService } from '../sks-api.service';
 import { SksDataSource } from '../sks-data-source';
+import { PcApiService } from '../../pc/pc-api.service';
+import { RinnoviApiService } from '../../rinnovi/rinnovi-api.service';
 
 @Component({
   selector: 'app-sks-table',
@@ -19,17 +21,42 @@ import { SksDataSource } from '../sks-data-source';
 })
 export class SksTableComponent implements OnInit {
   sks: any;
+  rinnovi: object[];
 
-  displayedColumns = ['SS_KEY', 'SS_OEM', 'SS_ACTIVATION_DATE', 'SS_EXPIRE', 'SS_ACTIVATED_BY', 'SS_ACTIVATION_REFERENT', 'SS_STATUS'];
+  // tslint:disable-next-line:max-line-length
+  displayedColumns = ['SS_KEY', 'SS_OEM', 'SS_ACTIVATION_DATE', 'SS_EXPIRE', 'rinnoviCount', 'SS_ACTIVATED_BY', 'SS_ACTIVATION_REFERENT', 'SS_STATUS'];
   dataSource: any;
 
-  constructor(private api: SksApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
+  constructor(
+    private api: SksApiService,
+    private pcApi: PcApiService,
+    private rinnoviApi: RinnoviApiService,
+    private changeDetectorRefs: ChangeDetectorRef,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.refreshSkssList();
   }
 
   refreshSkssList() {
+    this.rinnoviApi.getRinnovi()
+      .subscribe(rinnovi => {
+        const rinnoviCount = rinnovi.map((rinnovo) => {
+          return rinnovo['Chiave'];
+        }).reduce((allIds, id) => {
+          if (id in allIds) {
+            allIds[id]++;
+          } else {
+            allIds[id] = 1;
+          }
+          return allIds;
+        }, {});
+        // console.log(rinnoviCount);
+        this.rinnovi = rinnoviCount;
+      }, (err) => {
+        console.log(err);
+      });
     this.api.getSkss()
       .subscribe(res => {
         // console.log(res);
@@ -45,6 +72,10 @@ export class SksTableComponent implements OnInit {
         }
       });
   }
+
+  // decouplePC(id) {
+  //   this.pcApi.
+  // }
 
   enableSks(id) {
     const status = 0;
