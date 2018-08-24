@@ -60,3 +60,6 @@ table {
     align-self: flex-end;
   }
   
+  .green-button {
+    background-color: #05881b;
+  }

@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
             alert(`benvenuto ${user['SU_UNA']}!`);
             localStorage.setItem('userName', user['SU_UNA']);
             this.sendUser(user);
-            this.router.navigate(['/clienti']);
+            this.router.navigate(['/sks']);
           });
 
       }, (err) => {

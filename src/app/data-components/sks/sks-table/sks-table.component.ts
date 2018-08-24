@@ -4,8 +4,8 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { SksApiService } from '../sks-api.service';
 import { SksDataSource } from '../sks-data-source';
-import { PcApiService } from '../../pc/pc-api.service';
 import { RinnoviApiService } from '../../rinnovi/rinnovi-api.service';
+import { PcApiService } from '../../pc/pc-api.service';
 
 @Component({
   selector: 'app-sks-table',
@@ -22,15 +22,16 @@ import { RinnoviApiService } from '../../rinnovi/rinnovi-api.service';
 export class SksTableComponent implements OnInit {
   sks: any;
   rinnovi: object[];
+  pcs: object[];
 
   // tslint:disable-next-line:max-line-length
-  displayedColumns = ['SS_KEY', 'SS_OEM', 'SS_ACTIVATION_DATE', 'SS_EXPIRE', 'rinnoviCount', 'SS_ACTIVATED_BY', 'SS_ACTIVATION_REFERENT', 'SS_STATUS'];
+  displayedColumns = ['SS_KEY', 'SS_OEM', 'SS_ACTIVATION_DATE', 'SS_EXPIRE', 'rinnoviCount', 'pcHwId', 'pcLastConnection', 'SS_ACTIVATED_BY', 'SS_ACTIVATION_REFERENT', 'SS_STATUS'];
   dataSource: any;
 
   constructor(
     private api: SksApiService,
-    private pcApi: PcApiService,
     private rinnoviApi: RinnoviApiService,
+    private pcApi: PcApiService,
     private changeDetectorRefs: ChangeDetectorRef,
     private router: Router
   ) { }
@@ -57,6 +58,21 @@ export class SksTableComponent implements OnInit {
       }, (err) => {
         console.log(err);
       });
+    this.pcApi.getPcs()
+      .subscribe(pcs => {
+        const pcsCount = pcs.map((pc) => {
+          const pcRes = {};
+          pcRes['pcId'] = pc['SP_ID'];
+          pcRes['hwId'] = pc['SP_HW_ID'];
+          pcRes['lastConnection'] = pc['SP_LAST_RX'];
+          return pcRes;
+        });
+        console.log(pcsCount);
+        this.pcs = pcsCount;
+      }, (err) => {
+        console.log(err);
+      });
+
     this.api.getSkss()
       .subscribe(res => {
         // console.log(res);
@@ -73,9 +89,16 @@ export class SksTableComponent implements OnInit {
       });
   }
 
-  // decouplePC(id) {
-  //   this.pcApi.
-  // }
+  decouplePC(id) {
+    const status = 1;
+    this.api.updateSks(id, { 'SS_SP_ID': "", 'SS_STATUS': status })
+      .subscribe(res => {
+        alert(`chiave ${res.SS_KEY} disassociata`);
+        this.refreshSkssList();
+      }, (err) => {
+        console.log(err);
+      });
+  }
 
   enableSks(id) {
     const status = 0;
@@ -111,4 +134,25 @@ export class SksTableComponent implements OnInit {
         });
     }
   }
+
+  getPcHwId(id) {
+    let result = '';
+    this.pcs.forEach((pc) => {
+      if (pc['pcId'] === id) {
+        result = pc['hwId'];
+      }
+    });
+    return result;
+  }
+
+  getPcLastConnection(id) {
+    let result = '';
+    this.pcs.forEach((pc) => {
+      if (pc['pcId'] === id) {
+        result = pc['lastConnection'];
+      }
+    });
+    return result;
+  }
 }
+
