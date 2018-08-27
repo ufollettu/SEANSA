@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const switchMode = require('../helpers/licence_helper');
+const rcv_pcController = require('../controllers/rcv_pc.server.controller');
 
-router.post('/', switchMode);
-
+router.post('/', rcv_pcController.switchMode);
 
 module.exports = router;
