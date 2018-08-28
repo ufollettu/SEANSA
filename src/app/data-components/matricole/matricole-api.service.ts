@@ -43,8 +43,9 @@ export class MatricoleApiService {
       catchError(this.handleError));
   }
 
-  getMatricola(id: string): Observable<any> {
-    const url = `${apiUrl}/${id}`;
+  getMatricoleBySks(sksId: string): Observable<any> {
+    const url = `${apiUrl}/${sksId}`;
+    console.log(url);
     return this.http.get(url, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleError));

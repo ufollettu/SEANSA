@@ -63,7 +63,7 @@ const appRoutes: Routes = [
     }
   },
 
-  { path: 'matricole', component: MatricoleTableComponent, canActivate: [AuthGuard] },
+  { path: 'matricole/:sksId', component: MatricoleTableComponent, canActivate: [AuthGuard] },
   { path: 'matricole-create', component: MatricoleCreateComponent, canActivate: [AuthGuard] },
   { path: 'matricole-edit/:id', component: MatricoleEditComponent, canActivate: [AuthGuard] },
 

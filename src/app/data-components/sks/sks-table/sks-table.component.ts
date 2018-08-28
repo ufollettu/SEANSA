@@ -6,6 +6,7 @@ import { SksApiService } from '../sks-api.service';
 import { SksDataSource } from '../sks-data-source';
 import { RinnoviApiService } from '../../rinnovi/rinnovi-api.service';
 import { PcApiService } from '../../pc/pc-api.service';
+import { MatricoleApiService } from '../../matricole/matricole-api.service';
 
 @Component({
   selector: 'app-sks-table',
@@ -23,15 +24,17 @@ export class SksTableComponent implements OnInit {
   sks: any;
   rinnovi: object[];
   pcs: object[];
+  serials: any;
 
   // tslint:disable-next-line:max-line-length
-  displayedColumns = ['SS_KEY', 'SS_OEM', 'SS_ACTIVATION_DATE', 'SS_EXPIRE', 'rinnoviCount', 'pcHwId', 'pcLastConnection', 'SS_ACTIVATED_BY', 'SS_ACTIVATION_REFERENT', 'SS_STATUS'];
+  displayedColumns = ['SS_KEY', 'SS_OEM', 'SS_ACTIVATION_DATE', 'SS_EXPIRE', 'rinnoviCount', 'pcHwId', 'pcLastConnection', 'SS_ACTIVATED_BY', 'SS_ACTIVATION_REFERENT', 'SS_STATUS', 'allowedSerials'];
   dataSource: any;
 
   constructor(
     private api: SksApiService,
     private rinnoviApi: RinnoviApiService,
     private pcApi: PcApiService,
+    private matricoleApi: MatricoleApiService,
     private changeDetectorRefs: ChangeDetectorRef,
     private router: Router
   ) { }
@@ -53,7 +56,6 @@ export class SksTableComponent implements OnInit {
           }
           return allIds;
         }, {});
-        // console.log(rinnoviCount);
         this.rinnovi = rinnoviCount;
       }, (err) => {
         console.log(err);
@@ -67,15 +69,26 @@ export class SksTableComponent implements OnInit {
           pcRes['lastConnection'] = pc['SP_LAST_RX'];
           return pcRes;
         });
-        console.log(pcsCount);
         this.pcs = pcsCount;
       }, (err) => {
         console.log(err);
       });
-
+    this.matricoleApi.getMatricole()
+      .subscribe(matricole => {
+        const matricoleCount = matricole.map((matricola) => {
+          return matricola['SM_SS_ID'];
+        }).reduce((allIds, id) => {
+          if (id in allIds) {
+            allIds[id]++;
+          } else {
+            allIds[id] = 1;
+          }
+          return allIds;
+        }, {});
+        this.serials = matricoleCount;
+      });
     this.api.getSkss()
       .subscribe(res => {
-        // console.log(res);
         this.sks = res;
         this.dataSource = new SksDataSource(this.api);
         this.changeDetectorRefs.detectChanges();

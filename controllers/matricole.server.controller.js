@@ -10,10 +10,10 @@ const list = async (req, res) => {
 module.exports.list = list;
 
 // New
-const add = async (req, res) => {
-    res.send('add new item page');
-};
-module.exports.add = add;
+// const add = async (req, res) => {
+//     res.send('add new item page');
+// };
+// module.exports.add = add;
 
 // Create
 const create = async (req, res) => {
@@ -26,10 +26,10 @@ module.exports.create = create;
 
 // Show
 const show = async (req, res) => {
-    const id = req.params.id;
-    repository.findById(id)
-        .then(matricola => {
-            res.json(matricola);
+    const sksId = req.params.sksId;
+    repository.findAllBySks(sksId)
+        .then(matricole => {
+            res.json(matricole);
         }).catch(err => res.send(err.errors));
 };
 module.exports.show = show;

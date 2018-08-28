@@ -58,7 +58,8 @@ export class RolesEditComponent implements OnInit {
     { name: 4, selected: false, description: "Rinnovo delle licenze" },
     { name: 5, selected: false, description: "Gestione completa delle licenze" },
     { name: 6, selected: false, description: "Gestione completa dei clienti" },
-    { name: 7, selected: false, description: "Gestione completa dei PC" }
+    { name: 7, selected: false, description: "Gestione completa dei PC" },
+    { name: 8, selected: false, description: "Gestione matricole associate alle licenze LECU OEM" }
   ];
 
   constructor(

@@ -6,6 +6,10 @@ class Repository {
         return db.matricole.findAll()
     }
 
+    findAllBySks(sksId) {
+        return db.matricole.findAll({ where: { SM_SS_ID: sksId } })
+    }
+
     create(data) {
         return db.matricole.create(data)
     }

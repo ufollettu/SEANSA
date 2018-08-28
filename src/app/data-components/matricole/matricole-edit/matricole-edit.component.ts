@@ -39,7 +39,7 @@ export class MatricoleEditComponent implements OnInit {
   }
 
   getMatricola(id) {
-    this.api.getMatricola(id)
+    this.api.getMatricoleBySks(id)
       .subscribe(data => {
         this.sm_id = data.sm_id;
         this.matricoleForm.setValue({

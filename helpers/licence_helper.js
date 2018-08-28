@@ -2,8 +2,12 @@ const pcRepo = require("../repositories/pc.server.repository");
 const repository = require('../repositories/rcvpc.server.repository');
 const bytes = require('utf8-bytes');
 const hex2bin = require('locutus/php/strings/hex2bin');
+const bin2hex = require('locutus/php/strings/bin2hex');
 const ord = require('locutus/php/strings/ord');
+const chr = require('locutus/php/strings/chr');
 const substr = require('locutus/php/strings/substr');
+const str_replace = require('locutus/php/strings/str_replace');
+const rand = require('locutus/php/math/rand');
 
 class LicenseHelper {
 
@@ -11,31 +15,6 @@ class LicenseHelper {
         this.licCheckResult = CheckResult
     }
 
-    // TODO test with software transimission
-    codeToGod(stringToCode) {
-        if (stringToCode.length == 0) {
-            return "";
-        }
-        const allBy = bytes(stringToCode);
-        let all4B = [];
-        let result = '';
-
-        for (let i = 1; i <= allBy.length; i++) {
-            all4B[0] = (allBy[i] & 3) | (Math.floor(Math.random() * 4) << 2) | (Math.floor(Math.random() * 4) << 4) | (Math.floor(Math.random() * 4) << 6);
-            all4B[1] = (Math.floor(Math.random() * 4)) | (allBy[i] & 12) | (Math.floor(Math.random() * 4) << 4) | (Math.floor(Math.random() * 4) << 6);
-            all4B[2] = (Math.floor(Math.random() * 4)) | ((Math.floor(Math.random() * 4) << 2) & 3) | (allBy[i] & 48) | (Math.floor(Math.random() * 4) << 6);
-            all4B[3] = (Math.floor(Math.random() * 4)) | ((Math.floor(Math.random() * 4) << 2) & 3) | ((Math.floor(Math.random() * 4) << 4) & 3) | (allBy[i] & 192);
-
-            // TODO check for working
-            result = result + all4B.toString().replace("-", '');
-        }
-        return result;
-    }
-
-    // TODO test with software transimission
-
-    // stringToCode : "01 9071010A0272006302B102100570016149B10010A1B20089244141061D4040 605531021421B102"
-    // hex :             "9071010A0272006302B102100570016149B10010A1B20089244141061D4040"
     decodeToMortal(stringToCode) {
         if (stringToCode.length == 0) {
             return "";
@@ -51,26 +30,52 @@ class LicenseHelper {
 
         for (let i = 0; i < allBy.length; i = i + 4) {
             const all4B = (allBy[i] & 3) | (allBy[i + 1] & 12) | (allBy[i + 2] & 48) | (allBy[i + 3] & 192);
-            result = result + String.fromCharCode(all4B);
+            result = result + chr(all4B);
         }
         return result;
     }
 
-    // hex2bin(hex) {
-    //     let bytesArr = [];
-    //     for (let i = 0; i < hex.length - 1; i += 2) {
-    //         bytesArr.push(parseInt(hex.substr(i, 2), 16));
-    //     }
-    //     return String.fromCharCode.apply(String, bytesArr);
-    // }
+    // TODO test with software transimission
+    codeToGod(stringToCode) {
+        if (stringToCode.length == 0) {
+            return "";
+        }
+        const allBy = bytes(stringToCode);
+        let all4B = [];
+        let result = '';
+
+        for (let i = 1; i <= allBy.length; i++) {
+            all4B[0] = (allBy[i] & 3) | (rand(0, 3) << 2) | (rand(0, 3) << 4) | (rand(0, 3) << 6);
+            all4B[1] = (rand(0, 3)) | (allBy[i] & 12) | (rand(0, 3) << 4) | (rand(0, 3) << 6);
+            all4B[2] = (rand(0, 3)) | ((rand(0, 3) << 2) & 3) | (allBy[i] & 48) | (rand(0, 3) << 6);
+            all4B[3] = (rand(0, 3)) | ((rand(0, 3) << 2) & 3) | ((rand(0, 3) << 4) & 3) | (allBy[i] & 192);
+
+            // TODO check for working
+            const arrAll4B = all4B.map(chr(all4B)).join();
+            console.log(arrAll4B);
+            result = result + str_replace('-', '', bin2hex(arrAll4B));
+            // result = result + all4B.toString().replace("-", '');
+        }
+        return result;
+    }
+
+    getAllowedSerials(keyId) {
+        repository.findAllowedSerials(keyId).then(serials => {
+            console.log(serials);
+            if (serials) {
+                return serials[0]['ALLOWEDS'];
+            }
+            return '';
+        })
+    }
 
     generateValidKey(key) {
         const lolCheck = 'lolkey';
-        let validkey = '';
+        let validKey = '';
         for (let i = 0, b = 0; i < 10; i = i + 2) {
             validKey = validKey + key[i] + lolCheck[b++];
         }
-        return validkey;
+        return validKey;
     }
 
     checkValidKey(checkKey, patKey) {
@@ -114,8 +119,7 @@ class LicenseHelper {
             }).catch(err => console.log(err.message));
     }
 
-    checkLicense(license, hwId, oem, rcvDate, nowDate, ip, allowedSerials, res) {
-        const expDate = rcvDate;
+    checkLicense(license, hwId, oem, expDate, nowDate, ip, allowedSerials, res) {
         repository.findLicense(license).then(key => {
             console.log(key[0]);
             if (this.updatePcRx(hwId, ip, nowDate) == 0) {
@@ -184,13 +188,32 @@ class LicenseHelper {
                             case 3:
                                 oem = 'thisislock'
                                 break;
+                            case 10:
+                                oem = 'thisisnotoem_lecu'
+                                break;
+                            case 11:
+                                oem = 'thisisdemo_lecu'
+                                break;
+                            case 12:
+                                oem = 'thisisoem_lecu'
+                                break;
                         }
                         // if (foundOem[0]['SS_OEM'] == 0) { oem = 'thisisnotoem' }
                         // else if (foundOem[0]['SS_OEM'] == 1) { oem = 'thisisoem' }
                         // else if (foundOem[0]['SS_OEM'] == 2) { oem = 'thisisoemdoc' }
                         // else if (foundOem[0]['SS_OEM'] == 3) { oem = 'thisislock' }
-                        const keepDate = foundOem[0]['SS_EXPIRE'].toString().replace("-", '');
-                        let key = this.codeToGod(keyCode) + '|' + this.codeToGod(patchKey) + '|' + this.codeToGod(oem) + '|' + this.codeToGod(keepDate);
+                        // else if (foundOem[0]['SS_OEM'] == 10) { oem = 'thisisnotoem_lecu' }
+                        // else if (foundOem[0]['SS_OEM'] == 11) { oem = 'thisisdemo_lecu' }
+                        // else if (foundOem[0]['SS_OEM'] == 12) { oem = 'thisisoem_lecu' }
+
+                        const keepDate = str_replace('-', "", foundOem[0]['SS_EXPIRE'])
+                        const allowedSerials = this.getAllowedSerials(foundOem[0]['SS_ID'])
+                        let key =
+                            this.codeToGod(keyCode) + '|'
+                            + this.codeToGod(patchKey) + '|'
+                            + this.codeToGod(oem) + '|'
+                            + this.codeToGod(keepDate) + '|'
+                            + this.codeToGod(allowedSerials);
                         res.send(key);
                         // return key;
                     }

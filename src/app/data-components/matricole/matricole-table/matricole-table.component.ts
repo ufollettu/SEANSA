@@ -3,7 +3,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatricoleApiService } from '../matricole-api.service';
 import { MatricoleDataSource } from '../matricole-data-source';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -21,26 +21,33 @@ import { Router } from '@angular/router';
 export class MatricoleTableComponent implements OnInit {
 
   matricole: any;
+  sksId: any;
 
-  displayedColumns = ['SM_MATRICOLA', 'SM_SS_ID', 'SM_DETTAGLI', 'SM_CREATION_DATE'];
+  displayedColumns = ['SM_MATRICOLA', 'SM_DETTAGLI', 'SM_CREATION_DATE'];
   dataSource: any;
 
-  constructor(private api: MatricoleApiService,  private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
+  constructor(
+    private api: MatricoleApiService,
+    private changeDetectorRefs: ChangeDetectorRef,
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
+    this.sksId = this.route.snapshot.params['sksId'];
     this.refreshMatricoleList();
   }
 
   refreshMatricoleList() {
-    this.api.getMatricole()
+    this.api.getMatricoleBySks(this.sksId)
       .subscribe(res => {
         console.log(res);
         this.matricole = res;
-        this.dataSource = new MatricoleDataSource(this.api);
+        this.dataSource = new MatricoleDataSource(this.api, this.sksId);
         this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);
-        if (err instanceof HttpErrorResponse ) {
+        if (err instanceof HttpErrorResponse) {
           if (err.status === 401 || 500) {
             this.router.navigate(['/login']);
           }
