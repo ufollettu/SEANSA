@@ -51,9 +51,9 @@
             </div>
           </div>
           <div class="example-element-actions">
-            <a mat-raised-button color="primary" [routerLink]="['/matricole-edit', element.sm_id]">
+            <!-- <a mat-raised-button color="primary" [routerLink]="['/matricole-edit', element.sm_id]">
               <mat-icon>edit</mat-icon>
-            </a>
+            </a> -->
             <a mat-raised-button color="warn" (click)="deleteMatricola(element.sm_id)">
               <mat-icon>delete</mat-icon>
             </a>
@@ -72,7 +72,7 @@
 </div>
 
 <div class="button-row">
-  <a mat-raised-button color="primary" [routerLink]="['/matricole-create']">
+  <a mat-raised-button color="primary" [routerLink]="['/matricole-create']" fragment="{{sksId}}">
     <mat-icon>add</mat-icon>
   </a>
 </div>
