@@ -72,7 +72,12 @@
 </div>
 
 <div class="button-row">
-  <a mat-raised-button color="primary" [routerLink]="['/matricole-create']" fragment="{{sksId}}">
+  <a mat-raised-button color="primary" matTooltip="aggiungi matricola" matTooltipPosition="below" [routerLink]="['/matricole-create']"
+    fragment="{{sksId}}" class="action-buttons">
     <mat-icon>add</mat-icon>
+  </a>
+  <a mat-raised-button color="accent" matTooltip="clona matricola" matTooltipPosition="below" [routerLink]="['/matricole-clone']"
+    fragment="{{sksId}}">
+    <mat-icon>people</mat-icon>
   </a>
 </div>

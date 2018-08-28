@@ -1,0 +1,23 @@
+<div class="container">
+  <mat-card>
+    <form [formGroup]="matricoleCloneForm" (ngSubmit)="onFormSubmit(matricoleCloneForm.value)">
+
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Id Licenza" formControlName="SS_ID" [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!matricoleCloneForm.get('SS_ID').valid && matricoleCloneForm.get('SS_ID').touched">Inserisci l'Id della licenza da clonare</span>
+        </mat-error>
+      </mat-form-field>
+
+      <div class="button-row">
+        <a mat-stroked-button color="basic" [routerLink]="['/matricole', sksId]" class="mat-stroked-button">
+          <mat-icon>keyboard_backspace</mat-icon>
+        </a>
+        <button type="submit" [disabled]="!matricoleCloneForm.valid" mat-raised-button color="primary">
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+
+    </form>
+  </mat-card>
+</div>

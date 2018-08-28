@@ -60,3 +60,6 @@ table {
     align-self: flex-end;
   }
   
+  .action-buttons {
+    margin-right: 8px;
+  }

@@ -41,6 +41,7 @@ import { ApiResolverService } from './services/api-resolver.service';
 import { CheckPermissionsDirective } from './directives/check-permissions.directive';
 import { CustomizeComponent } from './customize/customize.component';
 import { SksRenewComponent } from './data-components/sks/sks-renew/sks-renew.component';
+import { MatricoleCloneComponent } from './data-components/matricole/matricole-clone/matricole-clone.component';
 
 
 const appRoutes: Routes = [
@@ -52,30 +53,27 @@ const appRoutes: Routes = [
   { path: 'utenti', component: UtentiTableComponent, canActivate: [AuthGuard] },
   { path: 'utenti-create', component: UtentiCreateComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 0 } },
   { path: 'utenti-resetpwd/:id', component: UtentiResetpwdComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 1 } },
-  // { path: 'utenti-delete/:id', component: UtentiDeleteComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 2 } },
 
   {
     path: 'roles-edit/:id',
     component: RolesEditComponent,
-    canActivate: [AuthGuard],
-    resolve: {
-      cres: ApiResolverService
-    }
+    canActivate: [AuthGuard, PermsGuard],
+    data: { expectedPerm: 4 },
+    resolve: { cres: ApiResolverService }
   },
 
-  { path: 'matricole/:sksId', component: MatricoleTableComponent, canActivate: [AuthGuard] },
-  { path: 'matricole-create', component: MatricoleCreateComponent, canActivate: [AuthGuard] },
-  { path: 'matricole-edit/:id', component: MatricoleEditComponent, canActivate: [AuthGuard] },
+  { path: 'matricole/:sksId', component: MatricoleTableComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 8 } },
+  { path: 'matricole-create', component: MatricoleCreateComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 8 } },
+  { path: 'matricole-clone', component: MatricoleCloneComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 8 } },
 
   { path: 'pc', component: PcTableComponent, canActivate: [AuthGuard] },
   { path: 'pc-create', component: PcCreateComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 7 } },
   { path: 'pc-edit/:id', component: PcEditComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 7 } },
 
   { path: 'sks', component: SksTableComponent, canActivate: [AuthGuard] },
-  { path: 'sks-create', component: SksCreateComponent, canActivate: [AuthGuard] },
-  { path: 'sks-edit/:id', component: SksEditComponent, canActivate: [AuthGuard] },
-  { path: 'sks-renew/:id', component: SksRenewComponent, canActivate: [AuthGuard] },
-
+  { path: 'sks-create', component: SksCreateComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 5 } },
+  { path: 'sks-edit/:id', component: SksEditComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 5 } },
+  { path: 'sks-renew/:id', component: SksRenewComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 4 } },
 
   { path: 'clienti', component: ClientiTableComponent, canActivate: [AuthGuard] },
   { path: 'clienti-create', component: ClientiCreateComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 6 } },
@@ -108,6 +106,7 @@ const appRoutes: Routes = [
     SksTableComponent,
     SksCreateComponent,
     SksEditComponent,
+    SksRenewComponent,
     RinnoviTableComponent,
     RinnoviCreateComponent,
     RinnoviEditComponent,
@@ -120,13 +119,13 @@ const appRoutes: Routes = [
     MatricoleTableComponent,
     MatricoleCreateComponent,
     MatricoleEditComponent,
+    MatricoleCloneComponent,
     RegisterComponent,
     LoginComponent,
     ChangePasswordComponent,
     RolesEditComponent,
     CheckPermissionsDirective,
     CustomizeComponent,
-    SksRenewComponent
   ]
 })
 export class AppRoutingModule { }
