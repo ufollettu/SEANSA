@@ -8,6 +8,7 @@ const chr = require('locutus/php/strings/chr');
 const substr = require('locutus/php/strings/substr');
 const str_replace = require('locutus/php/strings/str_replace');
 const rand = require('locutus/php/math/rand');
+const strcmp = require('locutus/php/strings/strcmp');
 
 class LicenseHelper {
 
@@ -37,7 +38,7 @@ class LicenseHelper {
 
     // TODO test with software transimission
     codeToGod(stringToCode) {
-        if (stringToCode.length == 0) {
+        if (!stringToCode || stringToCode.length == 0) {
             return "";
         }
         const allBy = bytes(stringToCode);
@@ -51,26 +52,23 @@ class LicenseHelper {
             all4B[3] = (rand(0, 3)) | ((rand(0, 3) << 2) & 3) | ((rand(0, 3) << 4) & 3) | (allBy[i] & 192);
 
             // TODO check for working
-            // const arrAll4B = all4B.map(chr(all4B)).join();
             const arrAll4B = all4B.map((el) => {
                 return chr(el);
             }).join('');
-
-            console.log(arrAll4B);
+            // console.log(arrAll4B);
             result = result + str_replace('-', '', bin2hex(arrAll4B));
-            // result = result + all4B.toString().replace("-", '');
         }
         return result;
     }
 
     getAllowedSerials(keyId) {
-        repository.findAllowedSerials(keyId).then(serials => {
-            console.log(serials);
-            if (serials) {
-                return serials[0]['ALLOWEDS'];
-            }
-            return '';
-        })
+        repository.findAllowedSerials(keyId)
+            .then(serials => {
+                if (serials) {
+                    return serials[0]['ALLOWEDS'];
+                }
+                return '';
+            })
     }
 
     generateValidKey(key) {
@@ -96,6 +94,7 @@ class LicenseHelper {
         pcRepo.findOne(hwId)
             .then((pc) => {
                 if (!pc) {
+                    console.log('errore di check pc');
                     return 0;
                 }
                 return 1
@@ -117,6 +116,7 @@ class LicenseHelper {
         pcRepo.updatePcRx(hwId, ip, nowDate)
             .spread((results, metadata) => {
                 if (!results) {
+                    console.log('errore di update pc_rx');
                     return 0;
                 }
                 return 1
@@ -127,42 +127,37 @@ class LicenseHelper {
         repository.findLicense(license).then(key => {
             console.log(key[0]);
             if (this.updatePcRx(hwId, ip, nowDate) == 0) {
-                res.send(this.licCheckResult.server_error);
+                return res.send(this.licCheckResult.server_error);
             }
             if (this.checksetBanned(hwId) == 0) {
-                res.send(this.licCheckResult.hwid_banned);
+                return res.send(this.licCheckResult.hwid_banned);
             }
             if (key[0]) {
                 if (!key[0]['SS_ALLOWED_SERIALS']) {
                     key[0]['SS_ALLOWED_SERIALS'] = "";
                 }
                 if (!key[0]['SP_HW_ID']) {
-                    res.send(this.licCheckResult.key_virgin);
+                    return res.send(this.licCheckResult.key_virgin);
                 } else if (key[0]['SS_STATUS'] < 1) {
-                    res.send(this.licCheckResult.key_unallowed);
+                    return res.send(this.licCheckResult.key_unallowed);
                 } else if (key[0]['SP_HW_ID'] != hwId) {
                     if (this.setKeyMismatched(key[0]['SS_ID'] == 1)) {
-                        res.send(this.licCheckResult.key_moved);
+                        return res.send(this.licCheckResult.key_moved);
                     }
                 } else if (key[0]['SS_EXPIRE'] < expDate || nowDate < key[0]['SP_PC_DATE_TIME']) {
                     if (this.setKeyMismatched(key[0]['SS_ID'] == 1)) {
-                        res.send(this.licCheckResult.dates_hacked);
+                        return res.send(this.licCheckResult.dates_hacked);
                     } else {
-                        res.send(this.licCheckResult.server_error);
+                        return res.send(this.licCheckResult.server_error);
                     }
-                } else if (
-                    key[0]['SS_OEM'] != oem
-                    || key[0]['SS_EXPIRE'] > expDate
-                    || (key[0]['SS_ALLOWED_SERIALS']).localeCompare(this.decodeToMortal(allowedSerials)) != 0
-                ) {
-                    res.send(this.licCheckResult.key_info_to_update);
+                } else if (key[0]['SS_OEM'] != oem || (key[0]['SS_EXPIRE'] > expDate || strcmp(key[0]['SS_ALLOWED_SERIALS'], this.decodeToMortal(allowedSerials)) != 0)) {
+                    return res.send(this.licCheckResult.key_info_to_update);
                 } else if (key[0]['SS_EXPIRE'] <= nowDate) {
-                    res.send(this.licCheckResult.key_expired);
+                    return res.send(this.licCheckResult.key_expired);
                 }
-                res.send(this.licCheckResult.key_ok);
-                // return this.licCheckResult.key_ok
+                return res.send(this.licCheckResult.key_ok);
             } else {
-                res.send(this.licCheckResult.key_insesistente);
+                return res.send(this.licCheckResult.key_insesistente);
             }
         }).catch(err => res.send(err.errors));
     }
@@ -176,7 +171,7 @@ class LicenseHelper {
                     const keyCode = this.generateValidKey(this.decodeToMortal(reqCode));
                     let patchKey = keyCode;
                     if (keyCode.length != 10 || this.checkValidKey(keyCode, patchKey) == 'KO') {
-                        res.send(this.licCheckResult.invalid_reqcode);
+                        return res.send(this.licCheckResult.invalid_reqcode);
                     } else {
                         let oem = '';
                         switch (foundOem[0]['SS_OEM']) {
@@ -213,17 +208,18 @@ class LicenseHelper {
                         // TODO check for working
                         const keepDate = str_replace('-', "", foundOem[0]['SS_EXPIRE'])
                         const allowedSerials = this.getAllowedSerials(foundOem[0]['SS_ID'])
-                        let key =
+                        console.log(allowedSerials);
+                        const key =
                             this.codeToGod(keyCode) + '|'
                             + this.codeToGod(patchKey) + '|'
                             + this.codeToGod(oem) + '|'
                             + this.codeToGod(keepDate) + '|'
                             + this.codeToGod(allowedSerials);
-                        res.send(key);
-                        // return key;
+                        // console.log(key);
+                        return res.send(key);
                     }
                 } else {
-                    res.send(this.licCheckResult.key_insesistente);
+                    return res.send(this.licCheckResult.key_insesistente);
                 }
             }).catch(err => res.send(err.errors));
     }
@@ -242,17 +238,17 @@ class LicenseHelper {
                     pcRepo.create(data)
                         .then((newPc) => {
                             if (!newPc) {
-                                res.send(this.licCheckResult.server_error);
+                                return res.send(this.licCheckResult.server_error);
                             }
                             pcId = newPc['SP_ID']
                             if (typeof pcId === 'undefined' || pcId.length == 0 || pcId == 0) {
-                                res.send(this.licCheckResult.server_error);
+                                return res.send(this.licCheckResult.server_error);
                             }
 
                             repository.updateLicense(pcId, customerName, referenteName, referentePhone, license)
                                 .spread((results, metadata) => {
                                     if (!results) {
-                                        res.send(this.licCheckResult.server_error);
+                                        return res.send(this.licCheckResult.server_error);
                                     }
                                     return this.generateLicense(license, hwId, reqKey, pcDate, ip, res);
                                 }).catch(err => res.send(err.errors))
@@ -262,13 +258,13 @@ class LicenseHelper {
                 } else {
                     pcId = pc['SP_ID']
                     if (typeof pcId === 'undefined' || pcId.length == 0 || pcId == 0) {
-                        res.send(this.licCheckResult.server_error);
+                        return res.send(this.licCheckResult.server_error);
                     }
 
                     repository.updateLicense(pcId, customerName, referenteName, referentePhone, license)
                         .spread((results, metadata) => {
                             if (!results) {
-                                res.send(this.licCheckResult.server_error);
+                                return res.send(this.licCheckResult.server_error);
                             }
                             return this.generateLicense(license, hwId, reqKey, pcDate, ip, res);
                         }).catch(err => res.send(err.errors));

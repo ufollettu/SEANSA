@@ -1,4 +1,5 @@
 const db = require("../models");
+const moment = require('moment');
 
 // const Sequelize = require('sequelize');
 // var sequelize = new Sequelize(CONFIG.db_name, CONFIG.db_user, CONFIG.db_password, { dialect: 'mysql', operatorsAliases: false });
@@ -34,7 +35,8 @@ class Repository {
   }
 
   updatePcRx(hwId, ip, date) {
-    const myDate = new Date().toISOString().replace(/([^T]+)T([^\.]+).*/g, '$1 $2');
+    // const myDate = new Date().toISOString().replace(/([^T]+)T([^\.]+).*/g, '$1 $2');
+    const myDate = moment().format('YYYY-MM-DD, hh:mm:ss');
     const query = "UPDATE `SA_PC` set `SP_LAST_RX`='" + myDate + "',  `SP_IP`='" + ip + "',  `SP_PC_DATE_TIME`='" + date + "'  WHERE `SP_HW_ID` = '" + hwId + "'";
     return db.sequelize.query(query)
   }
