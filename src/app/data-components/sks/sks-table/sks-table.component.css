@@ -33,18 +33,19 @@ table {
     padding: 8px;
     font-weight: lighter;
     margin: 8px 0;
-    height: 104px;
+    height: 114px;
   }
 
   .example-element-details {
     min-width: 80px;
     padding: 16px;
+    padding-top: 0;
     font-weight: lighter;
     margin: 8px 0;
     height: 104px;
     opacity: 0.5;
     display: inline-block;
-    align-self: flex-end;
+    /* align-self: flex-end; */
   }
   
   .example-element-name {

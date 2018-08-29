@@ -1,12 +1,12 @@
 const db = require("../models");
-const Sequelize = require('sequelize');
-var sequelize = new Sequelize(CONFIG.db_name, CONFIG.db_user, CONFIG.db_password, {dialect: 'mysql', operatorsAliases: false});
+// const Sequelize = require('sequelize');
+// var sequelize = new Sequelize(CONFIG.db_name, CONFIG.db_user, CONFIG.db_password, {dialect: 'mysql', operatorsAliases: false});
 
 class Repository {
 
   findAll() {
     const query = "SELECT `SS_ID` as 'KeyId', `SS_KEY` as 'Chiave', `SR_TS` AS 'Timestamp' from `SA_RINNOVI` inner join `SA_SKS` on `SR_SS_ID` = `SS_ID` order by `SR_TS` ASC";
-    return sequelize.query(query, { type:Sequelize.QueryTypes.SELECT})
+    return db.sequelize.query(query, { type: db.Sequelize.QueryTypes.SELECT })
   }
 
   create(data) {

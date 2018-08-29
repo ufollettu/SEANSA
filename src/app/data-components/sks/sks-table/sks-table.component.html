@@ -133,11 +133,11 @@
             </a>
           </div>
           <div class="example-element-actions">
-            <a mat-raised-button matTooltip="Disabilita chiave" matTooltipPosition="right" color="warn" (click)="enableSks(element.SS_ID)"
+            <a mat-raised-button matTooltip="Disabilita chiave" matTooltipPosition="right" color="warn" (click)="disableSks(element.SS_ID)"
               *ngIf="element.SS_STATUS!==0" [appCheckPermissions]="5">
               <mat-icon>not_interested</mat-icon>
             </a>
-            <a mat-raised-button matTooltip="Abilita chiave" matTooltipPosition="right" color="primary" (click)="disableSks(element.SS_ID)"
+            <a mat-raised-button matTooltip="Abilita chiave" matTooltipPosition="right" color="primary" (click)="enableSks(element.SS_ID)"
               *ngIf="element.SS_STATUS===0" [appCheckPermissions]="5">
               <mat-icon>offline_pin</mat-icon>
             </a>

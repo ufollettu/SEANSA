@@ -51,7 +51,11 @@ class LicenseHelper {
             all4B[3] = (rand(0, 3)) | ((rand(0, 3) << 2) & 3) | ((rand(0, 3) << 4) & 3) | (allBy[i] & 192);
 
             // TODO check for working
-            const arrAll4B = all4B.map(chr(all4B)).join();
+            // const arrAll4B = all4B.map(chr(all4B)).join();
+            const arrAll4B = all4B.map((el) => {
+                return chr(el);
+            }).join('');
+
             console.log(arrAll4B);
             result = result + str_replace('-', '', bin2hex(arrAll4B));
             // result = result + all4B.toString().replace("-", '');
@@ -206,6 +210,7 @@ class LicenseHelper {
                         // else if (foundOem[0]['SS_OEM'] == 11) { oem = 'thisisdemo_lecu' }
                         // else if (foundOem[0]['SS_OEM'] == 12) { oem = 'thisisoem_lecu' }
 
+                        // TODO check for working
                         const keepDate = str_replace('-', "", foundOem[0]['SS_EXPIRE'])
                         const allowedSerials = this.getAllowedSerials(foundOem[0]['SS_ID'])
                         let key =

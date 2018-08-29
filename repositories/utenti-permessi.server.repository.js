@@ -1,5 +1,3 @@
-// SELECT * FROM `amt_premessi_utenti` WHERE `UP_U_ID` = 1 AND `UP_P_ID` = 2
-
 const db = require("../models");
 
 class Repository {

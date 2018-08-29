@@ -113,7 +113,7 @@ export class SksTableComponent implements OnInit {
       });
   }
 
-  enableSks(id) {
+  disableSks(id) {
     const status = 0;
     this.api.updateSks(id, { 'SS_STATUS': status })
       .subscribe(res => {
@@ -124,7 +124,7 @@ export class SksTableComponent implements OnInit {
       });
   }
 
-  disableSks(id) {
+  enableSks(id) {
     const status = 1;
     this.api.updateSks(id, { 'SS_STATUS': status })
       .subscribe(res => {
@@ -138,13 +138,21 @@ export class SksTableComponent implements OnInit {
   deleteSks(id) {
     const conf = confirm(`sei sicuro?`);
     if (conf) {
-      this.api.deleteSks(id)
+      const status = -1;
+      this.api.updateSks(id, { 'SS_STATUS': status })
         .subscribe(res => {
-          alert(`sks ${id} rimossa`);
+          alert(`chiave ${res.SS_KEY} eliminata`);
           this.refreshSkssList();
         }, (err) => {
           console.log(err);
         });
+      // this.api.deleteSks(id)
+      //   .subscribe(res => {
+      //     alert(`sks ${id} rimossa`);
+      //     this.refreshSkssList();
+      //   }, (err) => {
+      //     console.log(err);
+      //   });
     }
   }
 

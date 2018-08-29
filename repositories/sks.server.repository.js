@@ -1,9 +1,14 @@
 const db = require('../models');
+const Op = db.Sequelize.Op;
 
 class Repository {
 
     findAll() {
-        return db.sks.findAll()
+        return db.sks.findAll({
+            where: {
+                [Op.or]: [{ SS_STATUS: 0 }, { SS_STATUS: 1 }]
+            }
+        })
     }
 
     create(data) {

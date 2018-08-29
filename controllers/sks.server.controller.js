@@ -1,5 +1,6 @@
 const repository = require('../repositories/sks.server.repository');
 const randomPassword = require('../helpers/pwd-generator');
+const moment = require('moment');
 
 // List
 const list = async (req, res) => {
@@ -21,7 +22,7 @@ const create = async (req, res) => {
     const data = {
         'SS_KEY': randomPassword(25),
         'SS_OEM': req.body.SS_OEM,
-        'SS_CREATED': new Date().toISOString().replace(/([^T]+)T([^\.]+).*/g, '$1 $2'),
+        'SS_CREATED': moment().format('YYYY-MM-DD, hh:mm:ss'),
         'SS_EXPIRE': req.body.SS_EXPIRE,
         'SS_SC_ID': req.body.SS_SC_ID,
         'SS_ACTIVATED_BY': '',
