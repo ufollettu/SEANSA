@@ -22,14 +22,30 @@ import * as moment from 'moment';
   ],
 })
 export class SksTableComponent implements OnInit {
+  oems = [
+    { value: 0, name: 'ATUM FULL', description: 'versione completa con tutti gli aggiornamenti e rinnovo licenza via web' },
+    // tslint:disable-next-line:max-line-length
+    { value: 1, name: 'ATUM OEM', description: 'versione con blocco scheda e limitazione degli aggiornamenti da web (no documenti - bollettini e firmware) con rinnovo licenze via web' },
+    // tslint:disable-next-line:max-line-length
+    { value: 2, name: 'ATUM OEM-D', description: 'versione senza blocco scheda ma con limitazione aggiornamenti da web (no documenti - bollettini e firmware) con rinnovo licenze via web' },
+    // tslint:disable-next-line:max-line-length
+    { value: 3, name: 'ATUM NO-TRAD', description: 'versione senza blocco scheda ma senza aggiornamenti da web (solo teamviewer e SW update) con rinnovo licenze via web' },
+    // tslint:disable-next-line:max-line-length
+    { value: 10, name: 'LECU FULL', description: 'versione completa LECU' },
+    // tslint:disable-next-line:max-line-length
+    { value: 11, name: 'LECU DEMO', description: 'versione demo senza connessione alle centraline' },
+    // tslint:disable-next-line:max-line-length
+    { value: 12, name: 'LECU OEM', description: 'versione con blocco scheda in base alle matricole associate' },
+  ];
+
   sks: any;
   rinnovi: object[];
   pcs: object[];
   serials: any;
 
   // tslint:disable-next-line:max-line-length
-  displayedColumns = ['SS_KEY', 'SS_OEM', 'SS_ACTIVATION_DATE', 'SS_EXPIRE', 'rinnoviCount', 'pcHwId', 'pcLastConnection', 'SS_ACTIVATED_BY', 'SS_ACTIVATION_REFERENT', 'SS_STATUS', 'allowedSerials'];
-  // dataSource: any = new SksDataSource(this.api);
+  displayedColumns = ['SS_KEY', 'SS_OEM', 'pcHwId', 'SS_CREATED', 'SS_ACTIVATION_DATE', 'SS_EXPIRE', 'pcLastConnection', 'SS_STATUS', 'rinnoviCount', 'allowedSerials'];
+
   dataSource: any;
   warningDate: any;
 
@@ -45,55 +61,14 @@ export class SksTableComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.warningDate = moment().subtract(1, 'months').format('YYYY-MM-DD');
+    this.warningDate = moment().format('YYYY-MM-DD');
+    this.fetchRinnovi();
+    this.fetchPcs();
+    this.fetchMatricole();
     this.refreshSkssList();
   }
 
   refreshSkssList() {
-    console.log(this.warningDate);
-    this.rinnoviApi.getRinnovi()
-      .subscribe(rinnovi => {
-        const rinnoviCount = rinnovi.map((rinnovo) => {
-          return rinnovo['Chiave'];
-        }).reduce((allIds, id) => {
-          if (id in allIds) {
-            allIds[id]++;
-          } else {
-            allIds[id] = 1;
-          }
-          return allIds;
-        }, {});
-        this.rinnovi = rinnoviCount;
-      }, (err) => {
-        console.log(err);
-      });
-    this.pcApi.getPcs()
-      .subscribe(pcs => {
-        const pcsCount = pcs.map((pc) => {
-          const pcRes = {};
-          pcRes['pcId'] = pc['SP_ID'];
-          pcRes['hwId'] = pc['SP_HW_ID'];
-          pcRes['lastConnection'] = pc['SP_LAST_RX'];
-          return pcRes;
-        });
-        this.pcs = pcsCount;
-      }, (err) => {
-        console.log(err);
-      });
-    this.matricoleApi.getMatricole()
-      .subscribe(matricole => {
-        const matricoleCount = matricole.map((matricola) => {
-          return matricola['SM_SS_ID'];
-        }).reduce((allIds, id) => {
-          if (id in allIds) {
-            allIds[id]++;
-          } else {
-            allIds[id] = 1;
-          }
-          return allIds;
-        }, {});
-        this.serials = matricoleCount;
-      });
     this.api.getSkss()
       .subscribe(res => {
         this.sks = res;
@@ -182,6 +157,67 @@ export class SksTableComponent implements OnInit {
       return 'red';
     }
     return '';
+  }
+
+  fetchOemsValue(keyOem) {
+    let oemName = '';
+    this.oems.forEach(oem => {
+      if (keyOem === oem.value) {
+        oemName = oem.name;
+      }
+    });
+    return oemName;
+  }
+
+  fetchRinnovi() {
+    this.rinnoviApi.getRinnovi()
+      .subscribe(rinnovi => {
+        const rinnoviCount = rinnovi.map((rinnovo) => {
+          return rinnovo['Chiave'];
+        }).reduce((allIds, id) => {
+          if (id in allIds) {
+            allIds[id]++;
+          } else {
+            allIds[id] = 1;
+          }
+          return allIds;
+        }, {});
+        this.rinnovi = rinnoviCount;
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+  fetchPcs() {
+    this.pcApi.getPcs()
+      .subscribe(pcs => {
+        const pcsCount = pcs.map((pc) => {
+          const pcRes = {};
+          pcRes['pcId'] = pc['SP_ID'];
+          pcRes['hwId'] = pc['SP_HW_ID'];
+          pcRes['lastConnection'] = pc['SP_LAST_RX'];
+          return pcRes;
+        });
+        this.pcs = pcsCount;
+      }, (err) => {
+        console.log(err);
+      });
+  }
+  fetchMatricole() {
+    this.matricoleApi.getMatricole()
+      .subscribe(matricole => {
+        const matricoleCount = matricole.map((matricola) => {
+          return matricola['SM_SS_ID'];
+        }).reduce((allIds, id) => {
+          if (id in allIds) {
+            allIds[id]++;
+          } else {
+            allIds[id] = 1;
+          }
+          return allIds;
+        }, {});
+        this.serials = matricoleCount;
+      });
   }
 }
 
