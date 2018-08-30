@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatricoleApiService } from '../matricole-api.service';
-import { MatricoleDataSource } from '../matricole-data-source';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MatSort, MatTableDataSource } from '@angular/material';
 
 
 @Component({
@@ -26,6 +26,8 @@ export class MatricoleTableComponent implements OnInit {
   displayedColumns = ['SM_MATRICOLA', 'SM_DETTAGLI', 'SM_CREATION_DATE'];
   dataSource: any;
 
+  @ViewChild(MatSort) sort: MatSort;
+
   constructor(
     private api: MatricoleApiService,
     private changeDetectorRefs: ChangeDetectorRef,
@@ -43,7 +45,8 @@ export class MatricoleTableComponent implements OnInit {
       .subscribe(res => {
         console.log(res);
         this.matricole = res;
-        this.dataSource = new MatricoleDataSource(this.api, this.sksId);
+        this.dataSource = new MatTableDataSource(this.matricole);
+        this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);

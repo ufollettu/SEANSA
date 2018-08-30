@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PcApiService } from '../pc-api.service';
-import { PcDataSource } from '../pc-data-source';
+import { MatSort, MatTableDataSource } from '@angular/material';
 
 
 @Component({
@@ -26,6 +26,8 @@ export class PcTableComponent implements OnInit {
   displayedColumns = ['SP_HW_ID', 'SP_IP', 'SP_STATUS', 'SP_LAST_RX'];
   dataSource: any;
 
+  @ViewChild(MatSort) sort: MatSort;
+
   constructor(private api: PcApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
 
   ngOnInit() {
@@ -37,7 +39,8 @@ export class PcTableComponent implements OnInit {
       .subscribe(res => {
         // console.log(res);
         this.pc = res;
-        this.dataSource = new PcDataSource(this.api);
+        this.dataSource = new MatTableDataSource(this.pc);
+        this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);
@@ -48,16 +51,6 @@ export class PcTableComponent implements OnInit {
         }
       });
   }
-
-  // deletePc(id) {
-  //   this.api.deletePc(id)
-  //     .subscribe(res => {
-  //       alert(`pc ${id} rimosso`);
-  //       this.refreshPcsList();
-  //     }, (err) => {
-  //       console.log(err);
-  //     });
-  // }
 
   banPc(id) {
     const status = 1;

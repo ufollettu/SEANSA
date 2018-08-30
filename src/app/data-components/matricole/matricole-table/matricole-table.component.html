@@ -1,6 +1,6 @@
 <div class="example-container mat-elevation-z8">
   <!-- <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8"> -->
-  <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
 
 
     <!-- <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
@@ -12,25 +12,19 @@
 
     <!-- Name Column -->
     <ng-container matColumnDef="SM_MATRICOLA">
-      <th mat-header-cell *matHeaderCellDef> id Matricola </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> id Matricola </th>
       <td mat-cell *matCellDef="let element" class="nome-col"> {{element.SM_MATRICOLA}} </td>
     </ng-container>
 
     <!-- Email Column -->
-    <!-- <ng-container matColumnDef="SM_SS_ID">
-      <th mat-header-cell *matHeaderCellDef> Sks key </th>
-      <td mat-cell *matCellDef="let element"> {{element.SM_SS_ID}} </td>
-    </ng-container> -->
-
-    <!-- Email Column -->
     <ng-container matColumnDef="SM_DETTAGLI">
-      <th mat-header-cell *matHeaderCellDef> Dettagli </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Dettagli </th>
       <td mat-cell *matCellDef="let element"> {{element.SM_DETTAGLI}} </td>
     </ng-container>
 
     <!-- Indirizzo Column -->
     <ng-container matColumnDef="SM_CREATION_DATE">
-      <th mat-header-cell *matHeaderCellDef> Data Creazione </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Data Creazione </th>
       <td mat-cell *matCellDef="let element"> {{element.SM_CREATION_DATE | date }} </td>
     </ng-container>
 
@@ -51,9 +45,6 @@
             </div>
           </div>
           <div class="example-element-actions">
-            <!-- <a mat-raised-button color="primary" [routerLink]="['/matricole-edit', element.sm_id]">
-              <mat-icon>edit</mat-icon>
-            </a> -->
             <a mat-raised-button color="warn" (click)="deleteMatricola(element.sm_id)">
               <mat-icon>delete</mat-icon>
             </a>

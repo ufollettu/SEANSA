@@ -7,6 +7,7 @@ import { RinnoviApiService } from '../../rinnovi/rinnovi-api.service';
 import { PcApiService } from '../../pc/pc-api.service';
 import { MatricoleApiService } from '../../matricole/matricole-api.service';
 import { MatSort, MatTableDataSource } from '@angular/material';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-sks-table',
@@ -30,6 +31,7 @@ export class SksTableComponent implements OnInit {
   displayedColumns = ['SS_KEY', 'SS_OEM', 'SS_ACTIVATION_DATE', 'SS_EXPIRE', 'rinnoviCount', 'pcHwId', 'pcLastConnection', 'SS_ACTIVATED_BY', 'SS_ACTIVATION_REFERENT', 'SS_STATUS', 'allowedSerials'];
   // dataSource: any = new SksDataSource(this.api);
   dataSource: any;
+  warningDate: any;
 
   @ViewChild(MatSort) sort: MatSort;
 
@@ -43,10 +45,12 @@ export class SksTableComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.warningDate = moment().subtract(1, 'months').format('YYYY-MM-DD');
     this.refreshSkssList();
   }
 
   refreshSkssList() {
+    console.log(this.warningDate);
     this.rinnoviApi.getRinnovi()
       .subscribe(rinnovi => {
         const rinnoviCount = rinnovi.map((rinnovo) => {
@@ -150,13 +154,6 @@ export class SksTableComponent implements OnInit {
         }, (err) => {
           console.log(err);
         });
-      // this.api.deleteSks(id)
-      //   .subscribe(res => {
-      //     alert(`sks ${id} rimossa`);
-      //     this.refreshSkssList();
-      //   }, (err) => {
-      //     console.log(err);
-      //   });
     }
   }
 
@@ -178,6 +175,13 @@ export class SksTableComponent implements OnInit {
       }
     });
     return result;
+  }
+
+  checkExpDate(expDate) {
+    if (expDate <= this.warningDate) {
+      return 'red';
+    }
+    return '';
   }
 }
 

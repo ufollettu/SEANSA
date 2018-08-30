@@ -1,26 +1,22 @@
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { UtentiDataSource } from '../utenti-data-source';
 import { UtentiApiService } from '../utenti-api.service';
 import { fadeInAnimation, fadeAnimation } from '../../../animations';
+import { MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-utenti-table',
   templateUrl: './utenti-table.component.html',
   styleUrls: ['./utenti-table.component.css'],
   animations: [
-    fadeInAnimation,
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0', display: 'none' })),
       state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
-  // attach the fade in animation to the host (root) element of this component
-  // tslint:disable-next-line:use-host-property-decorator
-  host: { '[@fadeInAnimation]': '' }
 })
 export class UtentiTableComponent implements OnInit {
 
@@ -28,6 +24,8 @@ export class UtentiTableComponent implements OnInit {
 
   displayedColumns = ['SU_UNA', 'SU_LAST_IP', 'SU_LAST_LOGIN'];
   dataSource: any;
+
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private api: UtentiApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
 
@@ -40,7 +38,8 @@ export class UtentiTableComponent implements OnInit {
       .subscribe(res => {
         // console.log(res);
         this.utenti = res;
-        this.dataSource = new UtentiDataSource(this.api);
+        this.dataSource = new MatTableDataSource(this.utenti);
+        this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);

@@ -1,6 +1,6 @@
 <div class="example-container mat-elevation-z8">
   <!-- <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8"> -->
-  <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
 
 
     <!-- <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
@@ -12,19 +12,19 @@
 
     <!-- Name Column -->
     <ng-container matColumnDef="KeyId">
-      <th mat-header-cell *matHeaderCellDef> Id Sks </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Id Sks </th>
       <td mat-cell *matCellDef="let element" class="nome-col"> {{element.KeyId}} </td>
     </ng-container>
 
     <!-- Name Column -->
     <ng-container matColumnDef="Chiave">
-      <th mat-header-cell *matHeaderCellDef> Sks Key </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Sks Key </th>
       <td mat-cell *matCellDef="let element" class="nome-col"> {{element.Chiave}} </td>
     </ng-container>
 
     <!-- Indirizzo Column -->
     <ng-container matColumnDef="Timestamp">
-      <th mat-header-cell *matHeaderCellDef> Time Stamp </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Time Stamp </th>
       <td mat-cell *matCellDef="let element"> {{element.Timestamp | date:'yyyy-MM-dd' }} </td>
     </ng-container>
 

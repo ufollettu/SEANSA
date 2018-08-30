@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { RinnoviApiService } from '../rinnovi-api.service';
-import { RinnoviDataSource } from '../rinnovi-data-source';
+import { MatSort, MatTableDataSource } from '@angular/material';
 
 
 @Component({
@@ -25,6 +25,8 @@ export class RinnoviTableComponent implements OnInit {
   displayedColumns = ['KeyId', 'Chiave', 'Timestamp'];
   dataSource: any;
 
+  @ViewChild(MatSort) sort: MatSort;
+
   constructor(private api: RinnoviApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
 
   ngOnInit() {
@@ -36,7 +38,8 @@ export class RinnoviTableComponent implements OnInit {
       .subscribe(res => {
         // console.log(res);
         this.rinnovi = res;
-        this.dataSource = new RinnoviDataSource(this.api);
+        this.dataSource = new MatTableDataSource(this.rinnovi);
+        this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);
@@ -47,14 +50,4 @@ export class RinnoviTableComponent implements OnInit {
         }
       });
   }
-
-  // deleteRinnovo(id) {
-  //   this.api.deleteRinnovo(id)
-  //     .subscribe(res => {
-  //       alert(`rinnovo ${id} rimosso`);
-  //       this.refreshRinnoviList();
-  //     }, (err) => {
-  //       console.log(err);
-  //     });
-  // }
 }
