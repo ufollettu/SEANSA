@@ -1,12 +1,12 @@
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { SksApiService } from '../sks-api.service';
-import { SksDataSource } from '../sks-data-source';
 import { RinnoviApiService } from '../../rinnovi/rinnovi-api.service';
 import { PcApiService } from '../../pc/pc-api.service';
 import { MatricoleApiService } from '../../matricole/matricole-api.service';
+import { MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-sks-table',
@@ -28,7 +28,10 @@ export class SksTableComponent implements OnInit {
 
   // tslint:disable-next-line:max-line-length
   displayedColumns = ['SS_KEY', 'SS_OEM', 'SS_ACTIVATION_DATE', 'SS_EXPIRE', 'rinnoviCount', 'pcHwId', 'pcLastConnection', 'SS_ACTIVATED_BY', 'SS_ACTIVATION_REFERENT', 'SS_STATUS', 'allowedSerials'];
+  // dataSource: any = new SksDataSource(this.api);
   dataSource: any;
+
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(
     private api: SksApiService,
@@ -90,7 +93,8 @@ export class SksTableComponent implements OnInit {
     this.api.getSkss()
       .subscribe(res => {
         this.sks = res;
-        this.dataSource = new SksDataSource(this.api);
+        this.dataSource = new MatTableDataSource(this.sks);
+        this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
       }, err => {
         console.log(err);

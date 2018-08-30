@@ -9,8 +9,12 @@ const substr = require('locutus/php/strings/substr');
 const str_replace = require('locutus/php/strings/str_replace');
 const rand = require('locutus/php/math/rand');
 const strcmp = require('locutus/php/strings/strcmp');
+const strtotime = require('locutus/php/datetime/strtotime');
+const time = require('locutus/php/datetime/time');
+const isset = require('locutus/php/var/isset');
+const is_null = require('locutus/php/var/is_null');
 
-class LicenseHelper {
+class SuperActivator {
 
     constructor(CheckResult) {
         this.licCheckResult = CheckResult
@@ -125,34 +129,42 @@ class LicenseHelper {
 
     checkLicense(license, hwId, oem, expDate, nowDate, ip, allowedSerials, res) {
         repository.findLicense(license).then(key => {
-            console.log(key[0]);
-            if (this.updatePcRx(hwId, ip, nowDate) == 0) {
-                return res.send(this.licCheckResult.server_error);
-            }
-            if (this.checksetBanned(hwId) == 0) {
-                return res.send(this.licCheckResult.hwid_banned);
-            }
+            // console.log(key[0]);
             if (key[0]) {
-                if (!key[0]['SS_ALLOWED_SERIALS']) {
+                if (!isset(key[0]['SS_ALLOWED_SERIALS']) || is_null(key[0]['SS_ALLOWED_SERIALS'])) {
                     key[0]['SS_ALLOWED_SERIALS'] = "";
                 }
-                if (!key[0]['SP_HW_ID']) {
+                if (this.updatePcRx(hwId, ip, nowDate) == 0) {
+                    return res.send(this.licCheckResult.server_error);
+                }
+                if (this.checksetBanned(hwId) == 0) {
+                    return res.send(this.licCheckResult.hwid_banned);
+                }
+                if (!isset(key[0]['SP_HW_ID'])) {
                     return res.send(this.licCheckResult.key_virgin);
-                } else if (key[0]['SS_STATUS'] < 1) {
+                }
+                if (key[0]['SS_STATUS'] < 1) {
                     return res.send(this.licCheckResult.key_unallowed);
-                } else if (key[0]['SP_HW_ID'] != hwId) {
+                }
+                if (key[0]['SP_HW_ID'] != hwId) {
                     if (this.setKeyMismatched(key[0]['SS_ID'] == 1)) {
                         return res.send(this.licCheckResult.key_moved);
                     }
-                } else if (key[0]['SS_EXPIRE'] < expDate || nowDate < key[0]['SP_PC_DATE_TIME']) {
+                }
+                if ((strtotime(key[0]['SS_EXPIRE']) < strtotime(expDate))
+                    || (strtotime(nowDate) < strtotime(key[0]['SP_PC_DATE_TIME']))
+                    || (strtotime(nowDate) < time() - 60 * 60 * 24 * 2)) {
                     if (this.setKeyMismatched(key[0]['SS_ID'] == 1)) {
                         return res.send(this.licCheckResult.dates_hacked);
                     } else {
                         return res.send(this.licCheckResult.server_error);
                     }
-                } else if (key[0]['SS_OEM'] != oem || (key[0]['SS_EXPIRE'] > expDate || strcmp(key[0]['SS_ALLOWED_SERIALS'], this.decodeToMortal(allowedSerials)) != 0)) {
+                }
+                if ((key[0]['SS_OEM'] != oem)
+                    || (strtotime(key[0]['SS_EXPIRE']) > strtotime(expDate) || strcmp(key[0]['SS_ALLOWED_SERIALS'], this.decodeToMortal(allowedSerials)) != 0)) {
                     return res.send(this.licCheckResult.key_info_to_update);
-                } else if (key[0]['SS_EXPIRE'] <= nowDate) {
+                }
+                if (strtotime(key[0]['SS_EXPIRE']) <= strtotime(nowDate)) {
                     return res.send(this.licCheckResult.key_expired);
                 }
                 return res.send(this.licCheckResult.key_ok);
@@ -240,36 +252,22 @@ class LicenseHelper {
                             if (!newPc) {
                                 return res.send(this.licCheckResult.server_error);
                             }
-                            pcId = newPc['SP_ID']
-                            if (typeof pcId === 'undefined' || pcId.length == 0 || pcId == 0) {
-                                return res.send(this.licCheckResult.server_error);
-                            }
-
-                            repository.updateLicense(pcId, customerName, referenteName, referentePhone, license)
-                                .spread((results, metadata) => {
-                                    if (!results) {
-                                        return res.send(this.licCheckResult.server_error);
-                                    }
-                                    return this.generateLicense(license, hwId, reqKey, pcDate, ip, res);
-                                }).catch(err => res.send(err.errors))
-                            // return this.generateLicense(license, hwId, reqKey, pcDate, ip);
-
+                            return pcId = newPc['SP_ID']
                         }).catch(err => res.send(err.errors));
                 } else {
                     pcId = pc['SP_ID']
-                    if (typeof pcId === 'undefined' || pcId.length == 0 || pcId == 0) {
-                        return res.send(this.licCheckResult.server_error);
-                    }
-
-                    repository.updateLicense(pcId, customerName, referenteName, referentePhone, license)
-                        .spread((results, metadata) => {
-                            if (!results) {
-                                return res.send(this.licCheckResult.server_error);
-                            }
-                            return this.generateLicense(license, hwId, reqKey, pcDate, ip, res);
-                        }).catch(err => res.send(err.errors));
-                    // return this.generateLicense(license, hwId, reqKey, pcDate, ip);
                 }
+                console.log(pcId);
+                if (isset(pcId) || pcId.length == 0 || pcId == 0) {
+                    return res.send(this.licCheckResult.server_error);
+                }
+                repository.updateLicense(pcId, customerName, referenteName, referentePhone, license)
+                    .spread((results, metadata) => {
+                        if (!results) {
+                            return res.send(this.licCheckResult.server_error);
+                        }
+                        return this.generateLicense(license, hwId, reqKey, pcDate, ip, res);
+                    }).catch(err => res.send(err.errors))
             }).catch(err => res.send(err.errors));
     }
 
@@ -289,6 +287,6 @@ const licCheckResult = {
     hwid_banned: '10'
 }
 
-const licenseHelper = new LicenseHelper(licCheckResult);
+const superActivator = new SuperActivator(licCheckResult);
 
-module.exports = licenseHelper;
+module.exports = superActivator;

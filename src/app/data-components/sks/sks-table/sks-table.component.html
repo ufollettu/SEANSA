@@ -1,6 +1,6 @@
 <div class="example-container mat-elevation-z8">
   <!-- <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8"> -->
-  <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
 
 
     <!-- <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
@@ -12,31 +12,31 @@
 
     <!-- Name Column -->
     <ng-container matColumnDef="SS_KEY">
-      <th mat-header-cell *matHeaderCellDef> Licenza </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Licenza </th>
       <td mat-cell *matCellDef="let element" class="nome-col"> {{element.SS_KEY}} </td>
     </ng-container>
 
     <!-- Email Column -->
     <ng-container matColumnDef="SS_OEM">
-      <th mat-header-cell *matHeaderCellDef> OEM </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> OEM </th>
       <td mat-cell *matCellDef="let element"> {{element.SS_OEM}} </td>
     </ng-container>
 
     <!-- Phone Column -->
     <ng-container matColumnDef="SS_ACTIVATION_DATE">
-      <th mat-header-cell *matHeaderCellDef> Data di Attivazione </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Data di Attivazione </th>
       <td mat-cell *matCellDef="let element"> {{element.SS_ACTIVATION_DATE | date:'yyyy-MM-dd'}} </td>
     </ng-container>
 
     <!-- Indirizzo Column -->
     <ng-container matColumnDef="SS_EXPIRE">
-      <th mat-header-cell *matHeaderCellDef> Expire date </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Expire date </th>
       <td mat-cell *matCellDef="let element"> {{element.SS_EXPIRE | date:'yyyy-MM-dd'}} </td>
     </ng-container>
 
     <!-- Nome Referente Column -->
     <ng-container matColumnDef="SS_STATUS">
-      <th mat-header-cell *matHeaderCellDef> Status </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
       <td mat-cell *matCellDef="let element"> {{element.SS_STATUS}} </td>
     </ng-container>
 
@@ -60,13 +60,13 @@
 
     <!-- Tel Referente Column -->
     <ng-container matColumnDef="SS_ACTIVATED_BY">
-      <th mat-header-cell *matHeaderCellDef> Attivato da </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Attivato da </th>
       <td mat-cell *matCellDef="let element"> {{element.SS_ACTIVATED_BY}} </td>
     </ng-container>
 
     <!-- TS Column -->
     <ng-container matColumnDef="SS_ACTIVATION_REFERENT">
-      <th mat-header-cell *matHeaderCellDef> Referente </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Referente </th>
       <td mat-cell *matCellDef="let element"> {{element.SS_ACTIVATION_REFERENT}} </td>
     </ng-container>
 

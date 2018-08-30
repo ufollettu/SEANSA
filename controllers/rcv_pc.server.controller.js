@@ -1,4 +1,4 @@
-const licenseHelper = require('../helpers/licence_helper');
+const superActivator = require('../helpers/superactivator');
 const requestIp = require('request-ip');
 
 const switchMode = async (req, res) => {
@@ -22,13 +22,13 @@ const switchMode = async (req, res) => {
         case "1":
             {
                 if (modo == "1") {
-                    licenseHelper.checkLicense(license, hwId, oem, expire, nowDate, ip, allowedSerials, res)
+                    superActivator.checkLicense(license, hwId, oem, expire, nowDate, ip, allowedSerials, res)
                 }
                 else if (modo == "2") {
-                    licenseHelper.generateLicense(license, hwId, reqCode, nowDate, ip, res);
+                    superActivator.generateLicense(license, hwId, reqCode, nowDate, ip, res);
                 }
                 else if (modo == "3") {
-                    licenseHelper.registerLicense(license, hwId, reqCode, nowDate, customerName, referenteName, referentePhone, ip, res)
+                    superActivator.registerLicense(license, hwId, reqCode, nowDate, customerName, referenteName, referentePhone, ip, res)
                 }
                 break;
             }
