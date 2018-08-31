@@ -31,8 +31,9 @@ export class CustomizeComponent implements OnInit {
 
   userId = '';
   selectedFile: File = null;
-  imageFileName = '';
   url = '../../assets/images/placeholder.png';
+  mainColor = '';
+  secondaryColor = '';
   customizeForm: FormGroup;
   matcher = new MyErrorStateMatcher();
 
@@ -41,8 +42,6 @@ export class CustomizeComponent implements OnInit {
   SCZ_MAIN_COLOR: '';
   SCZ_SECONDARY_COLOR: '';
 
-  public mainColor = '#ffffff';
-  public secondaryColor = '#ffffff';
 
   constructor(
     private data: DataService,
@@ -50,7 +49,7 @@ export class CustomizeComponent implements OnInit {
     private http: HttpClient,
     private api: CustomizeApiService,
     private formBuilder: FormBuilder,
-    public vcRef: ViewContainerRef,
+    // public vcRef: ViewContainerRef,
     private cpService: ColorPickerService
   ) { }
 
@@ -71,12 +70,14 @@ export class CustomizeComponent implements OnInit {
   onFileSelected(event) {
     if (event.target.files && event.target.files[0]) {
       this.selectedFile = event.target.files[0];
-      this.imageFileName = this.selectedFile.name;
+    this.customizeForm.patchValue({ SCZ_LOGO_URL: event.target.files[0].name });
+
+      // this.imageFileName = this.selectedFile.name;
       // console.log(this.selectedFile.name);
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]); // read file as data url
       reader.onload = (_event) => { // called once readAsDataURL is completed
-        this.url = _event.target.result;
+        this.url = _event.target['result'];
       };
     }
   }
@@ -90,12 +91,14 @@ export class CustomizeComponent implements OnInit {
     });
   }
 
-  onMainColorChange(mainColor: any): void {
-    this.mainColor = mainColor;
+  onMainColorChange(color: any): void {
+    this.mainColor = color;
+    this.customizeForm.patchValue({ SCZ_MAIN_COLOR: color });
   }
 
-  onSecondaryColorChange(secondaryColor: any): void {
-    this.secondaryColor = secondaryColor;
+  onSecondaryColorChange(color: any): void {
+    this.secondaryColor = color;
+    this.customizeForm.patchValue({ SCZ_SECONDARY_COLOR: color });
   }
 
   onFormSubmit(form: NgForm) {

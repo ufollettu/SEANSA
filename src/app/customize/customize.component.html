@@ -5,7 +5,7 @@
             <img mat-card-image height="200" width="200" [src]="url" alt="Photo Preview">
             <div class="button-row">
                 <mat-form-field class="imageName">
-                    <input matInput placeholder="Nome Immagine" formControlName="SCZ_LOGO_URL" [errorStateMatcher]="matcher" [value]="imageFileName"
+                    <input matInput placeholder="Nome Immagine" formControlName="SCZ_LOGO_URL" [errorStateMatcher]="matcher"
                         (click)="imgFileInput.click()">
                     <mat-error>
                         <span *ngIf="!customizeForm.get('SCZ_LOGO_URL').valid && customizeForm.get('SCZ_LOGO_URL').touched">Scegli
@@ -15,7 +15,7 @@
                 <input hidden type="file" #imgFileInput (change)="onFileSelected($event)" />
             </div>
             <mat-form-field class="example-full-width">
-                <input matInput placeholder="Colore principale" [value]="mainColor" formControlName="SCZ_MAIN_COLOR" [errorStateMatcher]="matcher"
+                <input matInput placeholder="Colore principale" formControlName="SCZ_MAIN_COLOR" [errorStateMatcher]="matcher"
                     [style.background]="mainColor" [colorPicker]="mainColor" [cpPosition]="'right'" (colorPickerChange)="onMainColorChange($event)">
                 <mat-error>
                     <span *ngIf="!customizeForm.get('SCZ_MAIN_COLOR').valid && customizeForm.get('SCZ_MAIN_COLOR').touched">Scegli
@@ -26,7 +26,7 @@
 
             <mat-form-field class="example-full-width">
                 <input matInput placeholder="Colore secondario" formControlName="SCZ_SECONDARY_COLOR" [errorStateMatcher]="matcher" [style.background]="secondaryColor"
-                    [colorPicker]="secondaryColor" [cpPosition]="'right'" [value]="secondaryColor" (colorPickerChange)="onSecondaryColorChange($event)">
+                    [colorPicker]="secondaryColor" [cpPosition]="'right'" (colorPickerChange)="onSecondaryColorChange($event)">
                 <mat-error>
                     <span *ngIf="!customizeForm.get('SCZ_SECONDARY_COLOR').valid && customizeForm.get('SCZ_SECONDARY_COLOR').touched">Scegli
                         il colore secondario</span>
