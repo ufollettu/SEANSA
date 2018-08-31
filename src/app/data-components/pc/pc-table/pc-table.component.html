@@ -31,7 +31,8 @@
     <!-- Nome Referente Column -->
     <ng-container matColumnDef="SP_STATUS">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-      <td mat-cell *matCellDef="let element"> {{element.SP_STATUS}} </td>
+      <td mat-cell *matCellDef="let element" [ngStyle]="{'color': element.SP_STATUS == 0 ? '' : 'red'}"> {{element.SP_STATUS===0
+        ? 'non bannato': 'bannato'}} </td>
     </ng-container>
 
     <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
@@ -40,8 +41,8 @@
         <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
           <div class="example-element-diagram">
             <div class="example-element-name"> {{element.SP_HW_ID}} </div>
-            <div class="example-element-phone"> PC IP Address: {{element.SP_IP}} </div>
-            <div class="example-element-email"> Banned Status: {{element.SP_STATUS===0 ? 'not banned': 'banned'}} </div>
+            <div class="example-element-phone"> IP: {{element.SP_IP}} </div>
+            <div class="example-element-email"> Status: {{element.SP_STATUS===0 ? 'non bannato': 'bannato'}} </div>
           </div>
           <div class="example-element-details">
             <div class="example-element-lastupdate">Ultima ricezione:
@@ -70,6 +71,7 @@
     </tr>
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
   </table>
+  <mat-paginator [pageSizeOptions]="[10, 20, 40]" showFirstLastButtons></mat-paginator>
 </div>
 
 <div class="button-row">

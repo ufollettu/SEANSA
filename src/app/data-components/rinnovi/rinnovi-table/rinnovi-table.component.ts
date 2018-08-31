@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { RinnoviApiService } from '../rinnovi-api.service';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 
 
 @Component({
@@ -26,6 +26,7 @@ export class RinnoviTableComponent implements OnInit {
   dataSource: any;
 
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private api: RinnoviApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
 
@@ -39,6 +40,7 @@ export class RinnoviTableComponent implements OnInit {
         // console.log(res);
         this.rinnovi = res;
         this.dataSource = new MatTableDataSource(this.rinnovi);
+        this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
       }, err => {

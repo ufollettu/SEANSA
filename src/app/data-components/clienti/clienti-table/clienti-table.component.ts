@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ClientiApiService } from '../clienti-api.service';
-import { MatTableDataSource, MatSort } from '@angular/material';
+import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 
 @Component({
   selector: 'app-clienti-table',
@@ -25,6 +25,7 @@ export class ClientiTableComponent implements OnInit {
   dataSource: any;
 
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private api: ClientiApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
 
@@ -38,6 +39,7 @@ export class ClientiTableComponent implements OnInit {
         // console.log(res);
         this.clienti = res;
         this.dataSource = new MatTableDataSource(this.clienti);
+        this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
       }, err => {

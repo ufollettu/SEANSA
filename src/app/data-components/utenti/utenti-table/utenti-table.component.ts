@@ -4,7 +4,7 @@ import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { UtentiApiService } from '../utenti-api.service';
 import { fadeInAnimation, fadeAnimation } from '../../../animations';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 
 @Component({
   selector: 'app-utenti-table',
@@ -26,6 +26,7 @@ export class UtentiTableComponent implements OnInit {
   dataSource: any;
 
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private api: UtentiApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
 
@@ -39,6 +40,7 @@ export class UtentiTableComponent implements OnInit {
         // console.log(res);
         this.utenti = res;
         this.dataSource = new MatTableDataSource(this.utenti);
+        this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
       }, err => {

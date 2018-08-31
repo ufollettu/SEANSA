@@ -46,7 +46,8 @@
     <!-- Nome Referente Column -->
     <ng-container matColumnDef="SS_STATUS">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-      <td mat-cell *matCellDef="let element"> {{element.SS_STATUS == 1 ? 'Abilitata': 'Disabilitata'}} </td>
+      <td mat-cell *matCellDef="let element" [ngStyle]="{'color': element.SS_STATUS == 1 ? '' : 'lightgrey'}"> {{element.SS_STATUS
+        == 1 ? 'Abilitata': 'Disabilitata'}} </td>
     </ng-container>
 
     <!-- Nome Referente Column -->
@@ -66,18 +67,6 @@
       <th mat-header-cell *matHeaderCellDef> N. Rinnovi </th>
       <td mat-cell *matCellDef="let element"> {{rinnovi[element.SS_KEY]}} </td>
     </ng-container>
-
-    <!-- Tel Referente Column -->
-    <!-- <ng-container matColumnDef="SS_ACTIVATED_BY">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Attivato da </th>
-      <td mat-cell *matCellDef="let element"> {{element.SS_ACTIVATED_BY}} </td>
-    </ng-container> -->
-
-    <!-- TS Column -->
-    <!-- <ng-container matColumnDef="SS_ACTIVATION_REFERENT">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Referente </th>
-      <td mat-cell *matCellDef="let element"> {{element.SS_ACTIVATION_REFERENT}} </td>
-    </ng-container> -->
 
     <!-- Nome Referente Column -->
     <ng-container matColumnDef="allowedSerials">
@@ -105,15 +94,6 @@
             <div class="example-element-codfiscale">Id Sks:
               <span>{{element.SS_ID}}</span>
             </div>
-            <!-- <div class="example-element-lastupdate">Data Creazione:
-              <span>{{element.SS_CREATED | date:'yyyy-MM-dd'}}</span>
-            </div> -->
-            <!-- <div class="example-element-lastupdate">Data Attivazione:
-              <span>{{element.SS_ACTIVATION_DATE | date:'yyyy-MM-dd'}}</span>
-            </div> -->
-            <!-- <div class="example-element-lastupdate">Data Expire:
-              <span>{{element.SS_EXPIRE | date:'yyyy-MM-dd'}}</span>
-            </div> -->
             <hr>
             <div class="example-element-lastupdate">Last Edit:
               <span>{{element.SS_LAST_EDIT | date:'yyyy-MM-dd'}}</span>
@@ -168,6 +148,7 @@
     </tr>
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
   </table>
+  <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
 </div>
 
 <div class="button-row">

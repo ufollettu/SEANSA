@@ -52,8 +52,9 @@
         <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
           <div class="example-element-diagram">
             <div class="example-element-name"> {{element.SC_NOME}} </div>
-            <div class="example-element-email"> {{element.SC_EMAIL}} </div>
-            <div class="example-element-phone"> {{element.SC_TELEFONO}} </div>
+            <hr>
+            <div class="example-element-email">Email: {{element.SC_EMAIL}} </div>
+            <div class="example-element-phone">Telefono: {{element.SC_TELEFONO}} </div>
           </div>
           <div class="example-element-details">
             <div class="example-element-piva"> P.IVA:
@@ -93,6 +94,7 @@
     </tr>
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
   </table>
+  <mat-paginator [pageSizeOptions]="[10, 20, 40]" showFirstLastButtons></mat-paginator>
 </div>
 
 <div class="button-row">

@@ -6,7 +6,7 @@ import { SksApiService } from '../sks-api.service';
 import { RinnoviApiService } from '../../rinnovi/rinnovi-api.service';
 import { PcApiService } from '../../pc/pc-api.service';
 import { MatricoleApiService } from '../../matricole/matricole-api.service';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 import * as moment from 'moment';
 
 @Component({
@@ -50,6 +50,7 @@ export class SksTableComponent implements OnInit {
   warningDate: any;
 
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     private api: SksApiService,
@@ -73,6 +74,7 @@ export class SksTableComponent implements OnInit {
       .subscribe(res => {
         this.sks = res;
         this.dataSource = new MatTableDataSource(this.sks);
+        this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
       }, err => {

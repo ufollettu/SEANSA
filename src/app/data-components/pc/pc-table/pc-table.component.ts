@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PcApiService } from '../pc-api.service';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 
 
 @Component({
@@ -27,6 +27,7 @@ export class PcTableComponent implements OnInit {
   dataSource: any;
 
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(private api: PcApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
 
@@ -40,6 +41,7 @@ export class PcTableComponent implements OnInit {
         // console.log(res);
         this.pc = res;
         this.dataSource = new MatTableDataSource(this.pc);
+        this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
       }, err => {
