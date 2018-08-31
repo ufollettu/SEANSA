@@ -6,12 +6,12 @@ import { catchError, tap, map } from 'rxjs/operators';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-const apiUrl = 'http://localhost:3000/api/utenti';
+const apiUrl = 'http://localhost:3000/api/customization';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UtentiApiService {
+export class CustomizeApiService {
 
   constructor(private http: HttpClient) { }
 
@@ -37,27 +37,27 @@ export class UtentiApiService {
     return body || {};
   }
 
-  getUtenti(): Observable<any> {
+  getCustomizations(): Observable<any> {
     return this.http.get(apiUrl, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleError));
   }
 
-  getUtente(id: string): Observable<any> {
+  getCustomization(id: string): Observable<any> {
     const url = `${apiUrl}/${id}`;
     return this.http.get(url, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleError));
   }
 
-  postUtente(data): Observable<any> {
+  postCustomization(data): Observable<any> {
     return this.http.post(apiUrl, data, httpOptions)
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  updateUtente(id: string, data): Observable<any> {
+  updateCustomization(id: string, data): Observable<any> {
     const url = `${apiUrl}/${id}`;
     return this.http.put(url, data, httpOptions)
       .pipe(
@@ -65,7 +65,7 @@ export class UtentiApiService {
       );
   }
 
-  deleteUtente(id: string): Observable<{}> {
+  deleteCustomization(id: string): Observable<{}> {
     const url = `${apiUrl}/${id}`;
     return this.http.delete(url, httpOptions)
       .pipe(
@@ -73,3 +73,5 @@ export class UtentiApiService {
       );
   }
 }
+
+

@@ -1,4 +1,47 @@
-<h1>File Upload</h1>
-<input style="display: none" type="file" (change)="onFileSelected($event)" #fleInput>
-<button type="button" (click)="fileINput.click()">Pick File</button>
-<button type="button" (click)="onUplad()">Upload</button>
+<div class="container">
+
+    <mat-card>
+        <form [formGroup]="customizeForm" (ngSubmit)="onFormSubmit(customizeForm.value)">
+            <img mat-card-image height="200" width="200" [src]="url" alt="Photo Preview">
+            <div class="button-row">
+                <mat-form-field class="imageName">
+                    <input matInput placeholder="Nome Immagine" formControlName="SCZ_LOGO_URL" [errorStateMatcher]="matcher" [value]="imageFileName"
+                        (click)="imgFileInput.click()">
+                    <mat-error>
+                        <span *ngIf="!customizeForm.get('SCZ_LOGO_URL').valid && customizeForm.get('SCZ_LOGO_URL').touched">Scegli
+                            un'immagine per il tuo logo</span>
+                    </mat-error>
+                </mat-form-field>
+                <input hidden type="file" #imgFileInput (change)="onFileSelected($event)" />
+            </div>
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="Colore principale" [value]="mainColor" formControlName="SCZ_MAIN_COLOR" [errorStateMatcher]="matcher"
+                    [style.background]="mainColor" [colorPicker]="mainColor" [cpPosition]="'right'" (colorPickerChange)="onMainColorChange($event)">
+                <mat-error>
+                    <span *ngIf="!customizeForm.get('SCZ_MAIN_COLOR').valid && customizeForm.get('SCZ_MAIN_COLOR').touched">Scegli
+                        il colore principale
+                    </span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <input matInput placeholder="Colore secondario" formControlName="SCZ_SECONDARY_COLOR" [errorStateMatcher]="matcher" [style.background]="secondaryColor"
+                    [colorPicker]="secondaryColor" [cpPosition]="'right'" [value]="secondaryColor" (colorPickerChange)="onSecondaryColorChange($event)">
+                <mat-error>
+                    <span *ngIf="!customizeForm.get('SCZ_SECONDARY_COLOR').valid && customizeForm.get('SCZ_SECONDARY_COLOR').touched">Scegli
+                        il colore secondario</span>
+                </mat-error>
+            </mat-form-field>
+
+            <div class="button-row">
+                <a mat-stroked-button color="basic" [routerLink]="['/sks']" class="mat-stroked-button">
+                    <mat-icon>keyboard_backspace</mat-icon>
+                </a>
+                <button type="submit" [disabled]="!customizeForm.valid" mat-raised-button color="primary">
+                    <mat-icon>cloud_upload</mat-icon>
+                </button>
+            </div>
+
+        </form>
+    </mat-card>
+</div>

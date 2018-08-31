@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 import { ClientiTableComponent } from './data-components/clienti/clienti-table/clienti-table.component';
 import { ClientiCreateComponent } from './data-components/clienti/clienti-create/clienti-create.component';
@@ -96,7 +97,8 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    AppMaterialModule
+    AppMaterialModule,
+    ColorPickerModule
   ],
   exports: [RouterModule],
   declarations: [

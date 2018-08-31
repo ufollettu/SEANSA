@@ -14,7 +14,6 @@ import { ProgressSpinnerComponent } from './layout-components/progress-spinner/p
 import { MAT_DATE_LOCALE } from '../../node_modules/@angular/material';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '../../node_modules/@angular/material-moment-adapter';
 
-
 @NgModule({
   declarations: [
     AppComponent,
