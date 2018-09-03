@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, HostBinding } from '@angular/core';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { slideInOutAnimation } from '../animations';
 import { CustomizeApiService } from './customize-api.service';
@@ -7,6 +7,8 @@ import { ErrorStateMatcher } from '@angular/material';
 import { Router } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { ColorPickerService, Cmyk } from 'ngx-color-picker';
+import { OverlayContainer } from '@angular/cdk/overlay';
+import { CustomizeService } from '../services/customize.service';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */
@@ -42,6 +44,7 @@ export class CustomizeComponent implements OnInit {
   SCZ_MAIN_COLOR: '';
   SCZ_SECONDARY_COLOR: '';
 
+  theme;
 
   constructor(
     private data: DataService,
@@ -50,10 +53,13 @@ export class CustomizeComponent implements OnInit {
     private api: CustomizeApiService,
     private formBuilder: FormBuilder,
     // public vcRef: ViewContainerRef,
-    private cpService: ColorPickerService
+    private cpService: ColorPickerService,
+    public overlayContainer: OverlayContainer,
+    private customizeSevice: CustomizeService
   ) { }
 
   ngOnInit() {
+    this.customizeSevice.currentTheme.subscribe(theme => this.theme = theme);
     this.data.getUserFromToken().subscribe(utente => {
       this.userId = utente['SU_ID'];
       console.log(this.userId);
@@ -70,7 +76,7 @@ export class CustomizeComponent implements OnInit {
   onFileSelected(event) {
     if (event.target.files && event.target.files[0]) {
       this.selectedFile = event.target.files[0];
-    this.customizeForm.patchValue({ SCZ_LOGO_URL: event.target.files[0].name });
+      this.customizeForm.patchValue({ SCZ_LOGO_URL: event.target.files[0].name });
 
       // this.imageFileName = this.selectedFile.name;
       // console.log(this.selectedFile.name);
@@ -100,6 +106,14 @@ export class CustomizeComponent implements OnInit {
     this.secondaryColor = color;
     this.customizeForm.patchValue({ SCZ_SECONDARY_COLOR: color });
   }
+
+  onSetTheme(theme) {
+    this.customizeSevice.changeTheme(theme);
+  }
+
+  // sendTheme(theme) {
+  //   this.customizeSevice.changeTheme(theme);
+  // }
 
   onFormSubmit(form: NgForm) {
     console.log(form);

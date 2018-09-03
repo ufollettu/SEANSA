@@ -1,6 +1,6 @@
 .header-buttons {
     overflow: hidden;
-    background-color: lightslategray;
+    /* background-color: lightslategray; */
     position: fixed;
     top: 0;
     width: 100%;
@@ -22,9 +22,9 @@
     background:lightgray;
 }
 
-.mat-accent {
+/* .mat-accent {
     background-color: rgb(107, 144, 168);
-}
+} */
 
 .site-title {
   width: 75%;

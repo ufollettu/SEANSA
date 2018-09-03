@@ -1,9 +1,9 @@
 <app-header></app-header>
-<div class="main">
-    <div [hidden]="!loading" class="loader">
+<div class="main" color="primary">
+    <div [hidden]="!loading " class="loader ">
         <app-progress-spinner></app-progress-spinner>
     </div>
-    <div [hidden]="loading" class="router-output">
+    <div [hidden]="loading " class="router-output ">
         <router-outlet></router-outlet>
     </div>
 </div>

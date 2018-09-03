@@ -5,8 +5,7 @@
             <img mat-card-image height="200" width="200" [src]="url" alt="Photo Preview">
             <div class="button-row">
                 <mat-form-field class="imageName">
-                    <input matInput placeholder="Nome Immagine" formControlName="SCZ_LOGO_URL" [errorStateMatcher]="matcher"
-                        (click)="imgFileInput.click()">
+                    <input matInput placeholder="Nome Immagine" formControlName="SCZ_LOGO_URL" [errorStateMatcher]="matcher" (click)="imgFileInput.click()">
                     <mat-error>
                         <span *ngIf="!customizeForm.get('SCZ_LOGO_URL').valid && customizeForm.get('SCZ_LOGO_URL').touched">Scegli
                             un'immagine per il tuo logo</span>
@@ -15,8 +14,8 @@
                 <input hidden type="file" #imgFileInput (change)="onFileSelected($event)" />
             </div>
             <mat-form-field class="example-full-width">
-                <input matInput placeholder="Colore principale" formControlName="SCZ_MAIN_COLOR" [errorStateMatcher]="matcher"
-                    [style.background]="mainColor" [colorPicker]="mainColor" [cpPosition]="'right'" (colorPickerChange)="onMainColorChange($event)">
+                <input matInput placeholder="Colore principale" formControlName="SCZ_MAIN_COLOR" [errorStateMatcher]="matcher" [style.background]="mainColor"
+                    [colorPicker]="mainColor" [cpPosition]="'right'" (colorPickerChange)="onMainColorChange($event)">
                 <mat-error>
                     <span *ngIf="!customizeForm.get('SCZ_MAIN_COLOR').valid && customizeForm.get('SCZ_MAIN_COLOR').touched">Scegli
                         il colore principale
@@ -41,7 +40,17 @@
                     <mat-icon>cloud_upload</mat-icon>
                 </button>
             </div>
+            <div class="button-row">
+                <hr>
 
+                <h4>Or select from presets:</h4>
+                <button mat-raised-button color="primary" (click)="onSetTheme('default-theme')">Default</button>
+                <button mat-raised-button color="accent" (click)="onSetTheme('dark-theme')">Dark</button>
+                <button mat-raised-button color="warn" (click)="onSetTheme('light-theme')">Light</button>
+                <button mat-raised-button color="primary" (click)="onSetTheme('grey-theme')">Grey</button>
+                <button mat-raised-button color="accent" (click)="onSetTheme('red-theme')">Red</button>
+
+            </div>
         </form>
     </mat-card>
 </div>

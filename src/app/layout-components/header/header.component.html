@@ -1,4 +1,4 @@
-<div class="header-buttons mat-elevation-z8">
+<mat-toolbar color="primary" class="header-buttons mat-elevation-z8">
   <div class="site-title" *ngIf="!authService.loggedIn()">
     <mat-card>
       <h1>Welcome to Superactivator</h1>
@@ -23,9 +23,11 @@
   <div class="auth-buttons">
     <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/register']" routerLinkActive="mat-accent">Signup</button>
     <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/login']" routerLinkActive="mat-accent">Signin</button>
-    <button mat-raised-button *ngIf="!!authService.loggedIn()" [routerLink]="['/changepassword']" routerLinkActive="mat-accent">Change Password</button>
+    <button mat-raised-button *ngIf="!!authService.loggedIn()" [routerLink]="['/changepassword']" routerLinkActive="mat-accent">Change
+      Password
+    </button>
     <button mat-raised-button *ngIf="!!authService.loggedIn()" [routerLink]="['/customize']" routerLinkActive="mat-accent">Customize</button>
     <button mat-raised-button *ngIf="!!authService.loggedIn()" (click)="onLogout()" routerLinkActive="mat-accent">Logout</button>
 
   </div>
-</div>
+</mat-toolbar>
