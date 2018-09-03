@@ -37,7 +37,16 @@ class SuperActivator {
             const all4B = (allBy[i] & 3) | (allBy[i + 1] & 12) | (allBy[i + 2] & 48) | (allBy[i + 3] & 192);
             result = result + chr(all4B);
         }
-        return result;
+        return result.replace(/\0/g, '');
+    }
+
+    unpack(str) {
+        let bytes = [];
+        for (let i = 0, n = str.length; i < n; i++) {
+            const char = str.charCodeAt(i);
+            bytes.push(char >>> 8, char & 0xFF);
+        }
+        return bytes;
     }
 
     // TODO test with software transimission
@@ -45,7 +54,8 @@ class SuperActivator {
         if (!stringToCode || stringToCode.length == 0) {
             return "";
         }
-        const allBy = bytes(stringToCode);
+        const allBy = this.unpack(stringToCode);
+        // const allBy = bytes(stringToCode);
         let all4B = [];
         let result = '';
 
@@ -59,10 +69,18 @@ class SuperActivator {
             const arrAll4B = all4B.map((el) => {
                 return chr(el);
             }).join('');
-            // console.log(arrAll4B);
+            console.log(arrAll4B);
             result = result + str_replace('-', '', bin2hex(arrAll4B));
         }
         return result;
+    }
+
+    trimNull(a) {
+        var c = a.indexOf('\0');
+        if (c > -1) {
+            return a.substr(0, c);
+        }
+        return a;
     }
 
     getAllowedSerials(keyId) {
