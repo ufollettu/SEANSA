@@ -1,7 +1,7 @@
 require('./config/config'); //instantiate configuration variables
 require('./global_functions'); //instantiate global functions
 
-console.log("Environment:", CONFIG.app);
+// console.log("Environment:", CONFIG.app);
 
 // const env = process.env.NODE_ENV || 'development';
 // const config = require('./config/config.json')[env];
@@ -52,7 +52,7 @@ require('./config/passport');
 
 // DB
 models.sequelize.authenticate().then(() => {
-    console.log('Connected to SQL database', CONFIG.db_name);
+    // console.log('Connected to SQL database', CONFIG.db_name);
 })
     .catch(err => {
         console.error('Unable to connect to SQL database:', CONFIG.db_name, err);

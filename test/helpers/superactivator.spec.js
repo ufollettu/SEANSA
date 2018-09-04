@@ -1,1 +1,0 @@
-const superactivator = require()

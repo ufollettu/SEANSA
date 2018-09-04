@@ -75,13 +75,13 @@ class SuperActivator {
         return result;
     }
 
-    trimNull(a) {
-        var c = a.indexOf('\0');
-        if (c > -1) {
-            return a.substr(0, c);
-        }
-        return a;
-    }
+    // trimNull(a) {
+    //     var c = a.indexOf('\0');
+    //     if (c > -1) {
+    //         return a.substr(0, c);
+    //     }
+    //     return a;
+    // }
 
     getAllowedSerials(keyId) {
         repository.findAllowedSerials(keyId)
