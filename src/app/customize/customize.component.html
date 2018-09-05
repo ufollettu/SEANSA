@@ -1,19 +1,22 @@
 <div class="container">
 
     <mat-card>
-        <form [formGroup]="customizeForm" (ngSubmit)="onFormSubmit(customizeForm.value)">
+        <form [formGroup]="customizeForm" (ngSubmit)="onFormSubmit(customizeForm.value)" enctype="multipart/form-data">
             <img mat-card-image height="200" width="200" [src]="url" alt="Photo Preview">
             <div class="button-row">
+
                 <mat-form-field class="imageName">
-                    <input matInput placeholder="Nome Immagine" formControlName="SCZ_LOGO_URL" [errorStateMatcher]="matcher" (click)="imgFileInput.click()">
+                    <input matInput placeholder="Clicca per scegliere il tuo Logo" formControlName="SCZ_LOGO_URL" [errorStateMatcher]="matcher"
+                        (click)="imgFileInput.click()">
                     <mat-error>
                         <span *ngIf="!customizeForm.get('SCZ_LOGO_URL').valid && customizeForm.get('SCZ_LOGO_URL').touched">Scegli
                             un'immagine per il tuo logo</span>
                     </mat-error>
                 </mat-form-field>
-                <input hidden type="file" #imgFileInput (change)="onFileSelected($event)" />
+                <input hidden type="file" name="logo" #imgFileInput (change)="onFileSelected($event)" />
             </div>
-            <mat-form-field class="example-full-width">
+
+            <!-- <mat-form-field class="example-full-width">
                 <input matInput placeholder="Colore principale" formControlName="SCZ_MAIN_COLOR" [errorStateMatcher]="matcher" [style.background]="mainColor"
                     [colorPicker]="mainColor" [cpPosition]="'right'" (colorPickerChange)="onMainColorChange($event)">
                 <mat-error>
@@ -30,6 +33,14 @@
                     <span *ngIf="!customizeForm.get('SCZ_SECONDARY_COLOR').valid && customizeForm.get('SCZ_SECONDARY_COLOR').touched">Scegli
                         il colore secondario</span>
                 </mat-error>
+            </mat-form-field> -->
+            <mat-form-field class="example-full-width">
+                <input matInput hidden>
+                <mat-radio-group placeholder="Scegli lo stile" formControlName="SCZ_THEME">
+                    <mat-radio-button color="primary" value="default-theme" (click)="onSetTheme('default-theme')">Green</mat-radio-button>
+                    <mat-radio-button color="primary" value="light-theme" (click)="onSetTheme('light-theme')">Light</mat-radio-button>
+                    <mat-radio-button color="primary" value="red-theme" (click)="onSetTheme('red-theme')">Red</mat-radio-button>
+                </mat-radio-group>
             </mat-form-field>
 
             <div class="button-row">
@@ -37,19 +48,10 @@
                     <mat-icon>keyboard_backspace</mat-icon>
                 </a>
                 <button type="submit" [disabled]="!customizeForm.valid" mat-raised-button color="primary">
-                    <mat-icon>cloud_upload</mat-icon>
+                    <mat-icon>save</mat-icon>
                 </button>
             </div>
             <div class="button-row">
-                <hr>
-
-                <h4>Or select from presets:</h4>
-                <button mat-raised-button color="primary" (click)="onSetTheme('default-theme')">Default</button>
-                <button mat-raised-button color="accent" (click)="onSetTheme('dark-theme')">Dark</button>
-                <button mat-raised-button color="warn" (click)="onSetTheme('light-theme')">Light</button>
-                <button mat-raised-button color="primary" (click)="onSetTheme('grey-theme')">Grey</button>
-                <button mat-raised-button color="accent" (click)="onSetTheme('red-theme')">Red</button>
-
             </div>
         </form>
     </mat-card>

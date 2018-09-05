@@ -31,6 +31,7 @@ const pcRouter = require('./routes/pc.server.route');
 const matricoleRouter = require('./routes/matricole.server.route');
 const rinnoviRouter = require('./routes/rinnovi.server.route');
 const clientiRouter = require('./routes/clienti.server.route');
+const customizationRouter = require('./routes/customization.server.route');
 const utentiPermessiRouter = require('./routes/utenti-permessi.server.router');
 
 const app = express();
@@ -98,6 +99,8 @@ app.use('/api/pc', verifyToken, pcRouter);
 app.use('/api/matricole', verifyToken, matricoleRouter);
 app.use('/api/rinnovi', verifyToken, rinnoviRouter);
 app.use('/api/clienti', verifyToken, clientiRouter);
+
+app.use('/api/customization', verifyToken, customizationRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

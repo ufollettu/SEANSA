@@ -46,3 +46,7 @@
       margin-right: 8px;
 
     }
+
+    .mat-radio-button {
+      padding-right: 16px;
+    }

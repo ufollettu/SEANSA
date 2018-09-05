@@ -15,7 +15,7 @@ const sequelize = new Sequelize(CONFIG.db_name, CONFIG.db_user, CONFIG.db_passwo
   port: CONFIG.db_port,
   operatorsAliases: false,
   // disable SQL query log
-  logging: false
+  // logging: false
 });
 
 fs
@@ -45,6 +45,7 @@ db.sks = require('./sks')(sequelize, Sequelize);
 db.clienti = require('./clienti')(sequelize, Sequelize);
 db.pc = require('./pc')(sequelize, Sequelize);
 db.utentiPermessi = require('./utenti-permessi')(sequelize, Sequelize);
+db.customStyles = require('./custom-styles')(sequelize, Sequelize);
 
 // Relations
 
