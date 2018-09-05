@@ -84,9 +84,9 @@ class SuperActivator {
     // }
 
     getAllowedSerials(keyId) {
-        repository.findAllowedSerials(keyId)
+        return repository.findAllowedSerials(keyId)
             .then(serials => {
-                if (serials) {
+                if (serials[0]['ALLOWEDS'] !== null) {
                     return serials[0]['ALLOWEDS'];
                 }
                 return '';
@@ -113,10 +113,10 @@ class SuperActivator {
     }
 
     checksetBanned(hwId) {
-        pcRepo.findOne(hwId)
+        return pcRepo.findOne(hwId)
             .then((pc) => {
                 if (!pc) {
-                    console.log('errore di check pc');
+                    // console.log('errore di check pc');
                     return 0;
                 }
                 return 1
@@ -124,8 +124,9 @@ class SuperActivator {
     }
 
     setKeyMismatched(id) {
-        repository.updateMismatchCount(id)
+        return repository.updateMismatchCount(id)
             .spread((results, metadata) => {
+                // if (results['affectedRows'] == 0) {
                 if (!results) {
                     console.log('errore di disattivazione key');
                     return 0;
@@ -135,7 +136,7 @@ class SuperActivator {
     }
 
     updatePcRx(hwId, ip, nowDate) {
-        pcRepo.updatePcRx(hwId, ip, nowDate)
+        return pcRepo.updatePcRx(hwId, ip, nowDate)
             .spread((results, metadata) => {
                 if (!results) {
                     console.log('errore di update pc_rx');
@@ -165,14 +166,14 @@ class SuperActivator {
                     return res.send(this.licCheckResult.key_unallowed);
                 }
                 if (key[0]['SP_HW_ID'] != hwId) {
-                    if (this.setKeyMismatched(key[0]['SS_ID'] == 1)) {
+                    if (this.setKeyMismatched(key[0]['SS_ID']) == 1) {
                         return res.send(this.licCheckResult.key_moved);
                     }
                 }
                 if ((strtotime(key[0]['SS_EXPIRE']) < strtotime(expDate))
                     || (strtotime(nowDate) < strtotime(key[0]['SP_PC_DATE_TIME']))
                     || (strtotime(nowDate) < time() - 60 * 60 * 24 * 2)) {
-                    if (this.setKeyMismatched(key[0]['SS_ID'] == 1)) {
+                    if (this.setKeyMismatched(key[0]['SS_ID']) == 1) {
                         return res.send(this.licCheckResult.dates_hacked);
                     } else {
                         return res.send(this.licCheckResult.server_error);
