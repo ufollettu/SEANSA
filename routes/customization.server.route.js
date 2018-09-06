@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const can = require('../middleware').can;
-// const uploadFile = require('../middleware').uploadFile;
-const multer = require('multer')
-const upload = multer({ dest: '../public/images/' })
+const upload = require('../config/multer');
 
 const CustomizationController = require('./../controllers/customization.server.controller');
 

@@ -1,6 +1,5 @@
 const repository = require('../repositories/customization.server.repository');
-const multer = require('multer');
-const upload = multer({ dest: '../public/images/' });
+const stream = require('stream');
 
 // List
 const list = async (req, res) => {
@@ -21,11 +20,18 @@ module.exports.list = list;
 
 // Create
 const create = async (req, res) => {
-    const data = req.body;
-    console.log(data.file);
+    const data = req.body
+    data.SCZ_TYPE = req.file.mimetype;
+    data.SCZ_NAME = req.file.originalname;
+    data.SCZ_DATA = req.file.buffer;
+    console.log(data);
     repository.create(data).then((style) => {
-        res.json(style);
+        // res.json(style);
+        res.json({ msg: 'File uploaded successfully! -> filename = ' + req.file.originalname });
     }).catch(err => res.send(err.errors));
+    // repository.create(data).then((style) => {
+    //     res.json(style);
+    // }).catch(err => res.send(err.errors));
 };
 module.exports.create = create;
 
@@ -34,7 +40,15 @@ const show = async (req, res) => {
     const id = req.params.id;
     repository.findById(id)
         .then(style => {
-            res.json(style);
+            // res.json(style);
+            const fileContents = Buffer.from(style.SCZ_DATA, "base64");
+            const readStream = new stream.PassThrough();
+            readStream.end(fileContents);
+
+            res.set('Content-disposition', 'attachment; filename=' + style.SCZ_NAME);
+            res.set('Content-Type', style.SCZ_TYPE);
+
+            readStream.pipe(res);
         }).catch(err => res.send(err.errors));
 };
 module.exports.show = show;

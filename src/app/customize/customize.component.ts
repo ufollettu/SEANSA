@@ -44,8 +44,8 @@ export class CustomizeComponent implements OnInit {
   matcher = new MyErrorStateMatcher();
 
   SCZ_SU_ID: '';
-  SCZ_LOGO: '';
-  SCZ_LOGO_URL: '';
+  // SCZ_LOGO: '';
+  // SCZ_LOGO_URL: '';
   SCZ_THEME: '';
   // SCZ_MAIN_COLOR: '';
   // SCZ_SECONDARY_COLOR: '';
@@ -76,8 +76,8 @@ export class CustomizeComponent implements OnInit {
     });
     this.customizeForm = this.formBuilder.group({
       'SCZ_SU_ID': [null],
-      'SCZ_LOGO': [null],
-      'SCZ_LOGO_URL': [null, Validators.required],
+      // 'SCZ_LOGO': [null],
+      // 'SCZ_LOGO_URL': [null, Validators.required],
       'SCZ_THEME': [null],
       // 'SCZ_MAIN_COLOR': [null],
       // 'SCZ_SECONDARY_COLOR': [null]
@@ -94,9 +94,9 @@ export class CustomizeComponent implements OnInit {
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]); // read file as data url
       reader.onload = (_event) => { // called once readAsDataURL is completed
-        this.customizeForm.patchValue({
-          SCZ_LOGO: reader.result
-        });
+        // this.customizeForm.patchValue({
+        //   SCZ_LOGO: reader.result
+        // });
         this.url = _event.target['result'];
         // need to run CD since file load runs outside of zone
         this.cd.markForCheck();
@@ -107,8 +107,8 @@ export class CustomizeComponent implements OnInit {
   setFormValues(userId, theme) {
     this.customizeForm.setValue({
       SCZ_SU_ID: userId,
-      SCZ_LOGO: '',
-      SCZ_LOGO_URL: '',
+      // SCZ_LOGO: '',
+      // SCZ_LOGO_URL: '',
       SCZ_THEME: theme
       // SCZ_MAIN_COLOR: '',
       // SCZ_SECONDARY_COLOR: ''

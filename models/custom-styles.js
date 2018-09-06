@@ -7,11 +7,14 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER(10).UNSIGNED
     },
-    SCZ_LOGO: {
-      type: DataTypes.TEXT()
+    SCZ_TYPE: {
+      type: DataTypes.STRING(50)
     },
-    SCZ_LOGO_URL: {
-      type: DataTypes.STRING(100)
+    SCZ_NAME: {
+      type: DataTypes.STRING(50)
+    },
+    SCZ_DATA: {
+      type: DataTypes.BLOB('long')
     },
     SCZ_SU_ID: {
       type: DataTypes.INTEGER(10)
