@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpRequest, HttpEvent } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
 
 const httpOptions = {
@@ -72,6 +72,12 @@ export class CustomizeApiService {
         catchError(this.handleError)
       );
   }
+
+
+
+  // getFiles(): Observable<any> {
+  //   return this.http.get('http://localhost:8080/api/file/all');
+  // }
 }
 
 

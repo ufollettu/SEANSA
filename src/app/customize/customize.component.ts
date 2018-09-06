@@ -1,15 +1,13 @@
-import { Component, OnInit, ViewContainerRef, HostBinding, ElementRef, ChangeDetectorRef } from '@angular/core';
-import { HttpClient, HttpEventType } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { slideInOutAnimation } from '../animations';
 import { CustomizeApiService } from './customize-api.service';
-import { FormGroup, FormControl, FormGroupDirective, NgForm, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormControl, FormGroupDirective, NgForm, FormBuilder } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material';
 import { Router } from '@angular/router';
 import { DataService } from '../services/data.service';
-import { ColorPickerService, Cmyk } from 'ngx-color-picker';
-import { OverlayContainer } from '@angular/cdk/overlay';
 import { CustomizeService } from '../services/customize.service';
-import { map } from 'rxjs/operators';
+import { UploadFileService } from './upload.service';
 
 
 const URL = 'http://localhost:3000/api/customization';
@@ -36,34 +34,25 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 export class CustomizeComponent implements OnInit {
 
   userId = '';
-  selectedFile: File = null;
+  theme;
+  enableThemeSetting = false;
+
   url = '../../assets/images/placeholder.png';
-  mainColor = '';
-  secondaryColor = '';
   customizeForm: FormGroup;
-  matcher = new MyErrorStateMatcher();
 
   SCZ_SU_ID: '';
-  // SCZ_LOGO: '';
-  // SCZ_LOGO_URL: '';
   SCZ_THEME: '';
-  // SCZ_MAIN_COLOR: '';
-  // SCZ_SECONDARY_COLOR: '';
 
-  theme;
+  selectedFile: File = null;
+  currentFileUpload: File;
 
   constructor(
     private data: DataService,
     private router: Router,
-    private http: HttpClient,
     private api: CustomizeApiService,
+    private uploadService: UploadFileService,
     private formBuilder: FormBuilder,
-    // public vcRef: ViewContainerRef,
-    private cpService: ColorPickerService,
-    public overlayContainer: OverlayContainer,
     private customizeSevice: CustomizeService,
-    private el: ElementRef,
-    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -71,35 +60,22 @@ export class CustomizeComponent implements OnInit {
     this.data.getUserFromToken().subscribe(utente => {
       this.userId = utente['SU_ID'];
       this.theme = 'default-theme';
-      // console.log(this.userId);
       this.setFormValues(utente['SU_ID'], this.theme);
     });
     this.customizeForm = this.formBuilder.group({
       'SCZ_SU_ID': [null],
-      // 'SCZ_LOGO': [null],
-      // 'SCZ_LOGO_URL': [null, Validators.required],
       'SCZ_THEME': [null],
-      // 'SCZ_MAIN_COLOR': [null],
-      // 'SCZ_SECONDARY_COLOR': [null]
     });
   }
 
   onFileSelected(event) {
     if (event.target.files && event.target.files[0]) {
       this.selectedFile = event.target.files[0];
-      this.customizeForm.patchValue({ SCZ_LOGO_URL: event.target.files[0].name });
-
-      // this.imageFileName = this.selectedFile.name;
-      console.log(event.target.files[0]);
+      // console.log(event.target.files[0]);
       const reader = new FileReader();
-      reader.readAsDataURL(event.target.files[0]); // read file as data url
-      reader.onload = (_event) => { // called once readAsDataURL is completed
-        // this.customizeForm.patchValue({
-        //   SCZ_LOGO: reader.result
-        // });
+      reader.readAsDataURL(event.target.files[0]);
+      reader.onload = (_event) => {
         this.url = _event.target['result'];
-        // need to run CD since file load runs outside of zone
-        this.cd.markForCheck();
       };
     }
   }
@@ -107,11 +83,7 @@ export class CustomizeComponent implements OnInit {
   setFormValues(userId, theme) {
     this.customizeForm.setValue({
       SCZ_SU_ID: userId,
-      // SCZ_LOGO: '',
-      // SCZ_LOGO_URL: '',
       SCZ_THEME: theme
-      // SCZ_MAIN_COLOR: '',
-      // SCZ_SECONDARY_COLOR: ''
     });
   }
 
@@ -119,25 +91,22 @@ export class CustomizeComponent implements OnInit {
     this.customizeSevice.changeTheme(theme);
   }
 
-  // onMainColorChange(color: any): void {
-  //   this.mainColor = color;
-  //   this.customizeForm.patchValue({ SCZ_MAIN_COLOR: color });
-  // }
-
-  // onSecondaryColorChange(color: any): void {
-  //   this.secondaryColor = color;
-  //   this.customizeForm.patchValue({ SCZ_SECONDARY_COLOR: color });
-  // }
-
-  // sendTheme(theme) {
-  //   this.customizeSevice.changeTheme(theme);
-  // }
+  upload() {
+    this.uploadService.pushFileToStorage(this.selectedFile)
+      .subscribe(event => {
+        if (event instanceof HttpResponse) {
+          alert('File is completely uploaded!');
+          this.enableThemeSetting = true;
+        }
+      });
+    this.selectedFile = undefined;
+  }
 
   onFormSubmit(form: NgForm) {
     console.log(form);
     this.api.postCustomization(form)
       .subscribe(res => {
-        alert('file uploaded');
+        alert('theme selected');
         this.router.navigate(['/sks']);
       }, (err) => {
         console.log(err);

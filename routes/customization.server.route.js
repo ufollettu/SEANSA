@@ -8,10 +8,12 @@ const CustomizationController = require('./../controllers/customization.server.c
 
 router.get('/', CustomizationController.list); // Index
 // router.get('/new', ClientiController.add); // New
-router.post('/', upload.single('logo'), CustomizationController.create); // Create
+router.post('/', CustomizationController.create); // Create Logo
 router.get('/:id', CustomizationController.show); // Show
 // router.get('/:id/edit', ClientiController.edit); // Edit
 router.put('/:id', CustomizationController.update); // Update
 // router.delete('/:id', CustomizationController.destroy); // Destroy
+
+router.post('/logo', upload.single('logo'), CustomizationController.createLogo); // Create Logo
 
 module.exports = router;

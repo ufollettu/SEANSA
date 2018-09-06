@@ -14,9 +14,9 @@ class Repository {
         return db.customStyles.findById(id)
     }
 
-    // findOne(data) {
-    //     return db.customStyles.findOne(data);
-    // }
+    findOne(userId) {
+        return db.customStyles.findOne({ where: { SCZ_SU_ID: userId } });
+    }
 
 }
 
