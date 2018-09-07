@@ -56,39 +56,12 @@ export class UploadFileService {
       );
   }
 
-  // getFiles(): Observable<any> {
-  //   return this.http.get('http://localhost:8080/api/customization/logo');
-  // }
-
-  // getCustomizations(): Observable<any> {
-  //   return this.http.get(apiUrl, httpOptions).pipe(
-  //     map(this.extractData),
-  //     catchError(this.handleError));
-  // }
-
-  // getCustomization(id: string): Observable<any> {
-  //   const url = `${apiUrl}/${id}`;
-  //   return this.http.get(url, httpOptions).pipe(
-  //     map(this.extractData),
-  //     catchError(this.handleError));
-  // }
-
-  // updateCustomization(id: string, data): Observable<any> {
-  //   const url = `${apiUrl}/${id}`;
-  //   return this.http.put(url, data, httpOptions)
-  //     .pipe(
-  //       catchError(this.handleError)
-  //     );
-  // }
-
-  // deleteCustomization(id: string): Observable<{}> {
-  //   const url = `${apiUrl}/${id}`;
-  //   return this.http.delete(url, httpOptions)
-  //     .pipe(
-  //       catchError(this.handleError)
-  //     );
-  // }
-
+  getCustomStyle(userId: string): Observable<any> {
+    const url = `${apiUrl}/${userId}`;
+    return this.http.get(url, httpOptions).pipe(
+      map(this.extractData),
+      catchError(this.handleError));
+  }
 }
 
 

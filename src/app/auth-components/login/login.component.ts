@@ -6,6 +6,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { UtentiApiService } from '../../data-components/utenti/utenti-api.service';
 import { DataService } from '../../services/data.service';
 import { slideInOutAnimation } from '../../animations';
+import { CustomizeService } from '../../services/customize.service';
+import { UploadFileService } from '../../customize/upload.service';
 
 @Component({
   selector: 'app-login',
@@ -30,7 +32,9 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private auth: AuthService,
     private userApi: UtentiApiService,
-    private data: DataService
+    private data: DataService,
+    private uploadService: UploadFileService,
+    private customizeService: CustomizeService
   ) { }
 
   ngOnInit() {
@@ -49,6 +53,14 @@ export class LoginComponent implements OnInit {
 
         const userId = res['user']['SU_ID'];
         const lastLoginDate = Date.now();
+
+        this.uploadService.getCustomStyle(userId)
+          .subscribe(style => {
+            console.log(style);
+            localStorage.setItem('customLogoPath', style['SCZ_LOGO_PATH']);
+            localStorage.setItem('customStyle', style['SCZ_THEME']);
+            // this.customizeService.changeTheme(style['SCZ_THEME']);
+          });
 
         this.userApi.updateUtente(userId, { 'SU_LAST_LOGIN': lastLoginDate })
           .subscribe(user => {

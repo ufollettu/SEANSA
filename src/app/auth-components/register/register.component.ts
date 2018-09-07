@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { DataService } from '../../services/data.service';
 import { slideInOutAnimation } from '../../animations';
+import { UploadFileService } from '../../customize/upload.service';
 
 @Component({
   selector: 'app-register',
@@ -36,7 +37,8 @@ export class RegisterComponent implements OnInit {
     private ipService: IpService,
     private formBuilder: FormBuilder,
     private data: DataService,
-    private auth: AuthService
+    private auth: AuthService,
+    private uploadService: UploadFileService
   ) { }
 
   ngOnInit() {
@@ -57,8 +59,18 @@ export class RegisterComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.auth.registerUser(form)
       .subscribe(res => {
-        console.log(res);
+        // console.log(res);
         localStorage.setItem('token', res['idToken']);
+
+        const userId = res['user']['SU_ID'];
+
+        this.uploadService.getCustomStyle(userId)
+          .subscribe(style => {
+            console.log(style);
+            localStorage.setItem('customLogoPath', style['SCZ_LOGO_PATH']);
+            localStorage.setItem('customStyle', style['SCZ_THEME']);
+          });
+
         alert(`utente ${res['user']['SU_UNA']} creato`);
         this.sendUser(res['user']);
         this.router.navigate(['/clienti']);

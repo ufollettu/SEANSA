@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/data.service';
+import { CustomizeService } from '../../services/customize.service';
 
 @Component({
   selector: 'app-header',
@@ -11,22 +12,27 @@ import { DataService } from '../../services/data.service';
 })
 export class HeaderComponent implements OnInit {
   user: object;
+  userId: string;
   username: string;
-  imagePath: string;
+  logoPath: string;
 
-  constructor(private router: Router, private authService: AuthService, private data: DataService) { }
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private data: DataService,
+    private customizeService: CustomizeService
+  ) { }
 
   ngOnInit() {
     this.getUser();
     this.getUserFromLocalStorage();
+    this.getLogoFromLocalStorage();
   }
 
   getUser() {
     this.data.getUser().subscribe(utente => {
       this.user = utente;
-      console.log(this.user);
-      this.getLogo(utente['SU_UNA']);
-
+      this.userId = utente['SU_ID'];
     });
     // this.sendUser(this.user);
   }
@@ -42,19 +48,11 @@ export class HeaderComponent implements OnInit {
   getUserFromLocalStorage() {
     const localUsername = localStorage.getItem('userName');
     this.username = localUsername;
-    this.getLogo(localUsername);
   }
 
-  getLogo(username) {
-    if (username === 'cane') {
-      this.imagePath = '../../../assets/images/raniero.png';
-    } else if (username === 'gatto') {
-      this.imagePath = '../../../assets/images/toyota.png';
-    }
+  getLogoFromLocalStorage() {
+    const localLogoPath = localStorage.getItem('customLogoPath');
+    // console.log(localLogoPath);
+    this.logoPath = localLogoPath;
   }
-
-  // with db call
-  // getLogoTest(user) {
-  //   this.imagePath = user['img'];
-  // }
 }

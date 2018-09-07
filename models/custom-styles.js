@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER().UNSIGNED
     },
     SCZ_LOGO_PATH: {
-      type: DataTypes.STRING(255)
+      type: DataTypes.STRING(255),
+      defaultValue: '../../../assets/images/raniero.png'
     },
     SCZ_LOGO_MIMETYPE: {
       type: DataTypes.STRING(50)

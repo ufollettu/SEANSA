@@ -35,6 +35,7 @@ export class DataService {
 
     return of(userIdToken.permArr);
   }
+
   changeUser(user: object) {
     this.userSource.next(user);
   }
