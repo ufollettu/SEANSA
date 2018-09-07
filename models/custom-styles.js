@@ -5,22 +5,23 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: DataTypes.INTEGER(10).UNSIGNED
+      type: DataTypes.INTEGER().UNSIGNED
     },
-    SCZ_TYPE: {
+    SCZ_LOGO_PATH: {
+      type: DataTypes.STRING(255)
+    },
+    SCZ_LOGO_MIMETYPE: {
       type: DataTypes.STRING(50)
     },
-    SCZ_NAME: {
-      type: DataTypes.STRING(50)
-    },
-    SCZ_DATA: {
-      type: DataTypes.BLOB('long')
+    SCZ_LOGO_NAME: {
+      type: DataTypes.STRING(100)
     },
     SCZ_SU_ID: {
-      type: DataTypes.INTEGER(10)
+      type: DataTypes.INTEGER()
     },
     SCZ_THEME: {
-      type: DataTypes.STRING(50)
+      type: DataTypes.STRING(50),
+      defaultValue: 'default-theme'
     }
 
   }, {

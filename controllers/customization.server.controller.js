@@ -20,39 +20,24 @@ module.exports.list = list;
 
 // Create
 const create = async (req, res) => {
-    const data = req.body
+    const data = req.body;
+    if (req.file) {
+        data.SCZ_LOGO_PATH = req.file.path;
+        data.SCZ_LOGO_MIMETYPE = req.file.mimetype;
+        data.SCZ_LOGO_NAME = req.file.filename;
+    }
     repository.create(data).then((style) => {
         res.json(style);
     }).catch(err => res.send(err.errors));
 };
 module.exports.create = create;
 
-const createLogo = async (req, res) => {
-    const data = req.file
-    data.SCZ_TYPE = req.file.mimetype;
-    data.SCZ_NAME = req.file.originalname;
-    data.SCZ_DATA = req.file.buffer;
-    repository.create(data).then((logo) => {
-        // res.json(logo);
-        res.json({ msg: 'File uploaded successfully! -> filename = ' + req.file.originalname });
-    }).catch(err => res.send(err.errors));
-};
-module.exports.createLogo = createLogo;
-
 // Show
 const show = async (req, res) => {
     const userId = req.params.id;
     repository.findOne(userId)
         .then(logo => {
-            // res.json(file);
-            const fileContents = Buffer.from(logo.SCZ_DATA, "base64");
-            const readStream = new stream.PassThrough();
-            readStream.end(fileContents);
-
-            res.set('Content-disposition', 'attachment; filename=' + logo.SCZ_NAME);
-            res.set('Content-Type', logo.SCZ_TYPE);
-
-            readStream.pipe(res);
+            res.json(logo);
         }).catch(err => res.send(err.errors));
 };
 module.exports.show = show;

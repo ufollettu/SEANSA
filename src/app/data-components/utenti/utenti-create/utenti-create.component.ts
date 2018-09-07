@@ -5,6 +5,7 @@ import { UtentiApiService } from '../utenti-api.service';
 import { IpService } from '../../../services/ip.service';
 import { ErrorStateMatcher } from '@angular/material';
 import { slideInOutAnimation } from '../../../animations';
+import { UploadFileService } from '../../../customize/upload.service';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */
@@ -39,7 +40,12 @@ export class UtentiCreateComponent implements OnInit {
   // SU_LAST_EDIT: '';
   // SU_LAST_IP: '';
 
-  constructor(private router: Router, private api: UtentiApiService, private formBuilder: FormBuilder) { }
+  constructor(
+    private router: Router,
+    private api: UtentiApiService,
+    private formBuilder: FormBuilder,
+    private uploadService: UploadFileService
+  ) { }
 
   ngOnInit() {
     this.utenteForm = this.formBuilder.group({
@@ -56,9 +62,12 @@ export class UtentiCreateComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.api.postUtente(form)
       .subscribe(res => {
-        // const id = res['SC_ID'];
-        alert(`utente ${res['SU_UNA']} creato`);
-        this.router.navigate(['/utenti']);
+        const id = res['SU_ID'];
+        this.uploadService.postCustomization(id)
+          .subscribe(style => {
+            alert(`utente ${res['SU_UNA']} creato`);
+            this.router.navigate(['/utenti']);
+          });
       }, (err) => {
         console.log(err);
       });

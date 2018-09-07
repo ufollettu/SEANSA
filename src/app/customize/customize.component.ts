@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
 import { slideInOutAnimation } from '../animations';
-import { CustomizeApiService } from './customize-api.service';
-import { FormGroup, FormControl, FormGroupDirective, NgForm, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroupDirective, NgForm } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material';
 import { Router } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { CustomizeService } from '../services/customize.service';
 import { UploadFileService } from './upload.service';
+import { HttpResponse } from '@angular/common/http';
 
-
-const URL = 'http://localhost:3000/api/customization';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */
@@ -34,37 +31,24 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 export class CustomizeComponent implements OnInit {
 
   userId = '';
-  theme;
-  enableThemeSetting = false;
-
+  theme = '';
   url = '../../assets/images/placeholder.png';
-  customizeForm: FormGroup;
-
-  SCZ_SU_ID: '';
-  SCZ_THEME: '';
-
+  formdata: FormData = new FormData();
   selectedFile: File = null;
-  currentFileUpload: File;
 
   constructor(
     private data: DataService,
     private router: Router,
-    private api: CustomizeApiService,
     private uploadService: UploadFileService,
-    private formBuilder: FormBuilder,
     private customizeSevice: CustomizeService,
   ) { }
 
   ngOnInit() {
-    this.customizeSevice.currentTheme.subscribe(theme => this.theme = theme);
+    this.customizeSevice.currentTheme.subscribe(theme => {
+      this.theme = theme || 'default-theme';
+    });
     this.data.getUserFromToken().subscribe(utente => {
       this.userId = utente['SU_ID'];
-      this.theme = 'default-theme';
-      this.setFormValues(utente['SU_ID'], this.theme);
-    });
-    this.customizeForm = this.formBuilder.group({
-      'SCZ_SU_ID': [null],
-      'SCZ_THEME': [null],
     });
   }
 
@@ -80,34 +64,22 @@ export class CustomizeComponent implements OnInit {
     }
   }
 
-  setFormValues(userId, theme) {
-    this.customizeForm.setValue({
-      SCZ_SU_ID: userId,
-      SCZ_THEME: theme
-    });
-  }
-
   onSetTheme(theme) {
     this.customizeSevice.changeTheme(theme);
   }
 
   upload() {
-    this.uploadService.pushFileToStorage(this.selectedFile)
-      .subscribe(event => {
-        if (event instanceof HttpResponse) {
-          alert('File is completely uploaded!');
-          this.enableThemeSetting = true;
-        }
-      });
-    this.selectedFile = undefined;
-  }
+    this.formdata.append('logo', this.selectedFile);
+    this.formdata.append('SCZ_SU_ID', this.userId);
+    this.formdata.append('SCZ_THEME', this.theme);
+    console.log(this.formdata);
 
-  onFormSubmit(form: NgForm) {
-    console.log(form);
-    this.api.postCustomization(form)
+    this.uploadService.pushFileToStorage(this.formdata)
       .subscribe(res => {
-        alert('theme selected');
-        this.router.navigate(['/sks']);
+        if (res instanceof HttpResponse) {
+          alert('style and logo selected');
+          this.router.navigate(['/sks']);
+        }
       }, (err) => {
         console.log(err);
       });

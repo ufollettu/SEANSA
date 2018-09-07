@@ -3,6 +3,7 @@ const passport = require("passport");
 const secretOrKey = CONFIG.jwt_encryption;
 const expireDate = CONFIG.jwt_expiration;
 const permRepository = require('../repositories/utenti-permessi.server.repository');
+const customizationRepo = require('../repositories/customization.server.repository');
 
 const signupPage = async (req, res) => {
   res.send("signup");
@@ -24,30 +25,38 @@ module.exports.signinPage = signinPage;
 
 const signup = async (req, res, next) => {
   passport.authenticate("signup", { session: false }, async (err, user, info) => {
-      if (err || !user) {
-        return res.status(422).json({
-          message: info ? info.message : "Signup failed",
-          user: user
-        });
-      }
-
-      permRepository.findByUsername(user.SU_ID).then((keys) => {
-        const perms = keys.map((key, index) => {
-          return key.UP_P_ID;
-        });
-        const payload = {
-          "userId": user.SU_ID,
-          "permArr": perms
-        };
-        const token = jwt.sign(payload, secretOrKey, { expiresIn: expireDate });
-        return res.status(200).json({
-          message: "Login successful",
-          user: user,
-          idToken: token,
-          expiresIn: expireDate
-        });
+    if (err || !user) {
+      return res.status(422).json({
+        message: info ? info.message : "Signup failed",
+        user: user
       });
     }
+
+    permRepository.findByUsername(user.SU_ID).then((keys) => {
+      const perms = keys.map((key, index) => {
+        return key.UP_P_ID;
+      });
+      const payload = {
+        "userId": user.SU_ID,
+        "permArr": perms
+      };
+      const token = jwt.sign(payload, secretOrKey, { expiresIn: expireDate });
+      return res.status(200).json({
+        message: "Login successful",
+        user: user,
+        idToken: token,
+        expiresIn: expireDate
+      });
+    });
+
+    // set default style and logo
+    const defaultStyle = {
+      'SCZ_SU_ID': user.SU_ID
+    }
+    customizationRepo.create(defaultStyle).then(style => {
+      // console.log(style)
+    });
+  }
   )(req, res, next);
 };
 
@@ -56,30 +65,30 @@ module.exports.signup = signup;
 const changepwd = async (req, res, next) => {
   console.log(req.userId);
   passport.authenticate("changepwd", { session: false }, async (err, user, info) => {
-      if (err || !user) {
-        return res.status(422).json({
-          message: info ? info.message : "changing password failed",
-          user: user
-        });
-      }
-
-      permRepository.findByUsername(user.SU_ID).then((keys) => {
-        const perms = keys.map((key, index) => {
-          return key.UP_P_ID;
-        });
-        const payload = {
-          "userId": user.SU_ID,
-          "permArr": perms
-        };
-        const token = jwt.sign(payload, secretOrKey, { expiresIn: expireDate });
-        return res.status(200).json({
-          message: "Login successful",
-          user: user,
-          idToken: token,
-          expiresIn: expireDate
-        });
+    if (err || !user) {
+      return res.status(422).json({
+        message: info ? info.message : "changing password failed",
+        user: user
       });
     }
+
+    permRepository.findByUsername(user.SU_ID).then((keys) => {
+      const perms = keys.map((key, index) => {
+        return key.UP_P_ID;
+      });
+      const payload = {
+        "userId": user.SU_ID,
+        "permArr": perms
+      };
+      const token = jwt.sign(payload, secretOrKey, { expiresIn: expireDate });
+      return res.status(200).json({
+        message: "Login successful",
+        user: user,
+        idToken: token,
+        expiresIn: expireDate
+      });
+    });
+  }
   )(req, res, next);
 };
 
@@ -87,30 +96,30 @@ module.exports.changepwd = changepwd;
 
 const signin = async (req, res, next) => {
   passport.authenticate("login", { session: false }, (err, user, info) => {
-      if (err || !user) {
-        return res.status(422).json({
-          message: info ? info.message : "Login failed",
-          user: user
-        });
-      }
-
-      permRepository.findByUsername(user.SU_ID).then((keys) => {
-        const perms = keys.map((key, index) => {
-          return key.UP_P_ID;
-        });
-        const payload = {
-          "userId": user.SU_ID,
-          "permArr": perms
-        };
-        const token = jwt.sign(payload, secretOrKey, { expiresIn: expireDate });
-        return res.status(200).json({
-          message: "Login successful",
-          user: user,
-          idToken: token,
-          expiresIn: expireDate
-        });
+    if (err || !user) {
+      return res.status(422).json({
+        message: info ? info.message : "Login failed",
+        user: user
       });
     }
+
+    permRepository.findByUsername(user.SU_ID).then((keys) => {
+      const perms = keys.map((key, index) => {
+        return key.UP_P_ID;
+      });
+      const payload = {
+        "userId": user.SU_ID,
+        "permArr": perms
+      };
+      const token = jwt.sign(payload, secretOrKey, { expiresIn: expireDate });
+      return res.status(200).json({
+        message: "Login successful",
+        user: user,
+        idToken: token,
+        expiresIn: expireDate
+      });
+    });
+  }
   )(req, res, next);
 };
 

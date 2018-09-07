@@ -1,15 +1,15 @@
 const multer = require('multer');
 
 //multer config
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, 'public/uploads')
-//     },
-//     filename: (req, file, cb) => {
-//         cb(null, file.fieldname + "-" + Date.now() + "-" + file.originalname)
-//     }
-// });
-const storage = multer.memoryStorage();
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/uploads')
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + "-" + Date.now() + "-" + file.originalname)
+    }
+});
+// const storage = multer.memoryStorage();
 // filter non-image files
 const fileFilter = (req, file, cb) => {
     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
