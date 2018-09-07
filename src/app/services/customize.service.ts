@@ -16,7 +16,7 @@ const apiUrl = 'http://localhost:3000/api/customization';
 export class CustomizeService {
 
 
-  private themeSource = new BehaviorSubject('default-theme');
+  private themeSource = new BehaviorSubject(this.getThemeFromToken());
   currentTheme = this.themeSource.asObservable().pipe(distinctUntilChanged());
 
   constructor(
@@ -52,5 +52,9 @@ export class CustomizeService {
 
   getTheme() {
     return this.currentTheme;
+  }
+
+  getThemeFromToken() {
+    return localStorage.getItem('customStyle') || 'default-theme';
   }
 }

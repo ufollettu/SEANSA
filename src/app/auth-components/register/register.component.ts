@@ -1,3 +1,4 @@
+import { CustomizeService } from './../../services/customize.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IpService } from '../../services/ip.service';
 import { Component, OnInit } from '@angular/core';
@@ -38,7 +39,8 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private data: DataService,
     private auth: AuthService,
-    private uploadService: UploadFileService
+    private uploadService: UploadFileService,
+    private customizeService: CustomizeService
   ) { }
 
   ngOnInit() {
@@ -69,6 +71,8 @@ export class RegisterComponent implements OnInit {
             console.log(style);
             localStorage.setItem('customLogoPath', style['SCZ_LOGO_PATH']);
             localStorage.setItem('customStyle', style['SCZ_THEME']);
+            this.customizeService.changeTheme(style['SCZ_THEME']);
+
           });
 
         alert(`utente ${res['user']['SU_UNA']} creato`);

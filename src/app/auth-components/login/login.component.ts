@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
             console.log(style);
             localStorage.setItem('customLogoPath', style['SCZ_LOGO_PATH']);
             localStorage.setItem('customStyle', style['SCZ_THEME']);
-            // this.customizeService.changeTheme(style['SCZ_THEME']);
+            this.customizeService.changeTheme(style['SCZ_THEME']);
           });
 
         this.userApi.updateUtente(userId, { 'SU_LAST_LOGIN': lastLoginDate })
