@@ -69,7 +69,7 @@ export class RegisterComponent implements OnInit {
         this.uploadService.getCustomStyle(userId)
           .subscribe(style => {
             console.log(style);
-            localStorage.setItem('customLogoPath', style['SCZ_LOGO_PATH']);
+            localStorage.setItem('customLogo', style['SCZ_LOGO_NAME']);
             localStorage.setItem('customStyle', style['SCZ_THEME']);
             this.customizeService.changeTheme(style['SCZ_THEME']);
 

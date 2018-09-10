@@ -22,7 +22,6 @@ module.exports.list = list;
 const create = async (req, res) => {
     const data = req.body;
     if (req.file) {
-        data.SCZ_LOGO_PATH = req.file.path;
         data.SCZ_LOGO_MIMETYPE = req.file.mimetype;
         data.SCZ_LOGO_NAME = req.file.filename;
     }
@@ -55,9 +54,13 @@ module.exports.show = show;
 
 // Update
 const update = async (req, res) => {
-    const id = req.params.id;
+    const userId = req.params.userId;
     const newData = req.body;
-    repository.findById(id)
+    if (req.file) {
+      newData.SCZ_LOGO_MIMETYPE = req.file.mimetype;
+      newData.SCZ_LOGO_NAME = req.file.filename;
+    }
+    repository.findOne(userId)
         .then(style => {
             return style.update(newData).then((self) => {
                 res.json(self);

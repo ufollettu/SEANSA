@@ -1,3 +1,4 @@
+import { Renderer2, ElementRef } from '@angular/core';
 // import { trigger, state, transition, style, animate } from '@angular/animations';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -20,7 +21,9 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private data: DataService,
-    private customizeService: CustomizeService
+    private customizeService: CustomizeService,
+    private renderer: Renderer2,
+    private el: ElementRef
   ) { }
 
   ngOnInit() {
@@ -51,8 +54,9 @@ export class HeaderComponent implements OnInit {
   }
 
   getLogoFromLocalStorage() {
-    const localLogoPath = localStorage.getItem('customLogoPath');
+    const localLogoPath = localStorage.getItem('customLogo');
     // console.log(localLogoPath);
-    this.logoPath = localLogoPath;
+    this.logoPath = '../../../assets/images/' + localLogoPath;
+    this.renderer.setProperty(this.el.nativeElement, 'logo', ('png' || 'jpg'));
   }
 }

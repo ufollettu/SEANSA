@@ -37,9 +37,18 @@ export class UploadFileService {
     return body || {};
   }
 
-  pushFileToStorage(formdata: FormData): Observable<HttpEvent<{}>> {
+  // pushFileToStorage(formdata: FormData): Observable<HttpEvent<{}>> {
 
-    const req = new HttpRequest('POST', apiUrl, formdata);
+  //   const req = new HttpRequest('POST', apiUrl, formdata);
+
+  //   return this.http.request(req).pipe(
+  //     map(this.extractData),
+  //     catchError(this.handleError));
+  // }
+
+  pushFileToStorage(userId: string, formdata: FormData): Observable<HttpEvent<{}>> {
+    const url = `${apiUrl}/${userId}`;
+    const req = new HttpRequest('PUT', url, formdata);
 
     return this.http.request(req).pipe(
       map(this.extractData),

@@ -3,10 +3,10 @@ const multer = require('multer');
 //multer config
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'public/uploads')
+        cb(null, 'src/assets/images');
     },
     filename: (req, file, cb) => {
-        cb(null, file.fieldname + "-" + Date.now() + "-" + file.originalname)
+        cb(null, file.fieldname + "-" + Date.now() + "-" + file.originalname);
     }
 });
 // const storage = multer.memoryStorage();

@@ -74,10 +74,13 @@ export class CustomizeComponent implements OnInit {
     this.formdata.append('SCZ_THEME', this.theme);
     console.log(this.formdata);
 
-    this.uploadService.pushFileToStorage(this.formdata)
+    this.uploadService.pushFileToStorage(this.userId, this.formdata)
       .subscribe(res => {
         if (res instanceof HttpResponse) {
           alert('style and logo selected');
+          console.log(res.body['SCZ_LOGO_NAME']);
+          localStorage.setItem('customLogo', res.body['SCZ_LOGO_NAME']);
+          localStorage.setItem('customStyle', res.body['SCZ_THEME']);
           this.router.navigate(['/sks']);
         }
       }, (err) => {

@@ -1,7 +1,7 @@
 <div class="container">
     <mat-card>
         <div>
-            <img mat-card-image height="200" width="200" [src]="url" alt="Photo Preview">
+            <img id="logo" name="logo" mat-card-image height="200" width="200" [src]="url" alt="Photo Preview">
             <label>
                 <input hidden type="file" name="logo" #imgFileInput (change)="onFileSelected($event)" />
             </label>

@@ -7,18 +7,17 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       type: DataTypes.INTEGER().UNSIGNED
     },
-    SCZ_LOGO_PATH: {
-      type: DataTypes.STRING(255),
-      defaultValue: '../../../assets/images/raniero.png'
-    },
     SCZ_LOGO_MIMETYPE: {
-      type: DataTypes.STRING(50)
+      type: DataTypes.STRING(50),
+      defaultValue: 'image/png'
     },
     SCZ_LOGO_NAME: {
-      type: DataTypes.STRING(100)
+      type: DataTypes.STRING(100),
+      defaultValue: 'raniero.png'
     },
     SCZ_SU_ID: {
-      type: DataTypes.INTEGER()
+      type: DataTypes.INTEGER(),
+      unique: true
     },
     SCZ_THEME: {
       type: DataTypes.STRING(50),
