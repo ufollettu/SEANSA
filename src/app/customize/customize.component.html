@@ -16,11 +16,13 @@
                 <mat-radio-button color="primary" value="default-theme" (click)="onSetTheme('default-theme')">Green</mat-radio-button>
                 <mat-radio-button color="primary" value="light-theme" (click)="onSetTheme('light-theme')">Light</mat-radio-button>
                 <mat-radio-button color="primary" value="red-theme" (click)="onSetTheme('red-theme')">Red</mat-radio-button>
-            </mat-radio-group>
+                <mat-radio-button color="primary" value="blue-theme" (click)="onSetTheme('blue-theme')">Blue</mat-radio-button>
+                <mat-radio-button color="primary" value="yellow-theme" (click)="onSetTheme('yellow-theme')">Yellow</mat-radio-button>
+              </mat-radio-group>
         </div>
 
         <div class="button-row">
-            <a mat-stroked-button color="basic" [routerLink]="['/sks']" class="mat-stroked-button">
+            <a mat-stroked-button color="basic" [routerLink]="['/sks']" class="mat-stroked-button" (click)="resetLogo()">
                 <mat-icon>keyboard_backspace</mat-icon>
             </a>
             <button mat-raised-button color="primary" [disabled]="!selectedFile" (click)="upload()">

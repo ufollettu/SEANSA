@@ -40,11 +40,11 @@ export class CustomizeComponent implements OnInit {
     private data: DataService,
     private router: Router,
     private uploadService: UploadFileService,
-    private customizeSevice: CustomizeService,
+    private customizeService: CustomizeService,
   ) { }
 
   ngOnInit() {
-    this.customizeSevice.currentTheme.subscribe(theme => {
+    this.customizeService.currentTheme.subscribe(theme => {
       this.theme = theme || 'default-theme';
     });
     this.data.getUserFromToken().subscribe(utente => {
@@ -55,17 +55,18 @@ export class CustomizeComponent implements OnInit {
   onFileSelected(event) {
     if (event.target.files && event.target.files[0]) {
       this.selectedFile = event.target.files[0];
-      // console.log(event.target.files[0]);
+      console.log(event.target.files[0]);
       const reader = new FileReader();
       reader.readAsDataURL(event.target.files[0]);
       reader.onload = (_event) => {
         this.url = _event.target['result'];
+        this.customizeService.changeLogo(_event.target['result']);
       };
     }
   }
 
   onSetTheme(theme) {
-    this.customizeSevice.changeTheme(theme);
+    this.customizeService.changeTheme(theme);
   }
 
   upload() {
@@ -78,13 +79,20 @@ export class CustomizeComponent implements OnInit {
       .subscribe(res => {
         if (res instanceof HttpResponse) {
           alert('style and logo selected');
-          console.log(res.body['SCZ_LOGO_NAME']);
-          localStorage.setItem('customLogo', res.body['SCZ_LOGO_NAME']);
-          localStorage.setItem('customStyle', res.body['SCZ_THEME']);
+          const newLogo = res.body['SCZ_LOGO_NAME'];
+          const newTheme = res.body['SCZ_THEME'];
+          localStorage.setItem('customLogo', newLogo);
+          localStorage.setItem('customStyle', newTheme);
+          // this.customizeService.changeLogo(newLogo);
           this.router.navigate(['/sks']);
         }
       }, (err) => {
         console.log(err);
       });
+  }
+
+  resetLogo() {
+    const oldLogo = localStorage.getItem('customLogo');
+      this.customizeService.changeLogo(oldLogo);
   }
 }

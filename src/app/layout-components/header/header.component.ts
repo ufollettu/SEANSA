@@ -1,4 +1,4 @@
-import { Renderer2, ElementRef } from '@angular/core';
+import { Renderer2, ElementRef, ChangeDetectorRef } from '@angular/core';
 // import { trigger, state, transition, style, animate } from '@angular/animations';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -16,20 +16,23 @@ export class HeaderComponent implements OnInit {
   userId: string;
   username: string;
   logoPath: string;
+  changeLog;
 
   constructor(
     private router: Router,
     private authService: AuthService,
     private data: DataService,
     private customizeService: CustomizeService,
-    private renderer: Renderer2,
-    private el: ElementRef
+    // private renderer: Renderer2,
+    // private el: ElementRef
+    private cdRef: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
     this.getUser();
+    this.getLogo();
     this.getUserFromLocalStorage();
-    this.getLogoFromLocalStorage();
+    // this.getLogoFromLocalStorage();
   }
 
   getUser() {
@@ -53,10 +56,20 @@ export class HeaderComponent implements OnInit {
     this.username = localUsername;
   }
 
-  getLogoFromLocalStorage() {
-    const localLogoPath = localStorage.getItem('customLogo');
-    // console.log(localLogoPath);
-    this.logoPath = '../../../assets/images/' + localLogoPath;
-    this.renderer.setProperty(this.el.nativeElement, 'logo', ('png' || 'jpg'));
+  getLogo() {
+    this.customizeService.getLogo().subscribe(logo => {
+      if (logo.length > 200) {
+        this.logoPath = logo;
+      } else {
+        this.logoPath = 'assets/images/' + logo;
+      }
+      this.cdRef.detectChanges();
+    });
   }
+  // getLogoFromLocalStorage() {
+  //   const localLogoPath = localStorage.getItem('customLogo');
+  //   // console.log(localLogoPath);
+  //   this.logoPath = 'assets/images/' + localLogoPath;
+  //   this.cdRef.detectChanges();
+  // }
 }

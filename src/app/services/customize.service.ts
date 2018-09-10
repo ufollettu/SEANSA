@@ -19,6 +19,9 @@ export class CustomizeService {
   private themeSource = new BehaviorSubject(this.getThemeFromToken());
   currentTheme = this.themeSource.asObservable().pipe(distinctUntilChanged());
 
+  private logoSource = new BehaviorSubject(this.getLogoFromToken());
+  currentLogo = this.logoSource.asObservable().pipe(distinctUntilChanged());
+
   constructor(
     public overlayContainer: OverlayContainer,
     private http: HttpClient
@@ -56,5 +59,18 @@ export class CustomizeService {
 
   getThemeFromToken() {
     return localStorage.getItem('customStyle') || 'default-theme';
+  }
+
+  changeLogo(logo) {
+    console.log(logo);
+    this.logoSource.next(logo);
+  }
+
+  getLogo() {
+    return this.currentLogo;
+  }
+
+  getLogoFromToken() {
+    return localStorage.getItem('customLogo') || 'raniero.png';
   }
 }
