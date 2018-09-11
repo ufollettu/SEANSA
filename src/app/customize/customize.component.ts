@@ -102,5 +102,6 @@ export class CustomizeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.resetLogo();
   }
 }
