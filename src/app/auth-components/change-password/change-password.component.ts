@@ -35,7 +35,7 @@ export class ChangePasswordComponent implements OnInit {
   ngOnInit() {
     this.data.getUserFromToken().subscribe(utente => {
       this.user = utente;
-      console.log(utente['SU_ID']);
+      // console.log(utente['SU_ID']);
     });
     // this.data.currentUser.subscribe(user => { this.user = user; });
 
@@ -47,10 +47,9 @@ export class ChangePasswordComponent implements OnInit {
     });
   }
 
-  // TODO change with some passport method --> do not hash pwd yet
   getUtente() {
     this.data.getUserFromToken().subscribe(utente => {
-      console.log(utente['SU_ID']);
+      // console.log(utente['SU_ID']);
       this.SU_ID = utente.SU_ID;
       this.utenteForm.setValue({
         username: utente.SU_UNA,

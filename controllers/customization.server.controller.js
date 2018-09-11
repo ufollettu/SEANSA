@@ -64,16 +64,12 @@ const update = async (req, res) => {
     }
     repository.findOne(userId)
         .then(style => {
-          // const imagedir =  path.resolve(global.__basedir, '../');
-          // console.log(imagedir);
-          // const oldLogoPath = imagedir + '/src/assets/images/' + style['SCZ_LOGO_NAME'];
-          // // TODO destroy old image
-          // // Assuming that 'path/file.txt' is a regular file.
-          // console.log(oldLogoPath);
-          // fs.unlink(oldLogoPath, (err) => {
-          //   if (err) throw err;
-          //   console.log(`${oldLogoPath} was deleted`);
-          // });
+
+          const oldLogoPath = global.__basedir + '/src/assets/images/' + style['SCZ_LOGO_NAME'];
+          fs.unlink(oldLogoPath, (err) => {
+            if (err) throw err;
+            console.log(`${oldLogoPath} was deleted`);
+          });
 
             return style.update(newData).then((self) => {
                 res.json(self);

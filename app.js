@@ -1,5 +1,6 @@
 require('./config/config'); //instantiate configuration variables
 require('./global_functions'); //instantiate global functions
+global.__basedir = __dirname;
 
 if (CONFIG.app == 'dev') {
     console.log("Environment:", CONFIG.app);

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { slideInOutAnimation } from '../animations';
 import { FormControl, FormGroupDirective, NgForm } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material';
@@ -28,10 +28,11 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   // tslint:disable-next-line:use-host-property-decorator
   host: { '[@slideInOutAnimation]': '' }
 })
-export class CustomizeComponent implements OnInit {
+export class CustomizeComponent implements OnInit, OnDestroy {
 
   userId = '';
   theme = '';
+  logo = '';
   url = '../../assets/images/placeholder.png';
   formdata: FormData = new FormData();
   selectedFile: File = null;
@@ -47,9 +48,13 @@ export class CustomizeComponent implements OnInit {
     this.customizeService.currentTheme.subscribe(theme => {
       this.theme = theme || 'default-theme';
     });
+    this.customizeService.currentLogo.subscribe(logo => {
+      this.logo = logo;
+    });
     this.data.getUserFromToken().subscribe(utente => {
       this.userId = utente['SU_ID'];
     });
+    this.url = `../../assets/images/${this.logo}`;
   }
 
   onFileSelected(event) {
@@ -94,5 +99,8 @@ export class CustomizeComponent implements OnInit {
   resetLogo() {
     const oldLogo = localStorage.getItem('customLogo');
       this.customizeService.changeLogo(oldLogo);
+  }
+
+  ngOnDestroy() {
   }
 }

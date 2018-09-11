@@ -37,12 +37,13 @@ export class RinnoviTableComponent implements OnInit {
   refreshRinnoviList() {
     this.api.getRinnovi()
       .subscribe(res => {
-        // console.log(res);
-        this.rinnovi = res;
-        this.dataSource = new MatTableDataSource(this.rinnovi);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.changeDetectorRefs.detectChanges();
+        if (Object.keys(res).length > 0) {
+          this.rinnovi = res;
+          this.dataSource = new MatTableDataSource(this.rinnovi);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+          this.changeDetectorRefs.detectChanges();
+        }
       }, err => {
         console.log(err);
         if (err instanceof HttpErrorResponse) {

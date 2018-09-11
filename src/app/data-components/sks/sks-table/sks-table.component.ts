@@ -39,9 +39,9 @@ export class SksTableComponent implements OnInit {
   ];
 
   sks: any;
-  rinnovi: object[];
-  pcs: object[];
-  serials: any;
+  rinnovi: object[] = [];
+  pcs: object[] = [];
+  serials: any = [];
 
   // tslint:disable-next-line:max-line-length
   displayedColumns = ['SS_KEY', 'SS_OEM', 'pcHwId', 'SS_CREATED', 'SS_ACTIVATION_DATE', 'SS_EXPIRE', 'pcLastConnection', 'SS_STATUS', 'rinnoviCount', 'allowedSerials'];
@@ -63,9 +63,9 @@ export class SksTableComponent implements OnInit {
 
   ngOnInit() {
     this.warningDate = moment().format('YYYY-MM-DD');
-    this.fetchRinnovi();
-    this.fetchPcs();
-    this.fetchMatricole();
+    // this.fetchRinnovi();
+    // this.fetchPcs();
+    // this.fetchMatricole();
     this.refreshSkssList();
   }
 
@@ -85,15 +85,23 @@ export class SksTableComponent implements OnInit {
           }
         }
       });
+      this.fetchRinnovi();
+      this.fetchPcs();
+      this.fetchMatricole();
   }
 
   decouplePC(id) {
     const status = 1;
     this.api.updateSks(id, { 'SS_SP_ID': "", 'SS_STATUS': status })
       .subscribe(res => {
-        alert(`chiave ${res.SS_KEY} disassociata`);
-        this.refreshSkssList();
+        if (!res) {
+          alert('non ci sono pc associati a questa chiave');
+        } else {
+          alert(`chiave ${res.SS_KEY} disassociata`);
+          this.refreshSkssList();
+        }
       }, (err) => {
+
         console.log(err);
       });
   }
@@ -174,17 +182,20 @@ export class SksTableComponent implements OnInit {
   fetchRinnovi() {
     this.rinnoviApi.getRinnovi()
       .subscribe(rinnovi => {
-        const rinnoviCount = rinnovi.map((rinnovo) => {
-          return rinnovo['Chiave'];
-        }).reduce((allIds, id) => {
-          if (id in allIds) {
-            allIds[id]++;
-          } else {
-            allIds[id] = 1;
-          }
-          return allIds;
-        }, {});
-        this.rinnovi = rinnoviCount;
+        // console.log(rinnovi);
+        if (Object.keys(rinnovi).length > 0) {
+          const rinnoviCount = rinnovi.map((rinnovo) => {
+            return rinnovo['Chiave'];
+          }).reduce((allIds, id) => {
+            if (id in allIds) {
+              allIds[id]++;
+            } else {
+              allIds[id] = 1;
+            }
+            return allIds;
+          }, {});
+          this.rinnovi = rinnoviCount;
+        }
       }, (err) => {
         console.log(err);
       });
@@ -193,6 +204,8 @@ export class SksTableComponent implements OnInit {
   fetchPcs() {
     this.pcApi.getPcs()
       .subscribe(pcs => {
+        // console.log(pcs);
+
         const pcsCount = pcs.map((pc) => {
           const pcRes = {};
           pcRes['pcId'] = pc['SP_ID'];
