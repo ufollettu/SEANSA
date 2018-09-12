@@ -72,7 +72,7 @@ export class RegisterComponent implements OnInit {
             localStorage.setItem('customLogo', style['SCZ_LOGO_NAME']);
             localStorage.setItem('customStyle', style['SCZ_THEME']);
             this.customizeService.changeTheme(style['SCZ_THEME']);
-
+            this.customizeService.changeLogo(style['SCZ_LOGO_NAME']);
           });
 
         alert(`utente ${res['user']['SU_UNA']} creato`);

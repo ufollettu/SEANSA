@@ -60,6 +60,7 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('customLogo', style['SCZ_LOGO_NAME']);
             localStorage.setItem('customStyle', style['SCZ_THEME']);
             this.customizeService.changeTheme(style['SCZ_THEME']);
+            this.customizeService.changeLogo(style['SCZ_LOGO_NAME']);
           });
 
         this.userApi.updateUtente(userId, { 'SU_LAST_LOGIN': lastLoginDate })
