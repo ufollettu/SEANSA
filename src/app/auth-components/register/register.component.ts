@@ -1,4 +1,4 @@
-import { CustomizeService } from './../../services/customize.service';
+import { CustomizeService } from '../../services/customize.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IpService } from '../../services/ip.service';
 import { Component, OnInit } from '@angular/core';
@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { DataService } from '../../services/data.service';
 import { slideInOutAnimation } from '../../animations';
-import { UploadFileService } from '../../customize/upload.service';
+import { UploadFileService } from '../../services/upload.service';
 
 @Component({
   selector: 'app-register',

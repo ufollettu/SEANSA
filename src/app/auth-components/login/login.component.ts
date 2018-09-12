@@ -7,7 +7,7 @@ import { UtentiApiService } from '../../data-components/utenti/utenti-api.servic
 import { DataService } from '../../services/data.service';
 import { slideInOutAnimation } from '../../animations';
 import { CustomizeService } from '../../services/customize.service';
-import { UploadFileService } from '../../customize/upload.service';
+import { UploadFileService } from '../../services/upload.service';
 
 @Component({
   selector: 'app-login',
