@@ -1,7 +1,7 @@
 <div class="container">
     <mat-card>
         <div>
-            <img id="logo" name="logo" mat-card-image height="200" width="200" [src]="url" alt="Photo Preview">
+            <img id="logo" name="logo" mat-card-image height="300" width="auto" [src]="url" alt="Photo Preview">
             <label>
                 <input hidden type="file" name="logo" #imgFileInput (change)="onFileSelected($event)" />
             </label>
@@ -12,6 +12,20 @@
         </div>
         <hr>
         <div class="example-full-width">
+        <mat-radio-group class="example-radio-group">
+          <mat-radio-button
+            mat-raised-button
+            [ngStyle]="{'color': theme}"
+            class="example-radio-button"
+            *ngFor="let theme of themes"
+            [value]="theme + '-theme'"
+            [checked]="theme + '-theme' === userTheme"
+            (click)="onSetTheme(theme + '-theme')">
+              {{theme | titlecase }}
+          </mat-radio-button>
+        </mat-radio-group>
+        </div>
+        <!-- <div class="example-full-width">
             <mat-radio-group>
                 <mat-radio-button color="primary" value="default-theme" (click)="onSetTheme('default-theme')">Green</mat-radio-button>
                 <mat-radio-button color="primary" value="light-theme" (click)="onSetTheme('light-theme')">Light</mat-radio-button>
@@ -19,13 +33,13 @@
                 <mat-radio-button color="primary" value="blue-theme" (click)="onSetTheme('blue-theme')">Blue</mat-radio-button>
                 <mat-radio-button color="primary" value="yellow-theme" (click)="onSetTheme('yellow-theme')">Yellow</mat-radio-button>
               </mat-radio-group>
-        </div>
+        </div> -->
 
         <div class="button-row">
             <a mat-stroked-button color="basic" [routerLink]="['/sks']" class="mat-stroked-button">
                 <mat-icon>keyboard_backspace</mat-icon>
             </a>
-            <button mat-raised-button color="primary" [disabled]="!selectedFile" (click)="upload()">
+            <button mat-raised-button color="primary" (click)="upload()">
                 <mat-icon>save</mat-icon>
             </button>
             <!-- <button type="submit" [disabled]="!enableThemeSetting" mat-raised-button color="primary">

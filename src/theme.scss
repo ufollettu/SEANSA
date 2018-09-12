@@ -17,7 +17,7 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 @include angular-material-theme($my-app-theme);
 
 // Dark theme
-$dark-primary: mat-palette($mat-blue-grey, 700);
+$dark-primary: mat-palette($mat-grey, 900, 500, 300);
 $dark-accent:  mat-palette($mat-amber, A200, A100, A400);
 $dark-warn:    mat-palette($mat-deep-orange);
 
@@ -36,17 +36,6 @@ $light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
 
 .light-theme {
   @include angular-material-theme($light-theme)
-}
-
-// Grey theme
-$grey-primary: mat-palette($mat-grey, 200, 500, 300);
-$grey-accent: mat-palette($mat-brown, 200);
-$grey-warn: mat-palette($mat-deep-orange, 200);
-
-$grey-theme: mat-dark-theme($grey-primary, $grey-accent, $grey-warn);
-
-.grey-theme {
-  @include angular-material-theme($grey-theme)
 }
 
 // Red theme
@@ -78,6 +67,6 @@ $yellow-warn: mat-palette($mat-lime, 200);
 
 $yellow-theme: mat-light-theme($yellow-primary, $yellow-accent, $yellow-warn);
 
-.yellow-theme {
+.orange-theme {
   @include angular-material-theme($yellow-theme)
 }

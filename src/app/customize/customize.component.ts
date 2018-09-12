@@ -30,8 +30,9 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class CustomizeComponent implements OnInit, OnDestroy {
 
+  themes: string[] = ['default', 'light', 'dark', 'orange', 'red', 'blue'];
   userId = '';
-  theme = '';
+  userTheme = '';
   logo = '';
   url = '../../assets/images/placeholder.png';
   formdata: FormData = new FormData();
@@ -46,7 +47,7 @@ export class CustomizeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.customizeService.currentTheme.subscribe(theme => {
-      this.theme = theme || 'default-theme';
+      this.userTheme = theme || 'default-theme';
     });
     this.customizeService.currentLogo.subscribe(logo => {
       this.logo = logo;
@@ -77,7 +78,7 @@ export class CustomizeComponent implements OnInit, OnDestroy {
   upload() {
     this.formdata.append('logo', this.selectedFile);
     this.formdata.append('SCZ_SU_ID', this.userId);
-    this.formdata.append('SCZ_THEME', this.theme);
+    this.formdata.append('SCZ_THEME', this.userTheme);
     console.log(this.formdata);
 
     this.uploadService.pushFileToStorage(this.userId, this.formdata)
@@ -101,7 +102,13 @@ export class CustomizeComponent implements OnInit, OnDestroy {
       this.customizeService.changeLogo(oldLogo);
   }
 
+  resetTheme() {
+    const oldTheme = localStorage.getItem('customStyle');
+      this.customizeService.changeTheme(oldTheme);
+  }
+
   ngOnDestroy() {
     this.resetLogo();
+    this.resetTheme();
   }
 }
