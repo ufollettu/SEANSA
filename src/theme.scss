@@ -20,8 +20,13 @@ $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 $dark-primary: mat-palette($mat-grey, 900, 500, 300);
 $dark-accent:  mat-palette($mat-amber, A200, A100, A400);
 $dark-warn:    mat-palette($mat-deep-orange);
+// $background-color: map_get($mat-grey, 200);
 
 $dark-theme:   mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+// Insert custom background color
+// $background: map-get($dark-theme, background);
+// $background: map_merge($background, (background: $background-color));
+// $dark-theme: map_merge($dark-theme, (background: $background));
 
 .dark-theme {
   @include angular-material-theme($dark-theme);

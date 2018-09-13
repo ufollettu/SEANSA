@@ -1,8 +1,11 @@
 <mat-toolbar color="primary" class="header-buttons mat-elevation-z8">
   <div class="site-title" *ngIf="!authService.loggedIn()">
-    <mat-card>
-      <h1>Welcome to Superactivator</h1>
-    </mat-card>
+    <div>
+      <span>Welcome to Superactivator</span>
+    </div>
+    <div class="logo-wrapper">
+      <img class="logo" [src]="defaultLogoPath">
+    </div>
   </div>
   <div class="routes-buttons" *ngIf="!!authService.loggedIn()">
     <div class="navbuttons">
@@ -17,7 +20,7 @@
       <img class="logo" [src]="logoPath">
     </div>
     <div class="welcome">
-      <span>You are logged as: {{user.SU_UNA || username}}</span>
+      <span>You are logged as: {{user['SU_UNA'] || username}}</span>
     </div>
   </div>
   <div class="auth-buttons">

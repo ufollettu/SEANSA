@@ -1,6 +1,5 @@
 .header-buttons {
     overflow: hidden;
-    /* background-color: lightslategray; */
     position: fixed;
     top: 0;
     width: 100%;
@@ -22,15 +21,12 @@
     background:lightgray;
 }
 
-/* .mat-accent {
-    background-color: rgb(107, 144, 168);
-} */
 
 .site-title {
   width: 75%;
   padding: 16px;
   display: inline-block;
-  text-align: center;
+  /* text-align: center; */
   margin: 0, auto;
 }
 

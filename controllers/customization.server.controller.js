@@ -73,13 +73,18 @@ const update = async (req, res) => {
     .then(style => {
       const oldLogoPath =
         global.__basedir + "/src/assets/images/" + style["SCZ_LOGO_NAME"];
-      if (style["SCZ_LOGO_NAME"] !== "raniero.png") {
-        fs.unlink(oldLogoPath, err => {
-          if (err) throw err;
-          console.log(`${oldLogoPath} was deleted`);
-        });
-      }
+
       return style.update(newData).then(self => {
+        if (style["SCZ_LOGO_NAME"] !== "raniero.png") {
+          fs.exists(oldLogoPath, function(exists) {
+            if (exists) {
+              fs.unlink(oldLogoPath, err => {
+                if (err) throw err;
+                console.log(`${oldLogoPath} was deleted`);
+              });
+            }
+          });
+        }
         res.json(self);
       });
     })

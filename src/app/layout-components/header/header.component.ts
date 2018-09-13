@@ -16,6 +16,7 @@ export class HeaderComponent implements OnInit {
   userId: string;
   username: string;
   logoPath: string;
+  defaultLogoPath = 'assets/images/raniero.png';
   changeLog;
 
   constructor(
@@ -44,6 +45,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onLogout() {
+    this.customizeService.changeTheme('default-theme');
     this.authService.logoutUser();
   }
 
