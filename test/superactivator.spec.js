@@ -7,94 +7,208 @@ const superactivator = require("../helpers/superactivator");
 
 const db = require("../models");
 
+//   const licCheckResult = {
+//     key_insesistente: '0',
+//     key_info_to_update: '1',
+//     server_error: '2',
+//     key_unallowed: '3',
+//     dates_hacked: '4',
+//     key_moved: '5',
+//     key_virgin: '6',
+//     key_ok: '7',
+//     key_expired: '8',
+//     invalid_reqcode: '9',
+//     hwid_banned: '10'
+// }
+
 //
 //  Test Suites
-//
+// D:\ProgettiWeb\GR\SEANSA\src\assets
 describe("checkLicense()", function() {
-  const req = {
-    body: {
-      ip : null,
-      license : "bETl8FEkm3V7OGzaYddmj2Rn5",
-      hwId : null,
-      oem : 10,
-      expDate : "2019-11-30",
-      nowDate : null,
-      allowedSerials : null,
-    }
-  };
-    it("sks ", function() {
-      app.post("/", async function(req, res) {
-      const foundSks = await superactivator.checkLicense(
-        req.body.license,
-        req.body.hwId,
-        req.body.oem,
-        req.body.expDate,
-        req.body.nowDate,
-        req.body.ip,
-        req.body.allowedSerials,
-        res
-      );
-      assert.equal(foundSks, "1");
-    });
-  });
-  it("sks 2", function() {
-    app.post("/", async function(req, res) {
+  it("sks key inesistente (0)", async function() {
+    // here I mock the request.body data
+    const ip = "";
+    const license = "xCbBX5aJAjkzHIYM1W5TlIrYp";
+    const hwId = "123490EN40";
+    const oem = 12;
+    const expDate = "2018-09-30";
+    const nowDate = null;
+    const allowedSerials = null;
     const foundSks = await superactivator.checkLicense(
-      req.body.license,
-      req.body.hwId,
-      req.body.oem,
-      req.body.expDate,
-      req.body.nowDate,
-      req.body.ip,
-      req.body.allowedSerials,
-      res
+      license,
+      hwId,
+      oem,
+      expDate,
+      nowDate,
+      ip,
+      allowedSerials
     );
-    assert.equal(foundSks, "1");
+    assert.equal(foundSks, "0");
+  });
+// key ok
+//   {
+//     "SS_ID": 40,
+//     "SS_KEY": "iOV0l9QSoIQF1tIYMrzbcr2jG",
+//     "SS_OEM": 0,
+//     "SS_ACTIVATION_DATE": "2018-03-23T09:28:31.000Z",
+//     "SS_EXPIRE": "2050-03-23",
+//     "SS_CREATED": "2017-03-23T08:35:18.000Z",
+//     "SS_LAST_EDIT": "2018-03-23T09:38:26.000Z",
+//     "SS_MISMATCH_COUNT": 0,
+//     "SS_STATUS": 1,
+//     "SS_SC_ID": 12,
+//     "SS_SP_ID": 15,
+//     "SS_ACTIVATED_BY": "e van gent",
+//     "SS_ACTIVATION_REFERENT": " - "
+// }
+// pc id 15
+// {
+//   "SP_ID": 15,
+//   "SP_HW_ID": "PCWBB1B2G4",
+//   "SP_LAST_RX": "2018-06-22T16:48:47.000Z",
+//   "SP_IP": "77.60.255.156",
+//   "SP_STATUS": 0,
+//   "SP_PC_DATE_TIME": "2018-06-22"
+// }
+  it("sks key ok (7)", async function() {
+    // TODO : need allowedserials
+    const ip = "77.60.255.156";
+    const license = "iOV0l9QSoIQF1tIYMrzbcr2jG";
+    const hwId = "PCWBB1B2G4";
+    const oem = 0;
+    const expDate = "2050-03-23";
+    const nowDate = "2018-09-15";
+    const allowedSerials = null;
+    const foundSks = await superactivator.checkLicense(
+      license,
+      hwId,
+      oem,
+      expDate,
+      nowDate,
+      ip,
+      allowedSerials
+    );
+    assert.equal(foundSks, "7");
+  });
+    // key unallowed
+  //   {
+  //     "SS_ID": 38,
+  //     "SS_KEY": "w7lSDJcJaiYt6gBSRxUahgRUQ",
+  //     "SS_OEM": 0,
+  //     "SS_ACTIVATION_DATE": "2017-03-14T12:02:45.000Z",
+  //     "SS_EXPIRE": "2019-05-03",
+  //     "SS_CREATED": "2017-03-14T11:48:22.000Z",
+  //     "SS_LAST_EDIT": "2018-05-03T11:47:53.000Z",
+  //     "SS_MISMATCH_COUNT": 0,
+  //     "SS_STATUS": 0,
+  //     "SS_SC_ID": 10,
+  //     "SS_SP_ID": 13,
+  //     "SS_ACTIVATED_BY": "Lampocar s.r.l.  (PC Florin)",
+  //     "SS_ACTIVATION_REFERENT": "Florin "
+  // }
+  //
+  // pc "SS_SP_ID": 13,
+  //   {
+  //     "SP_ID": 13,
+  //     "SP_HW_ID": "PELVKI41V8",
+  //     "SP_LAST_RX": "2018-05-03T16:12:01.000Z",
+  //     "SP_IP": "80.86.155.16",
+  //     "SP_STATUS": 0,
+  //     "SP_PC_DATE_TIME": "2018-05-03"
+  // }
+  it("sks key unallowed (3)", async function() {
+    // TODO : need allowedserials
+    const ip = "80.86.155.16";
+    const license = "w7lSDJcJaiYt6gBSRxUahgRUQ";
+    const hwId = "PELVKI41V8";
+    const oem = 0;
+    const expDate = "2019-05-03";
+    const nowDate = "2018-09-15";
+    const allowedSerials = null;
+    const foundSks = await superactivator.checkLicense(
+      license,
+      hwId,
+      oem,
+      expDate,
+      nowDate,
+      ip,
+      allowedSerials
+    );
+    assert.equal(foundSks, "3");
+  });
+  // virgin key
+  // {
+  //   "SS_ID": 103,
+  //   "SS_KEY": "iCbBX5aJAjkzHIYM1W5TlIrYp",
+  //   "SS_OEM": 12,
+  //   "SS_ACTIVATION_DATE": null,
+  //   "SS_EXPIRE": "2018-09-30",
+  //   "SS_CREATED": "2018-09-14T05:09:53.000Z",
+  //   "SS_LAST_EDIT": "2018-09-14T17:07:32.000Z",
+  //   "SS_MISMATCH_COUNT": 0,
+  //   "SS_STATUS": 1,
+  //   "SS_SC_ID": 9,
+  //   "SS_SP_ID": 0,
+  //   "SS_ACTIVATED_BY": "",
+  //   "SS_ACTIVATION_REFERENT": ""
+  // }
+  it("sks key virgin (6)", async function() {
+    // here I mock the request.body data
+    const ip = "";
+    const license = "iCbBX5aJAjkzHIYM1W5TlIrYp";
+    const hwId = "123490EN40";
+    const oem = 12;
+    const expDate = "2018-09-30";
+    const nowDate = null;
+    const allowedSerials = null;
+    const foundSks = await superactivator.checkLicense(
+      license,
+      hwId,
+      oem,
+      expDate,
+      nowDate,
+      ip,
+      allowedSerials
+    );
+    assert.equal(foundSks, "6");
   });
 });
+
+describe("updatePcRx()", function() {
+  it("hwId 4805420112 should return 1 ", async function() {
+    const hwId = "4805420112";
+    const ip = "80.86.155.16";
+    const nowDate = "2018-06-25";
+    const foundPc = await superactivator.updatePcRx(hwId, ip, nowDate);
+    assert.equal(foundPc, "1");
+  });
+  it("hwId, ip and nowDate undefined should return 1 ", async function() {
+    const hwId = undefined;
+    const ip = undefined;
+    const nowDate = undefined;
+    const foundPc = await superactivator.updatePcRx(hwId, ip, nowDate);
+    assert.equal(foundPc, "1");
+  });
 });
 
-// describe('updatePcRx()', function () {
-//     it('hwId 4805420112 should return 1 ', async function () {
-//         const hwId = '4805420112';
-//         const ip = '80.86.155.16';
-//         const nowDate = '2018-06-25';
-//         const foundPc = await superactivator.updatePcRx(hwId, ip, nowDate)
-//         assert.equal(foundPc, '1');
-//     });
-//     it('hwId, ip and nowDate undefined should return 1 ', async function () {
-//         const hwId = undefined;
-//         const ip = undefined;
-//         const nowDate = undefined;
-//         const foundPc = await superactivator.updatePcRx(hwId, ip, nowDate)
-//         assert.equal(foundPc, '1');
-//     });
-// });
-
-// describe('checksetBanned()', function () {
-//     it('hwId PFXJT028J4 should return 1 ', async function () {
-//         const hwId = 'PFXJT028J4';
-//         const foundBannedPc = await superactivator.checksetBanned(hwId)
-//         assert.equal(foundBannedPc, '1');
-//     });
-//     it('hwId None123456 should return 0 ', async function () {
-//         const hwId = 'None123456';
-//         const foundBannedPc = await superactivator.checksetBanned(hwId)
-//         assert.equal(foundBannedPc, '0');
-//     });
-// });
+describe("checksetBanned()", function() {
+  it("hwId PFXJT028J4 should return 1 ", async function() {
+    const hwId = "PFXJT028J4";
+    const foundBannedPc = await superactivator.checksetBanned(hwId);
+    assert.equal(foundBannedPc, "1");
+  });
+  it("hwId None123456 should return 0 ", async function() {
+    const hwId = "None123456";
+    const foundBannedPc = await superactivator.checksetBanned(hwId);
+    assert.equal(foundBannedPc, "0");
+  });
+});
 
 describe("getAllowedSerials()", function() {
-  // it('key id 33 should return 123456789#983106 ', async function () {
-  //     const keyId = 33;
-  //     const foundSerials = await superactivator.getAllowedSerials(keyId)
-  //     assert.equal(foundSerials, '123456789#983106');
-  // });
-  // with db4free
-  it("key id 2 should return 10 ", async function() {
-    const keyId = 2;
+  it("key id 33 should return 123456789#983106 ", async function() {
+    const keyId = 33;
     const foundSerials = await superactivator.getAllowedSerials(keyId);
-    assert.equal(foundSerials, "10");
+    assert.equal(foundSerials, "123456789#983106");
   });
   it("key id 32 should return '' ", async function() {
     const keyId = 32;

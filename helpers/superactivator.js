@@ -17,7 +17,7 @@ const is_null = require('locutus/php/var/is_null');
 class SuperActivator {
 
     constructor(CheckResult) {
-        this.licCheckResult = CheckResult
+        this.licCheckResult = CheckResult;
     }
 
     decodeToMortal(stringToCode) {
@@ -146,63 +146,83 @@ class SuperActivator {
             }).catch(err => console.log(err.message));
     }
 
-    checkLicense(license, hwId, oem, expDate, nowDate, ip, allowedSerials, res) {
-        repository.findLicense(license).then(key => {
-            // console.log(key[0]);
+  //   const licCheckResult = {
+  //     key_insesistente: '0',
+  //     key_info_to_update: '1',
+  //     server_error: '2',
+  //     key_unallowed: '3',
+  //     dates_hacked: '4',
+  //     key_moved: '5',
+  //     key_virgin: '6',
+  //     key_ok: '7',
+  //     key_expired: '8',
+  //     invalid_reqcode: '9',
+  //     hwid_banned: '10'
+  // }
+
+    checkLicense(license, hwId, oem, expDate, nowDate, ip, allowedSerials) {
+        return repository.findLicense(license).then(async key => {
             if (key[0]) {
                 if (!isset(key[0]['SS_ALLOWED_SERIALS']) || is_null(key[0]['SS_ALLOWED_SERIALS'])) {
                     key[0]['SS_ALLOWED_SERIALS'] = "";
                 }
-                if (this.updatePcRx(hwId, ip, nowDate) == 0) {
-                    return res.send(this.licCheckResult.server_error);
+                const updatePc = await this.updatePcRx(hwId, ip, nowDate);
+                console.log(updatePc);
+                if (updatePc == 0) {
+                    return this.licCheckResult.server_error;
                 }
                 if (this.checksetBanned(hwId) == 0) {
-                    return res.send(this.licCheckResult.hwid_banned);
+                    return this.licCheckResult.hwid_banned;
                 }
                 if (!isset(key[0]['SP_HW_ID'])) {
-                    return res.send(this.licCheckResult.key_virgin);
+                    return this.licCheckResult.key_virgin;
                 }
                 if (key[0]['SS_STATUS'] < 1) {
-                    return res.send(this.licCheckResult.key_unallowed);
+                    return this.licCheckResult.key_unallowed;
                 }
                 if (key[0]['SP_HW_ID'] != hwId) {
                     if (this.setKeyMismatched(key[0]['SS_ID']) == 1) {
-                        return res.send(this.licCheckResult.key_moved);
+                        return this.licCheckResult.key_moved;
                     }
                 }
                 if ((strtotime(key[0]['SS_EXPIRE']) < strtotime(expDate))
                     || (strtotime(nowDate) < strtotime(key[0]['SP_PC_DATE_TIME']))
-                    || (strtotime(nowDate) < time() - 60 * 60 * 24 * 2)) {
+                    || (strtotime(nowDate) < time() - 60 * 60 * 24 * 2)
+                  ) {
                     if (this.setKeyMismatched(key[0]['SS_ID']) == 1) {
-                        return res.send(this.licCheckResult.dates_hacked);
+                        return this.licCheckResult.dates_hacked;
                     } else {
-                        return res.send(this.licCheckResult.server_error);
+                        return this.licCheckResult.server_error;
                     }
                 }
                 if ((key[0]['SS_OEM'] != oem)
-                    || (strtotime(key[0]['SS_EXPIRE']) > strtotime(expDate) || strcmp(key[0]['SS_ALLOWED_SERIALS'], this.decodeToMortal(allowedSerials)) != 0)) {
-                    return res.send(this.licCheckResult.key_info_to_update);
+                    || (strtotime(key[0]['SS_EXPIRE']) > strtotime(expDate)
+                      // TODO bug here!!! check with new code
+                      || strcmp(key[0]['SS_ALLOWED_SERIALS'],
+                      this.decodeToMortal(allowedSerials)) != 0)
+                  ) {
+                    return this.licCheckResult.key_info_to_update;
                 }
                 if (strtotime(key[0]['SS_EXPIRE']) <= strtotime(nowDate)) {
-                    return res.send(this.licCheckResult.key_expired);
+                    return this.licCheckResult.key_expired;
                 }
-                return res.send(this.licCheckResult.key_ok);
+                return this.licCheckResult.key_ok;
             } else {
-                return res.send(this.licCheckResult.key_insesistente);
+                return this.licCheckResult.key_insesistente;
             }
-        }).catch(err => res.send(err.errors));
+        }).catch(err => err.errors);
     }
 
-    generateLicense(license, hwId, reqCode, nowDate, ip, res) {
+    generateLicense(license, hwId, reqCode, nowDate, ip) {
         pcRepo.updatePcRx(hwId, ip, nowDate);
 
-        repository.findOem(license, hwId)
+        return repository.findOem(license, hwId)
             .then((foundOem) => {
                 if (foundOem[0]) {
                     const keyCode = this.generateValidKey(this.decodeToMortal(reqCode));
                     let patchKey = keyCode;
                     if (keyCode.length != 10 || this.checkValidKey(keyCode, patchKey) == 'KO') {
-                        return res.send(this.licCheckResult.invalid_reqcode);
+                        return this.licCheckResult.invalid_reqcode;
                     } else {
                         let oem = '';
                         switch (foundOem[0]['SS_OEM']) {
@@ -239,7 +259,7 @@ class SuperActivator {
                         // TODO check for working
                         const keepDate = str_replace('-', "", foundOem[0]['SS_EXPIRE'])
                         const allowedSerials = this.getAllowedSerials(foundOem[0]['SS_ID'])
-                        console.log(allowedSerials);
+                        // console.log(allowedSerials);
                         const key =
                             this.codeToGod(keyCode) + '|'
                             + this.codeToGod(patchKey) + '|'
@@ -247,16 +267,16 @@ class SuperActivator {
                             + this.codeToGod(keepDate) + '|'
                             + this.codeToGod(allowedSerials);
                         // console.log(key);
-                        return res.send(key);
+                        return key;
                     }
                 } else {
-                    return res.send(this.licCheckResult.key_insesistente);
+                    return this.licCheckResult.key_insesistente;
                 }
-            }).catch(err => res.send(err.errors));
+            }).catch(err => err.errors);
     }
 
-    registerLicense(license, hwId, reqKey, pcDate, customerName, referenteName, referentePhone, ip, res) {
-        pcRepo.findOne(hwId)
+    registerLicense(license, hwId, reqKey, pcDate, customerName, referenteName, referentePhone, ip) {
+        return pcRepo.findOne(hwId)
             .then((pc) => {
                 let pcId = '';
                 if (!pc) {
@@ -266,28 +286,28 @@ class SuperActivator {
                         SP_IP: ip,
                         SP_PC_DATE_TIME: new Date().toISOString().slice(0, 10)
                     }
-                    pcRepo.create(data)
+                    pcId = pcRepo.create(data)
                         .then((newPc) => {
                             if (!newPc) {
-                                return res.send(this.licCheckResult.server_error);
+                                return this.licCheckResult.server_error;
                             }
-                            return pcId = newPc['SP_ID']
-                        }).catch(err => res.send(err.errors));
+                            return newPc['SP_ID']
+                        }).catch(err => err.errors);
                 } else {
-                    pcId = pc['SP_ID']
+                    pcId = pc['SP_ID'];
                 }
                 console.log(pcId);
-                if (isset(pcId) || pcId.length == 0 || pcId == 0) {
-                    return res.send(this.licCheckResult.server_error);
+                if (!isset(pcId) || pcId.length == 0 || pcId == 0) {
+                    return this.licCheckResult.server_error;
                 }
-                repository.updateLicense(pcId, customerName, referenteName, referentePhone, license)
+                return repository.updateLicense(pcId, customerName, referenteName, referentePhone, license)
                     .spread((results, metadata) => {
                         if (!results) {
-                            return res.send(this.licCheckResult.server_error);
+                            return this.licCheckResult.server_error;
                         }
-                        return this.generateLicense(license, hwId, reqKey, pcDate, ip, res);
-                    }).catch(err => res.send(err.errors))
-            }).catch(err => res.send(err.errors));
+                        return this.generateLicense(license, hwId, reqKey, pcDate, ip);
+                    }).catch(err => err.errors);
+            }).catch(err => err.errors);
     }
 
 }

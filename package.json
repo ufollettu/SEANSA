@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "build": "ng build",
     "test": "ng test",
-    "testserver": "mocha -w",
+    "testserver": "mocha",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "debug": "node --nolazy --inspect-brk=9229 ./bin/www"
