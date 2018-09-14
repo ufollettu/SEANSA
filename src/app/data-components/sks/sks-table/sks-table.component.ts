@@ -101,7 +101,6 @@ export class SksTableComponent implements OnInit {
           this.refreshSkssList();
         }
       }, (err) => {
-
         console.log(err);
       });
   }
@@ -182,7 +181,7 @@ export class SksTableComponent implements OnInit {
   fetchRinnovi() {
     this.rinnoviApi.getRinnovi()
       .subscribe(rinnovi => {
-        console.log(rinnovi);
+        // console.log(rinnovi);
         if (Object.keys(rinnovi).length > 0) {
           // console.log(rinnovi);
           const rinnoviCount = rinnovi.map((rinnovo) => {

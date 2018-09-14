@@ -13,7 +13,7 @@ export class ApiResolverService implements Resolve<any> {
   constructor(private http: HttpClient) { }
 
   resolve(route: ActivatedRouteSnapshot, rstate: RouterStateSnapshot): Observable<any> {
-    console.log('logging collected user Id:', route.params['id']);
+    // console.log('logging collected user Id:', route.params['id']);
     const id = route.params['id'];
     const url = `${apiUrl}/${id}`;
     return this.http.get(url);

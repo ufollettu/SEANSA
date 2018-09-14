@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
 
         this.uploadService.getCustomStyle(userId)
           .subscribe(style => {
-            console.log(style);
+            // console.log(style);
             localStorage.setItem('customLogo', style['SCZ_LOGO_NAME']);
             localStorage.setItem('customStyle', style['SCZ_THEME']);
             this.customizeService.changeTheme(style['SCZ_THEME']);
