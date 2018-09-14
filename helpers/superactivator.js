@@ -21,7 +21,7 @@ class SuperActivator {
     }
 
     decodeToMortal(stringToCode) {
-        if (stringToCode.length == 0) {
+        if (is_null(stringToCode) || stringToCode.length == 0) {
             return "";
         }
 
@@ -198,8 +198,7 @@ class SuperActivator {
                 if ((key[0]['SS_OEM'] != oem)
                     || (strtotime(key[0]['SS_EXPIRE']) > strtotime(expDate)
                       // TODO bug here!!! check with new code
-                      || strcmp(key[0]['SS_ALLOWED_SERIALS'],
-                      this.decodeToMortal(allowedSerials)) != 0)
+                      || strcmp(key[0]['SS_ALLOWED_SERIALS'], this.decodeToMortal(allowedSerials)) != 0)
                   ) {
                     return this.licCheckResult.key_info_to_update;
                 }
