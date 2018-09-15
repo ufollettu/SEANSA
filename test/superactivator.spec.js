@@ -6,6 +6,7 @@ const assert = require("assert");
 const superactivator = require("../helpers/superactivator");
 
 const db = require("../models");
+const rcvpcRepository = require('../repositories/rcvpc.server.repository');
 
 //   const licCheckResult = {
 //     key_insesistente: '0',
@@ -70,8 +71,75 @@ describe("checkLicense()", function() {
 //   "SP_STATUS": 0,
 //   "SP_PC_DATE_TIME": "2018-06-22"
 // }
+  it("sks dates hacked (nowDate = yesterday), should return 4", async function() {
+    // this test updates ss_status to 0 and ss_mismatch_count to 1
+    // see after test for workaround
+    const ip = "77.60.255.156";
+    const license = "iOV0l9QSoIQF1tIYMrzbcr2jG";
+    const hwId = "PCWBB1B2G4";
+    const oem = 0;
+    const expDate = "2050-03-23";
+    const nowDate = "2018-09-14";
+    const allowedSerials = null;
+    const foundSks = await superactivator.checkLicense(
+      license,
+      hwId,
+      oem,
+      expDate,
+      nowDate,
+      ip,
+      allowedSerials
+    );
+    // only for test, reset sks value to default
+    await rcvpcRepository.resetMismatchCount(40);
+
+    assert.equal(foundSks, "4");
+  });
+  it("sks key info to update (transimtted exp date > key exp Date), should return 1", async function() {
+    // TODO
+    const ip = "77.60.255.156";
+    const license = "iOV0l9QSoIQF1tIYMrzbcr2jG";
+    const hwId = "PCWBB1B2G4";
+    const oem = 0;
+    const expDate = "2010-03-23";
+    const nowDate = "2018-09-15";
+    const allowedSerials = null;
+    const foundSks = await superactivator.checkLicense(
+      license,
+      hwId,
+      oem,
+      expDate,
+      nowDate,
+      ip,
+      allowedSerials
+    );
+    assert.equal(foundSks, "1");
+  });
+  it("sks key moved (key hwId != transmitted hwId), should return 5", async function() {
+    // this test updates ss_status to 0 and ss_mismatch_count to 1
+    // see after test for workaround
+    const ip = "77.60.255.156";
+    const license = "iOV0l9QSoIQF1tIYMrzbcr2jG";
+    const hwId = "PCWBB0B2G4";
+    const oem = 0;
+    const expDate = "2050-03-23";
+    const nowDate = "2018-09-15";
+    const allowedSerials = null;
+    const foundSks = await superactivator.checkLicense(
+      license,
+      hwId,
+      oem,
+      expDate,
+      nowDate,
+      ip,
+      allowedSerials
+    );
+    // only for test, reset sks value to default
+    await rcvpcRepository.resetMismatchCount(40);
+    assert.equal(foundSks, "5");
+  });
   it("sks key ok (7)", async function() {
-    // TODO : need allowedserials
+    // TODO
     const ip = "77.60.255.156";
     const license = "iOV0l9QSoIQF1tIYMrzbcr2jG";
     const hwId = "PCWBB1B2G4";
@@ -116,7 +184,7 @@ describe("checkLicense()", function() {
   //     "SP_STATUS": 0,
   //     "SP_PC_DATE_TIME": "2018-05-03"
   // }
-  it("sks key unallowed (3)", async function() {
+  it("sks key unallowed (SS_STATUS = 0), should return 3", async function() {
     // TODO : need allowedserials
     const ip = "80.86.155.16";
     const license = "w7lSDJcJaiYt6gBSRxUahgRUQ";
@@ -152,8 +220,7 @@ describe("checkLicense()", function() {
   //   "SS_ACTIVATED_BY": "",
   //   "SS_ACTIVATION_REFERENT": ""
   // }
-  it("sks key virgin (6)", async function() {
-    // here I mock the request.body data
+  it("sks key virgin (SS_SP_ID  = 0), should return 6", async function() {
     const ip = "";
     const license = "iCbBX5aJAjkzHIYM1W5TlIrYp";
     const hwId = "123490EN40";
@@ -257,10 +324,10 @@ describe("setKeyMismatched()", function() {
     const mismatch = await superactivator.setKeyMismatched(id);
     assert.equal(mismatch, "1");
   });
-  it("key id 932 should return 1 ", async function() {
+  it("key id 932 should return 0 ", async function() {
     const id = 932;
     const mismatch = await superactivator.setKeyMismatched(id);
-    assert.equal(mismatch, "1");
+    assert.equal(mismatch, "0");
   });
   it("key id undefined should return sql error ", async function() {
     const id = undefined;

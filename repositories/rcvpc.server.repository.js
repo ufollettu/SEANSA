@@ -29,6 +29,12 @@ class Repository {
     return db.sequelize.query(query)
   }
 
+  // only for test purpose
+  resetMismatchCount(id) {
+    const query = "UPDATE `sa_sks` SET `SS_MISMATCH_COUNT`=0, `SS_STATUS`=1  WHERE `SS_ID` = " + id;
+    return db.sequelize.query(query)
+  }
+
 }
 
 var repository = new Repository();

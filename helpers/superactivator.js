@@ -126,10 +126,13 @@ class SuperActivator {
     setKeyMismatched(id) {
         return repository.updateMismatchCount(id)
             .spread((results, metadata) => {
-                // if (results['affectedRows'] == 0) {
+              // console.log(results.affectedRows);
                 if (!results) {
-                    console.log('errore di disattivazione key');
+                    // console.log('errore di disattivazione key');
                     return 0;
+                } else if (results.affectedRows == 0) {
+                  // console.log('key id non esistente');
+                  return 0;
                 }
                 return 1;
             }).catch(err => console.log(err.message))
@@ -167,7 +170,7 @@ class SuperActivator {
                     key[0]['SS_ALLOWED_SERIALS'] = "";
                 }
                 const updatePc = await this.updatePcRx(hwId, ip, nowDate);
-                console.log(updatePc);
+                // console.log(updatePc);
                 if (updatePc == 0) {
                     return this.licCheckResult.server_error;
                 }
@@ -181,7 +184,9 @@ class SuperActivator {
                     return this.licCheckResult.key_unallowed;
                 }
                 if (key[0]['SP_HW_ID'] != hwId) {
-                    if (this.setKeyMismatched(key[0]['SS_ID']) == 1) {
+                  const updateMismatch = await this.setKeyMismatched(key[0]['SS_ID']);
+                  // console.log(updateMismatch);
+                    if (updateMismatch == 1) {
                         return this.licCheckResult.key_moved;
                     }
                 }
@@ -189,7 +194,9 @@ class SuperActivator {
                     || (strtotime(nowDate) < strtotime(key[0]['SP_PC_DATE_TIME']))
                     || (strtotime(nowDate) < time() - 60 * 60 * 24 * 2)
                   ) {
-                    if (this.setKeyMismatched(key[0]['SS_ID']) == 1) {
+                    const updateMismatch = await this.setKeyMismatched(key[0]['SS_ID']);
+                    // console.log(updateMismatch);
+                    if (updateMismatch == 1) {
                         return this.licCheckResult.dates_hacked;
                     } else {
                         return this.licCheckResult.server_error;
