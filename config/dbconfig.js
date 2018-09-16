@@ -9,15 +9,17 @@ if (CONFIG.app == "dev") {
   CONFIG.db_name = process.env.DB_NAME || "superactivator";
   CONFIG.db_user = process.env.DB_USER || "pasquino";
   CONFIG.db_password = process.env.DB_PASSWORD || "radiohead";
+  CONFIG.db_dialect = process.env.DB_DIALECT || "mysql";
+  CONFIG.db_host = process.env.DB_HOST || "localhost";
+  CONFIG.db_port = process.env.DB_PORT || "3306";
 } else if (CONFIG.app == "test") {
   CONFIG.db_name = process.env.DB_NAME || "superactivator_t";
   CONFIG.db_user = process.env.DB_USER || "pasquino_t";
   CONFIG.db_password = process.env.DB_PASSWORD || "radiohead";
+  CONFIG.db_dialect = process.env.DB_DIALECT || "mysql";
+  CONFIG.db_host = process.env.DB_HOST || "db4free.net";
+  CONFIG.db_port = process.env.DB_PORT || "3306";
 }
-
-CONFIG.db_dialect = process.env.DB_DIALECT || "mysql";
-CONFIG.db_host = process.env.DB_HOST || "db4free.net";
-CONFIG.db_port = process.env.DB_PORT || "3306";
 
 CONFIG.secret = process.env.SECRET || "SuperActivatorSecretKey";
 
