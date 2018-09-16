@@ -26,7 +26,7 @@ const rcvpcRepository = require('../repositories/rcvpc.server.repository');
 //  Test Suites
 // D:\ProgettiWeb\GR\SEANSA\src\assets
 describe("checkLicense()", function() {
-  it("sks key inesistente (0)", async function() {
+  it("sks key inesistente, should return 0", async function() {
     // here I mock the request.body data
     const ip = "";
     const license = "xCbBX5aJAjkzHIYM1W5TlIrYp";
@@ -138,7 +138,7 @@ describe("checkLicense()", function() {
     await rcvpcRepository.resetMismatchCount(40);
     assert.equal(foundSks, "5");
   });
-  it("sks key ok (7)", async function() {
+  it("sks key ok, should return 7", async function() {
     // TODO
     const ip = "77.60.255.156";
     const license = "iOV0l9QSoIQF1tIYMrzbcr2jG";
@@ -158,13 +158,14 @@ describe("checkLicense()", function() {
     );
     assert.equal(foundSks, "7");
   });
-  it("sks key ok (7)", async function() {
-    // TODO
+  it("sks expDate undefined, should return 2 (server error)", async function() {
+    // this test updates ss_status to 0 and ss_mismatch_count to 1
+    // see after test for workaround
     const ip = "77.60.255.156";
     const license = "iOV0l9QSoIQF1tIYMrzbcr2jG";
     const hwId = "PCWBB1B2G4";
     const oem = 0;
-    const expDate = "2050-03-23";
+    const expDate = undefined;
     const nowDate = "2018-09-15";
     const allowedSerials = null;
     const foundSks = await superactivator.checkLicense(
@@ -176,7 +177,53 @@ describe("checkLicense()", function() {
       ip,
       allowedSerials
     );
-    assert.equal(foundSks, "7");
+    // only for test, reset sks value to default
+    await rcvpcRepository.resetMismatchCount(40);
+    assert.equal(foundSks, "2");
+  });
+  // key expired
+  //   {
+  //     "SS_ID": 45,
+  //     "SS_KEY": "afQatg3WMSMaHw56 KjRnPwEZ",
+  //     "SS_OEM": 2,
+  //     "SS_ACTIVATION_DATE": "2017-07-12 05:02:57",
+  //     "SS_EXPIRE": "2018-07-12",
+  //     "SS_CREATED": "2017-07-12 04:46:28",
+  //     "SS_LAST_EDIT": "2017-07-12 05:06:22",
+  //     "SS_MISMATCH_COUNT": 0,
+  //     "SS_STATUS": 1,
+  //     "SS_SC_ID": 14,
+  //     "SS_SP_ID": 19,
+  //     "SS_ACTIVATED_BY": "FLORIAN LEGNO SRL",
+  //     "SS_ACTIVATION_REFERENT": "VALTER - "
+  // },
+  // {
+  //   "SP_ID": 19,
+  //   "SP_HW_ID": "R90N0W8X12",
+  //   "SP_LAST_RX": "2017-12-11 15:23:23",
+  //   "SP_IP": "89.96.246.132",
+  //   "SP_STATUS": 0,
+  //   "SP_PC_DATE_TIME": "2017-12-11"
+  // },
+  it("sks key expired, should return 8", async function() {
+    // TODO
+    const ip = "89.96.246.132";
+    const license = "afQatg3WMSMaHw56 KjRnPwEZ";
+    const hwId = "R90N0W8X12";
+    const oem = 2;
+    const expDate = "2018-07-12";
+    const nowDate = "2018-09-15";
+    const allowedSerials = null;
+    const foundSks = await superactivator.checkLicense(
+      license,
+      hwId,
+      oem,
+      expDate,
+      nowDate,
+      ip,
+      allowedSerials
+    );
+    assert.equal(foundSks, "8");
   });
     // key unallowed
   //   {
