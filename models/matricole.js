@@ -22,11 +22,11 @@ module.exports = (sequelize, DataTypes) => {
     SM_CREATION_DATE: {
       allowNull: false,
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+      defaultValue: DataTypes.NOW(),
     },
     SM_LAST_UPDATE: {
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+      defaultValue: DataTypes.NOW(),
     }
   }, {
     timestamps: false,

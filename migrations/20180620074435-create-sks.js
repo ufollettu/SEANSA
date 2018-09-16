@@ -22,18 +22,18 @@ module.exports = {
         defaultValue: null
       },
       SS_EXPIRE: {
-        type: Sequelize.DATE,
+        type: Sequelize.DATEONLY,
         defaultValue: null
       },
       SS_CREATED: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: "0000-00-00 00:00:00"
+        defaultValue: Sequelize.NOW()
       },
       SS_LAST_EDIT: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: queryInterface.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
+        defaultValue: Sequelize.NOW(),
       },
       SS_MISMATCH_COUNT: {
         allowNull: false,

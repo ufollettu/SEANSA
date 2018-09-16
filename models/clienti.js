@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     SC_TS: {
       allowNull: false,
       type: DataTypes.DATE,
-      defaultValue: new Date()
+      defaultValue: DataTypes.NOW()
     },
     SC_DELETED: {
       allowNull: false,

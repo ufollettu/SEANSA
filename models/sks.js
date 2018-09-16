@@ -20,12 +20,12 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
     },
     SS_EXPIRE: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
     },
     SS_CREATED: {
       type: DataTypes.DATE,
       allowNull: true,
-      defaultValue: "0000-00-00 00:00:00"
+      defaultValue: DataTypes.NOW()
     },
     SS_LAST_EDIT: {
       type: DataTypes.DATE,

@@ -20,6 +20,7 @@ import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 })
 export class RinnoviTableComponent implements OnInit {
 
+  loading;
   rinnovi: any;
 
   displayedColumns = ['KeyId', 'Chiave', 'Timestamp'];
@@ -28,7 +29,13 @@ export class RinnoviTableComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private api: RinnoviApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
+  constructor(
+    private api: RinnoviApiService, 
+    private changeDetectorRefs: ChangeDetectorRef, 
+    private router: Router
+  ) {
+    this.loading = true;
+   }
 
   ngOnInit() {
     this.refreshRinnoviList();
@@ -43,6 +50,7 @@ export class RinnoviTableComponent implements OnInit {
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
           this.changeDetectorRefs.detectChanges();
+          this.loading = false;
         }
       }, err => {
         console.log(err);

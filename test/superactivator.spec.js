@@ -71,7 +71,7 @@ describe("checkLicense()", function() {
 //   "SP_STATUS": 0,
 //   "SP_PC_DATE_TIME": "2018-06-22"
 // }
-  it("sks dates hacked (nowDate = yesterday), should return 4", async function() {
+  it("sks key dates hacked (nowDate = yesterday), should return 4", async function() {
     // this test updates ss_status to 0 and ss_mismatch_count to 1
     // see after test for workaround
     const ip = "77.60.255.156";
@@ -137,6 +137,26 @@ describe("checkLicense()", function() {
     // only for test, reset sks value to default
     await rcvpcRepository.resetMismatchCount(40);
     assert.equal(foundSks, "5");
+  });
+  it("sks key ok (7)", async function() {
+    // TODO
+    const ip = "77.60.255.156";
+    const license = "iOV0l9QSoIQF1tIYMrzbcr2jG";
+    const hwId = "PCWBB1B2G4";
+    const oem = 0;
+    const expDate = "2050-03-23";
+    const nowDate = "2018-09-15";
+    const allowedSerials = null;
+    const foundSks = await superactivator.checkLicense(
+      license,
+      hwId,
+      oem,
+      expDate,
+      nowDate,
+      ip,
+      allowedSerials
+    );
+    assert.equal(foundSks, "7");
   });
   it("sks key ok (7)", async function() {
     // TODO

@@ -43,7 +43,7 @@ module.exports = {
       SC_TS: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: queryInterface.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.NOW()
       },
       SC_DELETED: {
         allowNull: false,

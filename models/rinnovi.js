@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     SR_TS: {
       allowNull: false,
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+      defaultValue: DataTypes.NOW()
     }
   }, {
     timestamps: false,

@@ -7,6 +7,7 @@ class Repository {
   findAll() {
     const query = "SELECT `SS_ID` as 'KeyId', `SS_KEY` as 'Chiave', `SR_TS` AS 'Timestamp' from `sa_rinnovi` inner join `sa_sks` on `SR_SS_ID` = `SS_ID` order by `SR_TS` ASC";
     return db.sequelize.query(query, { type: db.Sequelize.QueryTypes.SELECT })
+    // return db.rinnovi.findAll();
   }
 
   create(data) {

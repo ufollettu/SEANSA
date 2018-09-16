@@ -2,15 +2,15 @@ const repository = require('../repositories/utenti-permessi.server.repository');
 const user_repo = require('../repositories/utenti.server.repository');
 
 // List
-// const list = async (req, res) => {
-//     repository
-//         .findAll()
-//         .then(result => {
-//             res.json(result);
-//         })
-//         .catch(err => res.send(err.errors));
-// };
-// module.exports.list = list;
+const list = async (req, res) => {
+    repository
+        .findAll()
+        .then(result => {
+            res.json(result);
+        })
+        .catch(err => res.send(err.errors));
+};
+module.exports.list = list;
 
 // Create
 // const create = async (req, res) => {
