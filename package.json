@@ -10,7 +10,7 @@
     "undomigrate": "node_modules/.bin/sequelize db:migrate:undo:all",
     "seeders": "node_modules/.bin/sequelize db:seed:all",
     "undoseed": "node_modules/.bin/sequelize db:seed:undo:all",
-    "testserver": "mocha -w --timeout 20000",
+    "testserver": "mocha --timeout 20000",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "debug": "node --nolazy --inspect-brk=9229 ./bin/www"

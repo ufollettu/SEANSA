@@ -4,6 +4,7 @@ const expect = require("chai").expect;
 const sinon = require("sinon");
 const assert = require("assert");
 const superactivator = require("../helpers/superactivator");
+const sksSeed = require('./seeds/sks');
 
 const db = require("../models");
 const rcvpcRepository = require('../repositories/rcvpc.server.repository');
@@ -26,6 +27,10 @@ const rcvpcRepository = require('../repositories/rcvpc.server.repository');
 //  Test Suites
 // D:\ProgettiWeb\GR\SEANSA\src\assets
 describe("checkLicense()", function() {
+  before( async function() {
+    await db.sks.destroy({truncate: true});
+    await db.sks.bulkCreate(sksSeed);
+  });
   it("sks key inesistente, should return 0", async function() {
     // here I mock the request.body data
     const ip = "";
@@ -157,29 +162,6 @@ describe("checkLicense()", function() {
       allowedSerials
     );
     assert.equal(foundSks, "7");
-  });
-  it("sks expDate undefined, should return 2 (server error)", async function() {
-    // this test updates ss_status to 0 and ss_mismatch_count to 1
-    // see after test for workaround
-    const ip = "77.60.255.156";
-    const license = "iOV0l9QSoIQF1tIYMrzbcr2jG";
-    const hwId = "PCWBB1B2G4";
-    const oem = 0;
-    const expDate = undefined;
-    const nowDate = "2018-09-15";
-    const allowedSerials = null;
-    const foundSks = await superactivator.checkLicense(
-      license,
-      hwId,
-      oem,
-      expDate,
-      nowDate,
-      ip,
-      allowedSerials
-    );
-    // only for test, reset sks value to default
-    await rcvpcRepository.resetMismatchCount(40);
-    assert.equal(foundSks, "2");
   });
   // key expired
   //   {
