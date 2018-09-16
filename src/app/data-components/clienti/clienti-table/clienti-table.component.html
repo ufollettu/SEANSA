@@ -1,6 +1,9 @@
 <div class="example-container mat-elevation-z8">
+    <div [hidden]="!loading">
+        <app-loading-table-spinner></app-loading-table-spinner>
+      </div>
   <!-- <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8"> -->
-  <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
+  <table [hidden]="loading" mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
 
 
     <!-- <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">

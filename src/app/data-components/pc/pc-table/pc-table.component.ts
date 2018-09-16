@@ -20,6 +20,7 @@ import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 })
 export class PcTableComponent implements OnInit {
 
+  loading;
   pc: any;
   isBanned = false;
 
@@ -29,7 +30,13 @@ export class PcTableComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private api: PcApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
+  constructor(
+    private api: PcApiService,
+    private changeDetectorRefs: ChangeDetectorRef,
+    private router: Router
+  ) {
+    this.loading = true;
+   }
 
   ngOnInit() {
     this.refreshPcsList();
@@ -44,6 +51,8 @@ export class PcTableComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
+        this.loading = false;
+
       }, err => {
         console.log(err);
         if (err instanceof HttpErrorResponse) {

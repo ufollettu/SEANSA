@@ -19,6 +19,7 @@ import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 
 })
 export class ClientiTableComponent implements OnInit {
+  loading;
   clienti: any;
 
   displayedColumns = ['SC_NOME', 'SC_INDIRIZZO', 'SC_EMAIL', 'SC_TELEFONO', 'SC_REFERENTE_NOME', 'SC_TEL_REFERENTE'];
@@ -27,7 +28,13 @@ export class ClientiTableComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private api: ClientiApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
+  constructor(
+    private api: ClientiApiService,
+    private changeDetectorRefs: ChangeDetectorRef,
+    private router: Router
+  ) {
+    this.loading = true;
+   }
 
   ngOnInit() {
     this.refreshCustomersList();
@@ -42,6 +49,8 @@ export class ClientiTableComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
+        this.loading = false;
+
       }, err => {
         console.log(err);
         if (err instanceof HttpErrorResponse) {

@@ -20,6 +20,7 @@ import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 })
 export class UtentiTableComponent implements OnInit {
 
+  loading;
   utenti: any;
 
   displayedColumns = ['SU_UNA', 'SU_LAST_IP', 'SU_LAST_LOGIN'];
@@ -28,7 +29,12 @@ export class UtentiTableComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private api: UtentiApiService, private changeDetectorRefs: ChangeDetectorRef, private router: Router) { }
+  constructor(
+    private api: UtentiApiService,
+    private changeDetectorRefs: ChangeDetectorRef,
+    private router: Router) {
+      this.loading = true;
+    }
 
   ngOnInit() {
     this.refreshUsersList();
@@ -43,6 +49,8 @@ export class UtentiTableComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
+        this.loading = false;
+
       }, err => {
         console.log(err);
         if (err instanceof HttpErrorResponse) {

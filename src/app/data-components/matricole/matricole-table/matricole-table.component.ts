@@ -20,6 +20,7 @@ import { MatSort, MatTableDataSource } from '@angular/material';
 })
 export class MatricoleTableComponent implements OnInit {
 
+  loading;
   matricole: any;
   sksId: any;
 
@@ -33,7 +34,9 @@ export class MatricoleTableComponent implements OnInit {
     private changeDetectorRefs: ChangeDetectorRef,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) {
+    this.loading = true;
+  }
 
   ngOnInit() {
     this.sksId = this.route.snapshot.params['sksId'];
@@ -48,6 +51,8 @@ export class MatricoleTableComponent implements OnInit {
         this.dataSource = new MatTableDataSource(this.matricole);
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
+        this.loading = false;
+
       }, err => {
         console.log(err);
         if (err instanceof HttpErrorResponse) {

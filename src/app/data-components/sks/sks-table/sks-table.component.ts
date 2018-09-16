@@ -22,6 +22,8 @@ import * as moment from 'moment';
   ],
 })
 export class SksTableComponent implements OnInit {
+
+  loading;
   oems = [
     { value: 0, name: 'ATUM FULL', description: 'versione completa con tutti gli aggiornamenti e rinnovo licenza via web' },
     // tslint:disable-next-line:max-line-length
@@ -59,7 +61,9 @@ export class SksTableComponent implements OnInit {
     private matricoleApi: MatricoleApiService,
     private changeDetectorRefs: ChangeDetectorRef,
     private router: Router
-  ) { }
+  ) {
+    this.loading = true;
+   }
 
   ngOnInit() {
     this.warningDate = moment().format('YYYY-MM-DD');
@@ -77,6 +81,8 @@ export class SksTableComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
+        this.loading = false;
+
       }, err => {
         console.log(err);
         if (err instanceof HttpErrorResponse) {
