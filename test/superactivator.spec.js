@@ -5,6 +5,7 @@ const sinon = require("sinon");
 const assert = require("assert");
 const superactivator = require("../helpers/superactivator");
 const sksSeed = require('../seeds/sks');
+const moment = require("moment");
 
 const db = require("../models");
 const rcvpcRepository = require('../repositories/rcvpc.server.repository');
@@ -25,9 +26,9 @@ const rcvpcRepository = require('../repositories/rcvpc.server.repository');
 
 //
 //  Test Suites
-// D:\ProgettiWeb\GR\SEANSA\src\assets
+// 
 describe("checkLicense()", function () {
-  before(async function () {
+  beforeEach(async function () {
     await db.sks.destroy({ truncate: true });
     await db.sks.bulkCreate(sksSeed);
   });
@@ -84,7 +85,7 @@ describe("checkLicense()", function () {
     const hwId = "PCWBB1B2G4";
     const oem = 0;
     const expDate = "2050-03-23";
-    const nowDate = "2018-09-14";
+    const nowDate = moment().subtract(1, 'd').format('YYYY-MM-DD'); // yesterday;
     const allowedSerials = null;
     const foundSks = await superactivator.checkLicense(
       license,
@@ -100,14 +101,14 @@ describe("checkLicense()", function () {
 
     assert.equal(foundSks, "4");
   });
-  it("sks key info to update (transimtted exp date > key exp Date), should return 1", async function () {
+  it("sks key info to update (transimtted exp date > key exp Date, nowDate = today), should return 1", async function () {
     // TODO
     const ip = "77.60.255.156";
     const license = "iOV0l9QSoIQF1tIYMrzbcr2jG";
     const hwId = "PCWBB1B2G4";
     const oem = 0;
     const expDate = "2010-03-23";
-    const nowDate = "2018-09-15";
+    const nowDate = moment().format('YYYY-MM-DD'); // today;
     const allowedSerials = null;
     const foundSks = await superactivator.checkLicense(
       license,
