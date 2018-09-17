@@ -6,18 +6,27 @@ CONFIG.app = process.env.APP || "test";
 CONFIG.port = process.env.PORT || "3000";
 
 if (CONFIG.app == "dev") {
-  CONFIG.db_name = process.env.DB_NAME || "superactivator";
-  CONFIG.db_user = process.env.DB_USER || "pasquino";
-  CONFIG.db_password = process.env.DB_PASSWORD || "radiohead";
+  CONFIG.db_name = process.env.DB_NAME_DEV || "webgrit_superactivator";
+  CONFIG.db_user = process.env.DB_USER_DEV || "pasquale_sup";
+  CONFIG.db_password = process.env.DB_PASSWORD_DEV || "radiohead";
+  CONFIG.db_dialect = process.env.DB_DIALECT_DEV || "mysql";
+  CONFIG.db_host = process.env.DB_HOST_DEV || "localhost";
+  CONFIG.db_port = process.env.DB_PORT_DEV || "3306";
 } else if (CONFIG.app == "test") {
-  CONFIG.db_name = process.env.DB_NAME || "superactivator_t";
-  CONFIG.db_user = process.env.DB_USER || "pasquino_t";
-  CONFIG.db_password = process.env.DB_PASSWORD || "radiohead";
+  CONFIG.db_name = process.env.DB_NAME_TEST || "webgrit_superactivation_test";
+  CONFIG.db_user = process.env.DB_USER_TEST || "pasquale_sup";
+  CONFIG.db_password = process.env.DB_PASSWORD_TEST || "radiohead";
+  CONFIG.db_dialect = process.env.DB_DIALECT_TEST || "mysql";
+  CONFIG.db_host = process.env.DB_HOST_TEST || "localhost";
+  CONFIG.db_port = process.env.DB_PORT_TEST || "3306";
+} else if (CONFIG.app == "prod") {
+  CONFIG.db_name = process.env.DB_NAME_PROD;
+  CONFIG.db_user = process.env.DB_USER_PROD;
+  CONFIG.db_password = process.env.DB_PASSWORD_PROD;
+  CONFIG.db_dialect = process.env.DB_DIALECT_PROD;
+  CONFIG.db_host = process.env.DB_HOST_PROD;
+  CONFIG.db_port = process.env.DB_PORT_PROD;
 }
-
-CONFIG.db_dialect = process.env.DB_DIALECT || "mysql";
-CONFIG.db_host = process.env.DB_HOST || "db4free.net";
-CONFIG.db_port = process.env.DB_PORT || "3306";
 
 CONFIG.secret = process.env.SECRET || "SuperActivatorSecretKey";
 

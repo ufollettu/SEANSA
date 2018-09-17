@@ -11,6 +11,7 @@ import { CustomizeService } from './services/customize.service';
 export class AppComponent implements AfterViewInit, OnInit {
 
   loading;
+  customTheme;
   // theme: string;
   @HostBinding('class') componentCssClass;
 
@@ -42,9 +43,12 @@ export class AppComponent implements AfterViewInit, OnInit {
   getTheme() {
     this.customizeService.getTheme().subscribe(theme => {
       this.overlayContainer.getContainerElement().classList.add(theme);
-      this.componentCssClass = theme;
+      this.componentCssClass = theme || this.getLogoFromLocalStorage();
     });
     // this.sendTheme(theme);
   }
 
+  getLogoFromLocalStorage() {
+    return localStorage.getItem('customStyle');
+  }
 }

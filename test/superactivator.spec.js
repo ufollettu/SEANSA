@@ -4,7 +4,7 @@ const expect = require("chai").expect;
 const sinon = require("sinon");
 const assert = require("assert");
 const superactivator = require("../helpers/superactivator");
-const sksSeed = require('./seeds/sks');
+const sksSeed = require('../seeds/sks');
 
 const db = require("../models");
 const rcvpcRepository = require('../repositories/rcvpc.server.repository');
@@ -26,12 +26,12 @@ const rcvpcRepository = require('../repositories/rcvpc.server.repository');
 //
 //  Test Suites
 // D:\ProgettiWeb\GR\SEANSA\src\assets
-describe("checkLicense()", function() {
-  before( async function() {
-    await db.sks.destroy({truncate: true});
+describe("checkLicense()", function () {
+  before(async function () {
+    await db.sks.destroy({ truncate: true });
     await db.sks.bulkCreate(sksSeed);
   });
-  it("sks key inesistente, should return 0", async function() {
+  it("sks key inesistente, should return 0", async function () {
     // here I mock the request.body data
     const ip = "";
     const license = "xCbBX5aJAjkzHIYM1W5TlIrYp";
@@ -51,32 +51,32 @@ describe("checkLicense()", function() {
     );
     assert.equal(foundSks, "0");
   });
-// key ok
-//   {
-//     "SS_ID": 40,
-//     "SS_KEY": "iOV0l9QSoIQF1tIYMrzbcr2jG",
-//     "SS_OEM": 0,
-//     "SS_ACTIVATION_DATE": "2018-03-23T09:28:31.000Z",
-//     "SS_EXPIRE": "2050-03-23",
-//     "SS_CREATED": "2017-03-23T08:35:18.000Z",
-//     "SS_LAST_EDIT": "2018-03-23T09:38:26.000Z",
-//     "SS_MISMATCH_COUNT": 0,
-//     "SS_STATUS": 1,
-//     "SS_SC_ID": 12,
-//     "SS_SP_ID": 15,
-//     "SS_ACTIVATED_BY": "e van gent",
-//     "SS_ACTIVATION_REFERENT": " - "
-// }
-// pc id 15
-// {
-//   "SP_ID": 15,
-//   "SP_HW_ID": "PCWBB1B2G4",
-//   "SP_LAST_RX": "2018-06-22T16:48:47.000Z",
-//   "SP_IP": "77.60.255.156",
-//   "SP_STATUS": 0,
-//   "SP_PC_DATE_TIME": "2018-06-22"
-// }
-  it("sks key dates hacked (nowDate = yesterday), should return 4", async function() {
+  // key ok
+  //   {
+  //     "SS_ID": 40,
+  //     "SS_KEY": "iOV0l9QSoIQF1tIYMrzbcr2jG",
+  //     "SS_OEM": 0,
+  //     "SS_ACTIVATION_DATE": "2018-03-23T09:28:31.000Z",
+  //     "SS_EXPIRE": "2050-03-23",
+  //     "SS_CREATED": "2017-03-23T08:35:18.000Z",
+  //     "SS_LAST_EDIT": "2018-03-23T09:38:26.000Z",
+  //     "SS_MISMATCH_COUNT": 0,
+  //     "SS_STATUS": 1,
+  //     "SS_SC_ID": 12,
+  //     "SS_SP_ID": 15,
+  //     "SS_ACTIVATED_BY": "e van gent",
+  //     "SS_ACTIVATION_REFERENT": " - "
+  // }
+  // pc id 15
+  // {
+  //   "SP_ID": 15,
+  //   "SP_HW_ID": "PCWBB1B2G4",
+  //   "SP_LAST_RX": "2018-06-22T16:48:47.000Z",
+  //   "SP_IP": "77.60.255.156",
+  //   "SP_STATUS": 0,
+  //   "SP_PC_DATE_TIME": "2018-06-22"
+  // }
+  it("sks key dates hacked (nowDate = yesterday), should return 4", async function () {
     // this test updates ss_status to 0 and ss_mismatch_count to 1
     // see after test for workaround
     const ip = "77.60.255.156";
@@ -100,7 +100,7 @@ describe("checkLicense()", function() {
 
     assert.equal(foundSks, "4");
   });
-  it("sks key info to update (transimtted exp date > key exp Date), should return 1", async function() {
+  it("sks key info to update (transimtted exp date > key exp Date), should return 1", async function () {
     // TODO
     const ip = "77.60.255.156";
     const license = "iOV0l9QSoIQF1tIYMrzbcr2jG";
@@ -120,7 +120,7 @@ describe("checkLicense()", function() {
     );
     assert.equal(foundSks, "1");
   });
-  it("sks key moved (key hwId != transmitted hwId), should return 5", async function() {
+  it("sks key moved (key hwId != transmitted hwId), should return 5", async function () {
     // this test updates ss_status to 0 and ss_mismatch_count to 1
     // see after test for workaround
     const ip = "77.60.255.156";
@@ -143,7 +143,7 @@ describe("checkLicense()", function() {
     await rcvpcRepository.resetMismatchCount(40);
     assert.equal(foundSks, "5");
   });
-  it("sks key ok, should return 7", async function() {
+  it("sks key ok, should return 7", async function () {
     // TODO
     const ip = "77.60.255.156";
     const license = "iOV0l9QSoIQF1tIYMrzbcr2jG";
@@ -187,7 +187,7 @@ describe("checkLicense()", function() {
   //   "SP_STATUS": 0,
   //   "SP_PC_DATE_TIME": "2017-12-11"
   // },
-  it("sks key expired, should return 8", async function() {
+  it("sks key expired, should return 8", async function () {
     // TODO
     const ip = "89.96.246.132";
     const license = "afQatg3WMSMaHw56 KjRnPwEZ";
@@ -207,7 +207,7 @@ describe("checkLicense()", function() {
     );
     assert.equal(foundSks, "8");
   });
-    // key unallowed
+  // key unallowed
   //   {
   //     "SS_ID": 38,
   //     "SS_KEY": "w7lSDJcJaiYt6gBSRxUahgRUQ",
@@ -233,7 +233,7 @@ describe("checkLicense()", function() {
   //     "SP_STATUS": 0,
   //     "SP_PC_DATE_TIME": "2018-05-03"
   // }
-  it("sks key unallowed (SS_STATUS = 0), should return 3", async function() {
+  it("sks key unallowed (SS_STATUS = 0), should return 3", async function () {
     // TODO : need allowedserials
     const ip = "80.86.155.16";
     const license = "w7lSDJcJaiYt6gBSRxUahgRUQ";
@@ -269,7 +269,7 @@ describe("checkLicense()", function() {
   //   "SS_ACTIVATED_BY": "",
   //   "SS_ACTIVATION_REFERENT": ""
   // }
-  it("sks key virgin (SS_SP_ID  = 0), should return 6", async function() {
+  it("sks key virgin (SS_SP_ID  = 0), should return 6", async function () {
     const ip = "";
     const license = "iCbBX5aJAjkzHIYM1W5TlIrYp";
     const hwId = "123490EN40";
@@ -290,15 +290,15 @@ describe("checkLicense()", function() {
   });
 });
 
-describe("updatePcRx()", function() {
-  it("hwId 4805420112 should return 1 ", async function() {
+describe("updatePcRx()", function () {
+  it("hwId 4805420112 should return 1 ", async function () {
     const hwId = "4805420112";
     const ip = "80.86.155.16";
     const nowDate = "2018-06-25";
     const foundPc = await superactivator.updatePcRx(hwId, ip, nowDate);
     assert.equal(foundPc, "1");
   });
-  it("hwId, ip and nowDate undefined should return 1 ", async function() {
+  it("hwId, ip and nowDate undefined should return 1 ", async function () {
     const hwId = undefined;
     const ip = undefined;
     const nowDate = undefined;
@@ -307,59 +307,59 @@ describe("updatePcRx()", function() {
   });
 });
 
-describe("checksetBanned()", function() {
-  it("hwId PFXJT028J4 should return 1 ", async function() {
+describe("checksetBanned()", function () {
+  it("hwId PFXJT028J4 should return 1 ", async function () {
     const hwId = "PFXJT028J4";
     const foundBannedPc = await superactivator.checksetBanned(hwId);
     assert.equal(foundBannedPc, "1");
   });
-  it("hwId None123456 should return 0 ", async function() {
+  it("hwId None123456 should return 0 ", async function () {
     const hwId = "None123456";
     const foundBannedPc = await superactivator.checksetBanned(hwId);
     assert.equal(foundBannedPc, "0");
   });
 });
 
-describe("getAllowedSerials()", function() {
-  it("key id 33 should return 123456789#983106 ", async function() {
+describe("getAllowedSerials()", function () {
+  it("key id 33 should return 123456789#983106 ", async function () {
     const keyId = 33;
     const foundSerials = await superactivator.getAllowedSerials(keyId);
     assert.equal(foundSerials, "123456789#983106");
   });
-  it("key id 32 should return '' ", async function() {
+  it("key id 32 should return '' ", async function () {
     const keyId = 32;
     const foundSerials = await superactivator.getAllowedSerials(keyId);
     assert.equal(foundSerials, "");
   });
 });
 
-describe("generateValidKey()", function() {
-  it("should return almozlakee ", function() {
+describe("generateValidKey()", function () {
+  it("should return almozlakee ", function () {
     const key = "ammazzate";
     const validKey = superactivator.generateValidKey(key);
     assert.equal(validKey, "almozlakee");
   });
-  it("should return mltodlckie ", function() {
+  it("should return mltodlckie ", function () {
     const key = "motedicoio";
     const validKey = superactivator.generateValidKey(key);
     assert.equal(validKey, "mltodlckie");
   });
 });
 
-describe("generateValidKey()", function() {
-  it("should return OK ", function() {
+describe("generateValidKey()", function () {
+  it("should return OK ", function () {
     const checkKey = "almozlakee";
     const patKey = "almozlakee";
     const validKey = superactivator.checkValidKey(checkKey, patKey);
     assert.equal(validKey, "OK");
   });
-  it("should return KO (different keys)", function() {
+  it("should return KO (different keys)", function () {
     const checkKey = "almozlakee";
     const patKey = "almozlake";
     const validKey = superactivator.checkValidKey(checkKey, patKey);
     assert.equal(validKey, "KO");
   });
-  it("should return KO (too short keys)", function() {
+  it("should return KO (too short keys)", function () {
     const checkKey = "almoz";
     const patKey = "almoz";
     const validKey = superactivator.checkValidKey(checkKey, patKey);
@@ -367,18 +367,18 @@ describe("generateValidKey()", function() {
   });
 });
 
-describe("setKeyMismatched()", function() {
-  it("key id 33 should return 1 ", async function() {
+describe("setKeyMismatched()", function () {
+  it("key id 33 should return 1 ", async function () {
     const id = 33;
     const mismatch = await superactivator.setKeyMismatched(id);
     assert.equal(mismatch, "1");
   });
-  it("key id 932 should return 0 ", async function() {
+  it("key id 932 should return 0 ", async function () {
     const id = 932;
     const mismatch = await superactivator.setKeyMismatched(id);
     assert.equal(mismatch, "0");
   });
-  it("key id undefined should return sql error ", async function() {
+  it("key id undefined should return sql error ", async function () {
     const id = undefined;
     const mismatch = await superactivator.setKeyMismatched(id);
     assert.equal(mismatch, undefined);
