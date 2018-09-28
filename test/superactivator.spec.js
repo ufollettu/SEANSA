@@ -27,9 +27,54 @@ const rcvpcRepository = require('../repositories/rcvpc.server.repository');
 //
 //  Test Suites
 // 
+describe("generateLicense()", function () {
+  beforeEach(async function () {
+    await db.sks.destroy({ where: {}, truncate: true });
+    await db.sks.bulkCreate(sksSeed);
+  });
+  it("if licence is not found, should return 0", async function () {
+    // here I mock the request.body data
+    const license = "";
+    const hwId = "";
+    const reqCode = "";
+    const nowDate = moment().format('YYYY-MM-DD');  // today;
+    const ip = "";
+    const key = await superactivator.generateLicense(
+      license, hwId, reqCode, nowDate, ip
+    );
+    assert.equal(key, "0");
+  });
+  it("if reqCode is not valid, should return 9", async function () {
+    // here I mock the request.body data
+    const license = "nc6M0yaj5ZT1CMPBC1Q1s2ktm";
+    const hwId = "PFKBPG31W9";
+    const reqCode = "";
+    const nowDate = moment().format('YYYY-MM-DD');  // today;
+    const ip = "92.223.209.171";
+    const key = await superactivator.generateLicense(
+      license, hwId, reqCode, nowDate, ip
+    );
+    assert.equal(key, "9");
+  });
+  it("if generation ok should return key", async function () {
+    // here I mock the request.body data
+    const license = "nc6M0yaj5ZT1CMPBC1Q1s2ktm";
+    const hwId = "PFKBPG31W9";
+    // TODO valid reqCode needed
+    const reqCode = "";
+    const nowDate = moment().format('YYYY-MM-DD');  // today;
+    const ip = "92.223.209.171";
+    const key = await superactivator.generateLicense(
+      license, hwId, reqCode, nowDate, ip
+    );
+    assert.equal(key, "very_big_string");
+  });
+})
+
+
 describe("checkLicense()", function () {
   beforeEach(async function () {
-    await db.sks.destroy({where: {}, truncate: true });
+    await db.sks.destroy({ where: {}, truncate: true });
     await db.sks.bulkCreate(sksSeed);
   });
   it("sks key inesistente, should return 0", async function () {
@@ -102,7 +147,6 @@ describe("checkLicense()", function () {
     assert.equal(foundSks, "4");
   });
   it("sks key info to update (transimtted exp date > key exp Date, nowDate = today), should return 1", async function () {
-    // TODO
     const ip = "77.60.255.156";
     const license = "iOV0l9QSoIQF1tIYMrzbcr2jG";
     const hwId = "PCWBB1B2G4";
@@ -145,7 +189,6 @@ describe("checkLicense()", function () {
     assert.equal(foundSks, "5");
   });
   it("sks key ok, should return 7", async function () {
-    // TODO
     const ip = "77.60.255.156";
     const license = "iOV0l9QSoIQF1tIYMrzbcr2jG";
     const hwId = "PCWBB1B2G4";
@@ -189,7 +232,6 @@ describe("checkLicense()", function () {
   //   "SP_PC_DATE_TIME": "2017-12-11"
   // },
   it("sks key expired, should return 8", async function () {
-    // TODO
     const ip = "89.96.246.132";
     const license = "afQatg3WMSMaHw56 KjRnPwEZ";
     const hwId = "R90N0W8X12";
@@ -226,16 +268,15 @@ describe("checkLicense()", function () {
   // },
   //
   // pc "SS_SP_ID": 7,
-//   {
-//     "SP_ID": 7,
-//     "SP_HW_ID": "PFKBPG31W9",
-//     "SP_LAST_RX": "2018-06-07 08:35:32",
-//     "SP_IP": "92.223.209.171",
-//     "SP_STATUS": 0,
-//     "SP_PC_DATE_TIME": "2018-06-07"
-// },
+  //   {
+  //     "SP_ID": 7,
+  //     "SP_HW_ID": "PFKBPG31W9",
+  //     "SP_LAST_RX": "2018-06-07 08:35:32",
+  //     "SP_IP": "92.223.209.171",
+  //     "SP_STATUS": 0,
+  //     "SP_PC_DATE_TIME": "2018-06-07"
+  // },
   it("sks key unallowed (SS_STATUS = 0), should return 3", async function () {
-    // TODO : need allowedserials
     const ip = "92.223.209.171";
     const license = "uMuxbIjBqMQTrf6iRoAYXraz7";
     const hwId = "PFKBPG31W9";

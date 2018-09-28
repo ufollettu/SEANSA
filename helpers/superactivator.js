@@ -49,7 +49,6 @@ class SuperActivator {
         return bytes;
     }
 
-    // TODO test with software transimission
     codeToGod(stringToCode) {
         if (!stringToCode || stringToCode.length == 0) {
             return "";
@@ -65,7 +64,6 @@ class SuperActivator {
             all4B[2] = (rand(0, 3)) | ((rand(0, 3) << 2) & 3) | (allBy[i] & 48) | (rand(0, 3) << 6);
             all4B[3] = (rand(0, 3)) | ((rand(0, 3) << 2) & 3) | ((rand(0, 3) << 4) & 3) | (allBy[i] & 192);
 
-            // TODO check for working
             const arrAll4B = all4B.map((el) => {
                 return chr(el);
             }).join('');
@@ -126,13 +124,13 @@ class SuperActivator {
     setKeyMismatched(id) {
         return repository.updateMismatchCount(id)
             .spread((results, metadata) => {
-              // console.log(results.affectedRows);
+                // console.log(results.affectedRows);
                 if (!results) {
                     // console.log('errore di disattivazione key');
                     return 0;
                 } else if (results.affectedRows == 0) {
-                  // console.log('key id non esistente');
-                  return 0;
+                    // console.log('key id non esistente');
+                    return 0;
                 }
                 return 1;
             }).catch(err => console.log(err.message))
@@ -149,19 +147,19 @@ class SuperActivator {
             }).catch(err => console.log(err.message));
     }
 
-  //   const licCheckResult = {
-  //     key_insesistente: '0',
-  //     key_info_to_update: '1',
-  //     server_error: '2',
-  //     key_unallowed: '3',
-  //     dates_hacked: '4',
-  //     key_moved: '5',
-  //     key_virgin: '6',
-  //     key_ok: '7',
-  //     key_expired: '8',
-  //     invalid_reqcode: '9',
-  //     hwid_banned: '10'
-  // }
+    //   const licCheckResult = {
+    //     key_insesistente: '0',
+    //     key_info_to_update: '1',
+    //     server_error: '2',
+    //     key_unallowed: '3',
+    //     dates_hacked: '4',
+    //     key_moved: '5',
+    //     key_virgin: '6',
+    //     key_ok: '7',
+    //     key_expired: '8',
+    //     invalid_reqcode: '9',
+    //     hwid_banned: '10'
+    // }
 
     checkLicense(license, hwId, oem, expDate, nowDate, ip, allowedSerials) {
         return repository.findLicense(license).then(async key => {
@@ -184,8 +182,8 @@ class SuperActivator {
                     return this.licCheckResult.key_unallowed;
                 }
                 if (key[0]['SP_HW_ID'] != hwId) {
-                  const updateMismatch = await this.setKeyMismatched(key[0]['SS_ID']);
-                  // console.log(updateMismatch);
+                    const updateMismatch = await this.setKeyMismatched(key[0]['SS_ID']);
+                    // console.log(updateMismatch);
                     if (updateMismatch == 1) {
                         return this.licCheckResult.key_moved;
                     }
@@ -193,7 +191,7 @@ class SuperActivator {
                 if ((strtotime(key[0]['SS_EXPIRE']) < strtotime(expDate))
                     || (strtotime(nowDate) < strtotime(key[0]['SP_PC_DATE_TIME']))
                     || (strtotime(nowDate) < time() - 60 * 60 * 24 * 2)
-                  ) {
+                ) {
                     const updateMismatch = await this.setKeyMismatched(key[0]['SS_ID']);
                     // console.log(updateMismatch);
                     if (updateMismatch == 1) {
@@ -204,9 +202,8 @@ class SuperActivator {
                 }
                 if ((key[0]['SS_OEM'] != oem)
                     || (strtotime(key[0]['SS_EXPIRE']) > strtotime(expDate)
-                      // TODO bug here!!! check with new code
-                      || strcmp(key[0]['SS_ALLOWED_SERIALS'], this.decodeToMortal(allowedSerials)) != 0)
-                  ) {
+                        || strcmp(key[0]['SS_ALLOWED_SERIALS'], this.decodeToMortal(allowedSerials)) != 0)
+                ) {
                     return this.licCheckResult.key_info_to_update;
                 }
                 if (strtotime(key[0]['SS_EXPIRE']) <= strtotime(nowDate)) {
@@ -262,7 +259,6 @@ class SuperActivator {
                         // else if (foundOem[0]['SS_OEM'] == 11) { oem = 'thisisdemo_lecu' }
                         // else if (foundOem[0]['SS_OEM'] == 12) { oem = 'thisisoem_lecu' }
 
-                        // TODO check for working
                         const keepDate = str_replace('-', "", foundOem[0]['SS_EXPIRE'])
                         const allowedSerials = this.getAllowedSerials(foundOem[0]['SS_ID'])
                         // console.log(allowedSerials);

@@ -78,5 +78,3 @@ module.exports = {
     allow,
     disallow
 };
-
-// TODO add guard to prevent unauthorized uses to non SU users
