@@ -67,19 +67,11 @@ class SuperActivator {
             const arrAll4B = all4B.map((el) => {
                 return chr(el);
             }).join('');
-            console.log(arrAll4B);
+            // console.log(arrAll4B);
             result = result + str_replace('-', '', bin2hex(arrAll4B));
         }
         return result;
     }
-
-    // trimNull(a) {
-    //     var c = a.indexOf('\0');
-    //     if (c > -1) {
-    //         return a.substr(0, c);
-    //     }
-    //     return a;
-    // }
 
     getAllowedSerials(keyId) {
         return repository.findAllowedSerials(keyId)
@@ -168,7 +160,6 @@ class SuperActivator {
                     key[0]['SS_ALLOWED_SERIALS'] = "";
                 }
                 const updatePc = await this.updatePcRx(hwId, ip, nowDate);
-                // console.log(updatePc);
                 if (updatePc == 0) {
                     return this.licCheckResult.server_error;
                 }
@@ -183,7 +174,6 @@ class SuperActivator {
                 }
                 if (key[0]['SP_HW_ID'] != hwId) {
                     const updateMismatch = await this.setKeyMismatched(key[0]['SS_ID']);
-                    // console.log(updateMismatch);
                     if (updateMismatch == 1) {
                         return this.licCheckResult.key_moved;
                     }
@@ -193,7 +183,6 @@ class SuperActivator {
                     || (strtotime(nowDate) < time() - 60 * 60 * 24 * 2)
                 ) {
                     const updateMismatch = await this.setKeyMismatched(key[0]['SS_ID']);
-                    // console.log(updateMismatch);
                     if (updateMismatch == 1) {
                         return this.licCheckResult.dates_hacked;
                     } else {
@@ -213,14 +202,14 @@ class SuperActivator {
             } else {
                 return this.licCheckResult.key_insesistente;
             }
-        }).catch(err => err.errors);
+        }).catch(err => this.licCheckResult.server_error);
     }
 
     generateLicense(license, hwId, reqCode, nowDate, ip) {
         pcRepo.updatePcRx(hwId, ip, nowDate);
 
         return repository.findOem(license, hwId)
-            .then((foundOem) => {
+            .then(async (foundOem) => {
                 if (foundOem[0]) {
                     const keyCode = this.generateValidKey(this.decodeToMortal(reqCode));
                     let patchKey = keyCode;
@@ -251,35 +240,25 @@ class SuperActivator {
                                 oem = 'thisisoem_lecu'
                                 break;
                         }
-                        // if (foundOem[0]['SS_OEM'] == 0) { oem = 'thisisnotoem' }
-                        // else if (foundOem[0]['SS_OEM'] == 1) { oem = 'thisisoem' }
-                        // else if (foundOem[0]['SS_OEM'] == 2) { oem = 'thisisoemdoc' }
-                        // else if (foundOem[0]['SS_OEM'] == 3) { oem = 'thisislock' }
-                        // else if (foundOem[0]['SS_OEM'] == 10) { oem = 'thisisnotoem_lecu' }
-                        // else if (foundOem[0]['SS_OEM'] == 11) { oem = 'thisisdemo_lecu' }
-                        // else if (foundOem[0]['SS_OEM'] == 12) { oem = 'thisisoem_lecu' }
-
                         const keepDate = str_replace('-', "", foundOem[0]['SS_EXPIRE'])
-                        const allowedSerials = this.getAllowedSerials(foundOem[0]['SS_ID'])
-                        // console.log(allowedSerials);
+                        const allowedSerials = await this.getAllowedSerials(foundOem[0]['SS_ID'])
                         const key =
                             this.codeToGod(keyCode) + '|'
                             + this.codeToGod(patchKey) + '|'
                             + this.codeToGod(oem) + '|'
                             + this.codeToGod(keepDate) + '|'
                             + this.codeToGod(allowedSerials);
-                        // console.log(key);
                         return key;
                     }
                 } else {
                     return this.licCheckResult.key_insesistente;
                 }
-            }).catch(err => err.errors);
+            }).catch(err => this.licCheckResult.server_error);
     }
 
     registerLicense(license, hwId, reqKey, pcDate, customerName, referenteName, referentePhone, ip) {
         return pcRepo.findOne(hwId)
-            .then((pc) => {
+            .then(async (pc) => {
                 let pcId = '';
                 if (!pc) {
                     const data = {
@@ -288,28 +267,28 @@ class SuperActivator {
                         SP_IP: ip,
                         SP_PC_DATE_TIME: new Date().toISOString().slice(0, 10)
                     }
-                    pcId = pcRepo.create(data)
+                    pcId = await pcRepo.create(data)
                         .then((newPc) => {
                             if (!newPc) {
                                 return this.licCheckResult.server_error;
                             }
                             return newPc['SP_ID']
-                        }).catch(err => err.errors);
+                        }).catch(err => this.licCheckResult.server_error);
                 } else {
                     pcId = pc['SP_ID'];
                 }
-                console.log(pcId);
+                // console.log(pcId);
                 if (!isset(pcId) || pcId.length == 0 || pcId == 0) {
                     return this.licCheckResult.server_error;
                 }
                 return repository.updateLicense(pcId, customerName, referenteName, referentePhone, license)
                     .spread((results, metadata) => {
-                        if (!results) {
+                        if (results.affectedRows == 0) {
                             return this.licCheckResult.server_error;
                         }
                         return this.generateLicense(license, hwId, reqKey, pcDate, ip);
-                    }).catch(err => err.errors);
-            }).catch(err => err.errors);
+                    }).catch(err => this.licCheckResult.server_error);
+            }).catch(err => this.licCheckResult.server_error);
     }
 
 }

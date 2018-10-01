@@ -22,7 +22,7 @@ const create = async (req, res) => {
     const data = {
         'SS_KEY': randomPassword(25),
         'SS_OEM': req.body.SS_OEM,
-        'SS_CREATED': moment().format('YYYY-MM-DD, hh:mm:ss'),
+        'SS_CREATED': moment().format('YYYY-MM-DD hh:mm:ss'),
         'SS_EXPIRE': req.body.SS_EXPIRE,
         'SS_SC_ID': req.body.SS_SC_ID,
         'SS_ACTIVATED_BY': '',

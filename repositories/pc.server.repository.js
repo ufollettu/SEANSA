@@ -36,7 +36,7 @@ class Repository {
 
   updatePcRx(hwId, ip, date) {
     // const myDate = new Date().toISOString().replace(/([^T]+)T([^\.]+).*/g, '$1 $2');
-    const myDate = moment().format('YYYY-MM-DD, hh:mm:ss');
+    const myDate = moment().format('YYYY-MM-DD hh:mm:ss');
     const query = "UPDATE `sa_pc` set `SP_LAST_RX`='" + myDate + "',  `SP_IP`='" + ip + "',  `SP_PC_DATE_TIME`='" + date + "'  WHERE `SP_HW_ID` = '" + hwId + "'";
     return db.sequelize.query(query);
   }
