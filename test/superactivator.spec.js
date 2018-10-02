@@ -57,7 +57,7 @@ describe("registerLicense()", function () {
     // here I mock the request.body data
     const license = "7XWqgsXBfvexWNjnMo3Cvdm2g";
     const hwId = "PCSTPC47V6";
-    const reqKey = "c405f242c063c3032d04214088c383016792334098508201f8c73040f851c20193c03041c07043013c85704100410101be50714348a2420299daa3424cd042028a5ca341c0b143027bf4234180f10202ed6023417080c002";
+    const reqKey = "087631435c7c6342b770f243ef4fe341db91f242ecffe2409622f141a3982342caec624201f46143";
     const pcDate = moment().format('YYYY-MM-DD');
     const customerName = "pasquale cliente";
     const referenteName = "referente test";
@@ -77,7 +77,7 @@ describe("registerLicense()", function () {
     // here I mock the request.body data
     const license = "7XWqgsXBfvexWNjnMo3Cvdm2g";
     const hwId = "PCSTPC47V6";
-    const reqKey = "c405f242c063c3032d04214088c383016792334098508201f8c73040f851c20193c03041c07043013c85704100410101be50714348a2420299daa3424cd042028a5ca341c0b143027bf4234180f10202ed6023417080c002";
+    const reqKey = "087631435c7c6342b770f243ef4fe341db91f242ecffe2409622f141a3982342caec624201f46143";
     const pcDate = moment().format('YYYY-MM-DD');
     const customerName = "";
     const referenteName = "";
@@ -96,7 +96,7 @@ describe("registerLicense()", function () {
     // here I mock the request.body data
     const license = "nc6M0yaj5ZT1CMPBC1Q1s2ktm";
     const hwId = "";
-    const reqKey = "c405f242c063c3032d04214088c383016792334098508201f8c73040f851c20193c03041c07043013c85704100410101be50714348a2420299daa3424cd042028a5ca341c0b143027bf4234180f10202ed6023417080c002";
+    const reqKey = "087631435c7c6342b770f243ef4fe341db91f242ecffe2409622f141a3982342caec624201f46143";
     const pcDate = moment().format('YYYY-MM-DD');
     const customerName = "pasquale cliente";
     const referenteName = "referente test";
@@ -130,7 +130,7 @@ describe("registerLicense()", function () {
     // here I mock the request.body data
     const license = "";
     const hwId = "";
-    const reqKey = "c405f242c063c3032d04214088c383016792334098508201f8c73040f851c20193c03041c07043013c85704100410101be50714348a2420299daa3424cd042028a5ca341c0b143027bf4234180f10202ed6023417080c002";
+    const reqKey = "087631435c7c6342b770f243ef4fe341db91f242ecffe2409622f141a3982342caec624201f46143";
     const pcDate = moment().format('YYYY-MM-DD');
     const customerName = "pasquale cliente";
     const referenteName = "referente test";
@@ -222,7 +222,7 @@ describe("generateLicense()", function () {
     // here I mock the request.body data
     const license = "nc6M0yaj5ZT1CMPBC1Q1s2ktm";
     const hwId = "";
-    const reqCode = "c405f242c063c3032d04214088c383016792334098508201f8c73040f851c20193c03041c07043013c85704100410101be50714348a2420299daa3424cd042028a5ca341c0b143027bf4234180f10202ed6023417080c002";
+    const reqCode = "087631435c7c6342b770f243ef4fe341db91f242ecffe2409622f141a3982342caec624201f46143";
     const nowDate = moment().format('YYYY-MM-DD');  // today;
     const ip = "";
     const key = await superactivator.generateLicense(
@@ -246,7 +246,7 @@ describe("generateLicense()", function () {
     // here I mock the request.body data
     const license = "7XWqgsXBfvexWNjnMo3Cvdm2g";
     const hwId = "PCSTPC47V6";
-    const reqCode = "c405f242c063c3032d04214088c383016792334098508201f8c73040f851c20193c03041c07043013c85704100410101be50714348a2420299daa3424cd042028a5ca341c0b143027bf4234180f10202ed6023417080c002";
+    const reqCode = "087631435c7c6342b770f243ef4fe341db91f242ecffe2409622f141a3982342caec624201f46143";
     const nowDate = moment().format('YYYY-MM-DD');  // today;
     const ip = "95.227.218.39";
     const key = await superactivator.generateLicense(
@@ -567,7 +567,7 @@ describe("checkLicense()", function () {
     const oem = 12;
     const expDate = "2019-04-05";
     const nowDate = moment().format('YYYY-MM-DD');
-    const allowedSerials = "9ea0b20024c3030279a3f201b4f1800006417103dcb202030dabf100d803c302e131b00010f2c0018cdbb303946242022f70a10228334102ca3270011cf14002497233017cb3c3039a32f203e8a30303b475f10160a200029d823303b882c301b478300030318102";
+    const allowedSerials = "b6a07203dd43f0017af2b2039dea72029102f102ac6b7001d360a202a6b3b003559071036e50b2038c257100a90171012c4af200";
     const foundSks = await superactivator.checkLicense(
       license,
       hwId,
@@ -599,6 +599,11 @@ describe("updatePcRx()", function () {
 });
 
 describe("checksetBanned()", function () {
+  it("null hwId should return 0 ", async function () {
+    const hwId = null;
+    const foundBannedPc = await superactivator.checksetBanned(hwId);
+    assert.equal(foundBannedPc, "0");
+  });
   it("hwId PFXJT028J4 should return 1 ", async function () {
     const hwId = "PFXJT028J4";
     const foundBannedPc = await superactivator.checksetBanned(hwId);
@@ -642,7 +647,7 @@ describe("generateValidKey()", function () {
   });
 });
 
-describe("generateValidKey()", function () {
+describe("checkValidKey()", function () {
   it("should return OK ", function () {
     const checkKey = "almozlakee";
     const patKey = "almozlakee";
@@ -690,116 +695,44 @@ describe("setKeyMismatched()", function () {
 // });
 
 describe("decodeToMortal()", () => {
-  it("should decode reqcode string 1", () => {
-    const testStr = superactivator.decodeToMortal(
-      "c405f242c063c3032d04214088c383016792334098508201f8c73040f851c20193c03041c07043013c85704100410101be50714348a2420299daa3424cd042028a5ca341c0b143027bf4234180f10202ed6023417080c002"
-    );
-    assert.equal(testStr, "teststringa");
-  });
-  it("should decode reqcode string 2", () => {
-    const testStr = superactivator.decodeToMortal(
-      "1086334168310002b526a1432c5001029b70f340e05300015cf6704258e342023752f34268a38301b4d6b240048200027ea3b04298818303052be04140f141036a3f214128734302db4462406cd081013532e04120e1c001"
-    );
-    assert.equal(testStr, "teststringa");
-  });
-  it("should decode reqcode string 3", () => {
-    const testStr = superactivator.decodeToMortal(
-      "38863240180083004de66342bc5343015b73324350e20002d8c6f0430cf2c1000f2132400072c303b0167043e0f0010372a3b2432860820171c86241a4e28200165ca341c0e3c3018b54a2402003c202d1a0e041e4038300"
-    );
-    assert.equal(testStr, "teststringa");
-  });
-  it("should decode reqcode string 4", () => {
-    const testStr = superactivator.decodeToMortal(
-      "6807b14270e2c102ad54a140f8e34003e3e17041e49041035ca63042941381023352b340e8b142022095b242acd20302fa403341f0730103a57ba04024e2c202ce3ce2404851c203d73663431ce10103bd012242e800c300"
-    );
-    assert.equal(testStr, "teststringa");
-  });
-  it("should decode reqcode string 5", () => {
-    const testStr = superactivator.decodeToMortal(
-      "f894f340e0d2c10235b5604348b04101e7a3334144b3430168a6f1427060800317533042a8f24200dcb53242fc9142035e53b140a8124101556be1438c628003c6ade14360038202cb64e0432cf2c0036522e141aca30003"
-    );
-    assert.equal(testStr, "teststringa");
-  });
-  it("should decode serials", () => {
-    const testStr = superactivator.decodeToMortal(
-      "9ea0b20024c3030279a3f201b4f1800006417103dcb202030dabf100d803c302e131b00010f2c0018cdbb303946242022f70a10228334102ca3270011cf14002497233017cb3c3039a32f203e8a30303b475f10160a200029d823303b882c301b478300030318102"
-    );
-    assert.equal(testStr, "212918#212418");
-  });
   // data required for generate licence tests
   it("generatelicense() should decode keyCode", () => {
     const testStr = superactivator.decodeToMortal(
-      "1835f242c071c203cc9ca341c80380023b40f040b4c282029fde22401060830163203343e8f181001c5ea24118b040022a00b1406c21010293d86140ecd18103a6ec2143109080028577a1417cf3c301"
+      "b836b0423cdd6342fb507142ebdc2143db83f143144de141fe007143332ae142562ce1406156a043"
     );
     assert.equal(testStr, "tlsoslrkne");
   });
   it("generatelicense() should decode patchKey", () => {
     const testStr = superactivator.decodeToMortal(
-      "b86431437020400308cca14274b3020203137243c863820197fe20410c81c102bf62f2427423010008fda043b0d282000aa0f24354430002b7c963412c6283031aafe040142280008555614038934101"
+      "087631435c7c6342b770f243ef4fe341db91f242ecffe2409622f141a3982342caec624201f46143"
     );
     assert.equal(testStr, "tlsoslrkne");
   });
   it("generatelicense() should decode oem", () => {
     const testStr = superactivator.decodeToMortal(
-      "78547242589340033cba21419c128100116820418c82030067f1b341601041005dcbe042d87342013fb2b241ccb20303df6c2340e4514300712761415ca1c101adbfa2413420c0026fbc5141a0f2c0023cbe604164c14200b516e1420870c2024fd0e04344714302cdd732423c524302"
+      "04c4f043c8d8604091b9e1439f02724031ca61433f513142dbcce14261b7e243c11fa1406fcfd342e48e2240d9f6e340af11a0412da67140"
     );
     assert.equal(testStr, "thisisoem_lecu");
   });
   it("generatelicense() should decode keepDate", () => {
     const testStr = superactivator.decodeToMortal(
-      "46a173002091420374e373016440c30231b1f103a430c203914a730310f101012473f3038832830278a5300038f043010450f10368b0c0038d26b00030010000"
+      "86033000a4937103bde0f00399187203a4d1b0021435b100d4c0f30221557303"
     );
     assert.equal(testStr, "20190405");
   });
   it("generatelicense() should decode allowedSerials", () => {
     const testStr = superactivator.decodeToMortal(
-      "bef0b1008ca08001e993b300dc9100002ad3b3035cb182028d58b00130c2800395b072037490810290faf2020cf380030b8320016c7142003a1132030861c10275e2720358a383014a7271029c92810368a6b2030cc1810111c0b20164e04202546af0010ce20101"
+      "b6a07203dd43f0017af2b2039dea72029102f102ac6b7001d360a202a6b3b003559071036e50b2038c257100a90171012c4af200"
     );
     assert.equal(testStr, "212918#212418");
   });
-  // it("generatelicense() should decode allowedSerials", () => {
-  //   const testStr = superactivator.decodeToMortal(
-  //     "bef0b1008ca08001e993b300dc9100002ad3b3035cb182028d58b00130c2800395b072037490810290faf2020cf380030b8320016c7142003a1132030861c10275e2720358a383014a7271029c92810368a6b2030cc1810111c0b20164e04202546af0010ce20101"
-  //   );
-  //   assert.equal(testStr, "");
-  // });
-  // it("generatelicense() should decode ", () => {
-  //   const testStr = superactivator.decodeToMortal(
-  //     "81f33201e0a00000f06ea142e0538102fb71f202a443c001131ca34390e34003612b700034b24303444e2340ec61430071658143d0e20003e39b6042a8c183008c46f303fce30303c997604180e2c101"
-  //   );
-  //   assert.equal(testStr, "");
-  // });
-  // it("generatelicense() should decode ", () => {
-  //   const testStr = superactivator.decodeToMortal(
-  //     "f9737201aca30202fc9f20421ca38103af53b0000cb24100f79ea04168430003313bf00360714002a0ed214244a1c0026dd54340b0d08202878be343f4210300bc0630000082c102653763408c724300"
-  //   );
-  //   assert.equal(testStr, "");
-  // });
-  // it("generatelicense() should decode ", () => {
-  //   const testStr = superactivator.decodeToMortal(
-  //     "8407b34114d10303dc186341f00282002979a0433072c1011781b2417830020071ea22407400c102b393b240c8c20203a79ca2410001820229572140d0034100cded2040185343010b4ed1412ce081028ced23431c3182005175e041d4e280021fd1614008f0030059c5f24320624001"
-  //   );
-  //   assert.equal(testStr, "");
-  // });
-  // it("generatelicense() should decode ", () => {
-  //   const testStr = superactivator.decodeToMortal(
-  //     "fe2131016cc3800060c2300328830001fd03b0011483410391b93202f0b081024513f00264d0c2011c633303acb180038191b2001002410340b13103cc130300"
-  //   );
-  //   assert.equal(testStr, "");
-  // });
 });
 
-// 81f33201e0a00000f06ea142e0538102fb71f202a443c001131ca34390e34003612b700034b24303444e2340ec61430071658143d0e20003e39b6042a8c183008c46f303fce30303c997604180e2c101|
-// f9737201aca30202fc9f20421ca38103af53b0000cb24100f79ea04168430003313bf00360714002a0ed214244a1c0026dd54340b0d08202878be343f4210300bc0630000082c102653763408c724300|
-// 8407b34114d10303dc186341f00282002979a0433072c1011781b2417830020071ea22407400c102b393b240c8c20203a79ca2410001820229572140d0034100cded2040185343010b4ed1412ce081028ced23431c3182005175e041d4e280021fd1614008f0030059c5f24320624001|
-// fe2131016cc3800060c2300328830001fd03b0011483410391b93202f0b081024513f00264d0c2011c633303acb180038191b2001002410340b13103cc130300|
 
-
-describe("codeToGod() NB deve passare la suoi  fega", () => {
+describe("codeToGod() NB deve passare decodeToMortal()", () => {
   it("should decode reqcode string 1", () => {
     const encoded = superactivator.codeToGod("qualcosa a caso");
     const decoded = superactivator.decodeToMortal(encoded);
-    //const expected = "e5a17042ccd1420295d773432cd1c002b9d0a240f4a0c103f43e2241b8e143012b41e04238110100bf0f234088908003a332b1437c704301b1e3e24178c1c20008306203e0a3030319f0e240ecf2430034a323012c334100cf81e1424c81c0009d61234300b0c302138131400490030003dd2241dc834102";
     assert.equal(decoded, "qualcosa a caso");
   });
 });

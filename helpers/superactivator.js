@@ -38,7 +38,6 @@ class SuperActivator {
             result = result + chr(all4B);
         }
         return result;
-        // return result;
     }
 
     unpack(str) {
