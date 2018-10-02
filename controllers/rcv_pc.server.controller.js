@@ -21,7 +21,7 @@ const switchMode = async (req, res) => {
   switch (tipo) {
     case "1": {
       if (modo == "1") {
-        const checkRes = superActivator.checkLicense(
+        superActivator.checkLicense(
           license,
           hwId,
           oem,
@@ -29,19 +29,21 @@ const switchMode = async (req, res) => {
           nowDate,
           ip,
           allowedSerials
-        );
-        res.send(checkRes);
+        ).then(checkRes => {
+          res.send(checkRes);
+        }).catch(err => err.errors);
       } else if (modo == "2") {
-        const checkRes = superActivator.generateLicense(
+        superActivator.generateLicense(
           license,
           hwId,
           reqCode,
           nowDate,
           ip
-        );
-        res.send(checkRes);
+        ).then(checkRes => {
+          res.send(checkRes);
+        }).catch(err => err.errors);
       } else if (modo == "3") {
-        const checkRes = superActivator.registerLicense(
+        superActivator.registerLicense(
           license,
           hwId,
           reqCode,
@@ -50,8 +52,10 @@ const switchMode = async (req, res) => {
           referenteName,
           referentePhone,
           ip
-        );
-        res.send(checkRes);
+        ).then(checkRes => {
+
+          res.send(checkRes);
+        }).catch(err => err.errors);
       }
       break;
     }

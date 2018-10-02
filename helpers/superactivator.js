@@ -37,14 +37,14 @@ class SuperActivator {
             const all4B = (allBy[i] & 3) | (allBy[i + 1] & 12) | (allBy[i + 2] & 48) | (allBy[i + 3] & 192);
             result = result + chr(all4B);
         }
-        return result.replace(/\0/g, '');
+        return result;
+        // return result;
     }
 
     unpack(str) {
         let bytes = [];
-        for (let i = 0, n = str.length; i < n; i++) {
-            const char = str.charCodeAt(i);
-            bytes.push(char >>> 8, char & 0xFF);
+        for (let i = 0; i < str.length; i++) {
+            bytes.push(str.charCodeAt(i));
         }
         return bytes;
     }
@@ -58,7 +58,7 @@ class SuperActivator {
         let all4B = [];
         let result = '';
 
-        for (let i = 1; i <= allBy.length; i++) {
+        for (let i = 0; i < allBy.length; i++) {
             all4B[0] = (allBy[i] & 3) | (rand(0, 3) << 2) | (rand(0, 3) << 4) | (rand(0, 3) << 6);
             all4B[1] = (rand(0, 3)) | (allBy[i] & 12) | (rand(0, 3) << 4) | (rand(0, 3) << 6);
             all4B[2] = (rand(0, 3)) | ((rand(0, 3) << 2) & 3) | (allBy[i] & 48) | (rand(0, 3) << 6);
@@ -283,7 +283,7 @@ class SuperActivator {
                 }
                 return repository.updateLicense(pcId, customerName, referenteName, referentePhone, license)
                     .spread((results, metadata) => {
-                        if (results.affectedRows == 0) {
+                        if (!results) {
                             return this.licCheckResult.server_error;
                         }
                         return this.generateLicense(license, hwId, reqKey, pcDate, ip);

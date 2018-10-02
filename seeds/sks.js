@@ -1003,5 +1003,19 @@ module.exports = [
     "SS_SP_ID": 51,
     "SS_ACTIVATED_BY": "GR TEST",
     "SS_ACTIVATION_REFERENT": "grtest - 7777"
+  },
+  {
+    "SS_KEY": "vH58Munqx0GdIhIQNZI0KQnt4",
+    "SS_OEM": 12,
+    "SS_ACTIVATION_DATE": "2018-10-01 13:36:53",
+    "SS_EXPIRE": "2019-10-10",
+    "SS_CREATED": "2018-10-01 13:36:05",
+    "SS_LAST_EDIT": "2018-09-05 09:26:13",
+    "SS_MISMATCH_COUNT": 0,
+    "SS_STATUS": 1,
+    "SS_SC_ID": 9,
+    "SS_SP_ID": 51,
+    "SS_ACTIVATED_BY": "test2",
+    "SS_ACTIVATION_REFERENT": "nomemio - 0178/7852"
   }
 ];

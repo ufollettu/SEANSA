@@ -38,6 +38,21 @@ describe("registerLicense()", function () {
     await db.sks.destroy({ where: {}, truncate: true });
     await db.sks.bulkCreate(sksSeed);
   });
+  it("if license hacked, should return key inesistente", async function () {
+    // here I mock the request.body data
+    const license = "vH58Munqx0hoIhIQNZI0KQnt4";
+    const hwId = "123490EN40";
+    const reqKey = "6502310096217001678272001094B002298AB10118007101294680428AAD01404486700118913002";
+    const pcDate = moment().format('YYYY-MM-DD');
+    const customerName = "ciao caro";
+    const referenteName = "";
+    const referentePhone = "";
+    const ip = "127.0.0.1";
+    const key = await superactivator.registerLicense(
+      license, hwId, reqKey, pcDate, customerName, referenteName, referentePhone, ip
+    );
+    assert.equal(key, "0");
+  });
   it("if register is ok, should generate valid key", async function () {
     // here I mock the request.body data
     const license = "7XWqgsXBfvexWNjnMo3Cvdm2g";
@@ -77,7 +92,6 @@ describe("registerLicense()", function () {
     })
     assert.deepEqual(keyArr, ['tlsoslrkne', 'tlsoslrkne', 'thisisoem_lecu', '20190405', '212918#212418']);
   });
-
   it("if no pc, should create new pc and return valid key", async function () {
     // here I mock the request.body data
     const license = "nc6M0yaj5ZT1CMPBC1Q1s2ktm";
@@ -112,7 +126,7 @@ describe("registerLicense()", function () {
     );
     assert.equal(key, "9");
   });
-  it("if no license, should return error (2)", async function () {
+  it("if no license, should return key inesistente (0)", async function () {
     // here I mock the request.body data
     const license = "";
     const hwId = "";
@@ -125,8 +139,8 @@ describe("registerLicense()", function () {
     const key = await superactivator.registerLicense(
       license, hwId, reqKey, pcDate, customerName, referenteName, referentePhone, ip
     );
-    assert.equal(key, "2");
-  });
+    assert.equal(key, "0");
+  })
 });
 
 
@@ -139,11 +153,64 @@ describe("generateLicense()", function () {
     await db.sks.destroy({ where: {}, truncate: true });
     await db.sks.bulkCreate(sksSeed);
   });
-  it("if licence is not found, should return 0", async function () {
+
+  it("test with old reqcode, should return key", async function () {
+    // here I mock the request.body data
+    const license = "vH58Munqx0GdIhIQNZI0KQnt4";
+    const hwId = "123490EN40";
+    const reqCode = "51113001AA117101A7A0310208547101894A3102A4A07002896681425A8E02410455B102A8917200";
+    const nowDate = moment().format('YYYY-MM-DD');  // today;
+    const ip = "127.0.0.1";
+    const key = await superactivator.generateLicense(
+      license, hwId, reqCode, nowDate, ip
+    );
+    const keyArr = key.split('|');
+    keyArr.forEach((code, i) => {
+      keyArr[i] = superactivator.decodeToMortal(code);
+    })
+    assert.deepEqual(keyArr, ['1l3o9lEk4e', '1l3o9lEk4e', 'thisisoem_lecu', '20191010', '']);
+  });
+  it("test with old reqcode and hacked license, should return 0", async function () {
+    // here I mock the request.body data
+    const license = "zH58Munqx0GdIhIQNZI0KQnt4";
+    const hwId = "123490EN40";
+    const reqCode = "51113001AA117101A7A0310208547101894A3102A4A07002896681425A8E02410455B102A8917200";
+    const nowDate = moment().format('YYYY-MM-DD');  // today;
+    const ip = "127.0.0.1";
+    const key = await superactivator.generateLicense(
+      license, hwId, reqCode, nowDate, ip
+    );
+    assert.equal(key, "0");
+  });
+  it("test with old reqcode and wrong argument, should return 2", async function () {
+    // here I mock the request.body data
+    const license = "vH58Munqx0GdIhIQNZI0KQnt4";
+    const hwId = { "123490EN40": "nds" };
+    const reqCode = "51113001AA117101A7A0310208547101894A3102A4A07002896681425A8E02410455B102A8917200";
+    const nowDate = moment().format('YYYY-MM-DD');  // today;
+    const ip = "127.0.0.1";
+    const key = await superactivator.generateLicense(
+      license, hwId, reqCode, nowDate, ip
+    );
+    assert.equal(key, "0");
+  });
+  it("if licence is not set, should return 0", async function () {
     // here I mock the request.body data
     const license = "";
     const hwId = "";
     const reqCode = "";
+    const nowDate = moment().format('YYYY-MM-DD');  // today;
+    const ip = "";
+    const key = await superactivator.generateLicense(
+      license, hwId, reqCode, nowDate, ip
+    );
+    assert.equal(key, "0");
+  });
+  it("if licence is not found, should return 0", async function () {
+    // here I mock the request.body data
+    const license = "vH58Munqx0hoIhIQNZI0KQnt4";
+    const hwId = "123490EN40";
+    const reqCode = "6502310096217001678272001094B002298AB10118007101294680428AAD01404486700118913002";
     const nowDate = moment().format('YYYY-MM-DD');  // today;
     const ip = "";
     const key = await superactivator.generateLicense(
@@ -689,5 +756,50 @@ describe("decodeToMortal()", () => {
       "bef0b1008ca08001e993b300dc9100002ad3b3035cb182028d58b00130c2800395b072037490810290faf2020cf380030b8320016c7142003a1132030861c10275e2720358a383014a7271029c92810368a6b2030cc1810111c0b20164e04202546af0010ce20101"
     );
     assert.equal(testStr, "212918#212418");
+  });
+  // it("generatelicense() should decode allowedSerials", () => {
+  //   const testStr = superactivator.decodeToMortal(
+  //     "bef0b1008ca08001e993b300dc9100002ad3b3035cb182028d58b00130c2800395b072037490810290faf2020cf380030b8320016c7142003a1132030861c10275e2720358a383014a7271029c92810368a6b2030cc1810111c0b20164e04202546af0010ce20101"
+  //   );
+  //   assert.equal(testStr, "");
+  // });
+  // it("generatelicense() should decode ", () => {
+  //   const testStr = superactivator.decodeToMortal(
+  //     "81f33201e0a00000f06ea142e0538102fb71f202a443c001131ca34390e34003612b700034b24303444e2340ec61430071658143d0e20003e39b6042a8c183008c46f303fce30303c997604180e2c101"
+  //   );
+  //   assert.equal(testStr, "");
+  // });
+  // it("generatelicense() should decode ", () => {
+  //   const testStr = superactivator.decodeToMortal(
+  //     "f9737201aca30202fc9f20421ca38103af53b0000cb24100f79ea04168430003313bf00360714002a0ed214244a1c0026dd54340b0d08202878be343f4210300bc0630000082c102653763408c724300"
+  //   );
+  //   assert.equal(testStr, "");
+  // });
+  // it("generatelicense() should decode ", () => {
+  //   const testStr = superactivator.decodeToMortal(
+  //     "8407b34114d10303dc186341f00282002979a0433072c1011781b2417830020071ea22407400c102b393b240c8c20203a79ca2410001820229572140d0034100cded2040185343010b4ed1412ce081028ced23431c3182005175e041d4e280021fd1614008f0030059c5f24320624001"
+  //   );
+  //   assert.equal(testStr, "");
+  // });
+  // it("generatelicense() should decode ", () => {
+  //   const testStr = superactivator.decodeToMortal(
+  //     "fe2131016cc3800060c2300328830001fd03b0011483410391b93202f0b081024513f00264d0c2011c633303acb180038191b2001002410340b13103cc130300"
+  //   );
+  //   assert.equal(testStr, "");
+  // });
+});
+
+// 81f33201e0a00000f06ea142e0538102fb71f202a443c001131ca34390e34003612b700034b24303444e2340ec61430071658143d0e20003e39b6042a8c183008c46f303fce30303c997604180e2c101|
+// f9737201aca30202fc9f20421ca38103af53b0000cb24100f79ea04168430003313bf00360714002a0ed214244a1c0026dd54340b0d08202878be343f4210300bc0630000082c102653763408c724300|
+// 8407b34114d10303dc186341f00282002979a0433072c1011781b2417830020071ea22407400c102b393b240c8c20203a79ca2410001820229572140d0034100cded2040185343010b4ed1412ce081028ced23431c3182005175e041d4e280021fd1614008f0030059c5f24320624001|
+// fe2131016cc3800060c2300328830001fd03b0011483410391b93202f0b081024513f00264d0c2011c633303acb180038191b2001002410340b13103cc130300|
+
+
+describe("codeToGod() NB deve passare la suoi  fega", () => {
+  it("should decode reqcode string 1", () => {
+    const encoded = superactivator.codeToGod("qualcosa a caso");
+    const decoded = superactivator.decodeToMortal(encoded);
+    //const expected = "e5a17042ccd1420295d773432cd1c002b9d0a240f4a0c103f43e2241b8e143012b41e04238110100bf0f234088908003a332b1437c704301b1e3e24178c1c20008306203e0a3030319f0e240ecf2430034a323012c334100cf81e1424c81c0009d61234300b0c302138131400490030003dd2241dc834102";
+    assert.equal(decoded, "qualcosa a caso");
   });
 });
