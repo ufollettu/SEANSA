@@ -16,9 +16,8 @@ const can = require('../middleware').can;
 // router.post('/signup', passport.authenticate('signup', { session: false }), authController.signup);
 
 router.post('/signin', authController.signin);
-router.post('/signup', authController.signup);
-router.put('/changepwd', verifyToken, authController.changepwd);
-
+// router.post('/signup', authController.signup);
 // router.post('/logout', authController.logout);
+router.post('/forgot', authController.forgot);
 
 module.exports = router;

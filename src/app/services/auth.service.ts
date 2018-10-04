@@ -8,6 +8,7 @@ const httpOptions = {
 const registerUrl = 'http://localhost:3000/api/auth/signup';
 const loginUrl = 'http://localhost:3000/api/auth/signin';
 const changePwdUrl = 'http://localhost:3000/api/auth/changepwd';
+const forgotPwdUrl = 'http://localhost:3000/api/auth/forgot';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,10 @@ export class AuthService {
     localStorage.removeItem('customStyle');
 
     this.router.navigate(['/login']);
+  }
+
+  forgotPassword(username) {
+    return this.http.post(forgotPwdUrl, username);
   }
 
   getToken() {

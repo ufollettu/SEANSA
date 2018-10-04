@@ -34,9 +34,10 @@ import { MatricoleTableComponent } from './data-components/matricole/matricole-t
 import { MatricoleCreateComponent } from './data-components/matricole/matricole-create/matricole-create.component';
 import { MatricoleEditComponent } from './data-components/matricole/matricole-edit/matricole-edit.component';
 
-import { RegisterComponent } from './auth-components/register/register.component';
+// import { RegisterComponent } from './auth-components/register/register.component';
 import { LoginComponent } from './auth-components/login/login.component';
 import { ChangePasswordComponent } from './auth-components/change-password/change-password.component';
+import { ForgotPwdComponent } from './auth-components/forgot-pwd/forgot-pwd.component';
 
 import { ApiResolverService } from './services/api-resolver.service';
 import { CheckPermissionsDirective } from './directives/check-permissions.directive';
@@ -82,7 +83,8 @@ const appRoutes: Routes = [
   { path: 'clienti-edit/:id', component: ClientiEditComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 6 } },
 
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
+  { path: 'forgot-pwd', component: ForgotPwdComponent },
+  // { path: 'register', component: RegisterComponent },
   { path: 'changepassword', component: ChangePasswordComponent, canActivate: [AuthGuard] },
   { path: 'customize', component: CustomizeComponent, canActivate: [AuthGuard] },
 
@@ -124,12 +126,13 @@ const appRoutes: Routes = [
     MatricoleCreateComponent,
     MatricoleEditComponent,
     MatricoleCloneComponent,
-    RegisterComponent,
+    // RegisterComponent,
     LoginComponent,
     ChangePasswordComponent,
     RolesEditComponent,
     CheckPermissionsDirective,
     CustomizeComponent,
+    ForgotPwdComponent,
   ]
 })
 export class AppRoutingModule { }

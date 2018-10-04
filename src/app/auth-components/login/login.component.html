@@ -4,27 +4,30 @@
       Log in
     </mat-card-title>
     <mat-card-content>
-        <form [formGroup]="utenteForm" (ngSubmit)="onFormSubmit(utenteForm.value)">
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Username" formControlName="username" [errorStateMatcher]="matcher">
-              <mat-error>
-                <span *ngIf="!utenteForm.get('username').valid && utenteForm.get('username').touched">Inserisci username</span>
-              </mat-error>
-            </mat-form-field>
+      <form [formGroup]="utenteForm" (ngSubmit)="onFormSubmit(utenteForm.value)">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Username" formControlName="username" [errorStateMatcher]="matcher">
+          <mat-error>
+            <span *ngIf="!utenteForm.get('username').valid && utenteForm.get('username').touched">Inserisci username</span>
+          </mat-error>
+        </mat-form-field>
 
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Password" formControlName="password" [errorStateMatcher]="matcher" type="password">
-              <mat-error>
-                <span *ngIf="!utenteForm.get('password').valid && utenteForm.get('password').touched">Inserisci password</span>
-              </mat-error>
-            </mat-form-field>
-            <!-- <div class="button-row"> -->
-                <button type="submit" [disabled]="!utenteForm.valid" mat-raised-button color="primary">
-                    <mat-icon>done</mat-icon>
-                  </button>
-                  <!-- </div> -->
-          </form>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Password" formControlName="password" [errorStateMatcher]="matcher" type="password">
+          <mat-error>
+            <span *ngIf="!utenteForm.get('password').valid && utenteForm.get('password').touched">Inserisci password</span>
+          </mat-error>
+        </mat-form-field>
+        <!-- <div class="button-row"> -->
+        <button type="submit" [disabled]="!utenteForm.valid" mat-raised-button color="primary">
+          <mat-icon>done</mat-icon>
+        </button>
+        <!-- </div> -->
+
+      </form>
+
     </mat-card-content>
+    <mat-card-content class="example-full-width"><a [routerLink]="['/forgot-pwd']">Forgot Password?</a></mat-card-content>
 
   </mat-card>
 </div>

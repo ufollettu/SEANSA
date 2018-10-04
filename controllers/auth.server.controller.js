@@ -1,27 +1,33 @@
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
+const nodemailer = require('nodemailer');
 const secretOrKey = CONFIG.jwt_encryption;
 const expireDate = CONFIG.jwt_expiration;
 const permRepository = require('../repositories/utenti-permessi.server.repository');
 const customizationRepo = require('../repositories/customization.server.repository');
+const utentiRepo = require('../repositories/utenti.server.repository');
 
-const signupPage = async (req, res) => {
-  res.send("signup");
-};
+// const signupPage = async (req, res) => {
+//   res.send("signup");
+// };
 
-module.exports.signupPage = signupPage;
+// module.exports.signupPage = signupPage;
 
-const changePwdPage = async (req, res) => {
-  res.send("change password");
-};
+// const changePwdPage = async (req, res) => {
+//   res.send("change password");
+// };
 
-module.exports.changePwdPage = changePwdPage;
+// module.exports.changePwdPage = changePwdPage;
 
-const signinPage = async (req, res) => {
-  res.send("signin");
-};
+// const signinPage = async (req, res) => {
+//   res.send("signin");
+// };
+// module.exports.signinPage = signinPage;
 
-module.exports.signinPage = signinPage;
+// const forgotPwdPage = async (req, res) => {
+//   res.send("forgot password");
+// };
+// module.exports.forgotPwdPage = forgotPwdPage;
 
 const signup = async (req, res, next) => {
   passport.authenticate("signup", { session: false }, async (err, user, info) => {
@@ -130,3 +136,42 @@ module.exports.signin = signin;
 // };
 
 // module.exports.logout = logout;
+
+const forgot = async (req, res, next) => {
+
+  utentiRepo.findOne(req.body.username).then((user) => {
+    if (!user) {
+      return res.status(422).json({
+        message: "usename does not exists",
+      });
+    }
+
+    // Change in production
+    var transport = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.MAIL_ADDRESS,
+        pass: process.env.MAIL_PWD
+      }
+    });
+
+    var mailOptions = {
+      from: user.SU_UNA, // sender address
+      to: "pasquale.merolle@gmail.com", // list of receivers
+      subject: "Username " + user.SU_UNA + " - Forgot Superactivator Pwd", // Subject line
+      html: '<p>I forgot my Superactivator password, please <a href="http://localhost:4200/#/utenti-resetpwd/' + user.SU_ID + '">reset</a> Username: ' + user.SU_UNA + '</p>'
+    }
+
+    // send mail with defined transport object
+    transport.sendMail(mailOptions, function (error, response) {
+      if (error) {
+        res.json(error)
+      } else {
+        res.json(response.message)
+      }
+      // if you don't want to use this transport object anymore, uncomment following line
+      transport.close(); // shut down the connection pool, no more messages
+    });
+  })
+}
+module.exports.forgot = forgot;

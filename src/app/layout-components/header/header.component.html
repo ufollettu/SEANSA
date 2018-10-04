@@ -24,8 +24,8 @@
     </div>
   </div>
   <div class="auth-buttons">
-    <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/register']" routerLinkActive="mat-accent">Signup</button>
-    <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/login']" routerLinkActive="mat-accent">Signin</button>
+    <!-- <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/register']" routerLinkActive="mat-accent">Signup</button> -->
+    <!-- <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/login']" routerLinkActive="mat-accent">Signin</button> -->
     <button mat-raised-button *ngIf="!!authService.loggedIn()" [routerLink]="['/changepassword']" routerLinkActive="mat-accent">Change
       Password
     </button>
