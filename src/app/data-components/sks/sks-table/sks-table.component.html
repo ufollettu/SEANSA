@@ -1,9 +1,18 @@
+<div>
+  <mat-form-field class="example-full-width">
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+  </mat-form-field>
+</div>
+
 <div class="example-container mat-elevation-z8">
-    <div [hidden]="!loading">
-        <app-loading-table-spinner></app-loading-table-spinner>
-      </div>
+  <div [hidden]="!loading">
+    <app-loading-table-spinner></app-loading-table-spinner>
+  </div>
+  <!-- <mat-form-field class="example-full-width">
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+  </mat-form-field> -->
   <!-- <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8"> -->
-  <table [hidden]="loading" mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
+  <table [hidden]="loading" mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
 
 
     <!-- <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
@@ -17,6 +26,12 @@
     <ng-container matColumnDef="SS_KEY">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Licenza </th>
       <td mat-cell *matCellDef="let element" class="nome-col"> {{element.SS_KEY}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="SS_SC_ID">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </th>
+      <td mat-cell *matCellDef="let element" class="nome-col"> {{getCustomerName(element.SS_SC_ID)}} </td>
     </ng-container>
 
     <!-- Email Column -->
@@ -49,12 +64,13 @@
     <!-- Nome Referente Column -->
     <ng-container matColumnDef="SS_STATUS">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-      <td mat-cell *matCellDef="let element" [ngStyle]="{'color': element.SS_STATUS == 1 ? '' : 'lightgrey'}"> {{element.SS_STATUS
+      <td mat-cell *matCellDef="let element" [ngStyle]="{'color': element.SS_STATUS == 1 ? '' : 'lightgrey'}">
+        {{element.SS_STATUS
         == 1 ? 'Abilitata': 'Disabilitata'}} </td>
     </ng-container>
 
     <!-- Nome Referente Column -->
-    <ng-container matColumnDef="pcHwId">
+    <ng-container matColumnDef="SS_SP_ID">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Pc Associato </th>
       <td mat-cell *matCellDef="let element">{{getPcHwId(element.SS_SP_ID)}}</td>
     </ng-container>
@@ -120,8 +136,8 @@
               <mat-icon>desktop_access_disabled</mat-icon>
             </a>
             <p></p>
-            <a mat-raised-button matTooltip="Matricole Associate" matTooltipPosition="right" color="accent" [routerLink]="['/matricole', element.SS_ID]"
-              [appCheckPermissions]="8">
+            <a mat-raised-button matTooltip="Matricole Associate" matTooltipPosition="right" color="accent"
+              [routerLink]="['/matricole', element.SS_ID]" [appCheckPermissions]="8">
               <mat-icon>ballot</mat-icon>
             </a>
           </div>
@@ -146,11 +162,14 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row" [class.example-expanded-row]="expandedElement === element"
-      (click)="expandedElement = element">
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
+      [class.example-expanded-row]="expandedElement === element" (click)="expandedElement = element">
     </tr>
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
   </table>
+  <!-- <mat-form-field class="example-footer-search">
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+  </mat-form-field> -->
   <mat-paginator [pageSizeOptions]="[15, 30, 60]" showFirstLastButtons></mat-paginator>
 </div>
 

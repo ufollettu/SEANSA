@@ -1,13 +1,15 @@
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import * as moment from 'moment';
+
 import { SksApiService } from '../sks-api.service';
 import { RinnoviApiService } from '../../rinnovi/rinnovi-api.service';
 import { PcApiService } from '../../pc/pc-api.service';
 import { MatricoleApiService } from '../../matricole/matricole-api.service';
-import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
-import * as moment from 'moment';
+import { ClientiApiService } from '../../clienti/clienti-api.service';
 
 @Component({
   selector: 'app-sks-table',
@@ -43,10 +45,11 @@ export class SksTableComponent implements OnInit {
   sks: any;
   rinnovi: object[] = [];
   pcs: object[] = [];
+  clienti: object[] = [];
   serials: any = [];
 
   // tslint:disable-next-line:max-line-length
-  displayedColumns = ['SS_KEY', 'SS_OEM', 'pcHwId', 'SS_CREATED', 'SS_ACTIVATION_DATE', 'SS_EXPIRE', 'pcLastConnection', 'SS_STATUS', 'rinnoviCount', 'allowedSerials'];
+  displayedColumns = ['SS_KEY', 'SS_SC_ID', 'SS_OEM', 'SS_SP_ID', 'SS_CREATED', 'SS_ACTIVATION_DATE', 'SS_EXPIRE', 'pcLastConnection', 'SS_STATUS', 'rinnoviCount', 'allowedSerials'];
 
   dataSource: any;
   warningDate: any;
@@ -58,18 +61,16 @@ export class SksTableComponent implements OnInit {
     private api: SksApiService,
     private rinnoviApi: RinnoviApiService,
     private pcApi: PcApiService,
+    private clientiApi: ClientiApiService,
     private matricoleApi: MatricoleApiService,
     private changeDetectorRefs: ChangeDetectorRef,
     private router: Router
   ) {
     this.loading = true;
-   }
+  }
 
   ngOnInit() {
     this.warningDate = moment().format('YYYY-MM-DD');
-    // this.fetchRinnovi();
-    // this.fetchPcs();
-    // this.fetchMatricole();
     this.refreshSkssList();
   }
 
@@ -82,7 +83,6 @@ export class SksTableComponent implements OnInit {
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
         this.loading = false;
-
       }, err => {
         console.log(err);
         if (err instanceof HttpErrorResponse) {
@@ -91,9 +91,10 @@ export class SksTableComponent implements OnInit {
           }
         }
       });
-      this.fetchRinnovi();
-      this.fetchPcs();
-      this.fetchMatricole();
+    this.fetchRinnovi();
+    this.fetchPcs();
+    this.fetchMatricole();
+    this.fetchClienti();
   }
 
   decouplePC(id) {
@@ -157,6 +158,16 @@ export class SksTableComponent implements OnInit {
     return result;
   }
 
+  getCustomerName(id) {
+    let result = '';
+    this.clienti.forEach((cliente) => {
+      if (cliente['SC_ID'] === id) {
+        result = cliente['SC_NOME'];
+      }
+    });
+    return result;
+  }
+
   getPcLastConnection(id) {
     let result = '';
     this.pcs.forEach((pc) => {
@@ -182,6 +193,15 @@ export class SksTableComponent implements OnInit {
       }
     });
     return oemName;
+  }
+
+  fetchClienti() {
+    this.clientiApi.getCustomers()
+      .subscribe(clienti => {
+        this.clienti = clienti;
+      }, (err) => {
+        console.log(err);
+      });
   }
 
   fetchRinnovi() {
@@ -224,6 +244,7 @@ export class SksTableComponent implements OnInit {
         console.log(err);
       });
   }
+
   fetchMatricole() {
     this.matricoleApi.getMatricole()
       .subscribe(matricole => {
@@ -239,6 +260,10 @@ export class SksTableComponent implements OnInit {
         }, {});
         this.serials = matricoleCount;
       });
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }
 
