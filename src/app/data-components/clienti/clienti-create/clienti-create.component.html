@@ -1,12 +1,5 @@
 <div class="container">
   <mat-card>
-
-    <div class="button-row back-list">
-      <a mat-raised-button color="primary" [routerLink]="['/clienti']">
-        <mat-icon>list</mat-icon>
-      </a>
-    </div>
-
     <form [formGroup]="clienteForm" (ngSubmit)="onFormSubmit(clienteForm.value)">
 
       <mat-form-field class="example-full-width">
@@ -27,7 +20,8 @@
       <mat-form-field class="example-full-width">
         <input matInput placeholder="Indirizzo" formControlName="SC_INDIRIZZO" [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!clienteForm.get('SC_INDIRIZZO').valid && clienteForm.get('SC_INDIRIZZO').touched">Inserisci l'indirizzo</span>
+          <span *ngIf="!clienteForm.get('SC_INDIRIZZO').valid && clienteForm.get('SC_INDIRIZZO').touched">Inserisci
+            l'indirizzo</span>
         </mat-error>
       </mat-form-field>
 
@@ -45,18 +39,23 @@
       <mat-form-field class="example-full-width">
         <input matInput placeholder="nome referente" formControlName="SC_REFERENTE_NOME" [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!clienteForm.get('SC_REFERENTE_NOME').valid && clienteForm.get('SC_REFERENTE_NOME').touched">Inserisci il nome referente</span>
+          <span *ngIf="!clienteForm.get('SC_REFERENTE_NOME').valid && clienteForm.get('SC_REFERENTE_NOME').touched">Inserisci
+            il nome referente</span>
         </mat-error>
       </mat-form-field>
 
       <mat-form-field class="example-full-width">
         <input matInput placeholder="telefono referente" formControlName="SC_TEL_REFERENTE" [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!clienteForm.get('SC_TEL_REFERENTE').valid && clienteForm.get('SC_TEL_REFERENTE').touched">Inserisci il telefono del referente</span>
+          <span *ngIf="!clienteForm.get('SC_TEL_REFERENTE').valid && clienteForm.get('SC_TEL_REFERENTE').touched">Inserisci
+            il telefono del referente</span>
         </mat-error>
       </mat-form-field>
 
       <div class="button-row">
+        <a mat-stroked-button color="basic" [routerLink]="['/clienti']" class="mat-stroked-button">
+          <mat-icon>keyboard_backspace</mat-icon>
+        </a>
         <button type="submit" [disabled]="!clienteForm.valid" mat-raised-button color="primary">
           <mat-icon>save</mat-icon>
         </button>

@@ -5,7 +5,6 @@ import { MatricoleApiService } from '../matricole-api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSort, MatTableDataSource } from '@angular/material';
 
-
 @Component({
   selector: 'app-matricole-table',
   templateUrl: './matricole-table.component.html',
@@ -46,15 +45,12 @@ export class MatricoleTableComponent implements OnInit {
   refreshMatricoleList() {
     this.api.getMatricoleBySks(this.sksId)
       .subscribe(res => {
-        console.log(res);
         this.matricole = res;
         this.dataSource = new MatTableDataSource(this.matricole);
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
         this.loading = false;
-
       }, err => {
-        console.log(err);
         if (err instanceof HttpErrorResponse) {
           if (err.status === 401 || 500) {
             this.router.navigate(['/login']);
