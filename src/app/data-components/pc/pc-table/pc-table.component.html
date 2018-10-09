@@ -3,7 +3,7 @@
     <app-loading-table-spinner></app-loading-table-spinner>
   </div>
   <!-- <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8"> -->
-  <table [hidden]="loading" mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
+  <table [hidden]="loading" mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
 
 
     <!-- <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
@@ -34,7 +34,8 @@
     <!-- Nome Referente Column -->
     <ng-container matColumnDef="SP_STATUS">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-      <td mat-cell *matCellDef="let element" [ngStyle]="{'color': element.SP_STATUS == 0 ? '' : 'red'}"> {{element.SP_STATUS===0
+      <td mat-cell *matCellDef="let element" [ngStyle]="{'color': element.SP_STATUS == 0 ? '' : 'red'}">
+        {{element.SP_STATUS===0
         ? 'non bannato': 'bannato'}} </td>
     </ng-container>
 
@@ -69,8 +70,8 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row" [class.example-expanded-row]="expandedElement === element"
-      (click)="expandedElement = element">
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
+      [class.example-expanded-row]="expandedElement === element" (click)="expandedElement = element">
     </tr>
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
   </table>
