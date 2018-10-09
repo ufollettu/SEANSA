@@ -1,6 +1,7 @@
 const repository = require('../repositories/sks.server.repository');
 const randomPassword = require('../helpers/pwd-generator');
 const moment = require('moment');
+const nodemailer = require('nodemailer');
 
 // List
 const list = async (req, res) => {
@@ -34,6 +35,52 @@ const create = async (req, res) => {
     }).catch(err => res.send(err.errors));
 };
 module.exports.create = create;
+
+
+const email = async (req, res) => {
+    const data = {
+        'SS_KEY': req.body.sks,
+    }
+
+    repository.findOne(data).then((sks) => {
+        if (!sks) {
+            return res.status(422).json({
+                message: "sks does not exists",
+            });
+        }
+
+        // Change in production
+        var transport = nodemailer.createTransport({
+            service: "Gmail",
+            auth: {
+                user: process.env.MAIL_ADDRESS,
+                pass: process.env.MAIL_PWD
+            }
+        });
+
+        const message = req.body.message ? req.body.message : "this is your new sks license: " + req.body.sks;
+
+        var mailOptions = {
+            from: "pasquale.merolle@gmail.com",
+            to: req.body.email,
+            subject: "new sks licence " + req.body.sks,
+            html: '<p>' + message + '</p>'
+        }
+
+        // send mail with defined transport object
+        transport.sendMail(mailOptions, function (error, response) {
+            if (error) {
+                res.json(error)
+            } else {
+                res.json(response.accepted)
+            }
+            // if you don't want to use this transport object anymore, uncomment following line
+            transport.close(); // shut down the connection pool, no more messages
+        });
+    });
+};
+
+module.exports.email = email;
 
 // Show
 const show = async (req, res) => {

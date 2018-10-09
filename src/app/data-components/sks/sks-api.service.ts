@@ -56,6 +56,14 @@ export class SksApiService {
       );
   }
 
+  sendEmail(data): Observable<any> {
+    const url = `${apiUrl}/email`;
+    return this.http.post(url, data, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
   updateSks(id: string, data): Observable<any> {
     const url = `${apiUrl}/${id}`;
     return this.http.put(url, data, httpOptions)

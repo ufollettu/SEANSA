@@ -1,0 +1,43 @@
+<div class="container">
+  <mat-card>
+    <mat-card-title>
+      Send Sks to Client
+    </mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="sksMailerForm" (ngSubmit)="onFormSubmit(sksMailerForm.value)">
+
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Sks" formControlName="sks" [errorStateMatcher]="matcher" [readonly]="true">
+          <mat-error>
+            <span *ngIf="!sksMailerForm.get('sks').valid && sksMailerForm.get('sks').touched">Scegli
+              nome del cliente</span>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Email" formControlName="email" [errorStateMatcher]="matcher">
+          <mat-error>
+            <span *ngIf="!sksMailerForm.get('email').valid && sksMailerForm.get('email').touched">Inserisci
+              Email di destinazione</span>
+          </mat-error>
+        </mat-form-field>
+
+        <div class="textarea">
+          <mat-form-field class="textarea">
+            <textarea matInput placeholder="Message" formControlName="message" [errorStateMatcher]="matcher"></textarea>
+          </mat-form-field>
+        </div>
+
+        <div class="button-row">
+          <a mat-stroked-button color="basic" [routerLink]="['/sks']" class="mat-stroked-button">
+            <mat-icon>keyboard_backspace</mat-icon>
+          </a>
+          <button type="submit" [disabled]="!sksMailerForm.valid" mat-raised-button color="primary">
+            <mat-icon>mail_outline</mat-icon>
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

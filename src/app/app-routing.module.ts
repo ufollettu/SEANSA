@@ -15,6 +15,7 @@ import { ClientiEditComponent } from './data-components/clienti/clienti-edit/cli
 import { SksTableComponent } from './data-components/sks/sks-table/sks-table.component';
 import { SksCreateComponent } from './data-components/sks/sks-create/sks-create.component';
 import { SksEditComponent } from './data-components/sks/sks-edit/sks-edit.component';
+import { SksMailerComponent } from './data-components/sks/sks-mailer/sks-mailer.component';
 
 import { RinnoviTableComponent } from './data-components/rinnovi/rinnovi-table/rinnovi-table.component';
 import { RinnoviCreateComponent } from './data-components/rinnovi/rinnovi-create/rinnovi-create.component';
@@ -75,6 +76,7 @@ const appRoutes: Routes = [
 
   { path: 'sks', component: SksTableComponent, canActivate: [AuthGuard] },
   { path: 'sks-create', component: SksCreateComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 5 } },
+  { path: 'sks-mailer/:id', component: SksMailerComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 5 } },
   { path: 'sks-edit/:id', component: SksEditComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 5 } },
   { path: 'sks-renew/:id', component: SksRenewComponent, canActivate: [AuthGuard, PermsGuard], data: { expectedPerm: 4 } },
 
@@ -133,6 +135,7 @@ const appRoutes: Routes = [
     CheckPermissionsDirective,
     CustomizeComponent,
     ForgotPwdComponent,
+    SksMailerComponent,
   ]
 })
 export class AppRoutingModule { }

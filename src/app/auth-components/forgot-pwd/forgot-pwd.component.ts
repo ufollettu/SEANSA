@@ -4,10 +4,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Validators, NgForm, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { UtentiApiService } from '../../data-components/utenti/utenti-api.service';
-import { DataService } from '../../services/data.service';
-import { UploadFileService } from '../../services/upload.service';
-import { CustomizeService } from '../../services/customize.service';
 
 @Component({
   selector: 'app-forgot-pwd',

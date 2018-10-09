@@ -82,8 +82,12 @@ export class SksCreateComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.api.postSks(form)
       .subscribe(res => {
-        alert(`sks key ${res['SS_KEY']} creata`);
-        this.router.navigate(['/sks']);
+        const send = confirm(`sks key ${res['SS_KEY']} creata. Vuoi inviarla al Cliente?`);
+        if (send) {
+          this.router.navigate(['/sks-mailer', res['SS_KEY']]);
+        } else {
+          this.router.navigate(['/sks']);
+        }
       }, (err) => {
         console.log(err);
       });
