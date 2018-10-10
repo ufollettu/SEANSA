@@ -5,11 +5,13 @@ import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import * as moment from 'moment';
 
+import { oems } from '../sks-oem-data';
 import { SksApiService } from '../sks-api.service';
 import { RinnoviApiService } from '../../rinnovi/rinnovi-api.service';
 import { PcApiService } from '../../pc/pc-api.service';
 import { MatricoleApiService } from '../../matricole/matricole-api.service';
 import { ClientiApiService } from '../../clienti/clienti-api.service';
+import { DialogService } from '../../../services/dialog.service';
 
 @Component({
   selector: 'app-sks-table',
@@ -26,21 +28,7 @@ import { ClientiApiService } from '../../clienti/clienti-api.service';
 export class SksTableComponent implements OnInit {
 
   loading;
-  oems = [
-    { value: 0, name: 'ATUM FULL', description: 'versione completa con tutti gli aggiornamenti e rinnovo licenza via web' },
-    // tslint:disable-next-line:max-line-length
-    { value: 1, name: 'ATUM OEM', description: 'versione con blocco scheda e limitazione degli aggiornamenti da web (no documenti - bollettini e firmware) con rinnovo licenze via web' },
-    // tslint:disable-next-line:max-line-length
-    { value: 2, name: 'ATUM OEM-D', description: 'versione senza blocco scheda ma con limitazione aggiornamenti da web (no documenti - bollettini e firmware) con rinnovo licenze via web' },
-    // tslint:disable-next-line:max-line-length
-    { value: 3, name: 'ATUM NO-TRAD', description: 'versione senza blocco scheda ma senza aggiornamenti da web (solo teamviewer e SW update) con rinnovo licenze via web' },
-    // tslint:disable-next-line:max-line-length
-    { value: 10, name: 'LECU FULL', description: 'versione completa LECU' },
-    // tslint:disable-next-line:max-line-length
-    { value: 11, name: 'LECU DEMO', description: 'versione demo senza connessione alle centraline' },
-    // tslint:disable-next-line:max-line-length
-    { value: 12, name: 'LECU OEM', description: 'versione con blocco scheda in base alle matricole associate' },
-  ];
+  oems = oems;
 
   sks: any;
   rinnovi: object[] = [];
@@ -58,6 +46,7 @@ export class SksTableComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    private dialogService: DialogService,
     private api: SksApiService,
     private rinnoviApi: RinnoviApiService,
     private pcApi: PcApiService,
@@ -135,17 +124,19 @@ export class SksTableComponent implements OnInit {
   }
 
   deleteSks(id) {
-    const conf = confirm(`sei sicuro?`);
-    if (conf) {
-      const status = -1;
-      this.api.updateSks(id, { 'SS_STATUS': status })
-        .subscribe(res => {
-          alert(`chiave ${res.SS_KEY} eliminata`);
-          this.refreshSkssList();
-        }, (err) => {
-          console.log(err);
-        });
-    }
+    this.dialogService.openConfirmDialog(`sei sicuro?`)
+      .afterClosed().subscribe(res => {
+        if (res) {
+          const status = -1;
+          this.api.updateSks(id, { 'SS_STATUS': status })
+            .subscribe(key => {
+              alert(`chiave ${key.SS_KEY} eliminata`);
+              this.refreshSkssList();
+            }, (err) => {
+              console.log(err);
+            });
+        }
+      });
   }
 
   getPcHwId(id) {

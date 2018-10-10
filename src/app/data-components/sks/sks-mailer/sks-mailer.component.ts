@@ -45,6 +45,7 @@ export class SksMailerComponent implements OnInit {
     this.api.sendEmail(form)
       .subscribe(res => {
         alert('mail correctly sent to ' + res[0]);
+        this.router.navigate(['/sks']);
       }, (err) => {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 422) {

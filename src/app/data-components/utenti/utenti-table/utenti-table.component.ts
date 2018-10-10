@@ -3,8 +3,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { UtentiApiService } from '../utenti-api.service';
-import { fadeInAnimation, fadeAnimation } from '../../../animations';
 import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
+import { DialogService } from '../../../services/dialog.service';
 
 @Component({
   selector: 'app-utenti-table',
@@ -30,11 +30,12 @@ export class UtentiTableComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    private dialogService: DialogService,
     private api: UtentiApiService,
     private changeDetectorRefs: ChangeDetectorRef,
     private router: Router) {
-      this.loading = true;
-    }
+    this.loading = true;
+  }
 
   ngOnInit() {
     this.refreshUsersList();
@@ -43,7 +44,6 @@ export class UtentiTableComponent implements OnInit {
   refreshUsersList() {
     this.api.getUtenti()
       .subscribe(res => {
-        // console.log(res);
         this.utenti = res;
         this.dataSource = new MatTableDataSource(this.utenti);
         this.dataSource.paginator = this.paginator;
@@ -62,32 +62,23 @@ export class UtentiTableComponent implements OnInit {
   }
 
   deleteUser(id) {
-    const conf = confirm(`sei sicuro?`);
-    if (conf) {
-      const deleted = 1;
-      this.api.updateUtente(id, { 'SU_DELETED': deleted })
-        .subscribe(res => {
-          // console.log(res);
-          // const id = res['SC_ID'];
-          alert(`utente ${res['SU_UNA']} rimosso`);
-          this.refreshUsersList();
-        }, (err) => {
-          console.log(err);
-          if (err instanceof HttpErrorResponse) {
-            if (err.status === 401 || 500) {
-              this.router.navigate(['/login']);
-            }
-          }
-        });
-    }
-
-
-    // this.api.deleteUtente(id)
-    //   .subscribe(res => {
-    //     alert(`utente ${id} rimosso`);
-    //     this.refreshUsersList();
-    //   }, (err) => {
-    //     console.log(err);
-    //   });
+    this.dialogService.openConfirmDialog('sei Sicuro?')
+      .afterClosed().subscribe(res => {
+        if (res) {
+          const deleted = 1;
+          this.api.updateUtente(id, { 'SU_DELETED': deleted })
+            .subscribe(user => {
+              alert(`utente ${user['SU_UNA']} rimosso`);
+              this.refreshUsersList();
+            }, (err) => {
+              console.log(err);
+              if (err instanceof HttpErrorResponse) {
+                if (err.status === 401 || 500) {
+                  this.router.navigate(['/login']);
+                }
+              }
+            });
+        }
+      });
   }
 }

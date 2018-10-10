@@ -45,8 +45,9 @@ import { CheckPermissionsDirective } from './directives/check-permissions.direct
 import { CustomizeComponent } from './customize/customize.component';
 import { SksRenewComponent } from './data-components/sks/sks-renew/sks-renew.component';
 import { MatricoleCloneComponent } from './data-components/matricole/matricole-clone/matricole-clone.component';
-import { LoadingTableSpinnerComponent } from './layout-components/loading-table-spinner/loading-table-spinner.component';
 
+import { LoadingTableSpinnerComponent } from './layout-components/loading-table-spinner/loading-table-spinner.component';
+import { ConfirmDialogComponent } from './layout-components/confirm-dialog/confirm-dialog.component';
 
 const appRoutes: Routes = [
 
@@ -136,6 +137,8 @@ const appRoutes: Routes = [
     CustomizeComponent,
     ForgotPwdComponent,
     SksMailerComponent,
-  ]
+    ConfirmDialogComponent,
+  ],
+  entryComponents: [ConfirmDialogComponent]
 })
 export class AppRoutingModule { }

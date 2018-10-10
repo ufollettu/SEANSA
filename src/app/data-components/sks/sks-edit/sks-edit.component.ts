@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { oems } from '../sks-oem-data';
 import { SksApiService } from '../sks-api.service';
 import { slideInOutAnimation } from '../../../animations';
 import { ClientiApiService } from '../../clienti/clienti-api.service';
@@ -18,21 +19,7 @@ import { ClientiApiService } from '../../clienti/clienti-api.service';
 export class SksEditComponent implements OnInit {
 
   clienti = [];
-  oems = [
-    { value: 0, name: 'FULL', description: 'versione completa con tutti gli aggiornamenti e rinnovo licenza via web' },
-    // tslint:disable-next-line:max-line-length
-    { value: 1, name: 'OEM', description: 'versione con blocco scheda e limitazione degli aggiornamenti da web (no documenti - bollettini e firmware) con rinnovo licenze via web' },
-    // tslint:disable-next-line:max-line-length
-    { value: 2, name: 'OEM-D', description: 'versione senza blocco scheda ma con limitazione aggiornamenti da web (no documenti - bollettini e firmware) con rinnovo licenze via web' },
-    // tslint:disable-next-line:max-line-length
-    { value: 3, name: 'NO-TRAD', description: 'versione senza blocco scheda ma senza aggiornamenti da web (no documenti - bollettini e firmware) con rinnovo licenze via web' },
-    // tslint:disable-next-line:max-line-length
-    { value: 10, name: 'LECU FULL', description: 'versione completa LECU' },
-    // tslint:disable-next-line:max-line-length
-    { value: 11, name: 'LECU DEMO', description: 'versione demo senza connessione alle centraline' },
-    // tslint:disable-next-line:max-line-length
-    { value: 12, name: 'LECU OEM', description: 'versione con blocco scheda in base alle matricole associate' },
-  ];
+  oems = oems;
 
   sksForm: FormGroup;
 

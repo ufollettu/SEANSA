@@ -12,7 +12,8 @@
     <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
   </mat-form-field> -->
   <!-- <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8"> -->
-  <table [hidden]="loading" mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
+  <table [hidden]="loading" mat-table [dataSource]="dataSource" multiTemplateDataRows matSort matSortActive="SS_CREATED"
+    matSortDisableClear matSortDirection="desc">
 
 
     <!-- <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">

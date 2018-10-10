@@ -4,6 +4,7 @@ import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ClientiApiService } from '../clienti-api.service';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
+import { DialogService } from '../../../services/dialog.service';
 
 @Component({
   selector: 'app-clienti-table',
@@ -29,12 +30,13 @@ export class ClientiTableComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    private dialogService: DialogService,
     private api: ClientiApiService,
     private changeDetectorRefs: ChangeDetectorRef,
     private router: Router
   ) {
     this.loading = true;
-   }
+  }
 
   ngOnInit() {
     this.refreshCustomersList();
@@ -62,24 +64,24 @@ export class ClientiTableComponent implements OnInit {
   }
 
   deleteCustomer(id) {
-    const conf = confirm(`sei sicuro?`);
-    if (conf) {
-      const deleted = 1;
-      this.api.updateCustomer(id, { 'SC_DELETED': deleted })
-        .subscribe(res => {
-          // console.log(res);
-          // const id = res['SC_ID'];
-          alert(`cliente ${res['SC_NOME']} rimosso`);
-          this.refreshCustomersList();
-        }, (err) => {
-          console.log(err);
-          if (err instanceof HttpErrorResponse) {
-            if (err.status === 401 || 500) {
-              this.router.navigate(['/login']);
-            }
-          }
-        });
-    }
+    this.dialogService.openConfirmDialog('sei sicuro?')
+      .afterClosed().subscribe(res => {
+        if (res) {
+          const deleted = 1;
+          this.api.updateCustomer(id, { 'SC_DELETED': deleted })
+            .subscribe(cust => {
+              alert(`cliente ${cust['SC_NOME']} rimosso`);
+              this.refreshCustomersList();
+            }, (err) => {
+              console.log(err);
+              if (err instanceof HttpErrorResponse) {
+                if (err.status === 401 || 500) {
+                  this.router.navigate(['/login']);
+                }
+              }
+            });
+        }
+      });
   }
 
 }

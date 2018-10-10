@@ -4,6 +4,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { MatricoleApiService } from '../matricole-api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSort, MatTableDataSource } from '@angular/material';
+import { DialogService } from '../../../services/dialog.service';
 
 @Component({
   selector: 'app-matricole-table',
@@ -29,6 +30,7 @@ export class MatricoleTableComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
+    private dialogService: DialogService,
     private api: MatricoleApiService,
     private changeDetectorRefs: ChangeDetectorRef,
     private router: Router,
@@ -60,12 +62,17 @@ export class MatricoleTableComponent implements OnInit {
   }
 
   deleteMatricola(id) {
-    this.api.deleteMatricola(id)
-      .subscribe(res => {
-        alert(`matricola ${id} rimossa`);
-        this.refreshMatricoleList();
-      }, (err) => {
-        console.log(err);
+    this.dialogService.openConfirmDialog('Sei sicuro?')
+      .afterClosed().subscribe(res => {
+        if (res) {
+          this.api.deleteMatricola(id)
+            .subscribe(matr => {
+              alert(`matricola ${id} rimossa`);
+              this.refreshMatricoleList();
+            }, (err) => {
+              console.log(err);
+            });
+        }
       });
   }
 
