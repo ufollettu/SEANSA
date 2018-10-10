@@ -4,6 +4,40 @@ body {
     margin: 0;
 }
 
+/* filter controls */
+
+.search-div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.search-form-field {
+    width: 30%;
+    margin-left: 10px;
+    padding: 1px 10px 4px 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+
+.search-form-field div.mat-form-field-underline {
+    display: none;
+}
+
+.search-form-field div.mat-form-field-infix {
+    border-top: 0px;
+}
+
+.search-form-field div.mat-form-field-wrapper {
+    padding-bottom: 0px;
+}
+
+.search-form-field div.mat-form-field-suffix button {
+    height: 32px;
+    width: 32px;
+}
+
 /* notification */
 
 snack-bar-container.success {
@@ -60,4 +94,5 @@ snack-bar-container.notification simple-snack-bar {
     padding: 35px 5px 35px 15px;
     text-align: center;
     font-size: 20px;
+    font-family: 'Roboto'
 }

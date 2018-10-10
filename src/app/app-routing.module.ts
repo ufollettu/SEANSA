@@ -48,6 +48,7 @@ import { MatricoleCloneComponent } from './data-components/matricole/matricole-c
 
 import { LoadingTableSpinnerComponent } from './layout-components/loading-table-spinner/loading-table-spinner.component';
 import { ConfirmDialogComponent } from './layout-components/confirm-dialog/confirm-dialog.component';
+import { SearchBarComponent } from './layout-component/search-bar/search-bar.component';
 
 const appRoutes: Routes = [
 
@@ -138,6 +139,7 @@ const appRoutes: Routes = [
     ForgotPwdComponent,
     SksMailerComponent,
     ConfirmDialogComponent,
+    SearchBarComponent,
   ],
   entryComponents: [ConfirmDialogComponent]
 })
