@@ -1,3 +1,15 @@
+<div class="search-div">
+  <a mat-raised-button color="primary" matTooltip="aggiungi matricola" matTooltipPosition="below" [routerLink]="['/matricole-create']"
+    fragment="{{sksId}}" class="action-buttons">
+    <mat-icon>add</mat-icon>
+  </a>
+  <a mat-raised-button color="accent" matTooltip="clona matricola" matTooltipPosition="below" [routerLink]="['/matricole-clone']"
+    fragment="{{sksId}}">
+    <mat-icon>people</mat-icon>
+  </a>
+  <app-search-bar [dataSource]="dataSource"></app-search-bar>
+</div>
+
 <div class="example-container mat-elevation-z8">
   <div [hidden]="!loading">
     <app-loading-table-spinner></app-loading-table-spinner>
@@ -58,20 +70,9 @@
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row" [class.example-expanded-row]="expandedElement === element"
-      (click)="expandedElement = element">
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
+      [class.example-expanded-row]="expandedElement === element" (click)="expandedElement = element">
     </tr>
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
   </table>
-</div>
-
-<div class="button-row">
-  <a mat-raised-button color="primary" matTooltip="aggiungi matricola" matTooltipPosition="below" [routerLink]="['/matricole-create']"
-    fragment="{{sksId}}" class="action-buttons">
-    <mat-icon>add</mat-icon>
-  </a>
-  <a mat-raised-button color="accent" matTooltip="clona matricola" matTooltipPosition="below" [routerLink]="['/matricole-clone']"
-    fragment="{{sksId}}">
-    <mat-icon>people</mat-icon>
-  </a>
 </div>

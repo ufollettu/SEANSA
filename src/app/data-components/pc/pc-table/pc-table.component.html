@@ -1,3 +1,10 @@
+<div class="search-div">
+  <a mat-raised-button color="primary" [routerLink]="['/pc-create']" [appCheckPermissions]="7">
+    <mat-icon>add</mat-icon>
+  </a>
+  <app-search-bar [dataSource]="dataSource"></app-search-bar>
+</div>
+
 <div class="example-container mat-elevation-z8">
   <div [hidden]="!loading">
     <app-loading-table-spinner></app-loading-table-spinner>
@@ -76,10 +83,4 @@
     <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
   </table>
   <mat-paginator [pageSizeOptions]="[10, 20, 40]" showFirstLastButtons></mat-paginator>
-</div>
-
-<div class="button-row">
-  <a mat-raised-button color="primary" [routerLink]="['/pc-create']" [appCheckPermissions]="7">
-    <mat-icon>add</mat-icon>
-  </a>
 </div>
