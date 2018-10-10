@@ -6,6 +6,7 @@ import { IpService } from '../../../services/ip.service';
 import { ErrorStateMatcher } from '@angular/material';
 import { slideInOutAnimation } from '../../../animations';
 import { UploadFileService } from '../../../services/upload.service';
+import { NotificationService } from '../../../services/notification.service';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */
@@ -41,6 +42,7 @@ export class UtentiCreateComponent implements OnInit {
   // SU_LAST_IP: '';
 
   constructor(
+    private notificationService: NotificationService,
     private router: Router,
     private api: UtentiApiService,
     private formBuilder: FormBuilder,
@@ -65,7 +67,7 @@ export class UtentiCreateComponent implements OnInit {
         const id = res['SU_ID'];
         this.uploadService.postCustomization(id)
           .subscribe(style => {
-            alert(`utente ${res['SU_UNA']} creato`);
+            this.notificationService.success(`utente ${res['SU_UNA']} creato`);
             this.router.navigate(['/utenti']);
           });
       }, (err) => {

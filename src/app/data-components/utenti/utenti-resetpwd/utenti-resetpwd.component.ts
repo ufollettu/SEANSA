@@ -5,6 +5,7 @@ import { UtentiApiService } from '../utenti-api.service';
 import { IpService } from '../../../services/ip.service';
 import { ErrorStateMatcher } from '@angular/material';
 import { slideInOutAnimation } from '../../../animations';
+import { NotificationService } from '../../../services/notification.service';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */
@@ -40,7 +41,13 @@ export class UtentiResetpwdComponent implements OnInit {
   // SU_LAST_EDIT: '';
   // SU_LAST_IP: '';
 
-  constructor(private router: Router, private route: ActivatedRoute, private api: UtentiApiService, private formBuilder: FormBuilder) { }
+  constructor(
+    private notificationService: NotificationService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private api: UtentiApiService,
+    private formBuilder: FormBuilder
+  ) { }
 
 
   ngOnInit() {
@@ -73,8 +80,7 @@ export class UtentiResetpwdComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.api.updateUtente(this.SU_ID, form)
       .subscribe(res => {
-        console.log(res);
-        alert(`password utente ${res['SU_UNA']} aggiornata`);
+        this.notificationService.success(`password utente ${res['SU_UNA']} aggiornata`);
         this.router.navigate(['/utenti']);
       }, (err) => {
         console.log(err);

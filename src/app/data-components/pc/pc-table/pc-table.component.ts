@@ -4,6 +4,7 @@ import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PcApiService } from '../pc-api.service';
 import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
+import { NotificationService } from '../../../services/notification.service';
 
 
 @Component({
@@ -31,12 +32,13 @@ export class PcTableComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    private notificationService: NotificationService,
     private api: PcApiService,
     private changeDetectorRefs: ChangeDetectorRef,
     private router: Router
   ) {
     this.loading = true;
-   }
+  }
 
   ngOnInit() {
     this.refreshPcsList();
@@ -45,7 +47,6 @@ export class PcTableComponent implements OnInit {
   refreshPcsList() {
     this.api.getPcs()
       .subscribe(res => {
-        // console.log(res);
         this.pc = res;
         this.dataSource = new MatTableDataSource(this.pc);
         this.dataSource.paginator = this.paginator;
@@ -67,7 +68,7 @@ export class PcTableComponent implements OnInit {
     const status = 1;
     this.api.updatePc(id, { 'SP_STATUS': status })
       .subscribe(res => {
-        alert(`pc ${res.SP_HW_ID} bannato`);
+        this.notificationService.warn(`pc ${res.SP_HW_ID} bannato`);
         this.refreshPcsList();
       }, (err) => {
         console.log(err);
@@ -78,7 +79,7 @@ export class PcTableComponent implements OnInit {
     const status = 0;
     this.api.updatePc(id, { 'SP_STATUS': status })
       .subscribe(res => {
-        alert(`pc ${res.SP_HW_ID} sbannato`);
+        this.notificationService.success(`pc ${res.SP_HW_ID} sbannato`);
         this.refreshPcsList();
       }, (err) => {
         console.log(err);

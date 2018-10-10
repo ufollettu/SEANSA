@@ -8,6 +8,7 @@ import { DataService } from '../../services/data.service';
 import { slideInOutAnimation } from '../../animations';
 import { CustomizeService } from '../../services/customize.service';
 import { UploadFileService } from '../../services/upload.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -28,6 +29,7 @@ export class LoginComponent implements OnInit {
   SU_PAW: '';
 
   constructor(
+    private notificationService: NotificationService,
     private router: Router,
     private formBuilder: FormBuilder,
     private auth: AuthService,
@@ -50,7 +52,6 @@ export class LoginComponent implements OnInit {
     this.auth.loginUser(form)
       .subscribe(res => {
         localStorage.setItem('token', res['idToken']);
-
         const userId = res['user']['SU_ID'];
         const lastLoginDate = Date.now();
 
@@ -65,10 +66,9 @@ export class LoginComponent implements OnInit {
 
         this.userApi.updateUtente(userId, { 'SU_LAST_LOGIN': lastLoginDate })
           .subscribe(user => {
-            // console.log(user);
-            alert(`benvenuto ${user['SU_UNA']}!`);
             localStorage.setItem('userName', user['SU_UNA']);
             this.sendUser(user);
+            this.notificationService.success(`benvenuto ${user['SU_UNA']}!`);
             this.router.navigate(['/sks']);
           });
 
@@ -76,7 +76,7 @@ export class LoginComponent implements OnInit {
         console.log(err);
         if (err instanceof HttpErrorResponse) {
           if (err.status === 422) {
-            alert('wrong user or password');
+            this.notificationService.warn('wrong user or password');
             this.router.navigate(['/login']);
           }
         }

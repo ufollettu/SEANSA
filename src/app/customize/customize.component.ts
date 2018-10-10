@@ -7,6 +7,7 @@ import { DataService } from "../services/data.service";
 import { CustomizeService } from "../services/customize.service";
 import { UploadFileService } from "../services/upload.service";
 import { HttpResponse, HttpEventType, HttpErrorResponse } from "@angular/common/http";
+import { NotificationService } from "../services/notification.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */
@@ -44,11 +45,12 @@ export class CustomizeComponent implements OnInit, OnDestroy {
   selectedFile: File = null;
 
   constructor(
+    private notificationService: NotificationService,
     private data: DataService,
     private router: Router,
     private uploadService: UploadFileService,
     private customizeService: CustomizeService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.customizeService.currentTheme.subscribe(theme => {
@@ -87,7 +89,7 @@ export class CustomizeComponent implements OnInit, OnDestroy {
     this.uploadService.pushFileToStorage(this.userId, this.formdata).subscribe(
       res => {
         if (res instanceof HttpResponse) {
-          alert("style and logo selected");
+          this.notificationService.success('style and logo updated');
           const newLogo = res.body["SCZ_LOGO_NAME"];
           const newTheme = res.body["SCZ_THEME"];
           localStorage.setItem("customLogo", newLogo);
@@ -98,7 +100,7 @@ export class CustomizeComponent implements OnInit, OnDestroy {
         console.log(err);
         if (err instanceof HttpErrorResponse) {
           if (err.status === 422 || 500) {
-            alert('error uploading file, please try again');
+            this.notificationService.warn('error uploading file, please try again');
             this.router.navigate(['/sks']);
           }
         }

@@ -13,6 +13,7 @@ mat-card {
 
 mat-form-field {
     margin-right: 10px;
+    width: 220px;
 }
 
 .textarea {

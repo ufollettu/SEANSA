@@ -4,6 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Validators, NgForm, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-forgot-pwd',
@@ -21,6 +22,7 @@ export class ForgotPwdComponent implements OnInit {
   username: '';
 
   constructor(
+    private notificationService: NotificationService,
     private router: Router,
     private formBuilder: FormBuilder,
     private auth: AuthService,
@@ -35,12 +37,11 @@ export class ForgotPwdComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.auth.forgotPassword(form)
       .subscribe(res => {
-        alert('mail correctly sent, please wait for password reset');
+        this.notificationService.success('mail correctly sent, please wait for password reset');
       }, (err) => {
-        console.log(err);
         if (err instanceof HttpErrorResponse) {
           if (err.status === 422) {
-            alert('username does not exists');
+            this.notificationService.warn('username does not exists');
             this.router.navigate(['/forgot-pwd']);
           }
         }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { PcApiService } from '../pc-api.service';
 import { FormBuilder, Validators, FormGroup, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-pc-create',
@@ -25,7 +26,12 @@ export class PcCreateComponent implements OnInit {
   SP_STATUS: '';
   SP_PC_DATE_TIME: '';
 
-  constructor(private router: Router, private api: PcApiService, private formBuilder: FormBuilder) { }
+  constructor(
+    private notificationService: NotificationService,
+    private router: Router,
+    private api: PcApiService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit() {
     this.pcForm = this.formBuilder.group({
@@ -40,8 +46,7 @@ export class PcCreateComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.api.postPc(form)
       .subscribe(res => {
-        // const id = res['SC_ID'];
-        alert(`pc ${res['SP_HW_ID']} creato`);
+        this.notificationService.success(`pc ${res['SP_HW_ID']} creato`);
         this.router.navigate(['/pc']);
       }, (err) => {
         console.log(err);

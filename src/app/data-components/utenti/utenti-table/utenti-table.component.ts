@@ -5,6 +5,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { UtentiApiService } from '../utenti-api.service';
 import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 import { DialogService } from '../../../services/dialog.service';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-utenti-table',
@@ -30,6 +31,7 @@ export class UtentiTableComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    private notificationService: NotificationService,
     private dialogService: DialogService,
     private api: UtentiApiService,
     private changeDetectorRefs: ChangeDetectorRef,
@@ -50,7 +52,6 @@ export class UtentiTableComponent implements OnInit {
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
         this.loading = false;
-
       }, err => {
         console.log(err);
         if (err instanceof HttpErrorResponse) {
@@ -68,7 +69,7 @@ export class UtentiTableComponent implements OnInit {
           const deleted = 1;
           this.api.updateUtente(id, { 'SU_DELETED': deleted })
             .subscribe(user => {
-              alert(`utente ${user['SU_UNA']} rimosso`);
+              this.notificationService.warn(`utente ${user['SU_UNA']} rimosso`);
               this.refreshUsersList();
             }, (err) => {
               console.log(err);

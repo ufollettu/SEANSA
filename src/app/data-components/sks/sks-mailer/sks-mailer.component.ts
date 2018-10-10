@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SksApiService } from '../sks-api.service';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-sks-mailer',
@@ -23,6 +24,7 @@ export class SksMailerComponent implements OnInit {
   message: '';
 
   constructor(
+    private notificationService: NotificationService,
     private router: Router,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
@@ -44,12 +46,12 @@ export class SksMailerComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.api.sendEmail(form)
       .subscribe(res => {
-        alert('mail correctly sent to ' + res[0]);
+        this.notificationService.success('mail correctly sent to ' + res[0]);
         this.router.navigate(['/sks']);
       }, (err) => {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 422) {
-            alert('sks does not exists');
+            this.notificationService.warn('sks does not exists');
             this.router.navigate(['/sks-mailer']);
           }
         }

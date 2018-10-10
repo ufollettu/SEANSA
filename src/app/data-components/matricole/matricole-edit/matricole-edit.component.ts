@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatricoleApiService } from '../matricole-api.service';
 import { slideInOutAnimation } from '../../../animations';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-matricole-edit',
@@ -25,7 +26,13 @@ export class MatricoleEditComponent implements OnInit {
   SM_CREATION_DATE = '';
   SM_LAST_UPDATE = '';
 
-  constructor(private router: Router, private route: ActivatedRoute, private api: MatricoleApiService, private formBuilder: FormBuilder) { }
+  constructor(
+    private notificationService: NotificationService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private api: MatricoleApiService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit() {
     this.getMatricola(this.route.snapshot.params['id']);
@@ -55,14 +62,11 @@ export class MatricoleEditComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.api.updateMatricola(this.sm_id, form)
       .subscribe(res => {
-        console.log(res);
-        // const id = res['SC_ID'];
-        alert(`Matricola ${res['sm_id']} aggiornata`);
+        this.notificationService.success(`Matricola ${res['sm_id']} aggiornata`);
         this.router.navigate(['/matricole']);
       }, (err) => {
         console.log(err);
-      }
-      );
+      });
   }
 
   sksDetails() {

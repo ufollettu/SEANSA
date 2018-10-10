@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ClientiApiService } from '../clienti-api.service';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-clienti-edit',
@@ -29,7 +30,13 @@ export class ClientiEditComponent implements OnInit {
   SC_TEL_REFERENTE = '';
   SC_TS = '';
 
-  constructor(private router: Router, private route: ActivatedRoute, private api: ClientiApiService, private formBuilder: FormBuilder) { }
+  constructor(
+    private notificationService: NotificationService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private api: ClientiApiService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit() {
     this.getCustomer(this.route.snapshot.params['id']);
@@ -66,14 +73,11 @@ export class ClientiEditComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.api.updateCustomer(this.SC_ID, form)
       .subscribe(res => {
-        console.log(res);
-        // const id = res['SC_ID'];
-        alert(`cliente ${res['SC_NOME']} aggiornato`);
+        this.notificationService.success(`cliente ${res['SC_NOME']} aggiornato`);
         this.router.navigate(['/clienti']);
       }, (err) => {
         console.log(err);
-      }
-      );
+      });
   }
 
   clientiDetails() {

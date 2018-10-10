@@ -8,6 +8,7 @@ import { AuthService } from '../../services/auth.service';
 import { DataService } from '../../services/data.service';
 import { slideInOutAnimation } from '../../animations';
 import { UploadFileService } from '../../services/upload.service';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-register',
@@ -34,6 +35,7 @@ export class RegisterComponent implements OnInit {
   // SU_LAST_IP: '';
 
   constructor(
+    private notificationService: NotificationService,
     private router: Router,
     private ipService: IpService,
     private formBuilder: FormBuilder,
@@ -61,9 +63,7 @@ export class RegisterComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.auth.registerUser(form)
       .subscribe(res => {
-        // console.log(res);
         localStorage.setItem('token', res['idToken']);
-
         const userId = res['user']['SU_ID'];
 
         this.uploadService.getCustomStyle(userId)
@@ -74,15 +74,14 @@ export class RegisterComponent implements OnInit {
             this.customizeService.changeTheme(style['SCZ_THEME']);
             this.customizeService.changeLogo(style['SCZ_LOGO_NAME']);
           });
-
-        alert(`utente ${res['user']['SU_UNA']} creato`);
         this.sendUser(res['user']);
+        this.notificationService.success(`utente ${res['user']['SU_UNA']} creato`);
         this.router.navigate(['/clienti']);
       }, (err) => {
         console.log(err);
         if (err instanceof HttpErrorResponse) {
           if (err.status === 422) {
-            alert('user exists');
+            this.notificationService.warn('user exists');
             this.router.navigate(['/register']);
           }
         }

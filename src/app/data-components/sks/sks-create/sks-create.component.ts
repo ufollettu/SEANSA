@@ -5,6 +5,9 @@ import { slideInOutAnimation } from '../../../animations';
 import { oems } from '../sks-oem-data';
 import { SksApiService } from '../sks-api.service';
 import { ClientiApiService } from '../../clienti/clienti-api.service';
+import { NotificationService } from '../../../services/notification.service';
+import { ConfirmDialogComponent } from '../../../layout-components/confirm-dialog/confirm-dialog.component';
+import { DialogService } from '../../../services/dialog.service';
 
 @Component({
   selector: 'app-sks-create',
@@ -34,6 +37,8 @@ export class SksCreateComponent implements OnInit {
   // SS_LAST_EDIT = '';
 
   constructor(
+    private notificationService: NotificationService,
+    private dialogService: DialogService,
     private router: Router,
     private api: SksApiService,
     private clientiApi: ClientiApiService,
@@ -67,13 +72,15 @@ export class SksCreateComponent implements OnInit {
 
   onFormSubmit(form: NgForm) {
     this.api.postSks(form)
-      .subscribe(res => {
-        const send = confirm(`sks key ${res['SS_KEY']} creata. Vuoi inviarla al Cliente?`);
-        if (send) {
-          this.router.navigate(['/sks-mailer', res['SS_KEY']]);
-        } else {
-          this.router.navigate(['/sks']);
-        }
+      .subscribe(key => {
+        this.dialogService.openConfirmDialog(`sks key ${key['SS_KEY']} creata. Vuoi inviarla al Cliente?`)
+          .afterClosed().subscribe(res => {
+            if (res) {
+              this.router.navigate(['/sks-mailer', key['SS_KEY']]);
+            } else {
+              this.router.navigate(['/sks']);
+            }
+          });
       }, (err) => {
         console.log(err);
       });

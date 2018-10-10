@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { UtentiApiService } from '../utenti-api.service';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-utenti-edit',
@@ -27,7 +28,13 @@ export class UtentiEditComponent implements OnInit {
   // SU_LAST_EDIT: '';
   // SU_LAST_IP: '';
 
-  constructor(private router: Router, private route: ActivatedRoute, private api: UtentiApiService, private formBuilder: FormBuilder) { }
+  constructor(
+    private notificationService: NotificationService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private api: UtentiApiService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit() {
     this.getCustomer(this.route.snapshot.params['id']);
@@ -57,9 +64,7 @@ export class UtentiEditComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.api.updateUtente(this.SU_ID, form)
       .subscribe(res => {
-        console.log(res);
-        // const id = res['SC_ID'];
-        alert(`utente ${res['SU_UNA']} aggiornato`);
+        this.notificationService.success(`utente ${res['SU_UNA']} aggiornato`);
         this.router.navigate(['/utenti']);
       }, (err) => {
         console.log(err);
@@ -70,6 +75,5 @@ export class UtentiEditComponent implements OnInit {
   utentiDetails() {
     this.router.navigate(['/utenti']);
   }
-
 
 }

@@ -5,6 +5,7 @@ import { oems } from '../sks-oem-data';
 import { SksApiService } from '../sks-api.service';
 import { slideInOutAnimation } from '../../../animations';
 import { ClientiApiService } from '../../clienti/clienti-api.service';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-sks-edit',
@@ -35,6 +36,7 @@ export class SksEditComponent implements OnInit {
   SS_LAST_EDIT = '';
 
   constructor(
+    private notificationService: NotificationService,
     private router: Router,
     private route: ActivatedRoute,
     private api: SksApiService,
@@ -89,8 +91,7 @@ export class SksEditComponent implements OnInit {
     this.api.updateSks(this.SS_ID, form)
       .subscribe(res => {
         console.log(res);
-        // const id = res['SC_ID'];
-        alert(`Sks key ${res['SS_KEY']} aggiornata`);
+        this.notificationService.success(`Sks key ${res['SS_KEY']} aggiornata`);
         this.router.navigate(['/sks']);
       }, (err) => {
         console.log(err);

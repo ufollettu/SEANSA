@@ -5,6 +5,7 @@ import { MatricoleApiService } from '../matricole-api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { DialogService } from '../../../services/dialog.service';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-matricole-table',
@@ -30,6 +31,7 @@ export class MatricoleTableComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
+    private notificationService: NotificationService,
     private dialogService: DialogService,
     private api: MatricoleApiService,
     private changeDetectorRefs: ChangeDetectorRef,
@@ -67,7 +69,7 @@ export class MatricoleTableComponent implements OnInit {
         if (res) {
           this.api.deleteMatricola(id)
             .subscribe(matr => {
-              alert(`matricola ${id} rimossa`);
+              this.notificationService.warn(`Matricola ${id} rimossa`);
               this.refreshMatricoleList();
             }, (err) => {
               console.log(err);

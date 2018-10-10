@@ -5,6 +5,7 @@ import { SksApiService } from '../sks-api.service';
 import { slideInOutAnimation } from '../../../animations';
 import { ClientiApiService } from '../../clienti/clienti-api.service';
 import { RinnoviApiService } from '../../rinnovi/rinnovi-api.service';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-sks-renew',
@@ -32,6 +33,7 @@ export class SksRenewComponent implements OnInit {
   // SS_LAST_EDIT = '';
 
   constructor(
+    private notificationeService: NotificationService,
     private router: Router,
     private route: ActivatedRoute,
     private api: SksApiService,
@@ -76,9 +78,8 @@ export class SksRenewComponent implements OnInit {
     this.api.updateSks(this.SS_ID, form)
       .subscribe(res => {
         console.log(res);
-        // const id = res['SS_ID'];
         this.insertRinnovo(res['SS_ID']);
-        alert(`Sks key ${res['SS_KEY']} aggiornata`);
+        this.notificationeService.success(`Sks key ${res['SS_KEY']} aggiornata`);
         this.router.navigate(['/sks']);
       }, (err) => {
         console.log(err);

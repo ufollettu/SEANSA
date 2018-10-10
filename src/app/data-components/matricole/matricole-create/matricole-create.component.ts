@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatricoleApiService } from '../matricole-api.service';
 import { FormBuilder, Validators, FormGroup, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
+import { NotificationService } from '../../../services/notification.service';
 
 
 @Component({
@@ -27,6 +28,7 @@ export class MatricoleCreateComponent implements OnInit {
   SM_LAST_UPDATE = '';
 
   constructor(
+    private notificationService: NotificationService,
     private router: Router,
     private route: ActivatedRoute,
     private api: MatricoleApiService,
@@ -53,7 +55,7 @@ export class MatricoleCreateComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.api.postMatricola(form)
       .subscribe(res => {
-        alert(`matricola ${res['SM_MATRICOLA']} creata`);
+        this.notificationService.success(`matricola ${res['SM_MATRICOLA']} creata`);
         this.router.navigate(['/matricole', this.sksId]);
       }, (err) => {
         console.log(err);

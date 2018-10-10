@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { PcApiService } from '../pc-api.service';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
+import { NotificationService } from '../../../services/notification.service';
 
 
 @Component({
@@ -27,7 +28,13 @@ export class PcEditComponent implements OnInit {
   SP_STATUS: '';
   SP_PC_DATE_TIME: '';
 
-  constructor(private router: Router, private route: ActivatedRoute, private api: PcApiService, private formBuilder: FormBuilder) { }
+  constructor(
+    private notificationService: NotificationService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private api: PcApiService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit() {
     this.getPc(this.route.snapshot.params['id']);
@@ -55,9 +62,7 @@ export class PcEditComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.api.updatePc(this.SP_ID, form)
       .subscribe(res => {
-        console.log(res);
-        // const id = res['SC_ID'];
-        alert(`pc ${res['SP_HW_ID']} aggiornato`);
+        this.notificationService.success(`pc ${res['SP_HW_ID']} aggiornato`);
         this.router.navigate(['/pc']);
       }, (err) => {
         console.log(err);

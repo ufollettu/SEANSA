@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators, NgForm } from "@angular/forms";
 import { AuthService } from "../../services/auth.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { slideInOutAnimation } from "../../animations";
+import { NotificationService } from "../../services/notification.service";
 
 @Component({
   selector: "app-change-password",
@@ -26,6 +27,7 @@ export class ChangePasswordComponent implements OnInit {
   password: '';
 
   constructor(
+    private notificationService: NotificationService,
     private data: DataService,
     private router: Router,
     private auth: AuthService,
@@ -35,7 +37,6 @@ export class ChangePasswordComponent implements OnInit {
   ngOnInit() {
     this.data.getUserFromToken().subscribe(utente => {
       this.user = utente;
-      // console.log(utente['SU_ID']);
     });
     // this.data.currentUser.subscribe(user => { this.user = user; });
 
@@ -49,7 +50,6 @@ export class ChangePasswordComponent implements OnInit {
 
   getUtente() {
     this.data.getUserFromToken().subscribe(utente => {
-      // console.log(utente['SU_ID']);
       this.SU_ID = utente.SU_ID;
       this.utenteForm.setValue({
         username: utente.SU_UNA,
@@ -64,13 +64,13 @@ export class ChangePasswordComponent implements OnInit {
       .subscribe(res => {
         console.log(res['user']);
         localStorage.setItem('token', res['idToken']);
-        alert(`password utente ${res['user']['SU_UNA']} cambiata correttamente`);
         this.sendUser(res['user']);
+        this.notificationService.success(`password utente ${res['user']['SU_UNA']} cambiata correttamente`);
         this.router.navigate(['/clienti']);
       }, (err) => {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 422) {
-            alert('error changing password');
+            this.notificationService.warn('error changing password');
             this.router.navigate(['/changepwd']);
           }
         }

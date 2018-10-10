@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatricoleApiService } from '../matricole-api.service';
 import { FormBuilder, Validators, FormGroup, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-matricole-clone',
@@ -27,6 +28,7 @@ export class MatricoleCloneComponent implements OnInit {
   // SM_LAST_UPDATE = '';
 
   constructor(
+    private notificationService: NotificationService,
     private router: Router,
     private route: ActivatedRoute,
     private api: MatricoleApiService,
@@ -37,7 +39,6 @@ export class MatricoleCloneComponent implements OnInit {
   ngOnInit() {
     this.route.fragment
       .subscribe((fragment: string) => {
-        // console.log(fragment);
         this.sksId = fragment;
       });
 
@@ -60,7 +61,7 @@ export class MatricoleCloneComponent implements OnInit {
           console.log(matricola);
           this.api.postMatricola(matricola)
             .subscribe(res => {
-              alert(`matricola ${res['SM_MATRICOLA']} creata`);
+              this.notificationService.success(`matricola ${res['SM_MATRICOLA']} creata`);
             }, (err) => {
               console.log(err);
             });

@@ -5,6 +5,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { ClientiApiService } from '../clienti-api.service';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { DialogService } from '../../../services/dialog.service';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-clienti-table',
@@ -30,6 +31,7 @@ export class ClientiTableComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    private notificationService: NotificationService,
     private dialogService: DialogService,
     private api: ClientiApiService,
     private changeDetectorRefs: ChangeDetectorRef,
@@ -45,14 +47,12 @@ export class ClientiTableComponent implements OnInit {
   refreshCustomersList() {
     this.api.getCustomers()
       .subscribe(res => {
-        // console.log(res);
         this.clienti = res;
         this.dataSource = new MatTableDataSource(this.clienti);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
         this.loading = false;
-
       }, err => {
         console.log(err);
         if (err instanceof HttpErrorResponse) {
@@ -70,7 +70,7 @@ export class ClientiTableComponent implements OnInit {
           const deleted = 1;
           this.api.updateCustomer(id, { 'SC_DELETED': deleted })
             .subscribe(cust => {
-              alert(`cliente ${cust['SC_NOME']} rimosso`);
+              this.notificationService.warn(`cliente ${cust['SC_NOME']} rimosso`);
               this.refreshCustomersList();
             }, (err) => {
               console.log(err);

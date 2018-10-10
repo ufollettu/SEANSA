@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { RinnoviApiService } from '../rinnovi-api.service';
 import { FormBuilder, Validators, FormGroup, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
+import { NotificationService } from '../../../services/notification.service';
 
 
 @Component({
@@ -22,7 +23,12 @@ export class RinnoviCreateComponent implements OnInit {
   SR_SS_ID = '';
   SR_TS = '';
 
-  constructor(private router: Router, private api: RinnoviApiService, private formBuilder: FormBuilder) { }
+  constructor(
+    private notificationService: NotificationService,
+    private router: Router,
+    private api: RinnoviApiService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit() {
     this.rinnoviForm = this.formBuilder.group({
@@ -34,7 +40,7 @@ export class RinnoviCreateComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.api.postRinnovo(form)
       .subscribe(res => {
-        alert(`rinnovo creato`);
+        this.notificationService.success('rinnovo creato');
         this.router.navigate(['/rinnovi']);
       }, (err) => {
         console.log(err);

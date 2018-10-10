@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ClientiApiService } from '../clienti-api.service';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-clienti-create',
@@ -28,7 +29,12 @@ export class ClientiCreateComponent implements OnInit {
   SC_TEL_REFERENTE = '';
   SC_TS = '';
 
-  constructor(private router: Router, private api: ClientiApiService, private formBuilder: FormBuilder) { }
+  constructor(
+    private notificationService: NotificationService,
+    private router: Router,
+    private api: ClientiApiService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit() {
     this.clienteForm = this.formBuilder.group({
@@ -47,8 +53,7 @@ export class ClientiCreateComponent implements OnInit {
   onFormSubmit(form: NgForm) {
     this.api.postCustomer(form)
       .subscribe(res => {
-        // const id = res['SC_ID'];
-        alert(`cliente ${res['SC_NOME']} creato`);
+        this.notificationService.success(`cliente ${res['SC_NOME']} creato`);
         this.router.navigate(['/clienti']);
       }, (err) => {
         console.log(err);

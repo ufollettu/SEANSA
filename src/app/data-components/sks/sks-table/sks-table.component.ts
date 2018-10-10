@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatSort, MatTableDataSource, MatPaginator, MatDialog, MatDialogConfig } from '@angular/material';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import * as moment from 'moment';
 
@@ -12,6 +12,7 @@ import { PcApiService } from '../../pc/pc-api.service';
 import { MatricoleApiService } from '../../matricole/matricole-api.service';
 import { ClientiApiService } from '../../clienti/clienti-api.service';
 import { DialogService } from '../../../services/dialog.service';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-sks-table',
@@ -46,6 +47,7 @@ export class SksTableComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    private notificationService: NotificationService,
     private dialogService: DialogService,
     private api: SksApiService,
     private rinnoviApi: RinnoviApiService,
@@ -91,9 +93,9 @@ export class SksTableComponent implements OnInit {
     this.api.updateSks(id, { 'SS_SP_ID': "", 'SS_STATUS': status })
       .subscribe(res => {
         if (!res) {
-          alert('non ci sono pc associati a questa chiave');
+          this.notificationService.warn(`non ci sono pc associati a questa chiave`);
         } else {
-          alert(`chiave ${res.SS_KEY} disassociata`);
+          this.notificationService.success(`chiave ${res.SS_KEY} disassociata`);
           this.refreshSkssList();
         }
       }, (err) => {
@@ -105,7 +107,7 @@ export class SksTableComponent implements OnInit {
     const status = 0;
     this.api.updateSks(id, { 'SS_STATUS': status })
       .subscribe(res => {
-        alert(`chiave ${res.SS_KEY} disabilitata`);
+        this.notificationService.warn(`chiave ${res.SS_KEY} disabilitata`);
         this.refreshSkssList();
       }, (err) => {
         console.log(err);
@@ -116,7 +118,7 @@ export class SksTableComponent implements OnInit {
     const status = 1;
     this.api.updateSks(id, { 'SS_STATUS': status })
       .subscribe(res => {
-        alert(`chiave ${res.SS_KEY} abilitata`);
+        this.notificationService.success(`chiave ${res.SS_KEY} abilitata`);
         this.refreshSkssList();
       }, (err) => {
         console.log(err);
@@ -130,7 +132,7 @@ export class SksTableComponent implements OnInit {
           const status = -1;
           this.api.updateSks(id, { 'SS_STATUS': status })
             .subscribe(key => {
-              alert(`chiave ${key.SS_KEY} eliminata`);
+              this.notificationService.warn(`chiave ${key.SS_KEY} eliminata`);
               this.refreshSkssList();
             }, (err) => {
               console.log(err);
@@ -198,9 +200,7 @@ export class SksTableComponent implements OnInit {
   fetchRinnovi() {
     this.rinnoviApi.getRinnovi()
       .subscribe(rinnovi => {
-        // console.log(rinnovi);
         if (Object.keys(rinnovi).length > 0) {
-          // console.log(rinnovi);
           const rinnoviCount = rinnovi.map((rinnovo) => {
             return rinnovo['Chiave'];
           }).reduce((allIds, id) => {
@@ -221,8 +221,6 @@ export class SksTableComponent implements OnInit {
   fetchPcs() {
     this.pcApi.getPcs()
       .subscribe(pcs => {
-        // console.log(pcs);
-
         const pcsCount = pcs.map((pc) => {
           const pcRes = {};
           pcRes['pcId'] = pc['SP_ID'];

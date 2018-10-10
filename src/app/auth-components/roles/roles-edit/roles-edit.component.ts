@@ -15,6 +15,7 @@ import { RolesApiService } from "../roles-api.service";
 import { ErrorStateMatcher } from "@angular/material";
 import { map } from 'rxjs/operators';
 import { slideInOutAnimation } from "../../../animations";
+import { NotificationService } from "../../../services/notification.service";
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -54,6 +55,7 @@ export class RolesEditComponent implements OnInit {
   levels = levels;
 
   constructor(
+    private notificationService: NotificationService,
     private route: ActivatedRoute,
     private router: Router,
     private api: RolesApiService,
@@ -96,8 +98,7 @@ export class RolesEditComponent implements OnInit {
     // console.log(newPerms);
     this.api.updateKeys(this.userId, newPerms)
       .subscribe(res => {
-        console.log(res);
-        alert(`permessi utente Id: ${this.userId} modificati`);
+        this.notificationService.success(`permessi utente Id: ${this.userId} modificati`);
         this.router.navigate(['/utenti']);
       });
   }

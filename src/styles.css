@@ -4,6 +4,23 @@ body {
     margin: 0;
 }
 
+/* notification */
+
+snack-bar-container.success {
+    background-color: #5aa15a !important;
+    color: #fff;
+}
+
+snack-bar-container.warn {
+    background-color: #cf8259 !important;
+    color: #fff;
+}
+
+snack-bar-container.notification simple-snack-bar {
+    font-size: 18px !important;
+    font-weight: bold;
+}
+
 /* mat-confirm-dialog (customised dialog) */
 
 .confirm-dialog-container .mat-dialog-container {

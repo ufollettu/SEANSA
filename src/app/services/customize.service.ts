@@ -62,7 +62,6 @@ export class CustomizeService {
   }
 
   changeLogo(logo) {
-    // console.log(logo);
     this.logoSource.next(logo);
   }
 
