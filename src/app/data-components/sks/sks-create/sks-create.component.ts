@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { FormBuilder, Validators, FormGroup, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
 import { oems } from '../sks-oem-data';
-import { SksApiService } from '../sks-api.service';
-import { ClientiApiService } from '../../clienti/clienti-api.service';
-import { NotificationService } from '../../../services/notification.service';
+import { SksApiService } from '../../../services/api-services/sks-api.service';
+import { ClientiApiService } from '../../../services/api-services/clienti-api.service';
+import { NotificationService } from '../../../services/layout-services/notification.service';
 import { ConfirmDialogComponent } from '../../../layout-components/confirm-dialog/confirm-dialog.component';
-import { DialogService } from '../../../services/dialog.service';
+import { DialogService } from '../../../services/layout-services/dialog.service';
 
 @Component({
   selector: 'app-sks-create',

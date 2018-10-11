@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatricoleApiService } from '../matricole-api.service';
+import { MatricoleApiService } from '../../../services/api-services/matricole-api.service';
 import { slideInOutAnimation } from '../../../animations';
-import { NotificationService } from '../../../services/notification.service';
+import { NotificationService } from '../../../services/layout-services/notification.service';
 
 @Component({
   selector: 'app-matricole-edit',

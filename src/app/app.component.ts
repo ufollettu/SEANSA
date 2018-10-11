@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, HostBinding, OnInit } from '@angular/core';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel } from '@angular/router';
 import { OverlayContainer } from '@angular/cdk/overlay';
-import { CustomizeService } from './services/customize.service';
+import { CustomizeService } from './services/shared-services/customize.service';
 
 @Component({
   selector: 'app-root',

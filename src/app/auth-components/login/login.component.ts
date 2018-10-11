@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth-services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { UtentiApiService } from '../../data-components/utenti/utenti-api.service';
-import { DataService } from '../../services/data.service';
+import { UtentiApiService } from '../../services/api-services/utenti-api.service';
+import { DataService } from '../../services/shared-services/data.service';
 import { slideInOutAnimation } from '../../animations';
-import { CustomizeService } from '../../services/customize.service';
-import { UploadFileService } from '../../services/upload.service';
-import { NotificationService } from '../../services/notification.service';
+import { CustomizeService } from '../../services/shared-services/customize.service';
+import { UploadFileService } from '../../services/api-services/upload.service';
+import { NotificationService } from '../../services/layout-services/notification.service';
 
 @Component({
   selector: 'app-login',

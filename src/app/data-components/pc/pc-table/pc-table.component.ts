@@ -2,9 +2,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { PcApiService } from '../pc-api.service';
+import { PcApiService } from '../../../services/api-services/pc-api.service';
 import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
-import { NotificationService } from '../../../services/notification.service';
+import { NotificationService } from '../../../services/layout-services/notification.service';
 
 
 @Component({

@@ -1,4 +1,4 @@
-import { TokenInterceptorService } from './services/token-interceptor.service';
+import { TokenInterceptorService } from './services/interceptor-services/token-interceptor.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';

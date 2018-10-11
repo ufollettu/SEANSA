@@ -6,13 +6,13 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import * as moment from 'moment';
 
 import { oems } from '../sks-oem-data';
-import { SksApiService } from '../sks-api.service';
-import { RinnoviApiService } from '../../rinnovi/rinnovi-api.service';
-import { PcApiService } from '../../pc/pc-api.service';
-import { MatricoleApiService } from '../../matricole/matricole-api.service';
-import { ClientiApiService } from '../../clienti/clienti-api.service';
-import { DialogService } from '../../../services/dialog.service';
-import { NotificationService } from '../../../services/notification.service';
+import { SksApiService } from '../../../services/api-services/sks-api.service';
+import { RinnoviApiService } from '../../../services/api-services/rinnovi-api.service';
+import { PcApiService } from '../../../services/api-services/pc-api.service';
+import { MatricoleApiService } from '../../../services/api-services/matricole-api.service';
+import { ClientiApiService } from '../../../services/api-services/clienti-api.service';
+import { DialogService } from '../../../services/layout-services/dialog.service';
+import { NotificationService } from '../../../services/layout-services/notification.service';
 
 @Component({
   selector: 'app-sks-table',

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ClientiApiService } from '../clienti-api.service';
+import { ClientiApiService } from '../../../services/api-services/clienti-api.service';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
-import { NotificationService } from '../../../services/notification.service';
+import { NotificationService } from '../../../services/layout-services/notification.service';
 
 @Component({
   selector: 'app-clienti-edit',

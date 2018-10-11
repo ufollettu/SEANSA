@@ -26,5 +26,26 @@ module.exports = [
         "SCZ_LOGO_NAME": "raniero.png",
         "SCZ_SU_ID": 109,
         "SCZ_THEME": "default-theme"
+    },
+    {
+        "SCZ_ID": 12,
+        "SCZ_LOGO_MIMETYPE": "image/png",
+        "SCZ_LOGO_NAME": "raniero.png",
+        "SCZ_SU_ID": 101,
+        "SCZ_THEME": "default-theme"
+    },
+    {
+        "SCZ_ID": 13,
+        "SCZ_LOGO_MIMETYPE": "image/png",
+        "SCZ_LOGO_NAME": "raniero.png",
+        "SCZ_SU_ID": 102,
+        "SCZ_THEME": "default-theme"
+    },
+    {
+        "SCZ_ID": 14,
+        "SCZ_LOGO_MIMETYPE": "image/png",
+        "SCZ_LOGO_NAME": "raniero.png",
+        "SCZ_SU_ID": 103,
+        "SCZ_THEME": "default-theme"
     }
 ]

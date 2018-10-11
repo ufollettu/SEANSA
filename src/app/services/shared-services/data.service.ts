@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { AuthService } from './auth.service';
-import { UtentiApiService } from '../data-components/utenti/utenti-api.service';
+import { AuthService } from '../auth-services/auth.service';
+import { UtentiApiService } from '../api-services/utenti-api.service';
 import * as jwt_decode from "jwt-decode";
 import { distinctUntilChanged } from 'rxjs/operators';
 

@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Renderer2, HostListener, HostBinding, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
-import { DataService } from '../services/data.service';
+import { DataService } from '../services/shared-services/data.service';
 
 @Directive({
   selector: '[appCheckPermissions]'

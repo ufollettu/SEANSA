@@ -2,10 +2,10 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ClientiApiService } from '../clienti-api.service';
+import { ClientiApiService } from '../../../services/api-services/clienti-api.service';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
-import { DialogService } from '../../../services/dialog.service';
-import { NotificationService } from '../../../services/notification.service';
+import { DialogService } from '../../../services/layout-services/dialog.service';
+import { NotificationService } from '../../../services/layout-services/notification.service';
 
 @Component({
   selector: 'app-clienti-table',

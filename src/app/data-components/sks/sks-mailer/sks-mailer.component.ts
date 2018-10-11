@@ -3,8 +3,8 @@ import { slideInOutAnimation } from '../../../animations';
 import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { SksApiService } from '../sks-api.service';
-import { NotificationService } from '../../../services/notification.service';
+import { SksApiService } from '../../../services/api-services/sks-api.service';
+import { NotificationService } from '../../../services/layout-services/notification.service';
 
 @Component({
   selector: 'app-sks-mailer',

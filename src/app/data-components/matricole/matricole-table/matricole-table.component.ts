@@ -1,11 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { MatricoleApiService } from '../matricole-api.service';
+import { MatricoleApiService } from '../../../services/api-services/matricole-api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSort, MatTableDataSource } from '@angular/material';
-import { DialogService } from '../../../services/dialog.service';
-import { NotificationService } from '../../../services/notification.service';
+import { DialogService } from '../../../services/layout-services/dialog.service';
+import { NotificationService } from '../../../services/layout-services/notification.service';
 
 @Component({
   selector: 'app-matricole-table',

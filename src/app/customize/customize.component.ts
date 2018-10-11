@@ -3,11 +3,11 @@ import { slideInOutAnimation } from "../animations";
 import { FormControl, FormGroupDirective, NgForm } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material";
 import { Router } from "@angular/router";
-import { DataService } from "../services/data.service";
-import { CustomizeService } from "../services/customize.service";
-import { UploadFileService } from "../services/upload.service";
+import { DataService } from "../services/shared-services/data.service";
+import { CustomizeService } from "../services/shared-services/customize.service";
+import { UploadFileService } from "../services/api-services/upload.service";
 import { HttpResponse, HttpEventType, HttpErrorResponse } from "@angular/common/http";
-import { NotificationService } from "../services/notification.service";
+import { NotificationService } from "../services/layout-services/notification.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */

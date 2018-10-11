@@ -1,45 +1,5 @@
 module.exports = [
     {
-        "SU_ID": 28,
-        "SU_UNA": "lampocar",
-        "SU_PAW": "d98f23c21645a261c85968bc708462419220327c",
-        "SU_LAST_LOGIN": "2017-03-16 11:04:46",
-        "SU_CREATION": "2017-02-22 13:30:39",
-        "SU_LAST_EDIT": "2017-03-16 11:04:36",
-        "SU_DELETED": 0,
-        "SU_LAST_IP": "87.11.50.83"
-    },
-    {
-        "SU_ID": 27,
-        "SU_UNA": "daniele@raniero-carrelli.com",
-        "SU_PAW": "d98f23c21645a261c85968bc708462419220327c",
-        "SU_LAST_LOGIN": "2018-06-25 12:14:14",
-        "SU_CREATION": "2017-02-22 09:21:22",
-        "SU_LAST_EDIT": "2018-03-05 06:23:19",
-        "SU_DELETED": 0,
-        "SU_LAST_IP": "95.227.218.39"
-    },
-    {
-        "SU_ID": 26,
-        "SU_UNA": "ricercaesviluppo@grsrl.net",
-        "SU_PAW": "14c14cc54ecfe01ed5b302432c8bcb74785d2cc6",
-        "SU_LAST_LOGIN": "2018-06-13 11:00:59",
-        "SU_CREATION": null,
-        "SU_LAST_EDIT": "2018-03-05 06:23:14",
-        "SU_DELETED": 0,
-        "SU_LAST_IP": "92.223.209.171"
-    },
-    {
-        "SU_ID": 29,
-        "SU_UNA": "testGR",
-        "SU_PAW": "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3",
-        "SU_LAST_LOGIN": "2017-10-19 05:44:09",
-        "SU_CREATION": "2017-03-14 11:19:41",
-        "SU_LAST_EDIT": "2017-09-11 10:58:39",
-        "SU_DELETED": 0,
-        "SU_LAST_IP": "82.48.35.3"
-    },
-    {
         "SU_ID": 101,
         "SU_UNA": "gatto",
         "SU_PAW": "$2a$10$kJI8eZKWMvRGJqMKEf.WlujtaXIZtvDHplvK6/d/juCTBmBmIeHye",

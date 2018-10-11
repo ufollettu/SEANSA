@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { PcApiService } from '../pc-api.service';
+import { PcApiService } from '../../../services/api-services/pc-api.service';
 import { FormBuilder, Validators, FormGroup, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
-import { NotificationService } from '../../../services/notification.service';
+import { NotificationService } from '../../../services/layout-services/notification.service';
 
 @Component({
   selector: 'app-pc-create',
@@ -27,10 +27,10 @@ export class PcCreateComponent implements OnInit {
   SP_PC_DATE_TIME: '';
 
   constructor(
+    private formBuilder: FormBuilder,
     private notificationService: NotificationService,
     private router: Router,
     private api: PcApiService,
-    private formBuilder: FormBuilder
   ) { }
 
   ngOnInit() {

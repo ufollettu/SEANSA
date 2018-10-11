@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, NgForm, FormControl, FormGroupDirective } from '@angular/forms';
-import { UtentiApiService } from '../utenti-api.service';
+import { UtentiApiService } from '../../../services/api-services/utenti-api.service';
 import { IpService } from '../../../services/ip.service';
 import { ErrorStateMatcher } from '@angular/material';
 import { slideInOutAnimation } from '../../../animations';
-import { UploadFileService } from '../../../services/upload.service';
-import { NotificationService } from '../../../services/notification.service';
+import { UploadFileService } from '../../../services/api-services/upload.service';
+import { NotificationService } from '../../../services/layout-services/notification.service';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */

@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth-services/auth.service';
 import { Injectable, Injector } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import * as jwt_decode from "jwt-decode";
-import { DataService } from './data.service';
+import { DataService } from '../shared-services/data.service';
 
 @Injectable({
   providedIn: 'root'

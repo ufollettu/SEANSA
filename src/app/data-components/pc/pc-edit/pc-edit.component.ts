@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { PcApiService } from '../pc-api.service';
+import { PcApiService } from '../../../services/api-services/pc-api.service';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
-import { NotificationService } from '../../../services/notification.service';
+import { NotificationService } from '../../../services/layout-services/notification.service';
 
 
 @Component({

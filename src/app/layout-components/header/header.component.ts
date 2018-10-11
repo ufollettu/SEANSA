@@ -1,10 +1,10 @@
 import { Renderer2, ElementRef, ChangeDetectorRef } from '@angular/core';
 // import { trigger, state, transition, style, animate } from '@angular/animations';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../services/auth-services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../../services/data.service';
-import { CustomizeService } from '../../services/customize.service';
+import { DataService } from '../../services/shared-services/data.service';
+import { CustomizeService } from '../../services/shared-services/customize.service';
 
 @Component({
   selector: 'app-header',

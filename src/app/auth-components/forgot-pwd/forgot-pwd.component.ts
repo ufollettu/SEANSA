@@ -3,8 +3,8 @@ import { slideInOutAnimation } from '../../animations';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Validators, NgForm, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { NotificationService } from '../../services/notification.service';
+import { AuthService } from '../../services/auth-services/auth.service';
+import { NotificationService } from '../../services/layout-services/notification.service';
 
 @Component({
   selector: 'app-forgot-pwd',

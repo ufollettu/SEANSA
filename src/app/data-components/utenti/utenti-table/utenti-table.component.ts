@@ -2,10 +2,10 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { UtentiApiService } from '../utenti-api.service';
+import { UtentiApiService } from '../../../services/api-services/utenti-api.service';
 import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
-import { DialogService } from '../../../services/dialog.service';
-import { NotificationService } from '../../../services/notification.service';
+import { DialogService } from '../../../services/layout-services/dialog.service';
+import { NotificationService } from '../../../services/layout-services/notification.service';
 
 @Component({
   selector: 'app-utenti-table',

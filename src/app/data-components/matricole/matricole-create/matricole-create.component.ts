@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MatricoleApiService } from '../matricole-api.service';
+import { MatricoleApiService } from '../../../services/api-services/matricole-api.service';
 import { FormBuilder, Validators, FormGroup, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
-import { NotificationService } from '../../../services/notification.service';
+import { NotificationService } from '../../../services/layout-services/notification.service';
 
 
 @Component({

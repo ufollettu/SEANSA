@@ -40,7 +40,7 @@ import { LoginComponent } from './auth-components/login/login.component';
 import { ChangePasswordComponent } from './auth-components/change-password/change-password.component';
 import { ForgotPwdComponent } from './auth-components/forgot-pwd/forgot-pwd.component';
 
-import { ApiResolverService } from './services/api-resolver.service';
+import { ApiResolverService } from './services/resolver-services/api-resolver.service';
 import { CheckPermissionsDirective } from './directives/check-permissions.directive';
 import { CustomizeComponent } from './customize/customize.component';
 import { SksRenewComponent } from './data-components/sks/sks-renew/sks-renew.component';
@@ -48,7 +48,7 @@ import { MatricoleCloneComponent } from './data-components/matricole/matricole-c
 
 import { LoadingTableSpinnerComponent } from './layout-components/loading-table-spinner/loading-table-spinner.component';
 import { ConfirmDialogComponent } from './layout-components/confirm-dialog/confirm-dialog.component';
-import { SearchBarComponent } from './layout-component/search-bar/search-bar.component';
+import { SearchBarComponent } from './layout-components/search-bar/search-bar.component';
 
 const appRoutes: Routes = [
 

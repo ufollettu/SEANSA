@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { RinnoviApiService } from '../rinnovi-api.service';
+import { RinnoviApiService } from '../../../services/api-services/rinnovi-api.service';
 import { FormBuilder, Validators, FormGroup, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
-import { NotificationService } from '../../../services/notification.service';
+import { NotificationService } from '../../../services/layout-services/notification.service';
 
 
 @Component({

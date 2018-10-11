@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { SksApiService } from '../sks-api.service';
+import { SksApiService } from '../../../services/api-services/sks-api.service';
 import { slideInOutAnimation } from '../../../animations';
-import { ClientiApiService } from '../../clienti/clienti-api.service';
-import { RinnoviApiService } from '../../rinnovi/rinnovi-api.service';
-import { NotificationService } from '../../../services/notification.service';
+import { ClientiApiService } from '../../../services/api-services/clienti-api.service';
+import { RinnoviApiService } from '../../../services/api-services/rinnovi-api.service';
+import { NotificationService } from '../../../services/layout-services/notification.service';
 
 @Component({
   selector: 'app-sks-renew',

@@ -15,7 +15,7 @@ import { RolesApiService } from "../roles-api.service";
 import { ErrorStateMatcher } from "@angular/material";
 import { map } from 'rxjs/operators';
 import { slideInOutAnimation } from "../../../animations";
-import { NotificationService } from "../../../services/notification.service";
+import { NotificationService } from "../../../services/layout-services/notification.service";
 
 
 /** Error when invalid control is dirty, touched, or submitted. */

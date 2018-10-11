@@ -8,7 +8,7 @@ import {
   transition,
   trigger
 } from "@angular/animations";
-import { RinnoviApiService } from "../rinnovi-api.service";
+import { RinnoviApiService } from "../../../services/api-services/rinnovi-api.service";
 import { MatSort, MatTableDataSource, MatPaginator } from "@angular/material";
 
 @Component({

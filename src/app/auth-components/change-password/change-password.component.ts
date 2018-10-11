@@ -1,11 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { DataService } from "../../services/data.service";
+import { DataService } from "../../services/shared-services/data.service";
 import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators, NgForm } from "@angular/forms";
-import { AuthService } from "../../services/auth.service";
+import { AuthService } from "../../services/auth-services/auth.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { slideInOutAnimation } from "../../animations";
-import { NotificationService } from "../../services/notification.service";
+import { NotificationService } from "../../services/layout-services/notification.service";
 
 @Component({
   selector: "app-change-password",

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UtentiApiService } from '../utenti-api.service';
+import { UtentiApiService } from '../../../services/api-services/utenti-api.service';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
-import { NotificationService } from '../../../services/notification.service';
+import { NotificationService } from '../../../services/layout-services/notification.service';
 
 @Component({
   selector: 'app-utenti-edit',
