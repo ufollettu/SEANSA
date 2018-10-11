@@ -19,7 +19,7 @@ export class ClientiEditComponent implements OnInit {
 
   clienteForm: FormGroup;
 
-  SC_ID = '';
+  SC_ID = 0;
   SC_NOME = '';
   SC_PIVA = '';
   SC_COD_FISCALE = '';
@@ -56,16 +56,16 @@ export class ClientiEditComponent implements OnInit {
   getCustomer(id) {
     this.api.getCustomer(id)
       .subscribe(data => {
-        this.SC_ID = data.SC_ID;
+        this.SC_ID = data['SC_ID'];
         this.clienteForm.setValue({
-          SC_NOME: data.SC_NOME,
-          SC_PIVA: data.SC_PIVA,
-          SC_COD_FISCALE: data.SC_COD_FISCALE,
-          SC_INDIRIZZO: data.SC_INDIRIZZO,
-          SC_EMAIL: data.SC_EMAIL,
-          SC_TELEFONO: data.SC_TELEFONO,
-          SC_REFERENTE_NOME: data.SC_REFERENTE_NOME,
-          SC_TEL_REFERENTE: data.SC_TEL_REFERENTE
+          SC_NOME: data['SC_NOME'],
+          SC_PIVA: data['SC_PIVA'],
+          SC_COD_FISCALE: data['SC_COD_FISCALE'],
+          SC_INDIRIZZO: data['SC_INDIRIZZO'],
+          SC_EMAIL: data['SC_EMAIL'],
+          SC_TELEFONO: data['SC_TELEFONO'],
+          SC_REFERENTE_NOME: data['SC_REFERENTE_NOME'],
+          SC_TEL_REFERENTE: data['SC_TEL_REFERENTE']
         });
       });
   }

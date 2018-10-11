@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
+import { Pc } from '../../models/pc';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -32,42 +33,60 @@ export class PcApiService {
 
   }
 
+  // private extractData(res: Response): Pc[] {
+  //   const body = <any[]>(res || []);
+  //   const ret: Pc[] = [];
+  //   body.forEach(itm => {
+  //     ret.push(
+  //       <Pc>{
+  //         SP_ID: itm['SP_ID'],
+  //         SP_HW_ID: itm['SP_HW_ID'],
+  //         SP_LAST_RX: itm['SP_LAST_RX'],
+  //         SP_IP: itm['SP_IP'],
+  //         SP_STATUS: itm['SP_STATUS'],
+  //         SP_PC_DATE_TIME: itm['SP_PC_DATE_TIME']
+  //       }
+  //     );
+  //   });
+  //   return ret;
+  // }
+
   private extractData(res: Response) {
     const body = res;
     return body || {};
   }
 
-  getPcs(): Observable<any> {
-    return this.http.get(apiUrl, httpOptions).pipe(
+  getPcs(): Observable<Pc[]> {
+    return this.http.get<Pc[]>(apiUrl, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleError));
   }
 
-  getPc(id: string): Observable<any> {
+  getPc(id: string): Observable<Pc> {
     const url = `${apiUrl}/${id}`;
-    return this.http.get(url, httpOptions).pipe(
+    return this.http.get<Pc>(url, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleError));
   }
 
-  postPc(data): Observable<any> {
-    return this.http.post(apiUrl, data, httpOptions)
+  postPc(data): Observable<Pc> {
+    return this.http.post<Pc>(apiUrl, data, httpOptions)
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  updatePc(id: string, data): Observable<any> {
+  updatePc(id: number, data): Observable<Pc> {
     const url = `${apiUrl}/${id}`;
-    return this.http.put(url, data, httpOptions)
+    return this.http.put<Pc>(url, data, httpOptions)
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  deletePc(id: string): Observable<{}> {
+  deletePc(id: number): Observable<Pc> {
     const url = `${apiUrl}/${id}`;
-    return this.http.delete(url, httpOptions)
+    return this.http.delete<Pc>(url, httpOptions)
       .pipe(
         catchError(this.handleError)
       );

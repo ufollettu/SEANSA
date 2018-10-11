@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
+import { Cliente } from '../../models/cliente';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -37,37 +38,37 @@ export class ClientiApiService {
     return body || {};
   }
 
-  getCustomers(): Observable<any> {
-    return this.http.get(apiUrl, httpOptions).pipe(
+  getCustomers(): Observable<Cliente[]> {
+    return this.http.get<Cliente[]>(apiUrl, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleError));
   }
 
-  getCustomer(id: string): Observable<any> {
+  getCustomer(id: string): Observable<Cliente> {
     const url = `${apiUrl}/${id}`;
-    return this.http.get(url, httpOptions).pipe(
+    return this.http.get<Cliente>(url, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleError));
   }
 
-  postCustomer(data): Observable<any> {
-    return this.http.post(apiUrl, data, httpOptions)
+  postCustomer(data): Observable<Cliente> {
+    return this.http.post<Cliente>(apiUrl, data, httpOptions)
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  updateCustomer(id: string, data): Observable<any> {
+  updateCustomer(id: number, data): Observable<Cliente> {
     const url = `${apiUrl}/${id}`;
-    return this.http.put(url, data, httpOptions)
+    return this.http.put<Cliente>(url, data, httpOptions)
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  deleteCustomer(id: string): Observable<{}> {
+  deleteCustomer(id: number): Observable<Cliente> {
     const url = `${apiUrl}/${id}`;
-    return this.http.delete(url, httpOptions)
+    return this.http.delete<Cliente>(url, httpOptions)
       .pipe(
         catchError(this.handleError)
       );

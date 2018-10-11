@@ -5,6 +5,8 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { PcApiService } from '../../../services/api-services/pc-api.service';
 import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 import { NotificationService } from '../../../services/layout-services/notification.service';
+import { Observable } from 'rxjs';
+import { Pc } from '../../../models/pc';
 
 
 @Component({
@@ -22,7 +24,7 @@ import { NotificationService } from '../../../services/layout-services/notificat
 export class PcTableComponent implements OnInit {
 
   loading;
-  pc: any;
+  pc: Pc[];
   isBanned = false;
 
   displayedColumns = ['SP_HW_ID', 'SP_IP', 'SP_STATUS', 'SP_LAST_RX', 'SP_PC_DATE_TIME', 'actions'];
@@ -64,22 +66,22 @@ export class PcTableComponent implements OnInit {
       });
   }
 
-  banPc(id) {
+  banPc(id: number) {
     const status = 1;
     this.api.updatePc(id, { 'SP_STATUS': status })
       .subscribe(res => {
-        this.notificationService.warn(`pc ${res.SP_HW_ID} bannato`);
+        this.notificationService.warn(`pc ${res['SP_HW_ID']} bannato`);
         this.refreshPcsList();
       }, (err) => {
         console.log(err);
       });
   }
 
-  unbanPc(id) {
+  unbanPc(id: number) {
     const status = 0;
     this.api.updatePc(id, { 'SP_STATUS': status })
       .subscribe(res => {
-        this.notificationService.success(`pc ${res.SP_HW_ID} sbannato`);
+        this.notificationService.success(`pc ${res['SP_HW_ID']} sbannato`);
         this.refreshPcsList();
       }, (err) => {
         console.log(err);

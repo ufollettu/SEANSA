@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
+import { Utente } from '../../models/utente';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -37,37 +38,37 @@ export class UtentiApiService {
     return body || {};
   }
 
-  getUtenti(): Observable<any> {
-    return this.http.get(apiUrl, httpOptions).pipe(
+  getUtenti(): Observable<Utente[]> {
+    return this.http.get<Utente[]>(apiUrl, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleError));
   }
 
-  getUtente(id: string): Observable<any> {
+  getUtente(id: string): Observable<Utente> {
     const url = `${apiUrl}/${id}`;
-    return this.http.get(url, httpOptions).pipe(
+    return this.http.get<Utente>(url, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleError));
   }
 
-  postUtente(data): Observable<any> {
-    return this.http.post(apiUrl, data, httpOptions)
+  postUtente(data): Observable<Utente> {
+    return this.http.post<Utente>(apiUrl, data, httpOptions)
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  updateUtente(id: string, data): Observable<any> {
+  updateUtente(id: number, data): Observable<Utente> {
     const url = `${apiUrl}/${id}`;
-    return this.http.put(url, data, httpOptions)
+    return this.http.put<Utente>(url, data, httpOptions)
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  deleteUtente(id: string): Observable<{}> {
+  deleteUtente(id: number): Observable<Utente> {
     const url = `${apiUrl}/${id}`;
-    return this.http.delete(url, httpOptions)
+    return this.http.delete<Utente>(url, httpOptions)
       .pipe(
         catchError(this.handleError)
       );

@@ -21,7 +21,7 @@ export class PcEditComponent implements OnInit {
   ipAddress: any;
   pcForm: FormGroup;
 
-  SP_ID: '';
+  SP_ID: number;
   SP_HW_ID: '';
   SP_LAST_RX: '';
   SP_IP: '';
@@ -49,12 +49,12 @@ export class PcEditComponent implements OnInit {
   getPc(id) {
     this.api.getPc(id)
       .subscribe(data => {
-        this.SP_ID = data.SP_ID;
+        this.SP_ID = data['SP_ID'];
         this.pcForm.setValue({
-          SP_HW_ID: data.SP_HW_ID,
-          SP_STATUS: data.SP_STATUS,
+          SP_HW_ID: data['SP_HW_ID'],
+          SP_STATUS: data['SP_STATUS'],
           SP_LAST_RX: new Date(),
-          SP_IP: data.SP_IP
+          SP_IP: data['SP_IP']
         });
       });
   }

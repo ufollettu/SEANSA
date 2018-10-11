@@ -6,6 +6,7 @@ import { UtentiApiService } from '../../../services/api-services/utenti-api.serv
 import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 import { DialogService } from '../../../services/layout-services/dialog.service';
 import { NotificationService } from '../../../services/layout-services/notification.service';
+import { Utente } from '../../../models/utente';
 
 @Component({
   selector: 'app-utenti-table',
@@ -22,7 +23,7 @@ import { NotificationService } from '../../../services/layout-services/notificat
 export class UtentiTableComponent implements OnInit {
 
   loading;
-  utenti: any;
+  utenti: Utente[];
 
   displayedColumns = ['SU_UNA', 'SU_LAST_IP', 'SU_LAST_LOGIN', 'SU_CREATION', 'SU_LAST_EDIT', 'actions'];
   dataSource: any;
@@ -62,7 +63,7 @@ export class UtentiTableComponent implements OnInit {
       });
   }
 
-  deleteUser(id) {
+  deleteUser(id: number) {
     this.dialogService.openConfirmDialog('sei Sicuro?')
       .afterClosed().subscribe(res => {
         if (res) {

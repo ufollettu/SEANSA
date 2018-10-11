@@ -22,9 +22,9 @@ export class ChangePasswordComponent implements OnInit {
   user: object;
   utenteForm: FormGroup;
 
-  SU_ID: '';
-  username: '';
-  password: '';
+  SU_ID: number;
+  username: string;
+  password: string;
 
   constructor(
     private notificationService: NotificationService,
@@ -50,9 +50,9 @@ export class ChangePasswordComponent implements OnInit {
 
   getUtente() {
     this.data.getUserFromToken().subscribe(utente => {
-      this.SU_ID = utente.SU_ID;
+      this.SU_ID = utente['SU_ID'];
       this.utenteForm.setValue({
-        username: utente.SU_UNA,
+        username: utente['SU_UNA'],
         password: '',
         SU_LAST_EDIT: new Date(),
       });

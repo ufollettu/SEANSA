@@ -6,6 +6,7 @@ import { ClientiApiService } from '../../../services/api-services/clienti-api.se
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { DialogService } from '../../../services/layout-services/dialog.service';
 import { NotificationService } from '../../../services/layout-services/notification.service';
+import { Cliente } from '../../../models/cliente';
 
 @Component({
   selector: 'app-clienti-table',
@@ -22,7 +23,7 @@ import { NotificationService } from '../../../services/layout-services/notificat
 })
 export class ClientiTableComponent implements OnInit {
   loading;
-  clienti: any;
+  clienti: Cliente[];
 
   // tslint:disable-next-line:max-line-length
   displayedColumns = ['SC_NOME', 'SC_INDIRIZZO', 'SC_EMAIL', 'SC_TELEFONO', 'SC_PIVA', 'SC_COD_FISCALE', 'SC_REFERENTE_NOME', 'SC_TEL_REFERENTE', 'actions'];
@@ -64,7 +65,7 @@ export class ClientiTableComponent implements OnInit {
       });
   }
 
-  deleteCustomer(id) {
+  deleteCustomer(id: number) {
     this.dialogService.openConfirmDialog('sei sicuro?')
       .afterClosed().subscribe(res => {
         if (res) {

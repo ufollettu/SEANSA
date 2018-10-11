@@ -32,10 +32,10 @@ export class UtentiResetpwdComponent implements OnInit {
   utenteForm: FormGroup;
   matcher = new MyErrorStateMatcher();
 
-  SU_ID: '';
-  SU_UNA: '';
-  SU_PAW: '';
-  SU_LEVEL: '';
+  SU_ID: number;
+  SU_UNA: string;
+  SU_PAW: string;
+  SU_LEVEL: any;
   // SU_LAST_LOGIN: '';
   // SU_CREATION: '';
   // SU_LAST_EDIT: '';
@@ -66,9 +66,9 @@ export class UtentiResetpwdComponent implements OnInit {
   getCustomer(id) {
     this.api.getUtente(id)
       .subscribe(data => {
-        this.SU_ID = data.SU_ID;
+        this.SU_ID = data['SU_ID'];
         this.utenteForm.setValue({
-          SU_UNA: data.SU_UNA,
+          SU_UNA: data['SU_UNA'],
           SU_PAW: null,
           // SU_LEVEL: data.SU_LEVEL,
           SU_LAST_EDIT: new Date(),
