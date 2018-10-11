@@ -9,16 +9,7 @@
   <div [hidden]="!loading">
     <app-loading-table-spinner></app-loading-table-spinner>
   </div>
-  <!-- <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8"> -->
-  <table [hidden]="loading" mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
-
-
-    <!-- <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
-      <th mat-header-cell *matHeaderCellDef> {{column}} </th>
-      <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
-    </ng-container> -->
-    <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
+  <table [hidden]="loading" mat-table [dataSource]="dataSource" matSort>
 
     <!-- Name Column -->
     <ng-container matColumnDef="SC_NOME">
@@ -44,65 +35,50 @@
       <td mat-cell *matCellDef="let element"> {{element.SC_INDIRIZZO}} </td>
     </ng-container>
 
+
+    <!-- Tel Referente Column -->
+    <ng-container matColumnDef="SC_PIVA">
+      <th mat-header-cell *matHeaderCellDef> Partita Iva </th>
+      <td mat-cell *matCellDef="let element"> {{element.SC_PIVA}} </td>
+    </ng-container>
+    <!-- Tel Referente Column -->
+    <ng-container matColumnDef="SC_COD_FISCALE">
+      <th mat-header-cell *matHeaderCellDef> Codice Fiscale </th>
+      <td mat-cell *matCellDef="let element"> {{element.SC_COD_FISCALE}} </td>
+    </ng-container>
+
     <!-- Nome Referente Column -->
     <ng-container matColumnDef="SC_REFERENTE_NOME">
       <th mat-header-cell *matHeaderCellDef> Nome Referente </th>
       <td mat-cell *matCellDef="let element"> {{element.SC_REFERENTE_NOME}} </td>
     </ng-container>
-
     <!-- Tel Referente Column -->
     <ng-container matColumnDef="SC_TEL_REFERENTE">
       <th mat-header-cell *matHeaderCellDef> Contatto Referente </th>
       <td mat-cell *matCellDef="let element"> {{element.SC_TEL_REFERENTE}} </td>
     </ng-container>
 
-    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-    <ng-container matColumnDef="expandedDetail">
-      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
-        <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-          <div class="example-element-diagram">
-            <div class="example-element-name"> {{element.SC_NOME}} </div>
-            <hr>
-            <div class="example-element-email">Email: {{element.SC_EMAIL}} </div>
-            <div class="example-element-phone">Telefono: {{element.SC_TELEFONO}} </div>
-          </div>
-          <div class="example-element-details">
-            <div class="example-element-piva"> P.IVA:
-              <span>{{element.SC_PIVA}}</span>
-            </div>
-            <div class="example-element-codfiscale">Codice Fiscale:
-              <span>{{element.SC_COD_FISCALE}}</span>
-            </div>
-            <div class="example-element-codfiscale">Referente:
-              <span>{{element.SC_REFERENTE_NOME}}</span>
-            </div>
-            <div class="example-element-codfiscale">Contatto Referente:
-              <span>{{element.SC_TEL_REFERENTE}}</span>
-            </div>
-            <hr>
-            <div class="example-element-lastupdate">Last Update:
-              <span>{{element.SC_TS | date:'yyyy-MM-dd'}}</span>
-            </div>
-          </div>
-          <div class="example-element-actions" [appCheckPermissions]="6">
-            <a mat-raised-button color="primary" [routerLink]="['/clienti-edit', element.SC_ID]">
-              <mat-icon>edit</mat-icon>
-            </a>
-            <p></p>
-            <a mat-raised-button color="warn" (click)="deleteCustomer(element.SC_ID)">
-              <mat-icon>delete</mat-icon>
-            </a>
-          </div>
-        </div>
+    <!-- inline actions -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <!-- <button mat-icon-button matTooltip="Show Details">
+          <mat-icon>launch</mat-icon>
+        </button> -->
+        <a mat-icon-button color="primary" matTooltip="Edit" [routerLink]="['/clienti-edit', element.SC_ID]"
+          [appCheckPermissions]="6">
+          <mat-icon>edit</mat-icon>
+        </a>
+        <a mat-icon-button matTooltip="Delete" color="warn" (click)="deleteCustomer(element.SC_ID)"
+          [appCheckPermissions]="6">
+          <mat-icon>delete</mat-icon>
+        </a>
       </td>
-
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
-      [class.example-expanded-row]="expandedElement === element" (click)="expandedElement = element">
-    </tr>
-    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+
   </table>
   <mat-paginator [pageSizeOptions]="[10, 20, 40]" showFirstLastButtons></mat-paginator>
 </div>

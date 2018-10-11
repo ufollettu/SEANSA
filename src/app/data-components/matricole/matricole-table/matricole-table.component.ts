@@ -25,7 +25,7 @@ export class MatricoleTableComponent implements OnInit {
   matricole: any;
   sksId: any;
 
-  displayedColumns = ['SM_MATRICOLA', 'SM_DETTAGLI', 'SM_CREATION_DATE'];
+  displayedColumns = ['SM_MATRICOLA', 'SM_SS_ID', 'SM_DETTAGLI', 'SM_CREATION_DATE', 'SM_LAST_UPDATE', 'actions'];
   dataSource: any;
 
   @ViewChild(MatSort) sort: MatSort;

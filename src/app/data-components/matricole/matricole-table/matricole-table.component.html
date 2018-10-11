@@ -14,21 +14,18 @@
   <div [hidden]="!loading">
     <app-loading-table-spinner></app-loading-table-spinner>
   </div>
-  <!-- <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8"> -->
-  <table [hidden]="loading" mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
 
-
-    <!-- <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
-        <th mat-header-cell *matHeaderCellDef> {{column}} </th>
-        <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
-      </ng-container> -->
-    <!--- Note that these columns can be defined in any order.
-            The actual rendered columns are set as a property on the row definition" -->
+  <table [hidden]="loading" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
 
     <!-- Name Column -->
     <ng-container matColumnDef="SM_MATRICOLA">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> id Matricola </th>
       <td mat-cell *matCellDef="let element" class="nome-col"> {{element.SM_MATRICOLA}} </td>
+    </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="SM_SS_ID">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Sks Id </th>
+      <td mat-cell *matCellDef="let element" class="nome-col"> {{element.SM_SS_ID}} </td>
     </ng-container>
 
     <!-- Email Column -->
@@ -42,37 +39,26 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Data Creazione </th>
       <td mat-cell *matCellDef="let element"> {{element.SM_CREATION_DATE | date }} </td>
     </ng-container>
+    <!-- Indirizzo Column -->
+    <ng-container matColumnDef="SM_LAST_UPDATE">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Update </th>
+      <td mat-cell *matCellDef="let element"> {{element.SM_LAST_UPDATE | date }} </td>
+    </ng-container>
 
-    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-    <ng-container matColumnDef="expandedDetail">
-      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
-        <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-          <div class="example-element-diagram">
-            <div class="example-element-name"> {{element.SM_MATRICOLA}} </div>
-            <div class="example-element-email"> {{element.SM_SS_ID}} </div>
-          </div>
-          <div class="example-element-details">
-            <div class="example-element-lastupdate">Data Creazione:
-              <span>{{element.SM_CREATION_DATE | date:'yyyy-MM-dd'}}</span>
-            </div>
-            <div class="example-element-lastupdate">Last Update:
-              <span>{{element.SM_LAST_UPDATE | date:'yyyy-MM-dd'}}</span>
-            </div>
-          </div>
-          <div class="example-element-actions">
-            <a mat-raised-button color="warn" (click)="deleteMatricola(element.sm_id)">
-              <mat-icon>delete</mat-icon>
-            </a>
-          </div>
-        </div>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <!-- <button mat-icon-button matTooltip="Show Details">
+            <mat-icon>launch</mat-icon>
+          </button> -->
+        <a mat-icon-button matTooltip="Elimina matricola" color="warn" (click)="deleteMatricola(element.sm_id)">
+          <mat-icon>delete</mat-icon>
+        </a>
       </td>
-
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
-      [class.example-expanded-row]="expandedElement === element" (click)="expandedElement = element">
-    </tr>
-    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+
   </table>
 </div>

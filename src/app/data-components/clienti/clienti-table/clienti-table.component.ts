@@ -24,7 +24,8 @@ export class ClientiTableComponent implements OnInit {
   loading;
   clienti: any;
 
-  displayedColumns = ['SC_NOME', 'SC_INDIRIZZO', 'SC_EMAIL', 'SC_TELEFONO', 'SC_REFERENTE_NOME', 'SC_TEL_REFERENTE'];
+  // tslint:disable-next-line:max-line-length
+  displayedColumns = ['SC_NOME', 'SC_INDIRIZZO', 'SC_EMAIL', 'SC_TELEFONO', 'SC_PIVA', 'SC_COD_FISCALE', 'SC_REFERENTE_NOME', 'SC_TEL_REFERENTE', 'actions'];
   dataSource: any;
 
   @ViewChild(MatSort) sort: MatSort;

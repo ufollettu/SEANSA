@@ -24,7 +24,7 @@ export class UtentiTableComponent implements OnInit {
   loading;
   utenti: any;
 
-  displayedColumns = ['SU_UNA', 'SU_LAST_IP', 'SU_LAST_LOGIN'];
+  displayedColumns = ['SU_UNA', 'SU_LAST_IP', 'SU_LAST_LOGIN', 'SU_CREATION', 'SU_LAST_EDIT', 'actions'];
   dataSource: any;
 
   @ViewChild(MatSort) sort: MatSort;

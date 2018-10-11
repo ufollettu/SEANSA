@@ -9,16 +9,8 @@
   <div [hidden]="!loading">
     <app-loading-table-spinner></app-loading-table-spinner>
   </div>
-  <!-- <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8"> -->
-  <table [hidden]="loading" mat-table [dataSource]="dataSource" multiTemplateDataRows matSort>
 
-
-    <!-- <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns">
-        <th mat-header-cell *matHeaderCellDef> {{column}} </th>
-        <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
-      </ng-container> -->
-    <!--- Note that these columns can be defined in any order.
-            The actual rendered columns are set as a property on the row definition" -->
+  <table [hidden]="loading" mat-table [dataSource]="dataSource" matSort>
 
     <!-- Name Column -->
     <ng-container matColumnDef="SP_HW_ID">
@@ -38,6 +30,12 @@
       <td mat-cell *matCellDef="let element"> {{element.SP_LAST_RX | date:'yyyy-MM-dd'}} </td>
     </ng-container>
 
+    <!-- Phone Column -->
+    <ng-container matColumnDef="SP_PC_DATE_TIME">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Data Pc </th>
+      <td mat-cell *matCellDef="let element"> {{element.SP_PC_DATE_TIME | date:'yyyy-MM-dd'}} </td>
+    </ng-container>
+
     <!-- Nome Referente Column -->
     <ng-container matColumnDef="SP_STATUS">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
@@ -45,42 +43,27 @@
         {{element.SP_STATUS===0
         ? 'non bannato': 'bannato'}} </td>
     </ng-container>
-
-    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-    <ng-container matColumnDef="expandedDetail">
-      <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
-        <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-          <div class="example-element-diagram">
-            <div class="example-element-name"> {{element.SP_HW_ID}} </div>
-            <div class="example-element-phone"> IP: {{element.SP_IP}} </div>
-            <div class="example-element-email"> Status: {{element.SP_STATUS===0 ? 'non bannato': 'bannato'}} </div>
-          </div>
-          <div class="example-element-details">
-            <div class="example-element-lastupdate">Ultima ricezione:
-              <span>{{element.SP_LAST_RX | date:'yyyy-MM-dd'}}</span>
-            </div>
-            <div class="example-element-lastupdate">Data Pc:
-              <span>{{element.SP_PC_DATE_TIME | date:'yyyy-MM-dd'}}</span>
-            </div>
-          </div>
-          <div class="example-element-actions" [appCheckPermissions]="7">
-            <a mat-raised-button matTooltip="Ban PC" color="warn" (click)="banPc(element.SP_ID)" *ngIf="element.SP_STATUS===0">
-              <mat-icon>not_interested</mat-icon>
-            </a>
-            <a mat-raised-button matTooltip="Unban PC" color="primary" (click)="unbanPc(element.SP_ID)" *ngIf="element.SP_STATUS!==0">
-              <mat-icon>offline_pin</mat-icon>
-            </a>
-          </div>
-        </div>
+    <!-- inline actions -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <!-- <button mat-icon-button matTooltip="Show Details">
+          <mat-icon>launch</mat-icon>
+        </button> -->
+        <a mat-icon-button matTooltip="Ban PC" color="warn" (click)="banPc(element.SP_ID)" *ngIf="element.SP_STATUS===0"
+          [appCheckPermissions]="7">
+          <mat-icon>not_interested</mat-icon>
+        </a>
+        <a mat-icon-button matTooltip="Unban PC" color="primary" (click)="unbanPc(element.SP_ID)" *ngIf="element.SP_STATUS!==0"
+          [appCheckPermissions]="7">
+          <mat-icon>offline_pin</mat-icon>
+        </a>
       </td>
-
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
-      [class.example-expanded-row]="expandedElement === element" (click)="expandedElement = element">
-    </tr>
-    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+
   </table>
   <mat-paginator [pageSizeOptions]="[10, 20, 40]" showFirstLastButtons></mat-paginator>
 </div>

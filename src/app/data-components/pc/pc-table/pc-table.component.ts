@@ -25,7 +25,7 @@ export class PcTableComponent implements OnInit {
   pc: any;
   isBanned = false;
 
-  displayedColumns = ['SP_HW_ID', 'SP_IP', 'SP_STATUS', 'SP_LAST_RX'];
+  displayedColumns = ['SP_HW_ID', 'SP_IP', 'SP_STATUS', 'SP_LAST_RX', 'SP_PC_DATE_TIME', 'actions'];
   dataSource: any;
 
   @ViewChild(MatSort) sort: MatSort;

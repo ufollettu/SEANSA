@@ -38,7 +38,7 @@ export class SksTableComponent implements OnInit {
   serials: any = [];
 
   // tslint:disable-next-line:max-line-length
-  displayedColumns = ['SS_KEY', 'SS_SC_ID', 'SS_OEM', 'SS_SP_ID', 'SS_CREATED', 'SS_ACTIVATION_DATE', 'SS_EXPIRE', 'pcLastConnection', 'SS_STATUS', 'rinnoviCount', 'allowedSerials'];
+  displayedColumns = ['SS_KEY', 'SS_ID', 'SS_SC_ID', 'SS_OEM', 'SS_SP_ID', 'SS_CREATED', 'SS_ACTIVATION_DATE', 'SS_EXPIRE', 'pcLastConnection', 'SS_LAST_EDIT', 'SS_STATUS', 'rinnoviCount', 'allowedSerials', 'actions'];
 
   dataSource: any;
   warningDate: any;
@@ -90,17 +90,20 @@ export class SksTableComponent implements OnInit {
 
   decouplePC(id) {
     const status = 1;
-    this.api.updateSks(id, { 'SS_SP_ID': "", 'SS_STATUS': status })
-      .subscribe(res => {
-        if (!res) {
-          this.notificationService.warn(`non ci sono pc associati a questa chiave`);
-        } else {
-          this.notificationService.success(`chiave ${res.SS_KEY} disassociata`);
-          this.refreshSkssList();
-        }
-      }, (err) => {
-        console.log(err);
-      });
+    this.api.getSks(id).subscribe(key => {
+      if (key['SS_SP_ID'] === 0) {
+        this.notificationService.warn(`non ci sono pc associati a questa chiave`);
+      } else {
+        this.api.updateSks(id, { 'SS_SP_ID': "", 'SS_STATUS': status })
+          .subscribe(res => {
+            this.notificationService.success(`chiave ${res.SS_KEY} disassociata`);
+            this.refreshSkssList();
+          });
+      }
+    }, (err) => {
+      console.log(err);
+    });
+
   }
 
   disableSks(id) {
