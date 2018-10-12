@@ -6,7 +6,11 @@ import { Router } from "@angular/router";
 import { DataService } from "../services/shared-services/data.service";
 import { CustomizeService } from "../services/shared-services/customize.service";
 import { UploadFileService } from "../services/api-services/upload.service";
-import { HttpResponse, HttpEventType, HttpErrorResponse } from "@angular/common/http";
+import {
+  HttpResponse,
+  HttpEventType,
+  HttpErrorResponse
+} from "@angular/common/http";
 import { NotificationService } from "../services/layout-services/notification.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -37,7 +41,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class CustomizeComponent implements OnInit, OnDestroy {
   themes: string[] = ["default", "light", "dark", "orange", "red", "blue"];
-  userId = "";
+  userId = 0;
   userTheme = "";
   logo = "";
   url = "../../assets/images/placeholder.png";
@@ -50,7 +54,7 @@ export class CustomizeComponent implements OnInit, OnDestroy {
     private router: Router,
     private uploadService: UploadFileService,
     private customizeService: CustomizeService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.customizeService.currentTheme.subscribe(theme => {
@@ -83,25 +87,28 @@ export class CustomizeComponent implements OnInit, OnDestroy {
 
   upload() {
     this.formdata.append("logo", this.selectedFile);
-    this.formdata.append("SCZ_SU_ID", this.userId);
+    this.formdata.append("SCZ_SU_ID", this.userId.toString());
     this.formdata.append("SCZ_THEME", this.userTheme);
 
     this.uploadService.pushFileToStorage(this.userId, this.formdata).subscribe(
       res => {
         if (res instanceof HttpResponse) {
-          this.notificationService.success('style and logo updated');
+          this.notificationService.success("style and logo updated");
           const newLogo = res.body["SCZ_LOGO_NAME"];
           const newTheme = res.body["SCZ_THEME"];
           localStorage.setItem("customLogo", newLogo);
           localStorage.setItem("customStyle", newTheme);
           this.router.navigate(["/sks"]);
         }
-      }, (err) => {
+      },
+      err => {
         console.log(err);
         if (err instanceof HttpErrorResponse) {
           if (err.status === 422 || 500) {
-            this.notificationService.warn('error uploading file, please try again');
-            this.router.navigate(['/sks']);
+            this.notificationService.warn(
+              "error uploading file, please try again"
+            );
+            this.router.navigate(["/sks"]);
           }
         }
       }

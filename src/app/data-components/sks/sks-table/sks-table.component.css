@@ -19,10 +19,9 @@ tr.example-element-row:not(.example-expanded-row):active {
   width: 25%;
 }
 
-/* .example-footer-search {
-  padding-left: 20px;
-  width: 25%;
-} */
+.mat-icon-button {
+  width: 30px;
+}
 
 .button-row {
   margin: 10px 0;
