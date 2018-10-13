@@ -83,12 +83,10 @@ export class UtentiCreateComponent implements OnInit {
       res => {
         const id = res["SU_ID"];
         const data = { UP_U_ID: res["SU_ID"], UP_P_ID: 4 };
-        this.rolesService.postKey(data).subscribe(perm => {
-          this.uploadService.postCustomization(id).subscribe(style => {
-            this.notificationService.success(`utente ${res["SU_UNA"]} creato`);
-            this.router.navigate(["/utenti"]);
-          });
-        });
+        this.rolesService.postKey(data);
+        this.uploadService.postCustomization(id);
+        this.notificationService.success(`utente ${res["SU_UNA"]} creato`);
+        this.router.navigate(["/utenti"]);
       },
       err => {
         console.log(err);

@@ -1,5 +1,6 @@
 <div class="search-div">
   <a mat-raised-button color="primary" [routerLink]="['/sks-create']" [appCheckPermissions]="5">
+    <!-- <a mat-raised-button color="primary" [appCheckPermissions]="5" > -->
     <mat-icon>add</mat-icon>
   </a>
   <app-search-bar [dataSource]="dataSource"></app-search-bar>
@@ -110,9 +111,7 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let element">
-        <a mat-icon-button matTooltip="Show Details" color="primary">
-          <mat-icon>launch</mat-icon>
-        </a>
+
         <a mat-icon-button matTooltip="Rinnova chiave" color="accent" [routerLink]="['/sks-renew', element.SS_ID]" [appCheckPermissions]="4">
           <mat-icon>autorenew</mat-icon>
         </a>
@@ -140,6 +139,10 @@
 
         <a mat-icon-button matTooltip="Elimina chiave" color="warn" (click)="deleteSks(element.SS_ID)" [appCheckPermissions]="5">
           <mat-icon>delete</mat-icon>
+        </a>
+
+        <a mat-icon-button matTooltip="Show Details" color="primary" (click)="showDetails(element.SS_ID)">
+          <mat-icon>launch</mat-icon>
         </a>
       </td>
     </ng-container>

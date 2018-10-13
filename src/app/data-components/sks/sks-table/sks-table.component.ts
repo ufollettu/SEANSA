@@ -30,6 +30,8 @@ import { NotificationService } from "../../../services/layout-services/notificat
 import { Cliente } from "../../../models/cliente";
 import { Sks } from "../../../models/sks";
 import { Matricola } from "../../../models/matricola";
+import { SksCreateComponent } from "../sks-create/sks-create.component";
+import { SksDetailsComponent } from "../sks-details/sks-details.component";
 
 @Component({
   selector: "app-sks-table",
@@ -85,6 +87,7 @@ export class SksTableComponent implements OnInit {
 
   constructor(
     private notificationService: NotificationService,
+    private dialog: MatDialog,
     private dialogService: DialogService,
     private api: SksApiService,
     private rinnoviApi: RinnoviApiService,
@@ -317,5 +320,19 @@ export class SksTableComponent implements OnInit {
         }, {});
       this.serials = matricoleCount;
     });
+  }
+
+  showDetails(sksId) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "60%";
+    dialogConfig.data = {
+      sksId: sksId,
+      sks: this.sks,
+      pcs: this.pcs,
+      clienti: this.clienti
+    };
+    this.dialog.open(SksDetailsComponent, dialogConfig);
   }
 }

@@ -1,0 +1,64 @@
+<mat-toolbar>
+  <span class="fill-remaining-space">
+    <h1>Licenza: {{this.sksForm.get('SS_KEY').value}} id: {{this.sksForm.get('SS_ID').value}}</h1>
+  </span>
+  <a color="secondary" class="btn-dialog-email" matTooltip="email this key" mat-icon-button (click)="sendMail(this.sksForm.get('SS_KEY').value)"
+    tabIndex="-1">
+    <mat-icon>email</mat-icon>
+  </a>
+  <button color="primary" class="btn-dialog-close" mat-icon-button (click)="onClose()" tabIndex="-1">
+    <mat-icon>clear</mat-icon>
+  </button>
+</mat-toolbar>
+<form [formGroup]="sksForm">
+  <mat-grid-list cols="2" rowHeight="450px">
+    <mat-grid-tile>
+      <div class="controles-container">
+        <mat-form-field>
+          <input [readonly]="true" formControlName="SS_KEY" matInput placeholder="Licenza">
+        </mat-form-field>
+        <mat-form-field>
+          <input [readonly]="true" formControlName="SS_SC_ID" matInput placeholder="Cliente">
+        </mat-form-field>
+        <mat-form-field>
+          <input [readonly]="true" formControlName="SS_OEM" matInput placeholder="OEM">
+        </mat-form-field>
+        <mat-form-field>
+          <input [readonly]="true" formControlName="SS_SP_ID" matInput placeholder="PC Associato">
+        </mat-form-field>
+        <mat-form-field>
+          <input [readonly]="true" formControlName="SS_ACTIVATED_BY" matInput placeholder="Attivata Da">
+        </mat-form-field>
+        <mat-form-field>
+          <input [readonly]="true" formControlName="SS_ACTIVATION_REFERENT" matInput placeholder="Referente Attivazione">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="controles-container">
+        <mat-form-field>
+          <input [readonly]="true" [value]="sksForm.get('SS_CREATED').value | date:'yyyy-MM-dd'" formControlName="SS_CREATED" matInput
+            placeholder="Data Creazione">
+        </mat-form-field>
+        <mat-form-field>
+          <input [readonly]="true" [value]="sksForm.get('SS_ACTIVATION_DATE').value | date:'yyyy-MM-dd'" formControlName="SS_ACTIVATION_DATE"
+            matInput placeholder="Data Attivazione">
+        </mat-form-field>
+        <mat-form-field>
+          <input [readonly]="true" [value]="sksForm.get('SS_EXPIRE').value | date:'yyyy-MM-dd'" formControlName="SS_EXPIRE" matInput
+            placeholder="Data Scadenza">
+        </mat-form-field>
+        <mat-form-field>
+          <input [readonly]="true" [value]="sksForm.get('SS_CREATED').value | date:'yyyy-MM-dd'" formControlName="SS_LAST_EDIT" matInput
+            placeholder="Last Edit">
+        </mat-form-field>
+        <mat-form-field>
+          <input [readonly]="true" formControlName="SS_MISMATCH_COUNT" matInput placeholder="Mismatch Count">
+        </mat-form-field>
+        <mat-form-field>
+          <input [readonly]="true" formControlName="SS_STATUS" matInput placeholder="Status">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</form>

@@ -80,3 +80,12 @@ tr.example-element-row:not(.example-expanded-row):active {
   float: right;
   background: none!important;
 } */
+
+/* Dialog */
+
+.mat-dialog-container {
+  background: transparent !important;
+  color: rgba(0, 0, 0, 0) !important;
+  box-shadow: 0 0 0 0 rgba(10, 0, 0, 0), 0 0 0 0 rgba(0, 0, 0, 0),
+    0 0 0 0 rgba(0, 0, 0, 0) !important;
+}
