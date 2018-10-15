@@ -9,12 +9,12 @@
   </div>
   <div class="routes-buttons" *ngIf="!!authService.loggedIn()">
     <div class="navbuttons">
-      <button mat-raised-button [routerLink]="['/clienti']" routerLinkActive="mat-accent">Clienti</button>
-      <button mat-raised-button [routerLink]="['/utenti']" routerLinkActive="mat-accent">Utenti</button>
+      <button mat-stroked-button [routerLink]="['/clienti']" routerLinkActive="mat-accent">Clienti</button>
+      <button mat-stroked-button [routerLink]="['/utenti']" routerLinkActive="mat-accent">Utenti</button>
       <!-- <button mat-raised-button [routerLink]="['/matricole']" routerLinkActive="mat-accent">Matricole</button> -->
-      <button mat-raised-button [routerLink]="['/sks']" routerLinkActive="mat-accent">Sks</button>
-      <button mat-raised-button [routerLink]="['/pc']" routerLinkActive="mat-accent">Pc</button>
-      <button mat-raised-button [routerLink]="['/rinnovi']" routerLinkActive="mat-accent">Rinnovi</button>
+      <button mat-stroked-button [routerLink]="['/sks']" routerLinkActive="mat-accent">Sks</button>
+      <button mat-stroked-button [routerLink]="['/pc']" routerLinkActive="mat-accent">Pc</button>
+      <button mat-stroked-button [routerLink]="['/rinnovi']" routerLinkActive="mat-accent">Rinnovi</button>
     </div>
     <div class="logo-wrapper">
       <img class="logo" [src]="logoPath">
@@ -26,11 +26,11 @@
   <div class="auth-buttons">
     <!-- <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/register']" routerLinkActive="mat-accent">Signup</button> -->
     <!-- <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/login']" routerLinkActive="mat-accent">Signin</button> -->
-    <button mat-raised-button *ngIf="!!authService.loggedIn()" [routerLink]="['/changepassword']" routerLinkActive="mat-accent">Change
+    <button mat-stroked-button *ngIf="!!authService.loggedIn()" [routerLink]="['/changepassword']" routerLinkActive="mat-accent">Change
       Password
     </button>
-    <button mat-raised-button *ngIf="!!authService.loggedIn()" [routerLink]="['/customize']" routerLinkActive="mat-accent">Customize</button>
-    <button mat-raised-button *ngIf="!!authService.loggedIn()" (click)="onLogout()" routerLinkActive="mat-accent">Logout</button>
+    <button mat-stroked-button *ngIf="!!authService.loggedIn()" [routerLink]="['/customize']" routerLinkActive="mat-accent">Customize</button>
+    <button mat-stroked-button *ngIf="!!authService.loggedIn()" (click)="onLogout()" routerLinkActive="mat-accent">Logout</button>
 
   </div>
 </mat-toolbar>
