@@ -13,8 +13,10 @@ import { ClientiCreateComponent } from "./data-components/clienti/clienti-create
 import { ClientiEditComponent } from "./data-components/clienti/clienti-edit/clienti-edit.component";
 
 import { SksTableComponent } from "./data-components/sks/sks-table/sks-table.component";
+import { SksDetailsComponent } from "./data-components/sks/sks-details/sks-details.component";
 import { SksCreateComponent } from "./data-components/sks/sks-create/sks-create.component";
 import { SksEditComponent } from "./data-components/sks/sks-edit/sks-edit.component";
+import { SksRenewComponent } from "./data-components/sks/sks-renew/sks-renew.component";
 import { SksMailerComponent } from "./data-components/sks/sks-mailer/sks-mailer.component";
 
 import { RinnoviTableComponent } from "./data-components/rinnovi/rinnovi-table/rinnovi-table.component";
@@ -34,22 +36,25 @@ import { PcEditComponent } from "./data-components/pc/pc-edit/pc-edit.component"
 import { MatricoleTableComponent } from "./data-components/matricole/matricole-table/matricole-table.component";
 import { MatricoleCreateComponent } from "./data-components/matricole/matricole-create/matricole-create.component";
 import { MatricoleEditComponent } from "./data-components/matricole/matricole-edit/matricole-edit.component";
+import { MatricoleCloneComponent } from "./data-components/matricole/matricole-clone/matricole-clone.component";
+
+import { PacksTableComponent } from './data-components/packs/packs-table/packs-table.component';
 
 // import { RegisterComponent } from './auth-components/register/register.component';
 import { LoginComponent } from "./auth-components/login/login.component";
 import { ChangePasswordComponent } from "./auth-components/change-password/change-password.component";
 import { ForgotPwdComponent } from "./auth-components/forgot-pwd/forgot-pwd.component";
 
-import { ApiResolverService } from "./services/resolver-services/api-resolver.service";
-import { CheckPermissionsDirective } from "./directives/check-permissions.directive";
 import { CustomizeComponent } from "./customize/customize.component";
-import { SksRenewComponent } from "./data-components/sks/sks-renew/sks-renew.component";
-import { MatricoleCloneComponent } from "./data-components/matricole/matricole-clone/matricole-clone.component";
 
 import { LoadingTableSpinnerComponent } from "./layout-components/loading-table-spinner/loading-table-spinner.component";
 import { ConfirmDialogComponent } from "./layout-components/confirm-dialog/confirm-dialog.component";
 import { SearchBarComponent } from "./layout-components/search-bar/search-bar.component";
-import { SksDetailsComponent } from "./data-components/sks/sks-details/sks-details.component";
+
+import { ApiResolverService } from "./services/resolver-services/api-resolver.service";
+import { CheckPermissionsDirective } from "./directives/check-permissions.directive";
+import { PacksCreateComponent } from './data-components/packs/packs-create/packs-create.component';
+import { PacksEditComponent } from './data-components/packs/packs-edit/packs-edit.component';
 
 const appRoutes: Routes = [
   {
@@ -152,6 +157,24 @@ const appRoutes: Routes = [
   },
 
   {
+    path: "packs",
+    component: PacksTableComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "packs-create",
+    component: PacksCreateComponent,
+    canActivate: [AuthGuard, PermsGuard],
+    data: { expectedPerm: 9 }
+  },
+  {
+    path: "packs-edit/:id",
+    component: PacksEditComponent,
+    canActivate: [AuthGuard, PermsGuard],
+    data: { expectedPerm: 9 }
+  },
+
+  {
     path: "clienti",
     component: ClientiTableComponent,
     canActivate: [AuthGuard]
@@ -203,9 +226,11 @@ const appRoutes: Routes = [
     ClientiCreateComponent,
     ClientiEditComponent,
     SksTableComponent,
+    SksDetailsComponent,
     SksCreateComponent,
     SksEditComponent,
     SksRenewComponent,
+    SksMailerComponent,
     RinnoviTableComponent,
     RinnoviCreateComponent,
     RinnoviEditComponent,
@@ -219,18 +244,19 @@ const appRoutes: Routes = [
     MatricoleCreateComponent,
     MatricoleEditComponent,
     MatricoleCloneComponent,
+    PacksTableComponent,
+    PacksCreateComponent,
+    PacksEditComponent,
     // RegisterComponent,
     LoginComponent,
     ChangePasswordComponent,
     RolesEditComponent,
-    CheckPermissionsDirective,
-    CustomizeComponent,
     ForgotPwdComponent,
-    SksMailerComponent,
+    CustomizeComponent,
     ConfirmDialogComponent,
     SearchBarComponent,
-    SksDetailsComponent
+    CheckPermissionsDirective,
   ],
   entryComponents: [ConfirmDialogComponent, SksDetailsComponent]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

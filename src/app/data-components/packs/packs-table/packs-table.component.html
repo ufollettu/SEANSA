@@ -1,0 +1,72 @@
+<div class="search-div">
+  <a mat-raised-button color="primary" [routerLink]="['/packs-create']" [appCheckPermissions]="9">
+    <mat-icon>add</mat-icon>
+  </a>
+  <app-search-bar [dataSource]="dataSource"></app-search-bar>
+</div>
+
+<div class="example-container mat-elevation-z8">
+  <div [hidden]="!loading">
+    <app-loading-table-spinner></app-loading-table-spinner>
+  </div>
+  <table [hidden]="loading" mat-table [dataSource]="dataSource" matSort>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="SPK_SU_CREATOR_ID">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Creatore Pacchetto </th>
+      <td mat-cell *matCellDef="let element" class="nome-col"> {{getUserName(element.SPK_SU_CREATOR_ID)}} </td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="SPK_SU_OWNER_ID">
+      <th mat-header-cell *matHeaderCellDef> Proprietario Pacchetto </th>
+      <td mat-cell *matCellDef="let element"> {{getUserName(element.SPK_SU_OWNER_ID)}} </td>
+    </ng-container>
+
+    <!-- Phone Column -->
+    <ng-container matColumnDef="SPK_CREATED">
+      <th mat-header-cell *matHeaderCellDef> Data Creazione </th>
+      <td mat-cell *matCellDef="let element"> {{element.SPK_CREATED | date:'yyyy-MM-dd'}} </td>
+    </ng-container>
+
+    <!-- Indirizzo Column -->
+    <ng-container matColumnDef="SPK_EXPIRE">
+      <th mat-header-cell *matHeaderCellDef> Data Scadenza </th>
+      <td mat-cell *matCellDef="let element"> {{element.SPK_EXPIRE | date:'yyyy-MM-dd'}} </td>
+    </ng-container>
+
+
+    <!-- Tel Referente Column -->
+    <ng-container matColumnDef="SPK_SKS_COUNT">
+      <th mat-header-cell *matHeaderCellDef> Numero Licenze </th>
+      <td mat-cell *matCellDef="let element"> {{element.SPK_SKS_COUNT}} </td>
+    </ng-container>
+    <!-- Tel Referente Column -->
+    <ng-container matColumnDef="SPK_USED_SKS_COUNT">
+      <th mat-header-cell *matHeaderCellDef> Numero Licenze Usate </th>
+      <td mat-cell *matCellDef="let element"> {{element.SPK_USED_SKS_COUNT}} </td>
+    </ng-container>
+
+    <!-- inline actions -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <!-- <button mat-icon-button matTooltip="Show Details">
+            <mat-icon>launch</mat-icon>
+          </button> -->
+        <a mat-icon-button color="primary" matTooltip="Edit" [routerLink]="['/packs-edit', element.SPK_ID]"
+          [appCheckPermissions]="6">
+          <mat-icon>edit</mat-icon>
+        </a>
+        <a mat-icon-button matTooltip="Delete" color="warn" (click)="deletePack(element.SPK_ID)" [appCheckPermissions]="6">
+          <mat-icon>delete</mat-icon>
+        </a>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;"></tr>
+
+  </table>
+  <mat-paginator [pageSizeOptions]="[10, 20, 40]" showFirstLastButtons></mat-paginator>
+</div>

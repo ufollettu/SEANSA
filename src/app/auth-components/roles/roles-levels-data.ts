@@ -7,5 +7,6 @@ export const levels = [
     { name: 5, selected: false, description: "Gestione completa delle licenze" },
     { name: 6, selected: false, description: "Gestione completa dei clienti" },
     { name: 7, selected: false, description: "Gestione completa dei PC" },
-    { name: 8, selected: false, description: "Gestione matricole associate alle licenze LECU OEM" }
+    { name: 8, selected: false, description: "Gestione matricole associate alle licenze LECU OEM" },
+    { name: 9, selected: false, description: "Gestione pacchetti" }
 ];

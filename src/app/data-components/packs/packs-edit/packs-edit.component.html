@@ -1,0 +1,51 @@
+<div class="container">
+  <mat-card>
+    <form [formGroup]="packForm" (ngSubmit)="onFormSubmit(packForm.value)">
+
+      <!-- <mat-form-field class="example-full-width">
+          <input matInput readonly placeholder="Proprietario" formControlName="SPK_SU_CREATOR_ID" [errorStateMatcher]="matcher">
+        </mat-form-field> -->
+
+      <mat-form-field class="example-full-width">
+        <mat-select placeholder="Proprietario" formControlName="SPK_SU_OWNER_ID" [errorStateMatcher]="matcher">
+          <mat-option *ngFor="let utente of utenti" [value]="utente.value">
+            {{utente.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error>
+          <span *ngIf="!packForm.get('SPK_SU_OWNER_ID').valid && packForm.get('SPK_SU_OWNER_ID').touched">Inserisci il
+            Proprietario del pacchetto</span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <input matInput readonly [matDatepicker]="picker" placeholder="Expire date" formControlName="SPK_EXPIRE"
+          [errorStateMatcher]="matcher">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error>
+          <span *ngIf="!packForm.get('SPK_EXPIRE').valid && packForm.get('SPK_EXPIRE').touched">Inserisci la data di
+            scadenza</span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <input matInput type="number" placeholder="Numero di Licenze" formControlName="SPK_SKS_COUNT"
+          [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!packForm.get('SPK_SKS_COUNT').valid && packForm.get('SPK_SKS_COUNT').touched">Inserisci il
+            numero di licenze totali</span>
+        </mat-error>
+      </mat-form-field>
+
+      <div class="button-row">
+        <a mat-stroked-button color="basic" [routerLink]="['/packs']" class="mat-stroked-button">
+          <mat-icon>keyboard_backspace</mat-icon>
+        </a>
+        <button type="submit" [disabled]="!packForm.valid" mat-raised-button color="primary">
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</div>

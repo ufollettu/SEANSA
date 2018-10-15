@@ -1,0 +1,38 @@
+.container {
+    width: 100%;
+    padding-top: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+mat-card {
+    margin: 10px auto 30px auto;
+    max-width: 480px;
+}
+
+mat-form-field {
+    margin-right: 10px;
+}
+
+.example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.example-full-width {
+    width: 100%;
+}
+
+.example-full-width:nth-last-child() {
+    margin-bottom: 10px;
+}
+
+.button-row {
+    margin: 10px 0;
+}
+
+.mat-stroked-button {
+    margin-right: 8px;
+}
