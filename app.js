@@ -31,6 +31,7 @@ const rinnoviRouter = require("./routes/rinnovi.server.route");
 const clientiRouter = require("./routes/clienti.server.route");
 const customizationRouter = require("./routes/customization.server.route");
 const utentiPermessiRouter = require("./routes/utenti-permessi.server.router");
+const pacchettiRouter = require("./routes/pacchetti.server.route");
 
 const app = express();
 
@@ -107,6 +108,7 @@ app.use("/api/roles", verifyToken, utentiPermessiRouter);
 
 app.use("/api/utenti", verifyToken, utentiRouter);
 app.use("/api/sks", verifyToken, sksRouter);
+app.use("/api/packs", verifyToken, pacchettiRouter);
 app.use("/api/pc", verifyToken, pcRouter);
 app.use("/api/matricole", verifyToken, matricoleRouter);
 app.use("/api/rinnovi", verifyToken, rinnoviRouter);
