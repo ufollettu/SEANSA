@@ -1,4 +1,4 @@
-import { CustomStyle } from "./../../models/custom-style";
+import { CustomStyle } from "../../models/custom-style";
 import { Injectable } from "@angular/core";
 import { Observable, of, throwError } from "rxjs";
 import {

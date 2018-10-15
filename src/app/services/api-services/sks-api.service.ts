@@ -1,4 +1,4 @@
-import { Sks } from "./../../models/sks";
+import { Sks } from "../../models/sks";
 import { Injectable } from "@angular/core";
 import { Observable, of, throwError } from "rxjs";
 import {

@@ -1,3 +1,4 @@
+import { CheckPackResolverService } from "./services/resolver-services/check-pack-resolver.service";
 import { AuthGuard } from "./guards/auth.guard";
 import { PermsGuard } from "./guards/perms.guard";
 
@@ -38,7 +39,7 @@ import { MatricoleCreateComponent } from "./data-components/matricole/matricole-
 import { MatricoleEditComponent } from "./data-components/matricole/matricole-edit/matricole-edit.component";
 import { MatricoleCloneComponent } from "./data-components/matricole/matricole-clone/matricole-clone.component";
 
-import { PacksTableComponent } from './data-components/packs/packs-table/packs-table.component';
+import { PacksTableComponent } from "./data-components/packs/packs-table/packs-table.component";
 
 // import { RegisterComponent } from './auth-components/register/register.component';
 import { LoginComponent } from "./auth-components/login/login.component";
@@ -53,8 +54,8 @@ import { SearchBarComponent } from "./layout-components/search-bar/search-bar.co
 
 import { ApiResolverService } from "./services/resolver-services/api-resolver.service";
 import { CheckPermissionsDirective } from "./directives/check-permissions.directive";
-import { PacksCreateComponent } from './data-components/packs/packs-create/packs-create.component';
-import { PacksEditComponent } from './data-components/packs/packs-edit/packs-edit.component';
+import { PacksCreateComponent } from "./data-components/packs/packs-create/packs-create.component";
+import { PacksEditComponent } from "./data-components/packs/packs-edit/packs-edit.component";
 
 const appRoutes: Routes = [
   {
@@ -135,7 +136,8 @@ const appRoutes: Routes = [
     path: "sks-create",
     component: SksCreateComponent,
     canActivate: [AuthGuard, PermsGuard],
-    data: { expectedPerm: 5 }
+    data: { expectedPerm: 5 },
+    resolve: { checkPack: CheckPackResolverService }
   },
   {
     path: "sks-mailer/:id",
@@ -255,8 +257,8 @@ const appRoutes: Routes = [
     CustomizeComponent,
     ConfirmDialogComponent,
     SearchBarComponent,
-    CheckPermissionsDirective,
+    CheckPermissionsDirective
   ],
   entryComponents: [ConfirmDialogComponent, SksDetailsComponent]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

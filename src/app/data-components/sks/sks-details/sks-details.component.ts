@@ -1,5 +1,5 @@
 import { Router } from "@angular/router";
-import { PcApiService } from "./../../../services/api-services/pc-api.service";
+import { PcApiService } from "../../../services/api-services/pc-api.service";
 import { Component, OnInit, Inject } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, NgForm } from "@angular/forms";
 import { oems } from "../sks-oem-data";

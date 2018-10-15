@@ -1,5 +1,6 @@
-import { Pc } from "./../../../models/pc";
-import { Rinnovo } from "./../../../models/rinnovo";
+import { DataService } from "./../../../services/shared-services/data.service";
+import { Pc } from "../../../models/pc";
+import { Rinnovo } from "../../../models/rinnovo";
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { HttpErrorResponse } from "@angular/common/http";
@@ -62,6 +63,8 @@ export class SksTableComponent implements OnInit {
   clienti: Cliente[] = [];
   serials: object = {};
 
+  userId;
+
   // tslint:disable-next-line:max-line-length
   displayedColumns = [
     "SS_KEY",
@@ -97,12 +100,14 @@ export class SksTableComponent implements OnInit {
     private clientiApi: ClientiApiService,
     private matricoleApi: MatricoleApiService,
     private changeDetectorRefs: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private data: DataService
   ) {
     this.loading = true;
   }
 
   ngOnInit() {
+    this.getUtente();
     this.warningDate = moment().format("YYYY-MM-DD");
     this.refreshSkssList();
   }
@@ -331,5 +336,11 @@ export class SksTableComponent implements OnInit {
       clienti: this.clienti
     };
     this.dialog.open(SksDetailsComponent, dialogConfig);
+  }
+
+  getUtente() {
+    this.data.getUserFromToken().subscribe(utente => {
+      this.userId = utente["SU_ID"];
+    });
   }
 }

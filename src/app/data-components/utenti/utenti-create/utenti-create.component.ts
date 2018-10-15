@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { RolesApiService } from "../../../services/auth-services/roles-api.service";
-import { UtentiPermessi } from "./../../../models/utenti-permessi";
+import { UtentiPermessi } from "../../../models/utenti-permessi";
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import {
@@ -66,7 +66,7 @@ export class UtentiCreateComponent implements OnInit {
     private uploadService: UploadFileService,
     private rolesService: RolesApiService,
     private authService: AuthService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.utenteForm = this.formBuilder.group({
