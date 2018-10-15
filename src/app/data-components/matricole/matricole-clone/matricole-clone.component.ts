@@ -4,6 +4,7 @@ import { MatricoleApiService } from "../../../services/api-services/matricole-ap
 import { FormBuilder, Validators, FormGroup, NgForm } from "@angular/forms";
 import { slideInOutAnimation } from "../../../animations";
 import { NotificationService } from "../../../services/layout-services/notification.service";
+import { AuthService } from "../../../services/auth-services/auth.service";
 
 @Component({
   selector: "app-matricole-clone",
@@ -31,8 +32,9 @@ export class MatricoleCloneComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private api: MatricoleApiService,
-    private formBuilder: FormBuilder
-  ) {}
+    private formBuilder: FormBuilder,
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
     this.route.fragment.subscribe((fragment: string) => {
@@ -54,15 +56,13 @@ export class MatricoleCloneComponent implements OnInit {
         return resMatr;
       });
       data.forEach(matricola => {
-        console.log(matricola);
         this.api.postMatricola(matricola).subscribe(
           res => {
             this.notificationService.success(
               `matricola ${res["SM_MATRICOLA"]} creata`
             );
-          },
-          err => {
-            console.log(err);
+          }, (err) => {
+            this.authService.handleLoginError(err);
           }
         );
       });

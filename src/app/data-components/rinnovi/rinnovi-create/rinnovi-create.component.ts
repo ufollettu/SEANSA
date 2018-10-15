@@ -4,6 +4,7 @@ import { RinnoviApiService } from '../../../services/api-services/rinnovi-api.se
 import { FormBuilder, Validators, FormGroup, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
 import { NotificationService } from '../../../services/layout-services/notification.service';
+import { AuthService } from '../../../services/auth-services/auth.service';
 
 
 @Component({
@@ -27,7 +28,8 @@ export class RinnoviCreateComponent implements OnInit {
     private notificationService: NotificationService,
     private router: Router,
     private api: RinnoviApiService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -43,7 +45,7 @@ export class RinnoviCreateComponent implements OnInit {
         this.notificationService.success('rinnovo creato');
         this.router.navigate(['/rinnovi']);
       }, (err) => {
-        console.log(err);
+        this.authService.handleLoginError(err);
       });
   }
 }

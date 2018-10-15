@@ -32,6 +32,7 @@ import { Sks } from "../../../models/sks";
 import { Matricola } from "../../../models/matricola";
 import { SksCreateComponent } from "../sks-create/sks-create.component";
 import { SksDetailsComponent } from "../sks-details/sks-details.component";
+import { AuthService } from "../../../services/auth-services/auth.service";
 
 @Component({
   selector: "app-sks-table",
@@ -86,6 +87,7 @@ export class SksTableComponent implements OnInit {
   paginator: MatPaginator;
 
   constructor(
+    private authService: AuthService,
     private notificationService: NotificationService,
     private dialog: MatDialog,
     private dialogService: DialogService,
@@ -116,12 +118,7 @@ export class SksTableComponent implements OnInit {
         this.loading = false;
       },
       err => {
-        console.log(err);
-        if (err instanceof HttpErrorResponse) {
-          if (err.status === 401 || 500) {
-            this.router.navigate(["/login"]);
-          }
-        }
+        this.authService.handleLoginError(err);
       }
     );
     this.fetchRinnovi();
@@ -150,7 +147,7 @@ export class SksTableComponent implements OnInit {
         }
       },
       err => {
-        console.log(err);
+        this.authService.handleLoginError(err);
       }
     );
   }
@@ -163,7 +160,7 @@ export class SksTableComponent implements OnInit {
         this.refreshSkssList();
       },
       err => {
-        console.log(err);
+        this.authService.handleLoginError(err);
       }
     );
   }
@@ -176,7 +173,7 @@ export class SksTableComponent implements OnInit {
         this.refreshSkssList();
       },
       err => {
-        console.log(err);
+        this.authService.handleLoginError(err);
       }
     );
   }
@@ -196,7 +193,7 @@ export class SksTableComponent implements OnInit {
               this.refreshSkssList();
             },
             err => {
-              console.log(err);
+              this.authService.handleLoginError(err);
             }
           );
         }
@@ -256,7 +253,7 @@ export class SksTableComponent implements OnInit {
         this.clienti = clienti;
       },
       err => {
-        console.log(err);
+        this.authService.handleLoginError(err);
       }
     );
   }
@@ -281,7 +278,7 @@ export class SksTableComponent implements OnInit {
         }
       },
       err => {
-        console.log(err);
+        this.authService.handleLoginError(err);
       }
     );
   }
@@ -299,7 +296,7 @@ export class SksTableComponent implements OnInit {
         this.pcs = pcsCount;
       },
       err => {
-        console.log(err);
+        this.authService.handleLoginError(err);
       }
     );
   }

@@ -4,6 +4,7 @@ import { ClientiApiService } from '../../../services/api-services/clienti-api.se
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
 import { NotificationService } from '../../../services/layout-services/notification.service';
+import { AuthService } from '../../../services/auth-services/auth.service';
 
 @Component({
   selector: 'app-clienti-edit',
@@ -35,7 +36,8 @@ export class ClientiEditComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private api: ClientiApiService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -76,7 +78,7 @@ export class ClientiEditComponent implements OnInit {
         this.notificationService.success(`cliente ${res['SC_NOME']} aggiornato`);
         this.router.navigate(['/clienti']);
       }, (err) => {
-        console.log(err);
+        this.authService.handleLoginError(err);
       });
   }
 

@@ -7,6 +7,7 @@ import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 import { DialogService } from '../../../services/layout-services/dialog.service';
 import { NotificationService } from '../../../services/layout-services/notification.service';
 import { Utente } from '../../../models/utente';
+import { AuthService } from '../../../services/auth-services/auth.service';
 
 @Component({
   selector: 'app-utenti-table',
@@ -36,7 +37,9 @@ export class UtentiTableComponent implements OnInit {
     private dialogService: DialogService,
     private api: UtentiApiService,
     private changeDetectorRefs: ChangeDetectorRef,
-    private router: Router) {
+    private router: Router,
+    private authService: AuthService
+  ) {
     this.loading = true;
   }
 
@@ -54,12 +57,7 @@ export class UtentiTableComponent implements OnInit {
         this.changeDetectorRefs.detectChanges();
         this.loading = false;
       }, err => {
-        console.log(err);
-        if (err instanceof HttpErrorResponse) {
-          if (err.status === 401 || 500) {
-            this.router.navigate(['/login']);
-          }
-        }
+        this.authService.handleLoginError(err);
       });
   }
 
@@ -73,12 +71,7 @@ export class UtentiTableComponent implements OnInit {
               this.notificationService.warn(`utente ${user['SU_UNA']} rimosso`);
               this.refreshUsersList();
             }, (err) => {
-              console.log(err);
-              if (err instanceof HttpErrorResponse) {
-                if (err.status === 401 || 500) {
-                  this.router.navigate(['/login']);
-                }
-              }
+              this.authService.handleLoginError(err);
             });
         }
       });

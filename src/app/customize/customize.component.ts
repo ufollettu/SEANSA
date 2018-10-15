@@ -12,6 +12,7 @@ import {
   HttpErrorResponse
 } from "@angular/common/http";
 import { NotificationService } from "../services/layout-services/notification.service";
+import { AuthService } from "../services/auth-services/auth.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */
@@ -53,8 +54,9 @@ export class CustomizeComponent implements OnInit, OnDestroy {
     private data: DataService,
     private router: Router,
     private uploadService: UploadFileService,
-    private customizeService: CustomizeService
-  ) {}
+    private customizeService: CustomizeService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
     this.customizeService.currentTheme.subscribe(theme => {
@@ -111,6 +113,7 @@ export class CustomizeComponent implements OnInit, OnDestroy {
             this.router.navigate(["/sks"]);
           }
         }
+        this.authService.handleLoginError(err);
       }
     );
   }

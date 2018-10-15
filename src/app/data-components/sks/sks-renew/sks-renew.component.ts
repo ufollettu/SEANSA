@@ -6,6 +6,7 @@ import { slideInOutAnimation } from "../../../animations";
 import { ClientiApiService } from "../../../services/api-services/clienti-api.service";
 import { RinnoviApiService } from "../../../services/api-services/rinnovi-api.service";
 import { NotificationService } from "../../../services/layout-services/notification.service";
+import { AuthService } from "../../../services/auth-services/auth.service";
 
 @Component({
   selector: "app-sks-renew",
@@ -38,8 +39,9 @@ export class SksRenewComponent implements OnInit {
     private api: SksApiService,
     private clientiApi: ClientiApiService,
     private rinnoviApi: RinnoviApiService,
-    private formBuilder: FormBuilder
-  ) {}
+    private formBuilder: FormBuilder,
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
     this.getSks(this.route.snapshot.params["id"]);
@@ -74,16 +76,10 @@ export class SksRenewComponent implements OnInit {
 
   onFormSubmit(form: NgForm) {
     this.api.updateSks(this.SS_ID, form).subscribe(
-      res => {
-        console.log(res);
+      (res) => {
         this.insertRinnovo(res["SS_ID"]);
-        this.notificationeService.success(
-          `Sks key ${res["SS_KEY"]} aggiornata`
-        );
-        this.router.navigate(["/sks"]);
-      },
-      err => {
-        console.log(err);
+      }, (err) => {
+        this.authService.handleLoginError(err);
       }
     );
   }
@@ -94,11 +90,11 @@ export class SksRenewComponent implements OnInit {
       SR_TS: new Date().toISOString().replace(/([^T]+)T([^\.]+).*/g, "$1 $2")
     };
     this.rinnoviApi.postRinnovo(data).subscribe(
-      res => {
-        console.log(res);
-      },
-      err => {
-        console.log(err);
+      (res) => {
+        this.notificationeService.success(`Sks key ${res["SS_KEY"]} aggiornata`);
+        this.router.navigate(["/sks"]);
+      }, (err) => {
+        this.authService.handleLoginError(err);
       }
     );
   }

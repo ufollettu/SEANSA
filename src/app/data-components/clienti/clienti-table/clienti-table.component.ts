@@ -7,6 +7,7 @@ import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { DialogService } from '../../../services/layout-services/dialog.service';
 import { NotificationService } from '../../../services/layout-services/notification.service';
 import { Cliente } from '../../../models/cliente';
+import { AuthService } from '../../../services/auth-services/auth.service';
 
 @Component({
   selector: 'app-clienti-table',
@@ -33,6 +34,7 @@ export class ClientiTableComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
+    private authService: AuthService,
     private notificationService: NotificationService,
     private dialogService: DialogService,
     private api: ClientiApiService,
@@ -56,12 +58,7 @@ export class ClientiTableComponent implements OnInit {
         this.changeDetectorRefs.detectChanges();
         this.loading = false;
       }, err => {
-        console.log(err);
-        if (err instanceof HttpErrorResponse) {
-          if (err.status === 401 || 500) {
-            this.router.navigate(['/login']);
-          }
-        }
+        this.authService.handleLoginError(err);
       });
   }
 
@@ -75,12 +72,7 @@ export class ClientiTableComponent implements OnInit {
               this.notificationService.warn(`cliente ${cust['SC_NOME']} rimosso`);
               this.refreshCustomersList();
             }, (err) => {
-              console.log(err);
-              if (err instanceof HttpErrorResponse) {
-                if (err.status === 401 || 500) {
-                  this.router.navigate(['/login']);
-                }
-              }
+              this.authService.handleLoginError(err);
             });
         }
       });

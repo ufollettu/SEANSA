@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SksApiService } from '../../../services/api-services/sks-api.service';
 import { NotificationService } from '../../../services/layout-services/notification.service';
+import { AuthService } from '../../../services/auth-services/auth.service';
 
 @Component({
   selector: 'app-sks-mailer',
@@ -28,7 +29,8 @@ export class SksMailerComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private api: SksApiService
+    private api: SksApiService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -55,6 +57,7 @@ export class SksMailerComponent implements OnInit {
             this.router.navigate(['/sks-mailer']);
           }
         }
+        this.authService.handleLoginError(err);
       });
   }
 }

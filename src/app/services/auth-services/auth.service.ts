@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { NotificationService } from '../layout-services/notification.service';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -15,7 +16,7 @@ const forgotPwdUrl = 'http://localhost:3000/api/auth/forgot';
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, private notificatioService: NotificationService) { }
 
   registerUser(user) {
     return this.http.post(registerUrl, user);
@@ -49,4 +50,15 @@ export class AuthService {
   getToken() {
     return localStorage.getItem('token');
   }
+
+  handleLoginError(err) {
+    if (err instanceof HttpErrorResponse) {
+      if (err.status === 401 || 500) {
+        this.logoutUser();
+        this.notificatioService.warn('access denied, please login');
+        this.router.navigate(['/login']);
+      }
+    }
+  }
+
 }

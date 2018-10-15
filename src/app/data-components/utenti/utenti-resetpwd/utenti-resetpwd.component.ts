@@ -6,6 +6,7 @@ import { IpService } from '../../../services/ip.service';
 import { ErrorStateMatcher } from '@angular/material';
 import { slideInOutAnimation } from '../../../animations';
 import { NotificationService } from '../../../services/layout-services/notification.service';
+import { AuthService } from '../../../services/auth-services/auth.service';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */
@@ -46,7 +47,8 @@ export class UtentiResetpwdComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private api: UtentiApiService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService
   ) { }
 
 
@@ -83,7 +85,7 @@ export class UtentiResetpwdComponent implements OnInit {
         this.notificationService.success(`password utente ${res['SU_UNA']} aggiornata`);
         this.router.navigate(['/utenti']);
       }, (err) => {
-        console.log(err);
+        this.authService.handleLoginError(err);
       });
   }
 

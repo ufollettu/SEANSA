@@ -4,6 +4,7 @@ import { UtentiApiService } from "../../../services/api-services/utenti-api.serv
 import { FormBuilder, FormGroup, Validators, NgForm } from "@angular/forms";
 import { slideInOutAnimation } from "../../../animations";
 import { NotificationService } from "../../../services/layout-services/notification.service";
+import { AuthService } from "../../../services/auth-services/auth.service";
 
 @Component({
   selector: "app-utenti-edit",
@@ -32,8 +33,9 @@ export class UtentiEditComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private api: UtentiApiService,
-    private formBuilder: FormBuilder
-  ) {}
+    private formBuilder: FormBuilder,
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
     this.getCustomer(this.route.snapshot.params["id"]);
@@ -66,7 +68,7 @@ export class UtentiEditComponent implements OnInit {
         this.router.navigate(["/utenti"]);
       },
       err => {
-        console.log(err);
+        this.authService.handleLoginError(err);
       }
     );
   }

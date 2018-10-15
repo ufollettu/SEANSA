@@ -30,7 +30,7 @@ export class ChangePasswordComponent implements OnInit {
     private notificationService: NotificationService,
     private data: DataService,
     private router: Router,
-    private auth: AuthService,
+    private authService: AuthService,
     private formBuilder: FormBuilder
   ) { }
 
@@ -60,9 +60,8 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   onFormSubmit(form: NgForm) {
-    this.auth.changePwd(form)
+    this.authService.changePwd(form)
       .subscribe(res => {
-        console.log(res['user']);
         localStorage.setItem('token', res['idToken']);
         this.sendUser(res['user']);
         this.notificationService.success(`password utente ${res['user']['SU_UNA']} cambiata correttamente`);
@@ -74,6 +73,7 @@ export class ChangePasswordComponent implements OnInit {
             this.router.navigate(['/changepwd']);
           }
         }
+        this.authService.handleLoginError(err);
       });
   }
 

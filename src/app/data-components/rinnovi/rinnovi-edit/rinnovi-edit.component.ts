@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { RinnoviApiService } from "../../../services/api-services/rinnovi-api.service";
 import { slideInOutAnimation } from "../../../animations";
 import { NotificationService } from "../../../services/layout-services/notification.service";
+import { AuthService } from "../../../services/auth-services/auth.service";
 
 @Component({
   selector: "app-rinnovi-edit",
@@ -27,14 +28,14 @@ export class RinnoviEditComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private api: RinnoviApiService,
-    private formBuilder: FormBuilder
-  ) {}
+    private formBuilder: FormBuilder,
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
     this.getRinnovo(this.route.snapshot.params["id"]);
     this.rinnoviForm = this.formBuilder.group({
       SR_SS_ID: [null, Validators.required],
-      // TODO: controllare funzione per gestire scadenza rinnovi
       SR_TS: new Date()
     });
   }
@@ -54,9 +55,8 @@ export class RinnoviEditComponent implements OnInit {
       res => {
         this.notificationService.success("rinnovo aggiornato");
         this.router.navigate(["/rinnovi"]);
-      },
-      err => {
-        console.log(err);
+      }, (err) => {
+        this.authService.handleLoginError(err);
       }
     );
   }

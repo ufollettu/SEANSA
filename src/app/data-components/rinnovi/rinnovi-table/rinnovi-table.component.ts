@@ -10,6 +10,7 @@ import {
 } from "@angular/animations";
 import { RinnoviApiService } from "../../../services/api-services/rinnovi-api.service";
 import { MatSort, MatTableDataSource, MatPaginator } from "@angular/material";
+import { AuthService } from "../../../services/auth-services/auth.service";
 
 @Component({
   selector: "app-rinnovi-table",
@@ -42,6 +43,7 @@ export class RinnoviTableComponent implements OnInit {
   paginator: MatPaginator;
 
   constructor(
+    private authService: AuthService,
     private api: RinnoviApiService,
     private changeDetectorRefs: ChangeDetectorRef,
     private router: Router
@@ -64,14 +66,8 @@ export class RinnoviTableComponent implements OnInit {
           this.changeDetectorRefs.detectChanges();
           this.loading = false;
         }
-      },
-      err => {
-        console.log(err);
-        if (err instanceof HttpErrorResponse) {
-          if (err.status === 401 || 500) {
-            this.router.navigate(["/login"]);
-          }
-        }
+      }, (err) => {
+        this.authService.handleLoginError(err);
       }
     );
   }

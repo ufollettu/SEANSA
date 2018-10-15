@@ -4,6 +4,7 @@ import { PcApiService } from '../../../services/api-services/pc-api.service';
 import { FormBuilder, Validators, FormGroup, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
 import { NotificationService } from '../../../services/layout-services/notification.service';
+import { AuthService } from '../../../services/auth-services/auth.service';
 
 @Component({
   selector: 'app-pc-create',
@@ -31,6 +32,7 @@ export class PcCreateComponent implements OnInit {
     private notificationService: NotificationService,
     private router: Router,
     private api: PcApiService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -49,7 +51,7 @@ export class PcCreateComponent implements OnInit {
         this.notificationService.success(`pc ${res['SP_HW_ID']} creato`);
         this.router.navigate(['/pc']);
       }, (err) => {
-        console.log(err);
+        this.authService.handleLoginError(err);
       });
   }
 

@@ -40,8 +40,8 @@ export class HeaderComponent implements OnInit {
     this.data.getUser().subscribe(utente => {
       this.user = utente;
       this.userId = utente['SU_ID'];
+      // this.sendUser(this.user);
     });
-    // this.sendUser(this.user);
   }
 
   onLogout() {

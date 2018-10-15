@@ -4,7 +4,7 @@
   </span>
   <a color="secondary" class="btn-dialog-email" matTooltip="email this key" mat-icon-button (click)="sendMail(this.sksForm.get('SS_KEY').value)"
     tabIndex="-1">
-    <mat-icon>email</mat-icon>
+    <mat-icon>mail_outline</mat-icon>
   </a>
   <button color="primary" class="btn-dialog-close" mat-icon-button (click)="onClose()" tabIndex="-1">
     <mat-icon>clear</mat-icon>
@@ -37,20 +37,20 @@
     <mat-grid-tile>
       <div class="controles-container">
         <mat-form-field>
-          <input [readonly]="true" [value]="sksForm.get('SS_CREATED').value | date:'yyyy-MM-dd'" formControlName="SS_CREATED" matInput
-            placeholder="Data Creazione">
+          <input [readonly]="true" [value]="sksForm.get('SS_CREATED').value | date:'yyyy-MM-dd'" formControlName="SS_CREATED"
+            matInput placeholder="Data Creazione">
         </mat-form-field>
         <mat-form-field>
-          <input [readonly]="true" [value]="sksForm.get('SS_ACTIVATION_DATE').value | date:'yyyy-MM-dd'" formControlName="SS_ACTIVATION_DATE"
-            matInput placeholder="Data Attivazione">
+          <input [readonly]="true" [value]="sksForm.get('SS_ACTIVATION_DATE').value | date:'yyyy-MM-dd'"
+            formControlName="SS_ACTIVATION_DATE" matInput placeholder="Data Attivazione">
         </mat-form-field>
         <mat-form-field>
-          <input [readonly]="true" [value]="sksForm.get('SS_EXPIRE').value | date:'yyyy-MM-dd'" formControlName="SS_EXPIRE" matInput
-            placeholder="Data Scadenza">
+          <input [readonly]="true" [value]="sksForm.get('SS_EXPIRE').value | date:'yyyy-MM-dd'" formControlName="SS_EXPIRE"
+            matInput placeholder="Data Scadenza">
         </mat-form-field>
         <mat-form-field>
-          <input [readonly]="true" [value]="sksForm.get('SS_CREATED').value | date:'yyyy-MM-dd'" formControlName="SS_LAST_EDIT" matInput
-            placeholder="Last Edit">
+          <input [readonly]="true" [value]="sksForm.get('SS_CREATED').value | date:'yyyy-MM-dd'" formControlName="SS_LAST_EDIT"
+            matInput placeholder="Last Edit">
         </mat-form-field>
         <mat-form-field>
           <input [readonly]="true" formControlName="SS_MISMATCH_COUNT" matInput placeholder="Mismatch Count">

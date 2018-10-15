@@ -4,6 +4,7 @@ import { PcApiService } from '../../../services/api-services/pc-api.service';
 import { FormBuilder, FormGroup, Validators, NgForm } from '@angular/forms';
 import { slideInOutAnimation } from '../../../animations';
 import { NotificationService } from '../../../services/layout-services/notification.service';
+import { AuthService } from '../../../services/auth-services/auth.service';
 
 
 @Component({
@@ -33,7 +34,8 @@ export class PcEditComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private api: PcApiService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -56,6 +58,8 @@ export class PcEditComponent implements OnInit {
           SP_LAST_RX: new Date(),
           SP_IP: data['SP_IP']
         });
+      }, (err) => {
+        this.authService.handleLoginError(err);
       });
   }
 
@@ -65,9 +69,8 @@ export class PcEditComponent implements OnInit {
         this.notificationService.success(`pc ${res['SP_HW_ID']} aggiornato`);
         this.router.navigate(['/pc']);
       }, (err) => {
-        console.log(err);
-      }
-      );
+        this.authService.handleLoginError(err);
+      });
   }
 
   pcDetails() {

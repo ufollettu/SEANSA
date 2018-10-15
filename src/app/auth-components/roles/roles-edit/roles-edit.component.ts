@@ -11,11 +11,12 @@ import {
 } from "@angular/forms";
 
 import { levels } from '../roles-levels-data';
-import { RolesApiService } from "../roles-api.service";
+import { RolesApiService } from "../../../services/auth-services/roles-api.service";
 import { ErrorStateMatcher } from "@angular/material";
 import { map } from 'rxjs/operators';
 import { slideInOutAnimation } from "../../../animations";
 import { NotificationService } from "../../../services/layout-services/notification.service";
+import { AuthService } from "../../../services/auth-services/auth.service";
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -60,6 +61,7 @@ export class RolesEditComponent implements OnInit {
     private router: Router,
     private api: RolesApiService,
     private formBuilder: FormBuilder,
+    private authService: AuthService
   ) {
     this.route.data.pipe(
       map(data => data.cres)).subscribe((res) => {
@@ -93,13 +95,13 @@ export class RolesEditComponent implements OnInit {
     const selectedPermName = this.keyForm.value.permsLev
       .map((v, i) => v ? this.levels[i].name : null)
       .filter(v => v !== null);
-    // console.log(selectedPermName);
     const newPerms = this.mapForDb(selectedPermName);
-    // console.log(newPerms);
     this.api.updateKeys(this.userId, newPerms)
       .subscribe(res => {
         this.notificationService.success(`permessi utente Id: ${this.userId} modificati`);
         this.router.navigate(['/utenti']);
+      }, (err) => {
+        this.authService.handleLoginError(err);
       });
   }
 

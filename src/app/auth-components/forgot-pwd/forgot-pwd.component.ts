@@ -25,7 +25,7 @@ export class ForgotPwdComponent implements OnInit {
     private notificationService: NotificationService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private auth: AuthService,
+    private authService: AuthService,
   ) { }
 
   ngOnInit() {
@@ -35,7 +35,7 @@ export class ForgotPwdComponent implements OnInit {
   }
 
   onFormSubmit(form: NgForm) {
-    this.auth.forgotPassword(form)
+    this.authService.forgotPassword(form)
       .subscribe(res => {
         this.notificationService.success('mail correctly sent, please wait for password reset');
       }, (err) => {
@@ -45,6 +45,7 @@ export class ForgotPwdComponent implements OnInit {
             this.router.navigate(['/forgot-pwd']);
           }
         }
+        this.authService.handleLoginError(err);
       });
   }
 }

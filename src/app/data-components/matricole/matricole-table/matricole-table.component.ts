@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { DialogService } from '../../../services/layout-services/dialog.service';
 import { NotificationService } from '../../../services/layout-services/notification.service';
+import { AuthService } from '../../../services/auth-services/auth.service';
 
 @Component({
   selector: 'app-matricole-table',
@@ -31,6 +32,7 @@ export class MatricoleTableComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
+    private authService: AuthService,
     private notificationService: NotificationService,
     private dialogService: DialogService,
     private api: MatricoleApiService,
@@ -55,11 +57,7 @@ export class MatricoleTableComponent implements OnInit {
         this.changeDetectorRefs.detectChanges();
         this.loading = false;
       }, err => {
-        if (err instanceof HttpErrorResponse) {
-          if (err.status === 401 || 500) {
-            this.router.navigate(['/login']);
-          }
-        }
+        this.authService.handleLoginError(err);
       });
   }
 
@@ -72,7 +70,7 @@ export class MatricoleTableComponent implements OnInit {
               this.notificationService.warn(`Matricola ${id} rimossa`);
               this.refreshMatricoleList();
             }, (err) => {
-              console.log(err);
+              this.authService.handleLoginError(err);
             });
         }
       });

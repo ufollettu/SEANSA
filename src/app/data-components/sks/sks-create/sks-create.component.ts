@@ -8,6 +8,7 @@ import { ClientiApiService } from '../../../services/api-services/clienti-api.se
 import { NotificationService } from '../../../services/layout-services/notification.service';
 import { ConfirmDialogComponent } from '../../../layout-components/confirm-dialog/confirm-dialog.component';
 import { DialogService } from '../../../services/layout-services/dialog.service';
+import { AuthService } from '../../../services/auth-services/auth.service';
 
 @Component({
   selector: 'app-sks-create',
@@ -42,7 +43,8 @@ export class SksCreateComponent implements OnInit {
     private router: Router,
     private api: SksApiService,
     private clientiApi: ClientiApiService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -82,7 +84,7 @@ export class SksCreateComponent implements OnInit {
             }
           });
       }, (err) => {
-        console.log(err);
+        this.authService.handleLoginError(err);
       });
   }
 

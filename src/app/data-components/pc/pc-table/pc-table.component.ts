@@ -7,6 +7,7 @@ import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 import { NotificationService } from '../../../services/layout-services/notification.service';
 import { Observable } from 'rxjs';
 import { Pc } from '../../../models/pc';
+import { AuthService } from '../../../services/auth-services/auth.service';
 
 
 @Component({
@@ -37,7 +38,8 @@ export class PcTableComponent implements OnInit {
     private notificationService: NotificationService,
     private api: PcApiService,
     private changeDetectorRefs: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {
     this.loading = true;
   }
@@ -57,12 +59,7 @@ export class PcTableComponent implements OnInit {
         this.loading = false;
 
       }, err => {
-        console.log(err);
-        if (err instanceof HttpErrorResponse) {
-          if (err.status === 401 || 500) {
-            this.router.navigate(['/login']);
-          }
-        }
+        this.authService.handleLoginError(err);
       });
   }
 
@@ -73,7 +70,7 @@ export class PcTableComponent implements OnInit {
         this.notificationService.warn(`pc ${res['SP_HW_ID']} bannato`);
         this.refreshPcsList();
       }, (err) => {
-        console.log(err);
+        this.authService.handleLoginError(err);
       });
   }
 
@@ -84,7 +81,7 @@ export class PcTableComponent implements OnInit {
         this.notificationService.success(`pc ${res['SP_HW_ID']} sbannato`);
         this.refreshPcsList();
       }, (err) => {
-        console.log(err);
+        this.authService.handleLoginError(err);
       });
   }
 }

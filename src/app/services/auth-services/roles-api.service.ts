@@ -1,4 +1,4 @@
-import { UtentiPermessi } from "./../../models/utenti-permessi";
+import { UtentiPermessi } from "../../models/utenti-permessi";
 import { Injectable } from "@angular/core";
 import { Observable, of, throwError } from "rxjs";
 import {
@@ -17,7 +17,7 @@ const apiUrl = "http://localhost:3000/api/roles";
   providedIn: "root"
 })
 export class RolesApiService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

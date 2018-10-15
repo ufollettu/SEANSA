@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from "@angular/router";
 import { MatricoleApiService } from "../../../services/api-services/matricole-api.service";
 import { slideInOutAnimation } from "../../../animations";
 import { NotificationService } from "../../../services/layout-services/notification.service";
+import { AuthService } from "../../../services/auth-services/auth.service";
 
 @Component({
   selector: "app-matricole-edit",
@@ -30,8 +31,9 @@ export class MatricoleEditComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private api: MatricoleApiService,
-    private formBuilder: FormBuilder
-  ) {}
+    private formBuilder: FormBuilder,
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
     this.getMatricola(this.route.snapshot.params["id"]);
@@ -66,7 +68,7 @@ export class MatricoleEditComponent implements OnInit {
         this.router.navigate(["/matricole"]);
       },
       err => {
-        console.log(err);
+        this.authService.handleLoginError(err);
       }
     );
   }
