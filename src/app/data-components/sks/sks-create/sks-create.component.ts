@@ -1,4 +1,4 @@
-import { PacksApiService } from "./../../../services/api-services/packs-api.service";
+import { PacksApiService } from "../../../services/api-services/packs-api.service";
 import { map } from "rxjs/operators";
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -11,6 +11,7 @@ import { NotificationService } from "../../../services/layout-services/notificat
 import { ConfirmDialogComponent } from "../../../layout-components/confirm-dialog/confirm-dialog.component";
 import { DialogService } from "../../../services/layout-services/dialog.service";
 import { AuthService } from "../../../services/auth-services/auth.service";
+import { PacksHistoryApiService } from "../../../services/api-services/packs-history-api.service";
 
 @Component({
   selector: "app-sks-create",
@@ -46,6 +47,7 @@ export class SksCreateComponent implements OnInit {
     private router: Router,
     private api: SksApiService,
     private packsApiService: PacksApiService,
+    private packsHistoryApi: PacksHistoryApiService,
     private clientiApi: ClientiApiService,
     private formBuilder: FormBuilder,
     private authService: AuthService,
@@ -111,6 +113,18 @@ export class SksCreateComponent implements OnInit {
                 `error updating pack id: ${this.selectedPack["SPK_ID"]}`
               );
             }
+          );
+        this.packsHistoryApi
+          .postPack({
+            SPKH_SPK_ID: this.selectedPack["SPK_ID"],
+            SPKH_SU_ID: this.selectedPack["SPK_SU_OWNER_ID"],
+            SPKH_SS_ID: key["SS_ID"]
+          })
+          .subscribe(
+            res => {
+              console.log("new history row created");
+            },
+            err => console.log(err)
           );
         this.dialogService
           .openConfirmDialog(

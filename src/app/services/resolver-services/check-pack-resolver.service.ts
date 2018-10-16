@@ -1,7 +1,7 @@
-import { NotificationService } from "./../layout-services/notification.service";
+import { NotificationService } from "../layout-services/notification.service";
 import { map } from "rxjs/operators";
-import { DataService } from "./../shared-services/data.service";
-import { PacksApiService } from "./../api-services/packs-api.service";
+import { DataService } from "../shared-services/data.service";
+import { PacksApiService } from "../api-services/packs-api.service";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import {

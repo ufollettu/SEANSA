@@ -1,4 +1,4 @@
-import { DataService } from "./../../../services/shared-services/data.service";
+import { DataService } from "../../../services/shared-services/data.service";
 import { Pc } from "../../../models/pc";
 import { Rinnovo } from "../../../models/rinnovo";
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
