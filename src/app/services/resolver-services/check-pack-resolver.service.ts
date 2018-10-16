@@ -32,26 +32,51 @@ export class CheckPackResolverService implements Resolve<any> {
     // const ownerId = route.fragment;
     // console.log(ownerId);
     return this.packsApiService.getPackFromOwnerId(ownerId).pipe(
-      map(pack => {
-        if (!pack[0]) {
+      map(packs => {
+        console.log(packs);
+        if (!packs.filter(this.filterPacks)) {
           return true;
         } else {
-          const remainingLicense =
-            pack[0]["SPK_SKS_COUNT"] - pack[0]["SPK_USED_SKS_COUNT"];
-          if (remainingLicense === 0) {
-            this.notificationService.warn("your pack is empty");
+          const remLic = [];
+          const expLic = [];
+          packs.forEach(p => {
+            const rem = p["SPK_SKS_COUNT"] - p["SPK_USED_SKS_COUNT"];
+            remLic.push(rem);
+            const exp = p["SPK_EXPIRE"] < moment().format("YYYY-MM-DD");
+            expLic.push(exp);
+          });
+
+          if (expLic.every(this.isExpired)) {
+            this.notificationService.warn("your packs are expired");
             this.router.navigate(["/sks"]);
-          } else if (pack[0]["SPK_EXPIRE"] < moment().format("YYYY-MM-DD")) {
-            this.notificationService.warn("your pack is expired");
-            this.router.navigate(["/sks"]);
-          } else {
-            this.notificationService.success(
-              `your have ${remainingLicense} licence remaining`
-            );
-            return pack;
+            return;
           }
+          if (remLic.every(this.isEmpty)) {
+            this.notificationService.warn("your packs are empty");
+            this.router.navigate(["/sks"]);
+            return;
+          }
+          this.notificationService.success(`your have available packs`);
+          return packs.filter(this.filterPacks);
         }
       })
     );
+  }
+
+  isEmpty(currentValue) {
+    return currentValue < 1;
+  }
+
+  isExpired(currentValue) {
+    return currentValue === true;
+  }
+
+  filterPacks(value) {
+    if (
+      value["SPK_SKS_COUNT"] - value["SPK_USED_SKS_COUNT"] > 0 &&
+      value["SPK_EXPIRE"] > moment().format("YYYY-MM-DD")
+    ) {
+      return value;
+    }
   }
 }

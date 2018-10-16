@@ -55,9 +55,9 @@ export class PacksApiService {
     );
   }
 
-  getPackFromOwnerId(id: number): Observable<Packs> {
+  getPackFromOwnerId(id: number): Observable<Packs[]> {
     const url = `${apiUrl}/user/${id}`;
-    return this.http.get<Packs>(url, httpOptions).pipe(
+    return this.http.get<Packs[]>(url, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleError)
     );

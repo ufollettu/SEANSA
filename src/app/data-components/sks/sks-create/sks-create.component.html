@@ -2,12 +2,13 @@
   <mat-card>
     <form [formGroup]="sksForm" (ngSubmit)="onFormSubmit(sksForm.value)">
 
-      <!-- <mat-form-field class="example-full-width">
-        <input matInput placeholder="Key" formControlName="SS_KEY" [errorStateMatcher]="matcher">
-        <mat-error>
-          <span *ngIf="!sksForm.get('SS_KEY').valid && sksForm.get('SS_KEY').touched">Inserisci la chiave</span>
-        </mat-error>
-      </mat-form-field> -->
+      <mat-form-field class="example-full-width" *ngIf="isPack">
+        <mat-select placeholder="Select Pack" [(value)]="selectedPack['SPK_ID']">
+          <mat-option *ngFor="let pack of packs" [value]="pack?.SPK_ID">
+            Pack Id: {{pack?.SPK_ID}}, remaining licence: {{pack?.SPK_SKS_COUNT - pack?.SPK_USED_SKS_COUNT}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
       <!-- <mat-form-field class="example-full-width">
         <input matInput placeholder="OEM" formControlName="SS_OEM" [errorStateMatcher]="matcher">
