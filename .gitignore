@@ -18,11 +18,13 @@
 *.sublime-workspace
 
 # IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode/
+.vscode/launch.json
+.vscode/settings.json
+# !.vscode/settings.json
+# !.vscode/tasks.json
+# !.vscode/launch.json
+# !.vscode/extensions.json
 
 # misc
 /.sass-cache
@@ -44,3 +46,4 @@ Thumbs.db
 *.sql
 *.php
 *.vb
+
