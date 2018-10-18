@@ -1,5 +1,7 @@
 const pcRepo = require("../repositories/pc.server.repository");
 const repository = require('../repositories/rcvpc.server.repository');
+const packRepo = require('../repositories/pacchetti.server.repository');
+const packHistoryRepo = require('../repositories/pacchetti-history.server.repository');
 const bytes = require('utf8-bytes');
 const hex2bin = require('locutus/php/strings/hex2bin');
 const bin2hex = require('locutus/php/strings/bin2hex');
@@ -112,6 +114,16 @@ class SuperActivator {
             }).catch(err => console.log(err.message));
     }
 
+    checkPack(licenseId) {
+        return packHistoryRepo.findByLicense(licenseId)
+            .then((historyRow) => {
+                if (!historyRow) {
+                    return 0;
+                }
+                return historyRow['SPKH_SPK_ID'];
+            }).catch(err => console.log(err.message))
+    }
+
     setKeyMismatched(id) {
         return repository.updateMismatchCount(id)
             .spread((results, metadata) => {
@@ -152,55 +164,80 @@ class SuperActivator {
     //     hwid_banned: '10'
     // }
 
-    checkLicense(license, hwId, oem, expDate, nowDate, ip, allowedSerials) {
+    async checkLicense(license, hwId, oem, expDate, nowDate, ip, allowedSerials) {
         return repository.findLicense(license).then(async key => {
             if (key[0]) {
-                if (!isset(key[0]['SS_ALLOWED_SERIALS']) || is_null(key[0]['SS_ALLOWED_SERIALS'])) {
-                    key[0]['SS_ALLOWED_SERIALS'] = "";
+                const packId = await this.checkPack(key[0]['SS_ID']);
+                if (packId == 0) {
+                    // license not in pack, continue with classic checks
+                    return await this.classicCheck(license, hwId, oem, expDate, nowDate, ip, allowedSerials);
+                } else {
+                    // license in pack, get pack by license
+                    return packRepo.findById(packId)
+                        .then(async pack => {
+                            // test if pack is expired
+                            if (strtotime(pack['SPK_EXPIRE']) <= strtotime(nowDate)) {
+                                // if expired return message key_expired: '8',
+                                return this.licCheckResult.key_expired;
+                            } else {
+                                // if not expired, continue with classic search
+                                return await this.classicCheck(license, hwId, oem, expDate, nowDate, ip, allowedSerials);
+                            }
+                        })
+                        .catch(err => this.licCheckResult.server_error)
                 }
-                const updatePc = await this.updatePcRx(hwId, ip, nowDate);
-                if (updatePc == 0) {
-                    return this.licCheckResult.server_error;
-                }
-                if (this.checksetBanned(hwId) == 0) {
-                    return this.licCheckResult.hwid_banned;
-                }
-                if (!isset(key[0]['SP_HW_ID'])) {
-                    return this.licCheckResult.key_virgin;
-                }
-                if (key[0]['SS_STATUS'] < 1) {
-                    return this.licCheckResult.key_unallowed;
-                }
-                if (key[0]['SP_HW_ID'] != hwId) {
-                    const updateMismatch = await this.setKeyMismatched(key[0]['SS_ID']);
-                    if (updateMismatch == 1) {
-                        return this.licCheckResult.key_moved;
-                    }
-                }
-                if ((strtotime(key[0]['SS_EXPIRE']) < strtotime(expDate))
-                    || (strtotime(nowDate) < strtotime(key[0]['SP_PC_DATE_TIME']))
-                    || (strtotime(nowDate) < time() - 60 * 60 * 24 * 2)
-                ) {
-                    const updateMismatch = await this.setKeyMismatched(key[0]['SS_ID']);
-                    if (updateMismatch == 1) {
-                        return this.licCheckResult.dates_hacked;
-                    } else {
-                        return this.licCheckResult.server_error;
-                    }
-                }
-                if ((key[0]['SS_OEM'] != oem)
-                    || (strtotime(key[0]['SS_EXPIRE']) > strtotime(expDate)
-                        || strcmp(key[0]['SS_ALLOWED_SERIALS'], this.decodeToMortal(allowedSerials)) != 0)
-                ) {
-                    return this.licCheckResult.key_info_to_update;
-                }
-                if (strtotime(key[0]['SS_EXPIRE']) <= strtotime(nowDate)) {
-                    return this.licCheckResult.key_expired;
-                }
-                return this.licCheckResult.key_ok;
             } else {
                 return this.licCheckResult.key_insesistente;
             }
+        }).catch(err => this.licCheckResult.server_error);
+    }
+
+    async classicCheck(license, hwId, oem, expDate, nowDate, ip, allowedSerials) {
+        return repository.findLicense(license).then(async key => {
+
+            if (!isset(key[0]['SS_ALLOWED_SERIALS']) || is_null(key[0]['SS_ALLOWED_SERIALS'])) {
+                key[0]['SS_ALLOWED_SERIALS'] = "";
+            }
+            const updatePc = await this.updatePcRx(hwId, ip, nowDate);
+            if (updatePc == 0) {
+                return this.licCheckResult.server_error;
+            }
+            if (this.checksetBanned(hwId) == 0) {
+                return this.licCheckResult.hwid_banned;
+            }
+            if (!isset(key[0]['SP_HW_ID'])) {
+                return this.licCheckResult.key_virgin;
+            }
+            if (key[0]['SS_STATUS'] < 1) {
+                return this.licCheckResult.key_unallowed;
+            }
+            if (key[0]['SP_HW_ID'] != hwId) {
+                const updateMismatch = await this.setKeyMismatched(key[0]['SS_ID']);
+                if (updateMismatch == 1) {
+                    return this.licCheckResult.key_moved;
+                }
+            }
+            if ((strtotime(key[0]['SS_EXPIRE']) < strtotime(expDate))
+                || (strtotime(nowDate) < strtotime(key[0]['SP_PC_DATE_TIME']))
+                || (strtotime(nowDate) < time() - 60 * 60 * 24 * 2)
+            ) {
+                const updateMismatch = await this.setKeyMismatched(key[0]['SS_ID']);
+                if (updateMismatch == 1) {
+                    return this.licCheckResult.dates_hacked;
+                } else {
+                    return this.licCheckResult.server_error;
+                }
+            }
+            if ((key[0]['SS_OEM'] != oem)
+                || (strtotime(key[0]['SS_EXPIRE']) > strtotime(expDate)
+                    || strcmp(key[0]['SS_ALLOWED_SERIALS'], this.decodeToMortal(allowedSerials)) != 0)
+            ) {
+                return this.licCheckResult.key_info_to_update;
+            }
+            if (strtotime(key[0]['SS_EXPIRE']) <= strtotime(nowDate)) {
+                return this.licCheckResult.key_expired;
+            }
+            return this.licCheckResult.key_ok;
         }).catch(err => this.licCheckResult.server_error);
     }
 

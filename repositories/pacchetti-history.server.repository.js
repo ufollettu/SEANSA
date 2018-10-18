@@ -14,6 +14,14 @@ class Repository {
         return db.pacchettiHistory.findById(id)
     }
 
+    findByLicense(licenseId) {
+        return db.pacchettiHistory.findOne({
+            where: {
+                SPKH_SS_ID: licenseId
+            }
+        });
+    }
+
     findOne(data) {
         return db.pacchettiHistory.findOne(data);
     }
