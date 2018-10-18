@@ -6,6 +6,8 @@ const assert = require("assert");
 const superactivator = require("../helpers/superactivator");
 const sksSeed = require('../seeds/sks');
 const pcSeed = require('../seeds/pc');
+const packsSeed = require('../seeds/packs');
+const packsHistorySeed = require('../seeds/packs-history');
 const matricoleSeed = require('../seeds/matricole');
 const moment = require("moment");
 
@@ -268,6 +270,10 @@ describe("checkLicense()", function () {
     await db.matricole.bulkCreate(matricoleSeed);
     await db.sks.destroy({ where: {}, truncate: true });
     await db.sks.bulkCreate(sksSeed);
+    await db.pacchetti.bulkCreate(packsSeed);
+    await db.pacchetti.destroy({ where: {}, truncate: true });
+    await db.pacchettiHistory.bulkCreate(packsHistorySeed);
+    await db.pacchettiHistory.destroy({ where: {}, truncate: true });
   });
   it("sks key inesistente, should return 0", async function () {
     // here I mock the request.body data
