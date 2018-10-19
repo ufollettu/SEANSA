@@ -24,7 +24,6 @@ export class DataService {
     const authService = this.injector.get(AuthService);
     const token = authService.getToken();
     const userIdToken = jwt_decode(token);
-    // console.log(userIdToken);
     return this.api.getUtente(userIdToken.userId);
   }
 
@@ -32,8 +31,14 @@ export class DataService {
     const authService = this.injector.get(AuthService);
     const token = authService.getToken();
     const userIdToken = jwt_decode(token);
-
     return of(userIdToken.permArr);
+  }
+
+  getAdminFromToken(): Observable<any> {
+    const authService = this.injector.get(AuthService);
+    const token = authService.getToken();
+    const userIdToken = jwt_decode(token);
+    return of(userIdToken.isAdmin);
   }
 
   changeUser(user: object) {

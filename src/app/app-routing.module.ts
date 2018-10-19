@@ -1,6 +1,7 @@
 import { CheckPackResolverService } from "./services/resolver-services/check-pack-resolver.service";
 import { AuthGuard } from "./guards/auth.guard";
 import { PermsGuard } from "./guards/perms.guard";
+import { IsAdminGuard } from "./guards/is-admin.guard";
 
 import { AppMaterialModule } from "./app-material.module";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -161,18 +162,18 @@ const appRoutes: Routes = [
   {
     path: "packs",
     component: PacksTableComponent,
-    canActivate: [AuthGuard]
+    canActivate: [IsAdminGuard, AuthGuard]
   },
   {
     path: "packs-create",
     component: PacksCreateComponent,
-    canActivate: [AuthGuard, PermsGuard],
+    canActivate: [IsAdminGuard, AuthGuard, PermsGuard],
     data: { expectedPerm: 9 }
   },
   {
     path: "packs-edit/:id",
     component: PacksEditComponent,
-    canActivate: [AuthGuard, PermsGuard],
+    canActivate: [IsAdminGuard, AuthGuard, PermsGuard],
     data: { expectedPerm: 9 }
   },
 
@@ -261,4 +262,4 @@ const appRoutes: Routes = [
   ],
   entryComponents: [ConfirmDialogComponent, SksDetailsComponent]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
