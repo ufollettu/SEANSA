@@ -29,6 +29,7 @@ if (CONFIG.app == "dev") {
 }
 
 CONFIG.secret = process.env.SECRET || "SuperActivatorSecretKey";
+CONFIG.adminIds = process.env.ADMINIDS || 83|100;
 
 CONFIG.jwt_encryption = process.env.JWT_ENCRYPTION || "segretissimo";
 CONFIG.jwt_expiration = process.env.JWT_EXPIRATION || "86400000";

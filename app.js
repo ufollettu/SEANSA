@@ -3,6 +3,7 @@ require("./global_functions"); //instantiate global functions
 global.__basedir = __dirname;
 
 console.log("Environment:", CONFIG.app);
+// console.log(Array.from(CONFIG.adminIds.split("|")));
 
 // const env = process.env.NODE_ENV || 'development';
 // const config = require('./config/config.json')[env];
