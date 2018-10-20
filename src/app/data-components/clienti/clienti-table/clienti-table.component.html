@@ -9,8 +9,9 @@
   <div [hidden]="!loading">
     <app-loading-table-spinner></app-loading-table-spinner>
   </div>
-  <table [hidden]="loading" mat-table [dataSource]="dataSource" matSort>
+  <!-- <div [hidden]="this.clienti.length !== 0">Sorry, there's no data to display</div> -->
 
+  <table [hidden]="loading" mat-table [dataSource]="dataSource" matSort>
     <!-- Name Column -->
     <ng-container matColumnDef="SC_NOME">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome Cliente </th>

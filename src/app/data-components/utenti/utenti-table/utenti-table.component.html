@@ -1,5 +1,5 @@
 <div class="search-div">
-  <a mat-raised-button matTooltip="Crea nuovo utente" color="primary" [routerLink]="['/utenti-create']">
+  <a [appCheckPermissions]="2" mat-raised-button matTooltip="Crea nuovo utente" color="primary" [routerLink]="['/utenti-create']">
     <mat-icon>add</mat-icon>
   </a>
   <app-search-bar [dataSource]="dataSource"></app-search-bar>
