@@ -1,27 +1,30 @@
-import { Injectable } from '@angular/core';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { Injectable } from "@angular/core";
+import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class NotificationService {
-
-  constructor(public snackBar: MatSnackBar) { }
+  constructor(public snackBar: MatSnackBar) {}
 
   config: MatSnackBarConfig = {
     duration: 3000,
-    horizontalPosition: 'right',
-    verticalPosition: 'bottom'
+    horizontalPosition: "right",
+    verticalPosition: "bottom"
   };
 
-
   success(msg) {
-    this.config['panelClass'] = ['notification', 'success'];
-    this.snackBar.open(msg, '', this.config);
+    this.config["panelClass"] = ["notification", "success"];
+    this.snackBar.open(msg, "", this.config);
   }
 
   warn(msg) {
-    this.config['panelClass'] = ['notification', 'warn'];
-    this.snackBar.open(msg, '', this.config);
+    this.config["panelClass"] = ["notification", "warn"];
+    this.snackBar.open(msg, "", this.config);
+  }
+
+  noData() {
+    this.config["panelClass"] = ["notification", "nodata"];
+    this.snackBar.open("there's no data to display", "", this.config);
   }
 }

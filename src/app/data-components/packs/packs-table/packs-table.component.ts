@@ -62,12 +62,19 @@ export class PacksTableComponent implements OnInit {
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
         this.loading = false;
+        this.noData(res);
       },
       err => {
         this.authService.handleLoginError(err);
       }
     );
     this.fetchUtenti();
+  }
+
+  noData(data: Packs[]) {
+    if (data.length === 0) {
+      this.notificationService.noData();
+    }
   }
 
   deletePack(id: number) {

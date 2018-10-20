@@ -121,6 +121,7 @@ export class SksTableComponent implements OnInit {
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
         this.loading = false;
+        this.noData(res);
       },
       err => {
         this.authService.handleLoginError(err);
@@ -130,6 +131,12 @@ export class SksTableComponent implements OnInit {
     this.fetchPcs();
     this.fetchMatricole();
     this.fetchClienti();
+  }
+
+  noData(data: Sks[]) {
+    if (data.length === 0) {
+      this.notificationService.noData();
+    }
   }
 
   decouplePC(id) {

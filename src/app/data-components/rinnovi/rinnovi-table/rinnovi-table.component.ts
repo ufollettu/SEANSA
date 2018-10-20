@@ -1,3 +1,5 @@
+import { NotificationService } from "./../../../services/layout-services/notification.service";
+import { Rinnovo } from "./../../../models/rinnovo";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
@@ -43,6 +45,7 @@ export class RinnoviTableComponent implements OnInit {
   paginator: MatPaginator;
 
   constructor(
+    private notificationService: NotificationService,
     private authService: AuthService,
     private api: RinnoviApiService,
     private changeDetectorRefs: ChangeDetectorRef,
@@ -58,17 +61,25 @@ export class RinnoviTableComponent implements OnInit {
   refreshRinnoviList() {
     this.api.getRinnovi().subscribe(
       res => {
-        if (Object.keys(res).length > 0) {
-          this.rinnovi = res;
-          this.dataSource = new MatTableDataSource(this.rinnovi);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-          this.changeDetectorRefs.detectChanges();
-          this.loading = false;
-        }
-      }, (err) => {
+        // if (Object.keys(res).length > 0) {
+        this.rinnovi = res;
+        this.dataSource = new MatTableDataSource(this.rinnovi);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.changeDetectorRefs.detectChanges();
+        this.loading = false;
+        this.noData(res);
+        // }
+      },
+      err => {
         this.authService.handleLoginError(err);
       }
     );
+  }
+
+  noData(data: Rinnovo[]) {
+    if (data.length === 0) {
+      this.notificationService.noData();
+    }
   }
 }

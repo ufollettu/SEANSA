@@ -90,7 +90,7 @@ export class ClientiTableComponent implements OnInit {
 
   noData(data: Cliente[]) {
     if (data.length === 0) {
-      this.notificationService.warn(`there's no data to display`);
+      this.notificationService.noData();
     }
   }
 

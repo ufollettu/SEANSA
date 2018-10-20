@@ -86,7 +86,7 @@ export class UtentiTableComponent implements OnInit {
 
   noData(data: Utente[]) {
     if (data.length === 0) {
-      this.notificationService.warn(`there's no data to display`);
+      this.notificationService.noData();
     }
   }
 

@@ -1,35 +1,39 @@
-const db = require('../models');
+const db = require("../models");
 
 class Repository {
+  findAll() {
+    return db.matricole.findAll();
+  }
+  findAllByCreatorId(creatorId) {
+    return db.matricole.findAll({
+      where: {
+        SM_CREATOR_ID: creatorId
+      }
+    });
+  }
+  findAllBySks(sksId) {
+    return db.matricole.findAll({ where: { SM_SS_ID: sksId } });
+  }
 
-    findAll() {
-        return db.matricole.findAll()
-    }
+  create(data) {
+    return db.matricole.create(data);
+  }
 
-    findAllBySks(sksId) {
-        return db.matricole.findAll({ where: { SM_SS_ID: sksId } })
-    }
+  findById(id) {
+    return db.matricole.findById(id);
+  }
 
-    create(data) {
-        return db.matricole.create(data)
-    }
+  findOne(data) {
+    return db.matricole.findOne(data);
+  }
 
-    findById(id) {
-        return db.matricole.findById(id)
-    }
-
-    findOne(data) {
-        return db.matricole.findOne(data);
-    }
-
-    destroy(id) {
-        return db.matricole.destroy({
-            where: {
-                sm_id: id
-            }
-        })
-    }
-
+  destroy(id) {
+    return db.matricole.destroy({
+      where: {
+        sm_id: id
+      }
+    });
+  }
 }
 
 var repository = new Repository();
