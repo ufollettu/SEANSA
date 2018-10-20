@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('sa_utenti', {
+    return queryInterface.createTable("sa_utenti", {
       SU_ID: {
         allowNull: false,
         autoIncrement: true,
@@ -28,6 +28,9 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: null
       },
+      SU_CREATOR_ID: {
+        type: Sequelize.INTEGER(11)
+      },
       SU_DELETED: {
         type: Sequelize.TINYINT(1),
         allowNull: true,
@@ -40,6 +43,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('sa_utenti');
+    return queryInterface.dropTable("sa_utenti");
   }
 };

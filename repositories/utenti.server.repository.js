@@ -7,12 +7,20 @@ class Repository {
 
   findNotDeleted() {
     return db.utenti.findAll({
-        where: {
-            SU_DELETED: 0
-        }
+      where: {
+        SU_DELETED: 0
+      }
     });
-}
+  }
 
+  findNotDeletedByCreatorId(creatorId) {
+    return db.utenti.findAll({
+      where: {
+        SU_DELETED: 0,
+        SU_CREATOR_ID: creatorId
+      }
+    });
+  }
   create(data) {
     return db.utenti.create(data);
   }
@@ -28,9 +36,9 @@ class Repository {
   destroy(id) {
     return db.utenti.destroy({
       where: {
-          SU_ID: id
+        SU_ID: id
       }
-  })
+    });
   }
 }
 
