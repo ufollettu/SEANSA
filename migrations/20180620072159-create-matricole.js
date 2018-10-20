@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('sa_matricole', {
+    return queryInterface.createTable("sa_matricole", {
       sm_id: {
         allowNull: false,
         autoIncrement: true,
@@ -20,6 +20,9 @@ module.exports = {
         type: Sequelize.STRING,
         defaultValue: null
       },
+      SM_CREATOR_ID: {
+        type: Sequelize.INTEGER(10)
+      },
       SM_CREATION_DATE: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -32,6 +35,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('sa_matricole');
+    return queryInterface.dropTable("sa_matricole");
   }
 };

@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('sa_sks', {
+    return queryInterface.createTable("sa_sks", {
       SS_ID: {
         allowNull: false,
         autoIncrement: true,
@@ -33,7 +33,7 @@ module.exports = {
       SS_LAST_EDIT: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW(),
+        defaultValue: Sequelize.NOW()
       },
       SS_MISMATCH_COUNT: {
         allowNull: false,
@@ -50,7 +50,10 @@ module.exports = {
       },
       SS_SP_ID: {
         allowNull: false,
-        type: Sequelize.INTEGER(11),
+        type: Sequelize.INTEGER(11)
+      },
+      SS_CREATOR_ID: {
+        type: Sequelize.INTEGER(10)
       },
       SS_ACTIVATED_BY: {
         type: Sequelize.STRING(50),
@@ -59,10 +62,10 @@ module.exports = {
       SS_ACTIVATION_REFERENT: {
         type: Sequelize.TEXT,
         defaultValue: null
-      },
+      }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('sa_sks');
+    return queryInterface.dropTable("sa_sks");
   }
 };

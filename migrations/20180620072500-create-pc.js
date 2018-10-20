@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('sa_pc', {
+    return queryInterface.createTable("sa_pc", {
       SP_ID: {
         allowNull: false,
         autoIncrement: true,
@@ -18,12 +18,15 @@ module.exports = {
       },
       SP_IP: {
         type: Sequelize.STRING(20),
-        defaultValue: null  
+        defaultValue: null
       },
       SP_STATUS: {
         type: Sequelize.TINYINT(1),
         allowNull: false,
         defaultValue: "0"
+      },
+      SP_CREATOR_ID: {
+        type: Sequelize.INTEGER(10)
       },
       SP_PC_DATE_TIME: {
         type: Sequelize.DATEONLY,
@@ -32,6 +35,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('sa_pc');
+    return queryInterface.dropTable("sa_pc");
   }
 };

@@ -3,6 +3,7 @@ export class Matricola {
   SM_MATRICOLA: number;
   SM_SS_ID: number;
   SM_DETTAGLI?: string;
+  SM_CREATOR_ID?: number;
   SM_CREATION_DATE?: Date;
   SM_LAST_UPDATE?: Date;
 }
