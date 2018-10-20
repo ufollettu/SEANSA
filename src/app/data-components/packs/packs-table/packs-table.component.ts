@@ -18,6 +18,7 @@ export class PacksTableComponent implements OnInit {
   loading;
   packs: Packs[];
   utenti: Utente[];
+  isAdmin: boolean;
 
   // tslint:disable-next-line:max-line-length
   displayedColumns = [
@@ -49,13 +50,15 @@ export class PacksTableComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.isAdmin = this.authService.isAdmin();
     this.fetchUtenti();
-    this.refreshPacksList();
+    // this.refreshPacksList();
   }
 
   refreshPacksList() {
     this.api.getPacks().subscribe(
       res => {
+        console.log(res);
         this.packs = res;
         this.dataSource = new MatTableDataSource(this.packs);
         this.dataSource.paginator = this.paginator;
@@ -68,7 +71,6 @@ export class PacksTableComponent implements OnInit {
         this.authService.handleLoginError(err);
       }
     );
-    this.fetchUtenti();
   }
 
   noData(data: Packs[]) {
@@ -85,7 +87,6 @@ export class PacksTableComponent implements OnInit {
         if (res) {
           this.api.deletePack(id).subscribe(
             pack => {
-              console.log(pack);
               this.notificationService.warn(`pacchetto rimosso`);
               this.refreshPacksList();
             },
@@ -101,6 +102,7 @@ export class PacksTableComponent implements OnInit {
     this.utentiApi.getUtenti().subscribe(
       utenti => {
         this.utenti = utenti;
+        this.refreshPacksList();
       },
       err => {
         this.authService.handleLoginError(err);

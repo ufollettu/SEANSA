@@ -18,7 +18,7 @@ module.exports.list = list;
 // Create
 const create = async (req, res) => {
   const data = {
-    SPK_SU_CREATOR_ID: req.body.SPK_SU_CREATOR_ID,
+    SPK_SU_CREATOR_ID: req.userId,
     SPK_SU_OWNER_ID: req.body.SPK_SU_OWNER_ID,
     SPK_CREATED: moment().format("YYYY-MM-DD hh:mm:ss"),
     SPK_EXPIRE: req.body.SPK_EXPIRE,
@@ -28,8 +28,8 @@ const create = async (req, res) => {
 
   repository
     .create(data)
-    .then(sks => {
-      res.json(sks);
+    .then(pack => {
+      res.json(pack);
     })
     .catch(err => res.send(err.errors));
 };
