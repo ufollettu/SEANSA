@@ -1,4 +1,9 @@
+import { AppDirectivesModule } from "./app-directives.module";
 import { CheckPackResolverService } from "./services/resolver-services/check-pack-resolver.service";
+import { ApiResolverService } from "./services/resolver-services/api-resolver.service";
+
+import { CheckPermissionsDirective } from "./directives/check-permissions.directive";
+
 import { AuthGuard } from "./guards/auth.guard";
 import { PermsGuard } from "./guards/perms.guard";
 import { IsAdminGuard } from "./guards/is-admin.guard";
@@ -41,6 +46,8 @@ import { MatricoleEditComponent } from "./data-components/matricole/matricole-ed
 import { MatricoleCloneComponent } from "./data-components/matricole/matricole-clone/matricole-clone.component";
 
 import { PacksTableComponent } from "./data-components/packs/packs-table/packs-table.component";
+import { PacksCreateComponent } from "./data-components/packs/packs-create/packs-create.component";
+import { PacksEditComponent } from "./data-components/packs/packs-edit/packs-edit.component";
 
 // import { RegisterComponent } from './auth-components/register/register.component';
 import { LoginComponent } from "./auth-components/login/login.component";
@@ -52,11 +59,6 @@ import { CustomizeComponent } from "./customize/customize.component";
 import { LoadingTableSpinnerComponent } from "./layout-components/loading-table-spinner/loading-table-spinner.component";
 import { ConfirmDialogComponent } from "./layout-components/confirm-dialog/confirm-dialog.component";
 import { SearchBarComponent } from "./layout-components/search-bar/search-bar.component";
-
-import { ApiResolverService } from "./services/resolver-services/api-resolver.service";
-import { CheckPermissionsDirective } from "./directives/check-permissions.directive";
-import { PacksCreateComponent } from "./data-components/packs/packs-create/packs-create.component";
-import { PacksEditComponent } from "./data-components/packs/packs-edit/packs-edit.component";
 
 const appRoutes: Routes = [
   {
@@ -162,18 +164,19 @@ const appRoutes: Routes = [
   {
     path: "packs",
     component: PacksTableComponent,
-    canActivate: [IsAdminGuard, AuthGuard]
+    canActivate: [AuthGuard, PermsGuard],
+    data: { expectedPerm: 9 }
   },
   {
     path: "packs-create",
     component: PacksCreateComponent,
-    canActivate: [IsAdminGuard, AuthGuard, PermsGuard],
+    canActivate: [AuthGuard, PermsGuard],
     data: { expectedPerm: 9 }
   },
   {
     path: "packs-edit/:id",
     component: PacksEditComponent,
-    canActivate: [IsAdminGuard, AuthGuard, PermsGuard],
+    canActivate: [AuthGuard, PermsGuard],
     data: { expectedPerm: 9 }
   },
 
@@ -220,7 +223,8 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     BrowserAnimationsModule,
     AppMaterialModule,
-    ColorPickerModule
+    ColorPickerModule,
+    AppDirectivesModule
   ],
   exports: [RouterModule],
   declarations: [
@@ -257,9 +261,9 @@ const appRoutes: Routes = [
     ForgotPwdComponent,
     CustomizeComponent,
     ConfirmDialogComponent,
-    SearchBarComponent,
-    CheckPermissionsDirective
+    SearchBarComponent
+    // CheckPermissionsDirective
   ],
   entryComponents: [ConfirmDialogComponent, SksDetailsComponent]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

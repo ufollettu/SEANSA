@@ -3,8 +3,11 @@ const moment = require("moment");
 
 // List
 const list = async (req, res) => {
-  repository
-    .findAll()
+  const allRes = req.isAdmin
+    ? repository.findAll()
+    : repository.findByCreatorId(req.userId);
+
+  allRes
     .then(packs => {
       res.json(packs);
     })

@@ -14,13 +14,13 @@
     <!-- Name Column -->
     <ng-container matColumnDef="SPK_SU_CREATOR_ID">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Creatore Pacchetto </th>
-      <td mat-cell *matCellDef="let element" class="nome-col"> {{getUserName(element.SPK_SU_CREATOR_ID)}} </td>
+      <td mat-cell *matCellDef="let element" class="nome-col"> {{getUserName(element?.SPK_SU_CREATOR_ID)}} </td>
     </ng-container>
 
     <!-- Email Column -->
     <ng-container matColumnDef="SPK_SU_OWNER_ID">
       <th mat-header-cell *matHeaderCellDef> Proprietario Pacchetto </th>
-      <td mat-cell *matCellDef="let element"> {{getUserName(element.SPK_SU_OWNER_ID)}} </td>
+      <td mat-cell *matCellDef="let element"> {{getUserName(element?.SPK_SU_OWNER_ID)}} </td>
     </ng-container>
 
     <!-- Phone Column -->
@@ -55,10 +55,10 @@
             <mat-icon>launch</mat-icon>
           </button> -->
         <a mat-icon-button color="primary" matTooltip="Edit" [routerLink]="['/packs-edit', element.SPK_ID]"
-          [appCheckPermissions]="6">
+          [appCheckPermissions]="9">
           <mat-icon>edit</mat-icon>
         </a>
-        <a mat-icon-button matTooltip="Delete" color="warn" (click)="deletePack(element.SPK_ID)" [appCheckPermissions]="6">
+        <a mat-icon-button matTooltip="Delete" color="warn" (click)="deletePack(element.SPK_ID)" [appCheckPermissions]="9">
           <mat-icon>delete</mat-icon>
         </a>
       </td>

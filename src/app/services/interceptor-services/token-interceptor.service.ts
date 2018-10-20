@@ -1,24 +1,31 @@
-import { Observable } from 'rxjs';
-import { AuthService } from '../auth-services/auth.service';
-import { Injectable, Injector } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import { Observable } from "rxjs";
+import { AuthService } from "../auth-services/auth.service";
+import { Injectable, Injector } from "@angular/core";
+import {
+  HttpInterceptor,
+  HttpRequest,
+  HttpHandler,
+  HttpEvent
+} from "@angular/common/http";
 import * as jwt_decode from "jwt-decode";
-import { DataService } from '../shared-services/data.service';
+import { DataService } from "../shared-services/data.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class TokenInterceptorService implements HttpInterceptor {
-
   user: object;
 
-  constructor(private injector: Injector) { }
+  constructor(private injector: Injector) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(
+    req: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
     const authService = this.injector.get(AuthService);
     const dataService = this.injector.get(DataService);
     const token: string = authService.getToken();
-    dataService.currentUser.subscribe(loggedUser => this.user = loggedUser);
+    dataService.currentUser.subscribe(loggedUser => (this.user = loggedUser));
 
     if (token) {
       // // TODO check if user token is equals to user edit
@@ -28,6 +35,7 @@ export class TokenInterceptorService implements HttpInterceptor {
       // } else {
       //   console.log('not ok');
       // }
+      // console.log(`interceptor token: ${token}`);
       req = req.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`

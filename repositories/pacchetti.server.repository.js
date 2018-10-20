@@ -19,6 +19,12 @@ class Repository {
     });
   }
 
+  findByCreatorId(creatorId) {
+    return db.pacchetti.findAll({
+      where: { SPK_SU_CREATOR_ID: creatorId }
+    });
+  }
+
   findOne(data) {
     return db.pacchetti.findOne(data);
   }
