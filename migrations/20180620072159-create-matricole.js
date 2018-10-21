@@ -20,9 +20,6 @@ module.exports = {
         type: Sequelize.STRING,
         defaultValue: null
       },
-      SM_CREATOR_ID: {
-        type: Sequelize.INTEGER(10)
-      },
       SM_CREATION_DATE: {
         allowNull: false,
         type: Sequelize.DATE,

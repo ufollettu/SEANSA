@@ -24,9 +24,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: "0"
       },
-      SP_CREATOR_ID: {
-        type: DataTypes.INTEGER(10)
-      },
       SP_PC_DATE_TIME: {
         type: DataTypes.DATEONLY
       }

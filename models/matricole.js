@@ -21,9 +21,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         defaultValue: null
       },
-      SM_CREATOR_ID: {
-        type: DataTypes.INTEGER(10)
-      },
       SM_CREATION_DATE: {
         allowNull: false,
         type: DataTypes.DATE,

@@ -2,11 +2,8 @@ const repository = require("../repositories/matricole.server.repository");
 
 // List
 const list = async (req, res) => {
-  const allRes = req.isAdmin
-    ? repository.findAll()
-    : repository.findAllByCreatorId(req.userId);
-
-  allRes
+  repository
+    .findAll()
     .then(matricole => {
       res.json(matricole);
     })
@@ -23,7 +20,6 @@ module.exports.list = list;
 // Create
 const create = async (req, res) => {
   const data = req.body;
-  // data["SM_CREATOR_ID"] = req.userId;
   repository
     .create(data)
     .then(matricola => {

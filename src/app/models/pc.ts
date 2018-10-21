@@ -4,6 +4,5 @@ export class Pc {
   SP_LAST_RX?: Date;
   SP_IP?: string;
   SP_STATUS?: number;
-  SP_CREATOR_ID?: number;
   SP_PC_DATE_TIME?: Date;
 }

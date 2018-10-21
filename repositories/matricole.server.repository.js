@@ -4,13 +4,7 @@ class Repository {
   findAll() {
     return db.matricole.findAll();
   }
-  findAllByCreatorId(creatorId) {
-    return db.matricole.findAll({
-      where: {
-        SM_CREATOR_ID: creatorId
-      }
-    });
-  }
+
   findAllBySks(sksId) {
     return db.matricole.findAll({ where: { SM_SS_ID: sksId } });
   }
