@@ -8,12 +8,12 @@ class Repository {
   findAll() {
     return db.pc.findAll();
   }
-  findAllByCreatorId(creatorId) {
-    return db.pc.findAll({
-      where: {
-        SP_CREATOR_ID: creatorId
-      }
-    });
+  findAllBySksCreatorId(creatorId) {
+    const query =
+      "SELECT `SP_ID`,`SP_HW_ID`,`SP_LAST_RX`,`SP_IP`,`SP_STATUS`,`SP_CREATOR_ID`,`SP_PC_DATE_TIME` FROM `sa_pc` left join `sa_sks` on `SP_ID` = `SS_SP_ID` where `SS_CREATOR_ID` = '" +
+      creatorId +
+      "'";
+    return db.sequelize.query(query, { type: db.Sequelize.QueryTypes.SELECT });
   }
 
   create(data) {

@@ -23,6 +23,7 @@ module.exports.add = add;
 // Create
 const create = async (req, res) => {
   const data = req.body;
+  data["SR_CREATOR_ID"] = req.userId;
   repository
     .create(data)
     .then(rinnovo => {

@@ -39,6 +39,7 @@ const create = async (req, res) => {
           SU_LAST_LOGIN: new Date(),
           SU_CREATION: new Date(),
           SU_LAST_EDIT: new Date(),
+          SU_CREATOR_ID: req.userId,
           SU_DELETED: req.body.deleted,
           SU_LAST_IP: req.body.lastIp
         };

@@ -23,6 +23,7 @@ module.exports.list = list;
 // Create
 const create = async (req, res) => {
   const data = req.body;
+  // data["SM_CREATOR_ID"] = req.userId;
   repository
     .create(data)
     .then(matricola => {

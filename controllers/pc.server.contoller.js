@@ -4,7 +4,7 @@ const repository = require("../repositories/pc.server.repository");
 const list = async (req, res) => {
   const allRes = req.isAdmin
     ? repository.findAll()
-    : repository.findAllByCreatorId(req.userId);
+    : repository.findAllBySksCreatorId(req.userId);
 
   allRes
     .then(pcs => {
@@ -23,6 +23,7 @@ module.exports.add = add;
 // Create
 const create = async (req, res) => {
   const data = req.body;
+  // data["SP_CREATOR_ID"] = req.userId;
   repository
     .create(data)
     .then(pc => {
