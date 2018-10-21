@@ -1,80 +1,79 @@
 .header-buttons {
-    overflow: hidden;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    padding-top: 16px;
-    padding-bottom: 16px;
-    margin: 0;
-    height: auto;
-    display: inline-block;
-    text-align: center;
-    z-index: 1;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  margin: 0;
+  height: auto;
+  display: inline-block;
+  text-align: center;
+  z-index: 1;
 }
 
 .mat-raised-button {
-    margin: 10px;
-    padding: 10px;
+  margin: 10px;
+  padding: 10px;
 }
 
 .mat-raised-button:hover {
-    background: lightgray;
+  background: lightgray;
 }
 
 .site-title {
-    width: 75%;
-    padding: 16px;
-    display: inline-block;
-    /* text-align: center; */
-    margin: 0, auto;
+  width: 75%;
+  padding: 16px;
+  display: inline-block;
+  /* text-align: center; */
+  margin: 0, auto;
 }
 
 .routes-buttons {
-    width: 75%;
-    display: inline-block;
-    text-align: left;
+  width: 40%;
+  display: inline-block;
+  text-align: left;
 }
 
 .auth-buttons {
-    width: 20%;
-    display: inline-block;
-    text-align: right;
+  width: 50%;
+  display: inline-block;
+  text-align: right;
 }
 
 .navbuttons {
-    width: 50%;
-    display: inline-block;
-    text-align: left;
-    padding-bottom: 20px;
+  width: 50%;
+  display: inline-block;
+  text-align: left;
+  padding-bottom: 20px;
 }
 
 .mat-stroked-button {
-    font-size: 18px;
-    margin-right: 10px;
-    border-top-width: 0px;
-    border-right-width: 0px;
-    border-bottom-width: 2px;
-    border-left-width: 0px;
+  /* font-size: 18px; */
+  margin-right: 10px;
+  border-top-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 2px;
+  border-left-width: 0px;
 }
 
 .logo-wrapper {
-    width: 20%;
-    display: inline-block;
-    text-align: left;
+  width: 20%;
+  display: inline-block;
+  text-align: left;
+  padding-right: 20px;
 }
 
 .logo {
-    margin-bottom: -30px;
-    /* width: 90%; */
-    bottom: 0;
-    max-height: 90px;
+  bottom: 0;
+  max-height: 90px;
 }
 
 .welcome {
-    width: 20%;
-    display: inline-block;
-    text-align: right;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    font-size: 16px;
-    color: whitesmoke;
+  width: 20%;
+  display: inline-block;
+  text-align: right;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  color: whitesmoke;
 }

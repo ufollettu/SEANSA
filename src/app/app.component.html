@@ -1,12 +1,36 @@
 <div color="primary">
-  <app-header></app-header>
-  <div class="main" color="primary">
-    <div [hidden]="!loading" class="loader">
-      <app-progress-spinner></app-progress-spinner>
-    </div>
-    <div [hidden]="loading" class="router-output">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-  <app-footer></app-footer>
+
+  <mat-sidenav-container class="example-container" (backdropClick)="closeSidenav()">
+    <mat-sidenav #sidenav (keydown.escape)="closeSidenav()" disableClose>
+      <mat-list>
+        <mat-list-item (click)="closeSidenav()"><button id="clienti" mat-button [routerLink]="['/clienti']"
+            routerLinkActive="mat-accent">Clienti</button></mat-list-item>
+        <mat-list-item (click)="closeSidenav()"><button mat-button [routerLink]="['/utenti']" routerLinkActive="mat-accent">Utenti</button></mat-list-item>
+        <!-- <mat-list-item (click)="closeSidenav()"><butto [routerLink]="['/matricole']" routerLinkActive="mat-accent">Matricole</mat-list-item> -->
+        <mat-list-item (click)="closeSidenav()"><button mat-button [routerLink]="['/sks']" routerLinkActive="mat-accent">Sks</button></mat-list-item>
+        <mat-list-item (click)="closeSidenav()" [appCheckPermissions]="9">
+          <button mat-button [routerLink]="['/packs']" routerLinkActive="mat-accent">Pacchetti</button>
+        </mat-list-item>
+        <mat-list-item (click)="closeSidenav()"><button mat-button [routerLink]="['/pc']" routerLinkActive="mat-accent">Pc</button></mat-list-item>
+        <mat-list-item (click)="closeSidenav()"><button mat-button [routerLink]="['/rinnovi']" routerLinkActive="mat-accent">Rinnovi</button></mat-list-item>
+      </mat-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <app-header></app-header>
+      <div class="main" color="primary">
+        <div [hidden]="!loading" class="loader">
+          <app-progress-spinner></app-progress-spinner>
+        </div>
+        <div [hidden]="loading" class="router-output">
+          <p><button mat-button (click)="sidenav.open()">
+              <mat-icon>menu</mat-icon>
+            </button></p>
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+      <app-footer></app-footer>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
 </div>

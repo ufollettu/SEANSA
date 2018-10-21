@@ -8,15 +8,6 @@
     </div>
   </div>
   <div class="routes-buttons" *ngIf="!!authService.loggedIn()">
-    <div class="navbuttons">
-      <button mat-stroked-button [routerLink]="['/clienti']" routerLinkActive="mat-accent">Clienti</button>
-      <button mat-stroked-button [routerLink]="['/utenti']" routerLinkActive="mat-accent">Utenti</button>
-      <!-- <button mat-raised-button [routerLink]="['/matricole']" routerLinkActive="mat-accent">Matricole</button> -->
-      <button mat-stroked-button [routerLink]="['/sks']" routerLinkActive="mat-accent">Sks</button>
-      <button mat-stroked-button [routerLink]="['/packs']" routerLinkActive="mat-accent" [appCheckPermissions]="9">Pacchetti</button>
-      <button mat-stroked-button [routerLink]="['/pc']" routerLinkActive="mat-accent">Pc</button>
-      <button mat-stroked-button [routerLink]="['/rinnovi']" routerLinkActive="mat-accent">Rinnovi</button>
-    </div>
     <div class="logo-wrapper">
       <img class="logo" [src]="logoPath">
     </div>
