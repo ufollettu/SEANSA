@@ -10,6 +10,13 @@
   </div>
 
   <div class="routes-buttons" *ngIf="!!authService.loggedIn()">
+
+    <div class="menu-wrapper">
+      <button mat-button (click)="toggleSideNav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+
     <div class="logo-wrapper">
       <img class="logo" [src]="logoPath">
     </div>
@@ -19,14 +26,17 @@
     <div class="auth-buttons">
       <!-- <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/register']" routerLinkActive="mat-accent">Signup</button> -->
       <!-- <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/login']" routerLinkActive="mat-accent">Signin</button> -->
-      <button mat-button *ngIf="!!authService.loggedIn()" [routerLink]="['/changepassword']" routerLinkActive="mat-accent" matTooltip="Change Password" matTooltipPosition="left"> 
+      <button mat-button *ngIf="!!authService.loggedIn()" [routerLink]="['/changepassword']" routerLinkActive="mat-accent"
+        matTooltip="Change Password" matTooltipPosition="left">
         <mat-icon class="mat-18">vpn_key</mat-icon>
       </button>
-      <button mat-button *ngIf="!!authService.loggedIn()" [routerLink]="['/customize']" routerLinkActive="mat-accent" matTooltip="Customize" matTooltipPosition="left">
+      <button mat-button *ngIf="!!authService.loggedIn()" [routerLink]="['/customize']" routerLinkActive="mat-accent"
+        matTooltip="Customize" matTooltipPosition="left">
         <mat-icon class="mat-18">insert_photo</mat-icon>
       </button>
-      <button mat-button *ngIf="!!authService.loggedIn()" (click)="onLogout()" routerLinkActive="mat-accent" matTooltip="Logout" matTooltipPosition="left">
-          <mat-icon class="mat-18">phonelink_off</mat-icon>
+      <button mat-button *ngIf="!!authService.loggedIn()" (click)="onLogout()" routerLinkActive="mat-accent" matTooltip="Logout"
+        matTooltipPosition="left">
+        <mat-icon class="mat-18">phonelink_off</mat-icon>
       </button>
     </div>
   </div>

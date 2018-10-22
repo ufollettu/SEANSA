@@ -1,5 +1,5 @@
 import { MatSidenav } from "@angular/material";
-import { ViewChild, ViewEncapsulation } from "@angular/core";
+import { ViewChild, ViewEncapsulation, OnChanges } from "@angular/core";
 import { Component, AfterViewInit, HostBinding, OnInit } from "@angular/core";
 import {
   Router,
@@ -10,6 +10,7 @@ import {
 import { OverlayContainer } from "@angular/cdk/overlay";
 import { CustomizeService } from "./services/shared-services/customize.service";
 import { FocusMonitor } from "@angular/cdk/a11y";
+import { SidenavService } from "./services/layout-services/sidenav.service";
 
 @Component({
   selector: "app-root",
@@ -20,13 +21,12 @@ export class AppComponent implements AfterViewInit, OnInit {
   loading;
   customTheme;
   // theme: string;
-  @HostBinding("class")
-  componentCssClass;
-  @ViewChild("sidenav")
-  sidenav: MatSidenav;
+  @HostBinding("class") componentCssClass;
+  @ViewChild("sidenav") public sidenav: MatSidenav;
 
   constructor(
     private router: Router,
+    private sidenavService: SidenavService,
     private focusMonitor: FocusMonitor,
     public overlayContainer: OverlayContainer,
     private customizeService: CustomizeService
@@ -36,6 +36,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 
   ngOnInit() {
     this.getTheme();
+    this.sidenavService.setSidenav(this.sidenav);
   }
 
   ngAfterViewInit() {
@@ -65,6 +66,6 @@ export class AppComponent implements AfterViewInit, OnInit {
   }
 
   closeSidenav() {
-    this.sidenav.close();
+    this.sidenavService.close();
   }
 }

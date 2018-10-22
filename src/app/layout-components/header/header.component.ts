@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth-services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/shared-services/data.service';
 import { CustomizeService } from '../../services/shared-services/customize.service';
+import { SidenavService } from 'src/app/services/layout-services/sidenav.service';
 
 @Component({
   selector: 'app-header',
@@ -21,6 +22,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private sideNavService: SidenavService,
     private authService: AuthService,
     private data: DataService,
     private customizeService: CustomizeService,
@@ -67,6 +69,10 @@ export class HeaderComponent implements OnInit {
       }
       this.cdRef.detectChanges();
     });
+  }
+
+  toggleSideNav() {
+    this.sideNavService.toggle();
   }
   // getLogoFromLocalStorage() {
   //   const localLogoPath = localStorage.getItem('customLogo');
