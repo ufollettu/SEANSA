@@ -11,7 +11,7 @@ $custom-typography: mat-typography-config(
 
 // Default colors
 $my-app-primary: mat-palette($mat-teal, 700, 100, 800);
-$my-app-accent:  mat-palette($mat-teal, 500, 100, 800);
+$my-app-accent:  mat-palette($mat-teal, 200, 100, 800);
 
 $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 @include angular-material-theme($my-app-theme);
@@ -34,7 +34,7 @@ $dark-theme:   mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
 
 // Light theme
 $light-primary: mat-palette($mat-grey, 200, 500, 300);
-$light-accent: mat-palette($mat-brown, 200);
+$light-accent: mat-palette($mat-brown, 100);
 $light-warn: mat-palette($mat-deep-orange, 200);
 
 $light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
@@ -65,10 +65,10 @@ $blue-theme: mat-light-theme($blue-primary, $blue-accent, $blue-warn);
   @include angular-material-theme($blue-theme)
 }
 
-// Yellow theme
+// Orange theme
 $yellow-primary: mat-palette($mat-yellow, 700, 500, 300);
-$yellow-accent: mat-palette($mat-amber, 600);
-$yellow-warn: mat-palette($mat-lime, 200);
+$yellow-accent: mat-palette($mat-amber, 700);
+$yellow-warn: mat-palette($mat-lime, 300);
 
 $yellow-theme: mat-light-theme($yellow-primary, $yellow-accent, $yellow-warn);
 

@@ -59,4 +59,7 @@
     display: inline-block;
     align-self: flex-end;
   }
-  
+
+  #table-name {
+    display: inline-block;
+  }
