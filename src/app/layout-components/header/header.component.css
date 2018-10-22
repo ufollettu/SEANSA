@@ -25,20 +25,33 @@
   width: 75%;
   padding: 16px;
   display: inline-block;
-  /* text-align: center; */
   margin: 0, auto;
 }
 
+/* grid wrapper */
 .routes-buttons {
-  width: 40%;
-  display: inline-block;
-  text-align: left;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-rows: minmax(100px, auto);
+  column-gap: 16px;
 }
 
+/* grid row 1 */
+.logo-wrapper {
+  margin: auto;
+}
+
+/* grid row 2 */
+.welcome {
+  margin: auto;
+  font-size: 18px;
+}
+
+/* grid row 3 */
 .auth-buttons {
-  width: 50%;
-  display: inline-block;
-  text-align: right;
+  margin: auto;
+  display: grid;
 }
 
 .navbuttons {
@@ -49,7 +62,6 @@
 }
 
 .mat-stroked-button {
-  /* font-size: 18px; */
   margin-right: 10px;
   border-top-width: 0px;
   border-right-width: 0px;
@@ -57,23 +69,11 @@
   border-left-width: 0px;
 }
 
-.logo-wrapper {
-  width: 20%;
-  display: inline-block;
-  text-align: left;
-  padding-right: 20px;
-}
+
 
 .logo {
   bottom: 0;
   max-height: 90px;
 }
 
-.welcome {
-  width: 20%;
-  display: inline-block;
-  text-align: right;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-size: 16px;
-  color: whitesmoke;
-}
+

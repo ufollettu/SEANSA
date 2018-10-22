@@ -1,4 +1,4 @@
-<mat-form-field [class.mat-elevation-z2]="isActive" class="search-form-field">
+<mat-form-field [class.mat-elevation-z3]="isActive" class="search-form-field mat-elevation-z1">
   <input matInput [(ngModel)]="searchKey" placeholder="Search" autocomplete="off" (keyup)="applyFilter()" (focus)="isActive = true"
     (focusout)="isActive = false">
   <button mat-button matSuffix mat-icon-button aria-label="Clear" *ngIf="searchKey" (click)="onSearchClear()">
