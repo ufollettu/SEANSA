@@ -270,10 +270,10 @@ describe("checkLicense()", function () {
     await db.matricole.bulkCreate(matricoleSeed);
     await db.sks.destroy({ where: {}, truncate: true });
     await db.sks.bulkCreate(sksSeed);
-    await db.pacchetti.bulkCreate(packsSeed);
     await db.pacchetti.destroy({ where: {}, truncate: true });
-    await db.pacchettiHistory.bulkCreate(packsHistorySeed);
+    await db.pacchetti.bulkCreate(packsSeed);
     await db.pacchettiHistory.destroy({ where: {}, truncate: true });
+    await db.pacchettiHistory.bulkCreate(packsHistorySeed);
   });
   it("sks key inesistente, should return 0", async function () {
     // here I mock the request.body data
