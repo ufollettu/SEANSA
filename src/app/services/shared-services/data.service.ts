@@ -12,13 +12,20 @@ export class DataService {
   private userSource = new BehaviorSubject({});
   currentUser = this.userSource.asObservable().pipe(distinctUntilChanged());
 
-  constructor(private injector: Injector, private api: UtentiApiService) {}
+  constructor(
+    private injector: Injector, 
+    private authService: AuthService,
+    private api: UtentiApiService
+    ) {}
 
-  getUserToken() {
-    const authService = this.injector.get(AuthService);
-    const token = authService.getToken();
-    const userToken = jwt_decode(token);
-    return userToken;
+  getToken() {
+    // const authService = this.injector.get(AuthService);
+    const token = this.authService.getToken();
+    if (token) {
+      const userToken = jwt_decode(token);
+      return userToken;
+    }
+    return null;
   }
 
   getUser() {
@@ -26,22 +33,22 @@ export class DataService {
   }
 
   getUserFromToken() {
-    const userToken = this.getUserToken();
+    const userToken = this.getToken() || {};
     return this.api.getUtente(userToken.userId);
   }
 
   getUserIdFromToken(): Observable<any> {
-    const userToken = this.getUserToken();
+    const userToken = this.getToken() || "";
     return of(userToken.userId);
   }
 
   getPermissionsFromToken(): Observable<any> {
-    const userToken = this.getUserToken();
+    const userToken = this.getToken() || [];
     return of(userToken.permArr);
   }
 
   getAdminFromToken(): Observable<any> {
-    const userToken = this.getUserToken();
+    const userToken = this.getToken() || false;
     return of(userToken.isAdmin);
   }
 

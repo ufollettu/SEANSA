@@ -7,7 +7,6 @@ import {
   HttpHandler,
   HttpEvent
 } from "@angular/common/http";
-import * as jwt_decode from "jwt-decode";
 import { DataService } from "../shared-services/data.service";
 
 @Injectable({
@@ -16,7 +15,7 @@ import { DataService } from "../shared-services/data.service";
 export class TokenInterceptorService implements HttpInterceptor {
   user: object;
 
-  constructor(private injector: Injector) {}
+  constructor(private injector: Injector) { }
 
   intercept(
     req: HttpRequest<any>,
@@ -28,33 +27,12 @@ export class TokenInterceptorService implements HttpInterceptor {
     dataService.currentUser.subscribe(loggedUser => (this.user = loggedUser));
 
     if (token) {
-      // // TODO check if user token is equals to user edit
-      // const idToken = jwt_decode(token);
-      // if (idToken === this.user['SU_ID']) {
-      //   console.log('ok');
-      // } else {
-      //   console.log('not ok');
-      // }
-      // console.log(`interceptor token: ${token}`);
       req = req.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`
         }
       });
     }
-    // if (!req.headers.has('Content-Type')) {
-    //     req = req.clone({
-    //       headers: req.headers.set('Content-Type', 'application/json')
-    //     });
-    // }
-    // req = req.clone({
-    //   headers: req.headers.set('Accept', 'application/json')
-    // });
-
     return next.handle(req);
   }
-
-  // getUser() {
-  //   this.dataService.currentUser.subscribe(user => this.user = user);
-  // }
 }

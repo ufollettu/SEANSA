@@ -51,10 +51,11 @@ export class CheckPackResolverService implements Resolve<any> {
             this.router.navigate(["/sks"]);
             return;
           }
+          console.log(remLic.every(this.isEmpty));
           if (remLic.every(this.isEmpty)) {
             this.notificationService.warn("your packs are empty");
             this.router.navigate(["/sks"]);
-            return;
+            // return;
           }
           this.notificationService.success(`your have available packs`);
           return packs.filter(this.filterPacks);

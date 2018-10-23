@@ -8,6 +8,7 @@ import { Packs } from "../../../models/packs";
 import { PacksApiService } from "../../../services/api-services/packs-api.service";
 import { Utente } from "../../../models/utente";
 import { UtentiApiService } from "../../../services/api-services/utenti-api.service";
+import { DataService } from "src/app/services/shared-services/data.service";
 
 @Component({
   selector: "app-packs-table",
@@ -39,6 +40,7 @@ export class PacksTableComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private data: DataService,
     private notificationService: NotificationService,
     private dialogService: DialogService,
     private api: PacksApiService,
@@ -50,7 +52,7 @@ export class PacksTableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.isAdmin = this.authService.isAdmin();
+    this.getIsAdmin();
     this.fetchUtenti();
     // this.refreshPacksList();
   }
@@ -118,5 +120,11 @@ export class PacksTableComponent implements OnInit {
       }
     });
     return result;
+  }
+
+  getIsAdmin() {
+    this.data.getAdminFromToken().subscribe(admin => {
+      this.isAdmin = admin;
+    });
   }
 }

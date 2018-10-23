@@ -13,7 +13,7 @@ export class PermissionService {
 
   getPerms() {
     this.data.getPermissionsFromToken().subscribe(permsArr => {
-      this.permissions = permsArr;
+      this.permissions = permsArr || [];
     });
   }
 

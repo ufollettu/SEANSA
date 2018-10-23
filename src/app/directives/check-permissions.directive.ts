@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer2, HostListener, HostBinding, Input, OnInit, TemplateRef, ViewContainerRef, AfterViewInit } from '@angular/core';
+import { Directive, ElementRef, Renderer2, Input, AfterViewInit } from '@angular/core';
 import { DataService } from '../services/shared-services/data.service';
 
 @Directive({

@@ -6,7 +6,6 @@ import {
 } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { NotificationService } from "../layout-services/notification.service";
-import * as jwt_decode from "jwt-decode";
 
 const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json" })
@@ -40,11 +39,6 @@ export class AuthService {
 
   loggedIn() {
     return !!localStorage.getItem("token");
-  }
-
-  isAdmin() {
-    const userIdToken = jwt_decode(this.getToken());
-    return userIdToken.isAdmin;
   }
 
   logoutUser() {
