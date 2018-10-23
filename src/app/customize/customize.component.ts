@@ -68,7 +68,7 @@ export class CustomizeComponent implements OnInit, OnDestroy {
     this.data.getUserFromToken().subscribe(utente => {
       this.userId = utente["SU_ID"];
     });
-    this.url = `../../assets/images/${this.logo}`;
+    this.url = `../../assets/images/${this.logo}` || this.url;
   }
 
   onFileSelected(event) {
@@ -126,6 +126,10 @@ export class CustomizeComponent implements OnInit, OnDestroy {
   resetTheme() {
     const oldTheme = localStorage.getItem("customStyle");
     this.customizeService.changeTheme(oldTheme);
+  }
+
+  imgError() {
+    this.url = "../../assets/images/placeholder.png";
   }
 
   ngOnDestroy() {

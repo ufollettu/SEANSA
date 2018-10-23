@@ -64,10 +64,11 @@ export class HeaderComponent implements OnInit {
 
   getLogo() {
     this.customizeService.getLogo().subscribe(logo => {
-      if (logo.length > 200) {
-        this.logoPath = logo;
-      } else {
+      console.log(logo);
+      if (logo.startsWith('logo')) {
         this.logoPath = 'assets/images/' + logo;
+      } else {
+        this.logoPath = logo;
       }
       this.cdRef.detectChanges();
     });
@@ -77,10 +78,5 @@ export class HeaderComponent implements OnInit {
     this.permsService.getPerms();
     this.sideNavService.toggle();
   }
-  // getLogoFromLocalStorage() {
-  //   const localLogoPath = localStorage.getItem('customLogo');
-  //   // console.log(localLogoPath);
-  //   this.logoPath = 'assets/images/' + localLogoPath;
-  //   this.cdRef.detectChanges();
-  // }
+
 }
