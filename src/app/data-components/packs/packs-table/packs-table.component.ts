@@ -60,7 +60,7 @@ export class PacksTableComponent implements OnInit {
   refreshPacksList() {
     this.api.getPacks().subscribe(
       res => {
-        console.log(res);
+        // console.log(res);
         this.packs = res;
         this.dataSource = new MatTableDataSource(this.packs);
         this.dataSource.paginator = this.paginator;

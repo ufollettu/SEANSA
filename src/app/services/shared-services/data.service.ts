@@ -19,7 +19,7 @@ export class DataService {
     private injector: Injector,
     private authService: AuthService,
     private api: UtentiApiService
-  ) { }
+  ) {}
 
   getToken() {
     // const authService = this.injector.get(AuthService);
