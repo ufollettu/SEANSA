@@ -1,6 +1,6 @@
-import { Renderer2, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Renderer2, ElementRef, ChangeDetectorRef, Input } from '@angular/core';
 // import { trigger, state, transition, style, animate } from '@angular/animations';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth-services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/shared-services/data.service';
@@ -20,9 +20,9 @@ export class HeaderComponent implements OnInit {
   logoPath: string;
   defaultLogoPath = 'assets/images/raniero.png';
   changeLog;
+  listUrl: string;
 
   constructor(
-    private router: Router,
     private sideNavService: SidenavService,
     private authService: AuthService,
     private data: DataService,
@@ -80,6 +80,13 @@ export class HeaderComponent implements OnInit {
   toggleSideNav() {
     this.permsService.getPerms();
     this.sideNavService.toggle();
+  }
+
+  getUrl() {
+    this.data.getUrl().subscribe(url => {
+      console.log(url);
+      this.listUrl = url;
+    });
   }
 
 }

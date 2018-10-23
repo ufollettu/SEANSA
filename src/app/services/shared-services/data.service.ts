@@ -12,11 +12,14 @@ export class DataService {
   private userSource = new BehaviorSubject({});
   currentUser = this.userSource.asObservable().pipe(distinctUntilChanged());
 
+  private urlSource = new BehaviorSubject("/sks");
+  currentUrl = this.urlSource.asObservable().pipe(distinctUntilChanged());
+
   constructor(
-    private injector: Injector, 
+    private injector: Injector,
     private authService: AuthService,
     private api: UtentiApiService
-    ) {}
+  ) { }
 
   getToken() {
     // const authService = this.injector.get(AuthService);
@@ -26,10 +29,6 @@ export class DataService {
       return userToken;
     }
     return null;
-  }
-
-  getUser() {
-    return this.currentUser;
   }
 
   getUserFromToken() {
@@ -52,7 +51,19 @@ export class DataService {
     return of(userToken.isAdmin);
   }
 
+  getUser() {
+    return this.currentUser;
+  }
+
   changeUser(user: object) {
     this.userSource.next(user);
+  }
+
+  getUrl() {
+    return this.currentUrl;
+  }
+
+  changeUrl(url: string) {
+    this.urlSource.next(url);
   }
 }

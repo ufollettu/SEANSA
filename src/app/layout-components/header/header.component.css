@@ -32,6 +32,10 @@
 .routes-buttons {
   width: 100%;
   display: grid;
+  -ms-grid-template-columns: 0.5fr 2fr 4fr 1fr;
+  -ms-grid-rows: minmax(100px, auto);
+  -ms-column-gap: 16px;
+  grid-gap: 16px;
   grid-template-columns: 0.5fr 2fr 4fr 1fr;
   grid-auto-rows: minmax(100px, auto);
   column-gap: 16px;
@@ -88,26 +92,35 @@
   }
   /* grid wrapper */
 .routes-buttons {
+  -ms-grid-template-columns: 1fr 3fr 1fr;
+  -ms-grid-rows: minmax(auto, auto);
+  -ms-column-gap: 6px;
+  grid-gap: 6px;
   grid-template-columns: 1fr 3fr 1fr;
   grid-auto-rows: minmax(auto, auto);
   column-gap: 6px;
 }
   /* grid row 0 */
 .menu-wrapper {
-  grid-row:2
+  -ms-grid-row:2;
+  grid-row:2;
 }
 
 /* grid row 1 */
 .logo-wrapper {
+  -ms-grid-row:1;
+  -ms-grid-column: 1/3;
   grid-row:1;
   grid-column: 1/3;
 }
 .welcome {
-  grid-row:2
+  -ms-grid-row:2;
+  grid-row:2;
 }
 
 /* grid row 3 */
 .auth-buttons {
-  grid-row:2
+  -ms-grid-row:2;
+  grid-row:2;
 }
 }

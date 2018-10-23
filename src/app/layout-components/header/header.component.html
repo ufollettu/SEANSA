@@ -19,10 +19,13 @@
 
     <div class="logo-wrapper">
       <img class="logo" [src]="logoPath" >
+      <span>Table Name</span>
     </div>
+
     <div class="welcome">
       <span>You are logged as: {{user['SU_UNA'] || username}}</span>
     </div>
+
     <div class="auth-buttons">
       <!-- <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/register']" routerLinkActive="mat-accent">Signup</button> -->
       <!-- <button mat-raised-button *ngIf="!authService.loggedIn()" [routerLink]="['/login']" routerLinkActive="mat-accent">Signin</button> -->

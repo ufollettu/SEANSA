@@ -12,6 +12,7 @@ import { CustomizeService } from "./services/shared-services/customize.service";
 import { FocusMonitor } from "@angular/cdk/a11y";
 import { SidenavService } from "./services/layout-services/sidenav.service";
 import { PermissionService } from "./services/auth-services/permission.service";
+import { DataService } from "./services/shared-services/data.service";
 
 @Component({
   selector: "app-root",
@@ -21,12 +22,14 @@ import { PermissionService } from "./services/auth-services/permission.service";
 export class AppComponent implements AfterViewInit, OnInit {
   loading;
   customTheme;
+  passedUrl: string;
   // theme: string;
   @HostBinding("class") componentCssClass;
   @ViewChild("sidenav") public sidenav: MatSidenav;
 
   constructor(
     private router: Router,
+    private data: DataService,
     public permsService: PermissionService,
     private sidenavService: SidenavService,
     private focusMonitor: FocusMonitor,
@@ -69,5 +72,6 @@ export class AppComponent implements AfterViewInit, OnInit {
 
   closeSidenav() {
     this.sidenavService.close();
+    this.data.changeUrl(this.router.url);
   }
 }
