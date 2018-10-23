@@ -1,10 +1,10 @@
-import { Directive, ElementRef, Renderer2, HostListener, HostBinding, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, ElementRef, Renderer2, HostListener, HostBinding, Input, OnInit, TemplateRef, ViewContainerRef, AfterViewInit } from '@angular/core';
 import { DataService } from '../services/shared-services/data.service';
 
 @Directive({
   selector: '[appCheckPermissions]'
 })
-export class CheckPermissionsDirective {
+export class CheckPermissionsDirective implements AfterViewInit {
 
   permissions: number[] = [];
 
@@ -13,21 +13,31 @@ export class CheckPermissionsDirective {
     private element: ElementRef,
     private renderer: Renderer2
   ) {
-    this.getPerms();
+    // this.getPerms();
   }
 
+  private _perm;
+
   @Input() set appCheckPermissions(perm: number) {
-    if (this.permissions.includes(perm)) {
+    this._perm = perm;
+    this.doPermissionCheck();
+  }
+
+  doPermissionCheck() {
+
+    if (this.permissions.includes(this._perm)) {
+      this.renderer.setStyle(this.element.nativeElement, 'display', 'inline-block');
       // console.log('ok');
     } else {
       // console.log('non autorizzato');
       this.renderer.setStyle(this.element.nativeElement, 'display', 'none');
     }
-  }
 
-  getPerms() {
+  }
+  ngAfterViewInit() {
     this.data.getPermissionsFromToken().subscribe(permsArr => {
       this.permissions = permsArr;
+      this.doPermissionCheck();
     });
   }
 }

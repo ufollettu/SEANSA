@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/shared-services/data.service';
 import { CustomizeService } from '../../services/shared-services/customize.service';
 import { SidenavService } from 'src/app/services/layout-services/sidenav.service';
+import { PermissionService } from 'src/app/services/auth-services/permission.service';
 
 @Component({
   selector: 'app-header',
@@ -25,6 +26,7 @@ export class HeaderComponent implements OnInit {
     private sideNavService: SidenavService,
     private authService: AuthService,
     private data: DataService,
+    private permsService: PermissionService,
     private customizeService: CustomizeService,
     // private renderer: Renderer2,
     // private el: ElementRef
@@ -72,6 +74,7 @@ export class HeaderComponent implements OnInit {
   }
 
   toggleSideNav() {
+    this.permsService.getPerms();
     this.sideNavService.toggle();
   }
   // getLogoFromLocalStorage() {

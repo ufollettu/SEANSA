@@ -8,7 +8,7 @@
         <mat-list-item (click)="closeSidenav()"><button mat-button [routerLink]="['/utenti']" routerLinkActive="mat-accent">Utenti</button></mat-list-item>
         <!-- <mat-list-item (click)="closeSidenav()"><butto [routerLink]="['/matricole']" routerLinkActive="mat-accent">Matricole</mat-list-item> -->
         <mat-list-item (click)="closeSidenav()"><button mat-button [routerLink]="['/sks']" routerLinkActive="mat-accent">Sks</button></mat-list-item>
-        <mat-list-item (click)="closeSidenav()" [appCheckPermissions]="9">
+        <mat-list-item (click)="closeSidenav()" *ngIf="permsService.packManagerEnable()">
           <button mat-button [routerLink]="['/packs']" routerLinkActive="mat-accent">Pacchetti</button>
         </mat-list-item>
         <mat-list-item (click)="closeSidenav()"><button mat-button [routerLink]="['/pc']" routerLinkActive="mat-accent">Pc</button></mat-list-item>

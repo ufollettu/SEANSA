@@ -11,6 +11,7 @@ import { OverlayContainer } from "@angular/cdk/overlay";
 import { CustomizeService } from "./services/shared-services/customize.service";
 import { FocusMonitor } from "@angular/cdk/a11y";
 import { SidenavService } from "./services/layout-services/sidenav.service";
+import { PermissionService } from "./services/auth-services/permission.service";
 
 @Component({
   selector: "app-root",
@@ -26,6 +27,7 @@ export class AppComponent implements AfterViewInit, OnInit {
 
   constructor(
     private router: Router,
+    public permsService: PermissionService,
     private sidenavService: SidenavService,
     private focusMonitor: FocusMonitor,
     public overlayContainer: OverlayContainer,

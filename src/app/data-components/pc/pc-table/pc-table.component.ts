@@ -14,6 +14,7 @@ import { NotificationService } from "../../../services/layout-services/notificat
 import { Observable } from "rxjs";
 import { Pc } from "../../../models/pc";
 import { AuthService } from "../../../services/auth-services/auth.service";
+import { PermissionService } from "src/app/services/auth-services/permission.service";
 
 @Component({
   selector: "app-pc-table",
