@@ -52,5 +52,32 @@ module.exports = [
     SPK_EXPIRE: "2018-10-31",
     SPK_SKS_COUNT: 2,
     SPK_USED_SKS_COUNT: 0
+  },
+  {
+    "SPK_ID": 11,
+    "SPK_SU_CREATOR_ID": 83,
+    "SPK_SU_OWNER_ID": 83,
+    "SPK_CREATED": "2018-10-21 23:11:43",
+    "SPK_EXPIRE": "2018-10-31",
+    "SPK_SKS_COUNT": 25,
+    "SPK_USED_SKS_COUNT": 0
+  },
+  {
+    "SPK_ID": 12,
+    "SPK_SU_CREATOR_ID": 102,
+    "SPK_SU_OWNER_ID": 103,
+    "SPK_CREATED": "2018-10-21 23:34:03",
+    "SPK_EXPIRE": "2018-10-31",
+    "SPK_SKS_COUNT": 5,
+    "SPK_USED_SKS_COUNT": 1
+  },
+  {
+    "SPK_ID": 13,
+    "SPK_SU_CREATOR_ID": 83,
+    "SPK_SU_OWNER_ID": 102,
+    "SPK_CREATED": "2018-10-23 00:25:22",
+    "SPK_EXPIRE": "2018-10-31",
+    "SPK_SKS_COUNT": 2,
+    "SPK_USED_SKS_COUNT": 2
   }
 ];

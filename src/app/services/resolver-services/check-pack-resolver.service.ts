@@ -39,6 +39,7 @@ export class CheckPackResolverService implements Resolve<any> {
         } else {
           const remLic = [];
           const expLic = [];
+
           packs.forEach(p => {
             const rem = p["SPK_SKS_COUNT"] - p["SPK_USED_SKS_COUNT"];
             remLic.push(rem);
@@ -51,12 +52,19 @@ export class CheckPackResolverService implements Resolve<any> {
             this.router.navigate(["/sks"]);
             return;
           }
-          console.log(remLic.every(this.isEmpty));
+
           if (remLic.every(this.isEmpty)) {
             this.notificationService.warn("your packs are empty");
             this.router.navigate(["/sks"]);
-            // return;
+            return;
           }
+
+          if (packs.filter(this.filterPacks).length === 0) {
+            this.notificationService.warn("your packs are empty or expired");
+            this.router.navigate(["/sks"]);
+            return;
+          }
+
           this.notificationService.success(`your have available packs`);
           return packs.filter(this.filterPacks);
         }

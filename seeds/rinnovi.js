@@ -130,5 +130,11 @@ module.exports = [
     SR_SS_ID: 134,
     SR_CREATOR_ID: 83,
     SR_TS: "2018-08-30 07:25:07"
-  }
+  },
+  {
+    "KeyId": 134,
+    "Chiave": "Smwg2WYF5J1IdF4zYZXlFmXjL",
+    "CreatorId": 83,
+    "Timestamp": "2018-08-30 07:25:07"
+}
 ];

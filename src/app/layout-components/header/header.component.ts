@@ -67,8 +67,11 @@ export class HeaderComponent implements OnInit {
       console.log(logo);
       if (logo.startsWith('logo')) {
         this.logoPath = 'assets/images/' + logo;
+      } else if (logo.startsWith('raniero')) {
+        this.logoPath = 'assets/images/' + logo;
       } else {
         this.logoPath = logo;
+
       }
       this.cdRef.detectChanges();
     });

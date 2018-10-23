@@ -278,5 +278,19 @@ module.exports = [
     SC_CREATOR_ID: 83,
     SC_TS: "2018-09-07 06:16:13",
     SC_DELETED: 0
+  },
+  {
+    "SC_ID": 59,
+    "SC_NOME": "permo",
+    "SC_PIVA": "gatto",
+    "SC_COD_FISCALE": "cane",
+    "SC_INDIRIZZO": "prova",
+    "SC_EMAIL": "p@gmail.com",
+    "SC_TELEFONO": "12/2/2026",
+    "SC_REFERENTE_NOME": "w",
+    "SC_TEL_REFERENTE": "e",
+    "SC_CREATOR_ID": 103,
+    "SC_TS": "2018-10-23 12:32:26",
+    "SC_DELETED": 0
   }
 ];
