@@ -32,28 +32,33 @@
 .routes-buttons {
   width: 100%;
   display: grid;
-  grid-template-columns: 0.5fr 1fr 4fr 1fr;
+  grid-template-columns: 0.5fr 2fr 4fr 1fr;
   grid-auto-rows: minmax(100px, auto);
   column-gap: 16px;
+  align-items: center;
 }
+
+/* grid row 0 */
 .menu-wrapper {
-  margin: auto;
+  /* margin: auto; */
 }
 
 /* grid row 1 */
 .logo-wrapper {
-  margin: auto;
+  /* margin: auto; */
+  justify-self: start;
 }
 
 /* grid row 2 */
 .welcome {
-  margin: auto;
+  /* margin: auto; */
   font-size: 18px;
+  justify-self: end;
 }
 
 /* grid row 3 */
 .auth-buttons {
-  margin: auto;
+  /* margin: auto; */
   display: grid;
 }
 
@@ -72,11 +77,37 @@
   border-left-width: 0px;
 }
 
-
-
 .logo {
   bottom: 0;
   max-height: 90px;
 }
 
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+  .header-buttons {
+    position: relative;
+  }
+  /* grid wrapper */
+.routes-buttons {
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-auto-rows: minmax(auto, auto);
+  column-gap: 6px;
+}
+  /* grid row 0 */
+.menu-wrapper {
+  grid-row:2
+}
 
+/* grid row 1 */
+.logo-wrapper {
+  grid-row:1;
+  grid-column: 1/3;
+}
+.welcome {
+  grid-row:2
+}
+
+/* grid row 3 */
+.auth-buttons {
+  grid-row:2
+}
+}
