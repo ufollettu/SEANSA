@@ -59,6 +59,7 @@ import { CustomizeComponent } from "./customize/customize.component";
 import { LoadingTableSpinnerComponent } from "./layout-components/loading-table-spinner/loading-table-spinner.component";
 import { ConfirmDialogComponent } from "./layout-components/confirm-dialog/confirm-dialog.component";
 import { SearchBarComponent } from "./layout-components/search-bar/search-bar.component";
+import { CustomizeUserComponent } from './customize/customize-user/customize-user.component';
 
 const appRoutes: Routes = [
   {
@@ -209,7 +210,12 @@ const appRoutes: Routes = [
   {
     path: "customize",
     component: CustomizeComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, IsAdminGuard]
+  },
+  {
+    path: "customize/:id",
+    component: CustomizeUserComponent,
+    canActivate: [AuthGuard, IsAdminGuard]
   },
 
   { path: "", redirectTo: "/login", pathMatch: "full" },
@@ -260,7 +266,8 @@ const appRoutes: Routes = [
     RolesEditComponent,
     ForgotPwdComponent,
     CustomizeComponent,
-    SearchBarComponent
+    SearchBarComponent,
+    CustomizeUserComponent
     // CheckPermissionsDirective
   ],
   entryComponents: [SksDetailsComponent]

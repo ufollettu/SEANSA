@@ -39,7 +39,7 @@
         <mat-icon class="mat-18">vpn_key</mat-icon>
       </button>
       <button mat-button *ngIf="!!authService.loggedIn()" [routerLink]="['/customize']" routerLinkActive="mat-accent"
-        matTooltip="Customize" matTooltipPosition="left">
+        matTooltip="Customize" matTooltipPosition="left"  [appIsAdmin]="true">
         <mat-icon class="mat-18">insert_photo</mat-icon>
       </button>
       <button mat-button *ngIf="!!authService.loggedIn()" (click)="onLogout()" routerLinkActive="mat-accent" matTooltip="Logout"

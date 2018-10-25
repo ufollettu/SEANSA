@@ -61,6 +61,10 @@
           [appCheckPermissions]="2">
           <mat-icon>delete</mat-icon>
         </a>
+        <a mat-icon-button matTooltip="Personalizza utente" color="primary" [routerLink]="['/customize', element.SU_ID]"
+        [appIsAdmin]="true">
+          <mat-icon>insert_photo</mat-icon>
+        </a>
       </td>
     </ng-container>
 

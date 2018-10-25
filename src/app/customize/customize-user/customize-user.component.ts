@@ -1,18 +1,18 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { slideInOutAnimation } from "../animations";
+import { slideInOutAnimation } from "../../animations";
 import { FormControl, FormGroupDirective, NgForm } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material";
-import { Router } from "@angular/router";
-import { DataService } from "../services/shared-services/data.service";
-import { CustomizeService } from "../services/shared-services/customize.service";
-import { UploadFileService } from "../services/api-services/upload.service";
+import { Router, ActivatedRoute } from "@angular/router";
+import { DataService } from "../../services/shared-services/data.service";
+import { CustomizeService } from "../../services/shared-services/customize.service";
+import { UploadFileService } from "../../services/api-services/upload.service";
 import {
   HttpResponse,
   HttpEventType,
   HttpErrorResponse
 } from "@angular/common/http";
-import { NotificationService } from "../services/layout-services/notification.service";
-import { AuthService } from "../services/auth-services/auth.service";
+import { NotificationService } from "../../services/layout-services/notification.service";
+import { AuthService } from "../../services/auth-services/auth.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */
@@ -31,16 +31,17 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-  selector: "app-customize",
-  templateUrl: "./customize.component.html",
-  styleUrls: ["./customize.component.css"],
-  // make slide in/out animation available to this component
-  animations: [slideInOutAnimation],
-  // attach the slide in/out animation to the host (root) element of this component
-  // tslint:disable-next-line:use-host-property-decorator
-  host: { "[@slideInOutAnimation]": "" }
+  selector: 'app-customize-user',
+  templateUrl: './customize-user.component.html',
+  styleUrls: ['./customize-user.component.css'],
+    // make slide in/out animation available to this component
+    animations: [slideInOutAnimation],
+    // attach the slide in/out animation to the host (root) element of this component
+    // tslint:disable-next-line:use-host-property-decorator
+    host: { "[@slideInOutAnimation]": "" }
 })
-export class CustomizeComponent implements OnInit, OnDestroy {
+export class CustomizeUserComponent implements OnInit, OnDestroy {
+
   themes: string[] = ["default", "light", "dark", "orange", "red", "blue"];
   userId = 0;
   userTheme = "";
@@ -53,22 +54,34 @@ export class CustomizeComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private data: DataService,
     private router: Router,
+    private route: ActivatedRoute,
     private uploadService: UploadFileService,
     private customizeService: CustomizeService,
     private authService: AuthService
   ) { }
 
   ngOnInit() {
-    this.customizeService.currentTheme.subscribe(theme => {
-      this.userTheme = theme || "default-theme";
-    });
+    this.styleInit();
+
     this.customizeService.currentLogo.subscribe(logo => {
       this.logo = logo;
     });
-    this.data.getUserFromToken().subscribe(utente => {
-      this.userId = utente["SU_ID"];
+    this.customizeService.currentTheme.subscribe(theme => {
+      this.userTheme = theme || "default-theme";
     });
-    this.url = `../../assets/images/${this.logo}` || this.url;
+
+  }
+
+  styleInit() {
+    const id = this.route.snapshot.params['id'];
+    this.uploadService.getCustomStyle(id).subscribe(style => {
+      this.userTheme = style['SCZ_THEME'];
+      this.logo = style['SCZ_LOGO_NAME'];
+      this.userId = style['SCZ_SU_ID'];
+      this.url = `../../assets/images/${style['SCZ_LOGO_NAME']}` || this.url;
+      this.onSetTheme(style['SCZ_THEME']);
+      this.customizeService.changeLogo(style['SCZ_LOGO_NAME']);
+    });
   }
 
   onFileSelected(event) {
@@ -88,7 +101,6 @@ export class CustomizeComponent implements OnInit, OnDestroy {
   }
 
   upload() {
-    console.log(this.userId);
     this.formdata.append("logo", this.selectedFile);
     this.formdata.append("SCZ_SU_ID", this.userId.toString());
     this.formdata.append("SCZ_THEME", this.userTheme);
@@ -96,12 +108,8 @@ export class CustomizeComponent implements OnInit, OnDestroy {
     this.uploadService.pushFileToStorage(this.userId, this.formdata).subscribe(
       res => {
         if (res instanceof HttpResponse) {
-          this.notificationService.success("style and logo updated");
-          const newLogo = res.body["SCZ_LOGO_NAME"];
-          const newTheme = res.body["SCZ_THEME"];
-          localStorage.setItem("customLogo", newLogo);
-          localStorage.setItem("customStyle", newTheme);
-          this.router.navigate(["/sks"]);
+          this.notificationService.success(`user id: ${this.userId} style and logo updated`);
+          this.router.navigate(["/utenti"]);
         }
       },
       err => {
@@ -111,7 +119,7 @@ export class CustomizeComponent implements OnInit, OnDestroy {
             this.notificationService.warn(
               "error uploading file, please try again"
             );
-            this.router.navigate(["/sks"]);
+            this.router.navigate(["/utenti"]);
           }
         }
         this.authService.handleLoginError(err);

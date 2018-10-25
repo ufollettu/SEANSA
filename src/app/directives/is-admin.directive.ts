@@ -20,9 +20,9 @@ export class IsAdminDirective implements OnInit {
   appIsAdmin: boolean;
 
   ngOnInit() {
-    console.log(this.appIsAdmin !== this.admin);
+    // console.log(this.appIsAdmin !== this.admin);
     if (this.appIsAdmin !== this.admin) {
-      console.log("hide");
+      // console.log("hide");
       this.renderer.setStyle(this.element.nativeElement, "display", "none");
     }
   }

@@ -65,7 +65,7 @@ export class HeaderComponent implements OnInit {
 
   getLogo() {
     this.customizeService.getLogo().subscribe(logo => {
-      console.log(logo);
+      // console.log(logo);
       if (logo.startsWith("logo")) {
         this.logoPath = "assets/images/" + logo;
       } else if (logo.startsWith("raniero")) {
@@ -89,7 +89,7 @@ export class HeaderComponent implements OnInit {
           .substring(1)
           .charAt(0)
           .toUpperCase() + url.slice(2);
-      console.log(this.listUrl);
+      // console.log(this.listUrl);
     });
   }
 }

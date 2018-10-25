@@ -14,7 +14,6 @@ ng serve
 
 ng build --watch 
 
-
 ## levels of authorization
 
 0 - Creazione nuovo utente 
@@ -25,3 +24,7 @@ ng build --watch
 5 - Gestione completa delle licenze 
 6 - Gestione completa dei clienti 
 7 - Gestione completa dei PC 
+8 -
+9 -
+
+## scrivere vari comandi da lanciare (per dev)
