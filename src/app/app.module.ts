@@ -16,13 +16,15 @@ import { FooterComponent } from "./layout-components/footer/footer.component";
 import { ProgressSpinnerComponent } from "./layout-components/progress-spinner/progress-spinner.component";
 import { MAT_DATE_LOCALE } from "@angular/material";
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from "@angular/material-moment-adapter";
+import { ConfirmDialogComponent } from "./layout-components/confirm-dialog/confirm-dialog.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    ProgressSpinnerComponent
+    ProgressSpinnerComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +43,7 @@ import { MAT_MOMENT_DATE_ADAPTER_OPTIONS } from "@angular/material-moment-adapte
     { provide: MAT_DATE_LOCALE, useValue: "it-IT" },
     { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } }
   ],
+  entryComponents: [ConfirmDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

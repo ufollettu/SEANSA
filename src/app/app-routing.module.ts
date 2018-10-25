@@ -260,10 +260,9 @@ const appRoutes: Routes = [
     RolesEditComponent,
     ForgotPwdComponent,
     CustomizeComponent,
-    ConfirmDialogComponent,
     SearchBarComponent
     // CheckPermissionsDirective
   ],
-  entryComponents: [ConfirmDialogComponent, SksDetailsComponent]
+  entryComponents: [SksDetailsComponent]
 })
 export class AppRoutingModule {}

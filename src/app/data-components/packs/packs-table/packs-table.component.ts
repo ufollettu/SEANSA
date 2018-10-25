@@ -20,7 +20,7 @@ export class PacksTableComponent implements OnInit {
   packs: Packs[];
   utenti: Utente[];
   isAdmin: boolean;
-
+  username: string;
   // tslint:disable-next-line:max-line-length
   displayedColumns = [
     "SPK_SU_CREATOR_ID",
@@ -52,6 +52,7 @@ export class PacksTableComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getUserFromLocalStorage();
     this.getIsAdmin();
     this.fetchUtenti();
     // this.refreshPacksList();
@@ -126,5 +127,10 @@ export class PacksTableComponent implements OnInit {
     this.data.getAdminFromToken().subscribe(admin => {
       this.isAdmin = admin;
     });
+  }
+
+  getUserFromLocalStorage() {
+    const localUsername = localStorage.getItem("userName");
+    this.username = localUsername;
   }
 }
