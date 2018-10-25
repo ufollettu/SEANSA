@@ -107,9 +107,3 @@ snack-bar-container.notification simple-snack-bar {
   font-size: 20px;
   font-family: "Roboto";
 }
-
-@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
-  .search-form-field {
-    width: 60%;
-  }
-}
