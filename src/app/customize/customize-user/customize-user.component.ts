@@ -13,7 +13,7 @@ import {
 } from "@angular/common/http";
 import { NotificationService } from "../../services/layout-services/notification.service";
 import { AuthService } from "../../services/auth-services/auth.service";
-import { ColorPickerService, Cmyk } from 'ngx-color-picker';
+import { ColorPickerService, Cmyk } from "ngx-color-picker";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */
@@ -32,9 +32,9 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-  selector: 'app-customize-user',
-  templateUrl: './customize-user.component.html',
-  styleUrls: ['./customize-user.component.css'],
+  selector: "app-customize-user",
+  templateUrl: "./customize-user.component.html",
+  styleUrls: ["./customize-user.component.css"],
   // make slide in/out animation available to this component
   animations: [slideInOutAnimation],
   // attach the slide in/out animation to the host (root) element of this component
@@ -42,8 +42,15 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   host: { "[@slideInOutAnimation]": "" }
 })
 export class CustomizeUserComponent implements OnInit, OnDestroy {
-
-  themes: string[] = ["default", "light", "dark", "orange", "red", "blue"];
+  themes: string[] = [
+    "default",
+    "light",
+    "dark",
+    "orange",
+    "red",
+    "blue",
+    "custom"
+  ];
   userId = 0;
   userTheme = "";
   logo = "";
@@ -51,9 +58,9 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
   formdata: FormData = new FormData();
   selectedFile: File = null;
 
-  public primaryColor = '#ffffff';
-  public accentColor = '#ffffff';
-  public warnColor = '#ffffff';
+  public primaryColor = "rgb(0, 0, 255)";
+  public accentColor = "rgb(255, 255, 0)";
+  public warnColor = "rgb(255, 0, 0)";
 
   constructor(
     public vcRef: ViewContainerRef,
@@ -65,7 +72,7 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
     private uploadService: UploadFileService,
     private customizeService: CustomizeService,
     private authService: AuthService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.styleInit();
@@ -87,18 +94,31 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
     this.customizeService.currentWarnColor.subscribe(wColor => {
       this.warnColor = wColor;
     });
-
   }
 
   styleInit() {
-    const id = this.route.snapshot.params['id'];
+    const id = this.route.snapshot.params["id"];
     this.uploadService.getCustomStyle(id).subscribe(style => {
-      this.userTheme = style['SCZ_THEME'];
-      this.logo = style['SCZ_LOGO_NAME'];
-      this.userId = style['SCZ_SU_ID'];
-      this.url = `../../assets/images/${style['SCZ_LOGO_NAME']}` || this.url;
-      this.onSetTheme(style['SCZ_THEME']);
-      this.customizeService.changeLogo(style['SCZ_LOGO_NAME']);
+      this.userTheme = style["SCZ_THEME"];
+      this.logo = style["SCZ_LOGO_NAME"];
+      this.userId = style["SCZ_SU_ID"];
+      this.url = `../../assets/images/${style["SCZ_LOGO_NAME"]}` || this.url;
+      this.onSetTheme(style["SCZ_THEME"]);
+      this.customizeService.changeLogo(style["SCZ_LOGO_NAME"]);
+      this.customizeService.changePrimaryColor(style["SCZ_PRIMARY_COLOR"]);
+      document.body.style.setProperty(
+        "--primary-color",
+        style["SCZ_PRIMARY_COLOR"]
+      );
+
+      this.customizeService.changeAccentColor(style["SCZ_ACCENT_COLOR"]);
+      document.body.style.setProperty(
+        "--accent-color",
+        style["SCZ_ACCENT_COLOR"]
+      );
+
+      this.customizeService.changeWarnColor(style["SCZ_WARN_COLOR"]);
+      document.body.style.setProperty("--warn-color", style["SCZ_WARN_COLOR"]);
     });
   }
 
@@ -116,22 +136,21 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
 
   onPrimaryColorChange(primaryColor: any): void {
     // this.primaryColor = primaryColor;
-    console.log(primaryColor);
     this.customizeService.changePrimaryColor(primaryColor);
+    document.body.style.setProperty("--primary-color", primaryColor);
   }
 
   onAccentColorChange(accentColor: any): void {
     // this.accentColor = accentColor;
-    console.log(accentColor);
     this.customizeService.changeAccentColor(accentColor);
+    document.body.style.setProperty("--accent-color", accentColor);
   }
 
   onWarnColorChange(warnColor: any): void {
     // this.warnColor = warnColor
-    console.log(warnColor);
     this.customizeService.changeWarnColor(warnColor);
+    document.body.style.setProperty("--warn-color", warnColor);
   }
-
 
   onSetTheme(theme) {
     this.customizeService.changeTheme(theme);
@@ -141,11 +160,16 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
     this.formdata.append("logo", this.selectedFile);
     this.formdata.append("SCZ_SU_ID", this.userId.toString());
     this.formdata.append("SCZ_THEME", this.userTheme);
+    this.formdata.append("SCZ_PRIMARY_COLOR", this.primaryColor);
+    this.formdata.append("SCZ_ACCENT_COLOR", this.accentColor);
+    this.formdata.append("SCZ_WARN_COLOR", this.warnColor);
 
     this.uploadService.pushFileToStorage(this.userId, this.formdata).subscribe(
       res => {
         if (res instanceof HttpResponse) {
-          this.notificationService.success(`user id: ${this.userId} style and logo updated`);
+          this.notificationService.success(
+            `user id: ${this.userId} style and logo updated`
+          );
           this.router.navigate(["/utenti"]);
         }
       },
@@ -174,6 +198,13 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
     this.customizeService.changeTheme(oldTheme);
   }
 
+  resetColors() {
+    const oldColors = localStorage.getItem("customColors");
+    this.customizeService.changePrimaryColor(oldColors.split("|")[0]);
+    this.customizeService.changeAccentColor(oldColors.split("|")[1]);
+    this.customizeService.changeWarnColor(oldColors.split("|")[2]);
+  }
+
   imgError() {
     this.url = "../../assets/images/placeholder.png";
   }
@@ -181,5 +212,6 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.resetLogo();
     this.resetTheme();
+    this.resetColors();
   }
 }

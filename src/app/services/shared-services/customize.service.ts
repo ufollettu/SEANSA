@@ -1,21 +1,23 @@
-import { Injectable, OnInit } from '@angular/core';
-import { OverlayContainer } from '@angular/cdk/overlay';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { catchError, tap, map } from 'rxjs/operators';
+import { Injectable, OnInit } from "@angular/core";
+import { OverlayContainer } from "@angular/cdk/overlay";
+import { BehaviorSubject, Observable, of, throwError } from "rxjs";
+import { distinctUntilChanged } from "rxjs/operators";
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse
+} from "@angular/common/http";
+import { catchError, tap, map } from "rxjs/operators";
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({ "Content-Type": "application/json" })
 };
-const apiUrl = 'http://localhost:3000/api/customization';
+const apiUrl = "http://localhost:3000/api/customization";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class CustomizeService {
-
-
   private themeSource = new BehaviorSubject(this.getThemeFromToken());
   currentTheme = this.themeSource.asObservable().pipe(distinctUntilChanged());
 
@@ -23,18 +25,25 @@ export class CustomizeService {
   currentLogo = this.logoSource.asObservable().pipe(distinctUntilChanged());
 
   // Custom color picker
-  private primaryColorSource = new BehaviorSubject('rgb(255,255,255)');
-  currentPrimaryColor = this.primaryColorSource.asObservable().pipe(distinctUntilChanged());
+  // TODO set default color in BehSub by user logged in
+  private primaryColorSource = new BehaviorSubject(
+    this.getColorsFromToken()[0]
+  );
+  currentPrimaryColor = this.primaryColorSource
+    .asObservable()
+    .pipe(distinctUntilChanged());
 
-  private accentColorSource = new BehaviorSubject('rgb(255,255,255)');
-  currentAccentColor = this.accentColorSource.asObservable().pipe(distinctUntilChanged());
+  private accentColorSource = new BehaviorSubject(this.getColorsFromToken()[1]);
+  currentAccentColor = this.accentColorSource
+    .asObservable()
+    .pipe(distinctUntilChanged());
 
-  private warnColorSource = new BehaviorSubject('rgb(255,255,255)');
-  currentWarnColor = this.warnColorSource.asObservable().pipe(distinctUntilChanged());
+  private warnColorSource = new BehaviorSubject(this.getColorsFromToken()[2]);
+  currentWarnColor = this.warnColorSource
+    .asObservable()
+    .pipe(distinctUntilChanged());
 
-  constructor(
-    public overlayContainer: OverlayContainer
-  ) { }
+  constructor(public overlayContainer: OverlayContainer) {}
 
   // built-in themes
   changeTheme(theme) {
@@ -46,7 +55,7 @@ export class CustomizeService {
   }
 
   getThemeFromToken() {
-    return localStorage.getItem('customStyle') || 'default-theme';
+    return localStorage.getItem("customStyle") || "default-theme";
   }
 
   // Logo
@@ -59,7 +68,7 @@ export class CustomizeService {
   }
 
   getLogoFromToken() {
-    return localStorage.getItem('customLogo') || 'raniero.png';
+    return localStorage.getItem("customLogo") || "raniero.png";
   }
 
   // Custom color picker
@@ -82,5 +91,12 @@ export class CustomizeService {
   }
   getWarnColor() {
     return this.currentWarnColor;
+  }
+
+  getColorsFromToken() {
+    const colorsString =
+      localStorage.getItem("customColors") ||
+      "rgb(0,0,255)|rgb(255,255,0)|rgb(255,0,0)";
+    return colorsString.split("|");
   }
 }

@@ -1,28 +1,28 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic&amp;subset=latin-ext');
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic&amp;subset=latin-ext");
 
-@import '~@angular/material/theming';
+@import "../node_modules/@angular/material/_theming";
 @include mat-core();
 
 // Typography
 $custom-typography: mat-typography-config(
-  $font-family: 'Roboto, sans-serif'
+  $font-family: "Roboto, sans-serif"
 );
 @include angular-material-typography($custom-typography);
 
 // Default colors
 $my-app-primary: mat-palette($mat-teal, 700, 100, 800);
-$my-app-accent:  mat-palette($mat-teal, 200, 100, 800);
+$my-app-accent: mat-palette($mat-teal, 200, 100, 800);
 
 $my-app-theme: mat-light-theme($my-app-primary, $my-app-accent);
 @include angular-material-theme($my-app-theme);
 
 // Dark theme
 $dark-primary: mat-palette($mat-grey, 900, 500, 300);
-$dark-accent:  mat-palette($mat-amber, A200, A100, A400);
-$dark-warn:    mat-palette($mat-deep-orange);
+$dark-accent: mat-palette($mat-amber, A200, A100, A400);
+$dark-warn: mat-palette($mat-deep-orange);
 // $background-color: map_get($mat-grey, 200);
 
-$dark-theme:   mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+$dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
 // Insert custom background color
 // $background: map-get($dark-theme, background);
 // $background: map_merge($background, (background: $background-color));
@@ -40,7 +40,7 @@ $light-warn: mat-palette($mat-deep-orange, 200);
 $light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
 
 .light-theme {
-  @include angular-material-theme($light-theme)
+  @include angular-material-theme($light-theme);
 }
 
 // Red theme
@@ -51,7 +51,7 @@ $red-warn: mat-palette($mat-brown, 200);
 $red-theme: mat-light-theme($red-primary, $red-accent, $red-warn);
 
 .red-theme {
-  @include angular-material-theme($red-theme)
+  @include angular-material-theme($red-theme);
 }
 
 // Blue theme
@@ -62,7 +62,7 @@ $blue-warn: mat-palette($mat-deep-purple, 200);
 $blue-theme: mat-light-theme($blue-primary, $blue-accent, $blue-warn);
 
 .blue-theme {
-  @include angular-material-theme($blue-theme)
+  @include angular-material-theme($blue-theme);
 }
 
 // Orange theme
@@ -73,16 +73,16 @@ $yellow-warn: mat-palette($mat-lime, 300);
 $yellow-theme: mat-light-theme($yellow-primary, $yellow-accent, $yellow-warn);
 
 .orange-theme {
-  @include angular-material-theme($yellow-theme)
+  @include angular-material-theme($yellow-theme);
 }
 
 // Custom-Selected theme
-$custom-primary: mat-palette($mat-yellow, 700, 500, 300);
-$custom-accent: mat-palette($mat-amber, 700);
-$custom-warn: mat-palette($mat-lime, 300);
+// $custom-primary: mat-palette($mat-yellow, 700, 500, 300);
+// $custom-accent: mat-palette($mat-amber, 700);
+// $custom-warn: mat-palette($mat-lime, 300);
 
-$custom-theme: mat-light-theme($custom-primary, $custom-accent, $custom-warn);
+// $custom-theme: mat-light-theme($custom-primary, $custom-accent, $custom-warn);
 
-.custom-theme {
-  @include angular-material-theme($custom-theme)
-}
+// .custom-theme {
+//   @include angular-material-theme($custom-theme);
+// }
