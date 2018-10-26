@@ -1,6 +1,6 @@
 .container {
     width: 100%;
-    padding-top: 200px;
+    padding-top: 150px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -8,7 +8,7 @@
   
   mat-card {
     margin: 10px auto 30px auto;
-    max-width: 500px;
+    max-width: 570px;
   }
   
   mat-form-field {
@@ -48,4 +48,3 @@
   .mat-radio-button {
     padding-right: 16px;
   }
-  

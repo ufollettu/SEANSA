@@ -50,7 +50,7 @@
           <mat-icon>launch</mat-icon>
         </button> -->
         <a mat-icon-button matTooltip="Reset Password" color="primary" [routerLink]="['/utenti-resetpwd', element.SU_ID]"
-          [appCheckPermissions]="1">
+          [appCheckPermissions]="1" *ngIf="element.SU_UNA !== currentUsername">
           <mat-icon>vpn_key</mat-icon>
         </a>
         <a mat-icon-button matTooltip="Modifica Livello" color="accent" [routerLink]="['/roles-edit', element.SU_ID]"
@@ -58,11 +58,11 @@
           <mat-icon>account_circle</mat-icon>
         </a>
         <a mat-icon-button matTooltip="Elimina utente" color="warn" (click)="deleteUser(element.SU_ID)"
-          [appCheckPermissions]="2">
+          [appCheckPermissions]="2" *ngIf="element.SU_UNA !== currentUsername">
           <mat-icon>delete</mat-icon>
         </a>
         <a mat-icon-button matTooltip="Personalizza utente" color="primary" [routerLink]="['/customize', element.SU_ID]"
-        [appIsAdmin]="true">
+        [appIsAdmin]="true" *ngIf="element.SU_UNA !== currentUsername">
           <mat-icon>insert_photo</mat-icon>
         </a>
       </td>

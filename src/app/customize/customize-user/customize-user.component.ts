@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, ViewContainerRef } from "@angular/core";
 import { slideInOutAnimation } from "../../animations";
 import { FormControl, FormGroupDirective, NgForm } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material";
@@ -13,6 +13,7 @@ import {
 } from "@angular/common/http";
 import { NotificationService } from "../../services/layout-services/notification.service";
 import { AuthService } from "../../services/auth-services/auth.service";
+import { ColorPickerService, Cmyk } from 'ngx-color-picker';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */
@@ -34,11 +35,11 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   selector: 'app-customize-user',
   templateUrl: './customize-user.component.html',
   styleUrls: ['./customize-user.component.css'],
-    // make slide in/out animation available to this component
-    animations: [slideInOutAnimation],
-    // attach the slide in/out animation to the host (root) element of this component
-    // tslint:disable-next-line:use-host-property-decorator
-    host: { "[@slideInOutAnimation]": "" }
+  // make slide in/out animation available to this component
+  animations: [slideInOutAnimation],
+  // attach the slide in/out animation to the host (root) element of this component
+  // tslint:disable-next-line:use-host-property-decorator
+  host: { "[@slideInOutAnimation]": "" }
 })
 export class CustomizeUserComponent implements OnInit, OnDestroy {
 
@@ -50,7 +51,13 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
   formdata: FormData = new FormData();
   selectedFile: File = null;
 
+  public primaryColor = '#ffffff';
+  public accentColor = '#ffffff';
+  public warnColor = '#ffffff';
+
   constructor(
+    public vcRef: ViewContainerRef,
+    private cpService: ColorPickerService,
     private notificationService: NotificationService,
     private data: DataService,
     private router: Router,
@@ -68,6 +75,17 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
     });
     this.customizeService.currentTheme.subscribe(theme => {
       this.userTheme = theme || "default-theme";
+    });
+
+    // custom color picker
+    this.customizeService.currentPrimaryColor.subscribe(pColor => {
+      this.primaryColor = pColor;
+    });
+    this.customizeService.currentAccentColor.subscribe(aColor => {
+      this.accentColor = aColor;
+    });
+    this.customizeService.currentWarnColor.subscribe(wColor => {
+      this.warnColor = wColor;
     });
 
   }
@@ -95,6 +113,25 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
       };
     }
   }
+
+  onPrimaryColorChange(primaryColor: any): void {
+    // this.primaryColor = primaryColor;
+    console.log(primaryColor);
+    this.customizeService.changePrimaryColor(primaryColor);
+  }
+
+  onAccentColorChange(accentColor: any): void {
+    // this.accentColor = accentColor;
+    console.log(accentColor);
+    this.customizeService.changeAccentColor(accentColor);
+  }
+
+  onWarnColorChange(warnColor: any): void {
+    // this.warnColor = warnColor
+    console.log(warnColor);
+    this.customizeService.changeWarnColor(warnColor);
+  }
+
 
   onSetTheme(theme) {
     this.customizeService.changeTheme(theme);

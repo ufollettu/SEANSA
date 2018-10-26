@@ -12,6 +12,47 @@
 
     <hr>
 
+    <mat-form-field >
+      <input 
+        matInput 
+        placeholder="Primary Color" 
+        [errorStateMatcher]="matcher"
+        [style.background]="primaryColor" 
+        [colorPicker]="primaryColor" 
+        [cpPosition]="'right'" 
+        [cpOutputFormat]="'rgba'"
+        [cpAlphaChannel]="'disabled'"
+        (colorPickerChange)="onPrimaryColorChange($event)">
+    </mat-form-field>
+
+    <mat-form-field >
+      <input 
+        matInput 
+        placeholder="Accent Color" 
+        [errorStateMatcher]="matcher"
+        [style.background]="accentColor" 
+        [colorPicker]="accentColor" 
+        [cpPosition]="'right'" 
+        [cpOutputFormat]="'rgba'"
+        [cpAlphaChannel]="'disabled'"
+        (colorPickerChange)="onAccentColorChange($event)">
+    </mat-form-field>
+
+    <mat-form-field >
+        <input 
+          matInput 
+          placeholder="Warn Color" 
+          [errorStateMatcher]="matcher"
+          [style.background]="warnColor" 
+          [colorPicker]="warnColor" 
+          [cpPosition]="'right'" 
+          [cpOutputFormat]="'rgba'"
+          [cpAlphaChannel]="'disabled'"
+          (colorPickerChange)="onWarnColorChange($event)">
+      </mat-form-field>
+
+      <hr>
+
     <div class="example-full-width">
       <mat-radio-group class="example-radio-group">
         <mat-radio-button mat-raised-button [ngStyle]="{'color': theme}" class="example-radio-button" *ngFor="let theme of themes"

@@ -22,10 +22,21 @@ export class CustomizeService {
   private logoSource = new BehaviorSubject(this.getLogoFromToken());
   currentLogo = this.logoSource.asObservable().pipe(distinctUntilChanged());
 
+  // Custom color picker
+  private primaryColorSource = new BehaviorSubject('rgb(255,255,255)');
+  currentPrimaryColor = this.primaryColorSource.asObservable().pipe(distinctUntilChanged());
+
+  private accentColorSource = new BehaviorSubject('rgb(255,255,255)');
+  currentAccentColor = this.accentColorSource.asObservable().pipe(distinctUntilChanged());
+
+  private warnColorSource = new BehaviorSubject('rgb(255,255,255)');
+  currentWarnColor = this.warnColorSource.asObservable().pipe(distinctUntilChanged());
+
   constructor(
     public overlayContainer: OverlayContainer
   ) { }
 
+  // built-in themes
   changeTheme(theme) {
     this.themeSource.next(theme);
   }
@@ -38,6 +49,7 @@ export class CustomizeService {
     return localStorage.getItem('customStyle') || 'default-theme';
   }
 
+  // Logo
   changeLogo(logo) {
     this.logoSource.next(logo);
   }
@@ -48,5 +60,27 @@ export class CustomizeService {
 
   getLogoFromToken() {
     return localStorage.getItem('customLogo') || 'raniero.png';
+  }
+
+  // Custom color picker
+  changePrimaryColor(pColor) {
+    this.primaryColorSource.next(pColor);
+  }
+  getPrimaryColor() {
+    return this.currentPrimaryColor;
+  }
+
+  changeAccentColor(aColor) {
+    this.accentColorSource.next(aColor);
+  }
+  getAccentColor() {
+    return this.currentAccentColor;
+  }
+
+  changeWarnColor(wColor) {
+    this.warnColorSource.next(wColor);
+  }
+  getWarnColor() {
+    return this.currentWarnColor;
   }
 }

@@ -14,6 +14,7 @@ import { DialogService } from "../../../services/layout-services/dialog.service"
 import { NotificationService } from "../../../services/layout-services/notification.service";
 import { Utente } from "../../../models/utente";
 import { AuthService } from "../../../services/auth-services/auth.service";
+import { DataService } from "src/app/services/shared-services/data.service";
 
 @Component({
   selector: "app-utenti-table",
@@ -36,6 +37,7 @@ import { AuthService } from "../../../services/auth-services/auth.service";
 export class UtentiTableComponent implements OnInit {
   loading;
   utenti: Utente[];
+  currentUsername;
 
   displayedColumns = [
     "SU_UNA",
@@ -58,13 +60,18 @@ export class UtentiTableComponent implements OnInit {
     private api: UtentiApiService,
     private changeDetectorRefs: ChangeDetectorRef,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
   ) {
     this.loading = true;
   }
 
   ngOnInit() {
+    this.getUsername();
     this.refreshUsersList();
+  }
+
+  getUsername() {
+     this.currentUsername = this.authService.getUsername();
   }
 
   refreshUsersList() {
