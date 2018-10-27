@@ -52,6 +52,7 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
     "custom"
   ];
   userId = 0;
+  username;
   userTheme = "";
   logo = "";
   url = "../../assets/images/placeholder.png";
@@ -98,6 +99,7 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
 
   styleInit() {
     const id = this.route.snapshot.params["id"];
+    this.username = this.route.snapshot.fragment;
     this.uploadService.getCustomStyle(id).subscribe(style => {
       this.userTheme = style["SCZ_THEME"];
       this.logo = style["SCZ_LOGO_NAME"];

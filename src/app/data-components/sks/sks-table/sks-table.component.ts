@@ -1,7 +1,13 @@
 import { DataService } from "../../../services/shared-services/data.service";
 import { Pc } from "../../../models/pc";
 import { Rinnovo } from "../../../models/rinnovo";
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  ViewChild,
+  HostListener
+} from "@angular/core";
 import { Router } from "@angular/router";
 import { HttpErrorResponse } from "@angular/common/http";
 import {

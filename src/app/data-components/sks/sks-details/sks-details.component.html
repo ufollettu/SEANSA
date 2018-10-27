@@ -1,6 +1,6 @@
 <mat-toolbar>
   <span class="fill-remaining-space">
-    <h1>Licenza: {{this.sksForm.get('SS_KEY').value}} id: {{this.sksForm.get('SS_ID').value}}</h1>
+    <h2>Licenza: {{this.sksForm.get('SS_KEY').value}} id: {{this.sksForm.get('SS_ID').value}}</h2>
   </span>
   <a color="secondary" class="btn-dialog-email" matTooltip="email this key" mat-icon-button (click)="sendMail(this.sksForm.get('SS_KEY').value)"
     tabIndex="-1">
