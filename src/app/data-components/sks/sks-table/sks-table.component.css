@@ -14,6 +14,17 @@ tr.example-element-row:not(.example-expanded-row):active {
   background: #efefef;
 }
 
+td.mat-cell:last-of-type,
+td.mat-footer-cell:last-of-type,
+th.mat-header-cell:last-of-type {
+  padding-right: 4px;
+}
+
+th.mat-header-cell {
+  text-align: center;
+  vertical-align: middle;
+}
+
 .example-full-width {
   padding-left: 20px;
   width: 25%;

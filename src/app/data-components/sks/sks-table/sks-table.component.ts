@@ -68,10 +68,10 @@ export class SksTableComponent implements OnInit {
   // tslint:disable-next-line:max-line-length
   displayedColumns = [
     "SS_KEY",
-    "SS_ID",
+    // "SS_ID",
     "SS_SC_ID",
     "SS_OEM",
-    "SS_SP_ID",
+    // "SS_SP_ID",
     "SS_CREATED",
     "SS_ACTIVATION_DATE",
     "SS_EXPIRE",

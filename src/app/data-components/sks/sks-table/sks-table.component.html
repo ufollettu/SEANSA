@@ -11,19 +11,22 @@
     <app-loading-table-spinner></app-loading-table-spinner>
   </div>
 
-  <table [hidden]="loading" mat-table [dataSource]="dataSource" matSort matSortActive="SS_CREATED" matSortDisableClear matSortDirection="desc">
+  <table [hidden]="loading" mat-table [dataSource]="dataSource" matSort matSortActive="SS_CREATED" matSortDisableClear
+    matSortDirection="desc">
 
     <!-- Name Column -->
     <ng-container matColumnDef="SS_KEY">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Licenza </th>
-      <td mat-cell *matCellDef="let element" class="nome-col"> {{element.SS_KEY}} </td>
+      <td mat-cell *matCellDef="let element" matTooltip="license id: {{element.SS_ID}}" matTooltipPosition="above"
+        class="nome-col">
+        {{element.SS_KEY}} </td>
     </ng-container>
 
     <!-- Name Column -->
-    <ng-container matColumnDef="SS_ID">
+    <!-- <ng-container matColumnDef="SS_ID">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Id Sks </th>
       <td mat-cell *matCellDef="let element"> {{element.SS_ID}} </td>
-    </ng-container>
+    </ng-container> -->
 
     <!-- Name Column -->
     <!-- <ng-container matColumnDef="SS_ACTIVATED_BY">
@@ -78,10 +81,10 @@
     </ng-container>
 
     <!-- Nome Referente Column -->
-    <ng-container matColumnDef="SS_SP_ID">
+    <!-- <ng-container matColumnDef="SS_SP_ID">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Pc Associato </th>
       <td mat-cell *matCellDef="let element">{{getPcHwId(element.SS_SP_ID)}}</td>
-    </ng-container>
+    </ng-container> -->
 
     <!-- Nome Referente Column -->
     <!-- <ng-container matColumnDef="pcLastConnection">
@@ -112,11 +115,13 @@
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let element">
 
-        <a mat-icon-button matTooltip="Rinnova chiave" color="accent" [routerLink]="['/sks-renew', element.SS_ID]" [appCheckPermissions]="4">
+        <a mat-icon-button matTooltip="Rinnova chiave" color="accent" [routerLink]="['/sks-renew', element.SS_ID]"
+          [appCheckPermissions]="4">
           <mat-icon>autorenew</mat-icon>
         </a>
 
-        <a mat-icon-button matTooltip="Modifica chiave" color="primary" [routerLink]="['/sks-edit', element.SS_ID]" [appCheckPermissions]="5">
+        <a mat-icon-button matTooltip="Modifica chiave" color="primary" [routerLink]="['/sks-edit', element.SS_ID]"
+          [appCheckPermissions]="5">
           <mat-icon>edit</mat-icon>
         </a>
         <a mat-icon-button matTooltip="Disassocia PC" color="primary" (click)="decouplePC(element.SS_ID)" [disabled]="element.SS_SP_ID===0"
@@ -124,7 +129,8 @@
           <mat-icon>desktop_access_disabled</mat-icon>
         </a>
 
-        <a mat-icon-button matTooltip="Matricole Associate" color="accent" [routerLink]="['/matricole', element.SS_ID]" [appCheckPermissions]="8">
+        <a mat-icon-button matTooltip="Matricole Associate" color="accent" [routerLink]="['/matricole', element.SS_ID]"
+          [appCheckPermissions]="8">
           <mat-icon>ballot</mat-icon>
         </a>
 
@@ -137,7 +143,8 @@
           <mat-icon>offline_pin</mat-icon>
         </a>
 
-        <a mat-icon-button matTooltip="Elimina chiave" color="warn" (click)="deleteSks(element.SS_ID)" [appCheckPermissions]="5">
+        <a mat-icon-button matTooltip="Elimina chiave" color="warn" (click)="deleteSks(element.SS_ID)"
+          [appCheckPermissions]="5">
           <mat-icon>delete</mat-icon>
         </a>
 
