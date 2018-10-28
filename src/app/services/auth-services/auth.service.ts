@@ -46,6 +46,7 @@ export class AuthService {
     localStorage.removeItem("userName");
     localStorage.removeItem("customLogo");
     localStorage.removeItem("customStyle");
+    localStorage.removeItem("customColors");
 
     this.router.navigate(["/login"]);
   }

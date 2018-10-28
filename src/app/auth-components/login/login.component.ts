@@ -66,6 +66,9 @@ export class LoginComponent implements OnInit {
           localStorage.setItem("customColors", customColors.join("|"));
           this.customizeService.changeTheme(style["SCZ_THEME"]);
           this.customizeService.changeLogo(style["SCZ_LOGO_NAME"]);
+          this.customizeService.changePrimaryColor(style["SCZ_PRIMARY_COLOR"]);
+          this.customizeService.changeAccentColor(style["SCZ_ACCENT_COLOR"]);
+          this.customizeService.changeWarnColor(style["SCZ_WARN_COLOR"]);
         });
 
         this.userApi

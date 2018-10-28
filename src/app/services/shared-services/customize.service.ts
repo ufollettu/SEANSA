@@ -74,6 +74,7 @@ export class CustomizeService {
   // Custom color picker
   changePrimaryColor(pColor) {
     this.primaryColorSource.next(pColor);
+    document.body.style.setProperty("--primary-color", pColor);
   }
   getPrimaryColor() {
     return this.currentPrimaryColor;
@@ -81,6 +82,7 @@ export class CustomizeService {
 
   changeAccentColor(aColor) {
     this.accentColorSource.next(aColor);
+    document.body.style.setProperty("--accent-color", aColor);
   }
   getAccentColor() {
     return this.currentAccentColor;
@@ -88,6 +90,7 @@ export class CustomizeService {
 
   changeWarnColor(wColor) {
     this.warnColorSource.next(wColor);
+    document.body.style.setProperty("--warn-color", wColor);
   }
   getWarnColor() {
     return this.currentWarnColor;

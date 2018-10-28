@@ -108,19 +108,8 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
       this.onSetTheme(style["SCZ_THEME"]);
       this.customizeService.changeLogo(style["SCZ_LOGO_NAME"]);
       this.customizeService.changePrimaryColor(style["SCZ_PRIMARY_COLOR"]);
-      document.body.style.setProperty(
-        "--primary-color",
-        style["SCZ_PRIMARY_COLOR"]
-      );
-
       this.customizeService.changeAccentColor(style["SCZ_ACCENT_COLOR"]);
-      document.body.style.setProperty(
-        "--accent-color",
-        style["SCZ_ACCENT_COLOR"]
-      );
-
       this.customizeService.changeWarnColor(style["SCZ_WARN_COLOR"]);
-      document.body.style.setProperty("--warn-color", style["SCZ_WARN_COLOR"]);
     });
   }
 
@@ -137,21 +126,15 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
   }
 
   onPrimaryColorChange(primaryColor: any): void {
-    // this.primaryColor = primaryColor;
     this.customizeService.changePrimaryColor(primaryColor);
-    document.body.style.setProperty("--primary-color", primaryColor);
   }
 
   onAccentColorChange(accentColor: any): void {
-    // this.accentColor = accentColor;
     this.customizeService.changeAccentColor(accentColor);
-    document.body.style.setProperty("--accent-color", accentColor);
   }
 
   onWarnColorChange(warnColor: any): void {
-    // this.warnColor = warnColor
     this.customizeService.changeWarnColor(warnColor);
-    document.body.style.setProperty("--warn-color", warnColor);
   }
 
   onSetTheme(theme) {
