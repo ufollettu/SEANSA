@@ -52,6 +52,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER(11)
       },
+      SS_SPK_ID: {
+        type: Sequelize.INTEGER(10)
+      },
       SS_CREATOR_ID: {
         type: Sequelize.INTEGER(10)
       },

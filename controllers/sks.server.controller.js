@@ -31,6 +31,7 @@ const create = async (req, res) => {
     SS_CREATED: moment().format("YYYY-MM-DD hh:mm:ss"),
     SS_EXPIRE: req.body.SS_EXPIRE,
     SS_SC_ID: req.body.SS_SC_ID,
+    SS_SPK_ID: req.body.SS_SPK_ID,
     SS_CREATOR_ID: req.userId,
     SS_ACTIVATED_BY: "",
     SS_ACTIVATION_REFERENT: ""

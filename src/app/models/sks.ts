@@ -10,6 +10,7 @@ export class Sks {
   SS_STATUS: number;
   SS_SC_ID?: number;
   SS_SP_ID?: number;
+  SS_SPK_ID?: number;
   SS_CREATOR_ID?: number;
   SS_ACTIVATED_BY?: string;
   SS_ACTIVATION_REFERENT?: string;

@@ -52,6 +52,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER(11),
         defaultValue: "0"
       },
+      SS_SPK_ID: {
+        type: DataTypes.INTEGER(10)
+      },
       SS_CREATOR_ID: {
         type: DataTypes.INTEGER(10)
       },

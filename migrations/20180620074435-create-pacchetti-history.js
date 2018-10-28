@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('sa_pacchetti_history', {
+    return queryInterface.createTable("sa_pacchetti_history", {
       SPKH_ID: {
         allowNull: false,
         autoIncrement: true,
@@ -20,6 +20,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER(10)
       },
+      SPKH_ACTION: {
+        type: Sequelize.STRING(50)
+      },
       SPKH_TS: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -28,6 +31,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('sa_pacchetti_history');
+    return queryInterface.dropTable("sa_pacchetti_history");
   }
 };

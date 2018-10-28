@@ -1,3 +1,5 @@
+import { PacksHistoryApiService } from "./../../../services/api-services/packs-history-api.service";
+import { PacksApiService } from "./../../../services/api-services/packs-api.service";
 import { DataService } from "../../../services/shared-services/data.service";
 import { Pc } from "../../../models/pc";
 import { Rinnovo } from "../../../models/rinnovo";
@@ -68,7 +70,7 @@ export class SksTableComponent implements OnInit {
   pcs: object[] = [];
   clienti: Cliente[] = [];
   serials: object = {};
-
+  packUsedCount;
   userId;
 
   // tslint:disable-next-line:max-line-length
@@ -105,6 +107,8 @@ export class SksTableComponent implements OnInit {
     private pcApi: PcApiService,
     private clientiApi: ClientiApiService,
     private matricoleApi: MatricoleApiService,
+    private packsApi: PacksApiService,
+    private packsHistoryApi: PacksHistoryApiService,
     private changeDetectorRefs: ChangeDetectorRef,
     private router: Router,
     private data: DataService
@@ -205,10 +209,28 @@ export class SksTableComponent implements OnInit {
           const status = -1;
           this.api.updateSks(id, { SS_STATUS: status }).subscribe(
             key => {
-              this.notificationService.warn(
-                `chiave ${key["SS_KEY"]} eliminata`
-              );
-              this.refreshSkssList();
+              this.packsApi.getPack(key["SS_SPK_ID"]).subscribe(pack => {
+                this.packsApi
+                  .updatePack(key["SS_SPK_ID"], {
+                    SPK_USED_SKS_COUNT: pack["SPK_USED_SKS_COUNT"] - 1
+                  })
+                  .subscribe(updatedPack => {
+                    this.notificationService.warn(
+                      `chiave ${key["SS_KEY"]} eliminata`
+                    );
+                    this.refreshSkssList();
+                  });
+                this.packsHistoryApi
+                  .postPack({
+                    SPKH_SPK_ID: pack["SPK_ID"],
+                    SPKH_SU_ID: pack["SPK_SU_OWNER_ID"],
+                    SPKH_SS_ID: key["SS_ID"],
+                    SPKH_ACTION: "deleted"
+                  })
+                  .subscribe(history => {
+                    console.log("new history row created");
+                  });
+              });
             },
             err => {
               this.authService.handleLoginError(err);

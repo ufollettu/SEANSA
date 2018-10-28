@@ -11,6 +11,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 13,
+    SS_SPK_ID: 2,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Lampocar s.r.l.  (PC Florin)",
     SS_ACTIVATION_REFERENT: "Florin "
@@ -27,6 +28,7 @@ module.exports = [
     SS_STATUS: 0,
     SS_SC_ID: 9,
     SS_SP_ID: 7,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "GR s.r.l.",
     SS_ACTIVATION_REFERENT: "Daniele Parazza - "
@@ -43,6 +45,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 10,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Lampocar s.r.l. (Notebook HP Daniele)",
     SS_ACTIVATION_REFERENT:
@@ -60,6 +63,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 11,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Lampocar s.r.l.",
     SS_ACTIVATION_REFERENT: "Luca - "
@@ -76,6 +80,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 9,
     SS_SP_ID: 12,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "GR di Gigli Norberto s.r.l. (PC Venus)",
     SS_ACTIVATION_REFERENT: "Carlo Petrelli - ricercaesviluppo@grsrl.net"
@@ -92,6 +97,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 31,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "lampocar",
     SS_ACTIVATION_REFERENT: "florin - "
@@ -108,6 +114,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 12,
     SS_SP_ID: 15,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "e van gent",
     SS_ACTIVATION_REFERENT: " - "
@@ -124,6 +131,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 9,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Lampocar",
     SS_ACTIVATION_REFERENT: "Daniele - Prove e sviluppo"
@@ -140,6 +148,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 16,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Lampocar S.r.l.",
     SS_ACTIVATION_REFERENT: "Massimo - massimo@raniero-carelli.com"
@@ -156,6 +165,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 12,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Lampocar",
     SS_ACTIVATION_REFERENT: " - "
@@ -172,6 +182,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 17,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Lampocar S.r.l.",
     SS_ACTIVATION_REFERENT: "Daniele - daniele@raniero-carrelli.com"
@@ -188,6 +199,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 13,
     SS_SP_ID: 18,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "S.T.E.VERONA sas",
     SS_ACTIVATION_REFERENT: " - "
@@ -204,6 +216,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 14,
     SS_SP_ID: 19,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "FLORIAN LEGNO SRL",
     SS_ACTIVATION_REFERENT: "VALTER - "
@@ -220,6 +233,7 @@ module.exports = [
     SS_STATUS: 0,
     SS_SC_ID: 15,
     SS_SP_ID: 20,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Matl & Bula",
     SS_ACTIVATION_REFERENT: " - "
@@ -236,6 +250,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 15,
     SS_SP_ID: 0,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "",
     SS_ACTIVATION_REFERENT: ""
@@ -252,6 +267,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 15,
     SS_SP_ID: 20,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Mátl & Bula",
     SS_ACTIVATION_REFERENT: " - "
@@ -268,6 +284,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 9,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "RANIERO R&D",
     SS_ACTIVATION_REFERENT: "Daniele PC Fujitsu - daniele@raniero-carrelli.com"
@@ -284,6 +301,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 16,
     SS_SP_ID: 21,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "FLORIAN BERGER GmbH",
     SS_ACTIVATION_REFERENT: " - ch.z@berger-maschinen-at"
@@ -300,6 +318,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 9,
     SS_SP_ID: 7,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "awesrdtfgtdrse",
     SS_ACTIVATION_REFERENT: " - "
@@ -316,6 +335,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 9,
     SS_SP_ID: 22,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "GR s.r.l.",
     SS_ACTIVATION_REFERENT: "Carlo Petrelli - "
@@ -332,6 +352,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 9,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Raniero",
     SS_ACTIVATION_REFERENT: " - "
@@ -348,6 +369,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 10,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "RANIERO R&D",
     SS_ACTIVATION_REFERENT: "Giorgio - Notebook HP"
@@ -364,6 +386,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 16,
     SS_SP_ID: 21,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Berger",
     SS_ACTIVATION_REFERENT: " - "
@@ -380,6 +403,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 16,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Raniero",
     SS_ACTIVATION_REFERENT: "Giorgio - "
@@ -396,6 +420,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 11,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Raniero",
     SS_ACTIVATION_REFERENT: "el cojon de nash - "
@@ -412,6 +437,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 17,
     SS_SP_ID: 23,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Adamo Pasqualino",
     SS_ACTIVATION_REFERENT: "Giovanni - "
@@ -428,6 +454,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 18,
     SS_SP_ID: 24,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Alto Handling",
     SS_ACTIVATION_REFERENT: " - "
@@ -444,6 +471,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 9,
     SS_SP_ID: 22,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "GR gierro",
     SS_ACTIVATION_REFERENT: "PC PANTOGRAFO - "
@@ -460,6 +488,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 19,
     SS_SP_ID: 25,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Staplerprofi GmbH",
     SS_ACTIVATION_REFERENT: "Mario Clerc - clerc@staplerprofi.co.at"
@@ -476,6 +505,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 26,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "RANIERO R&D",
     SS_ACTIVATION_REFERENT: " Noteboock - Jacopo"
@@ -492,6 +522,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 18,
     SS_SP_ID: 27,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Hannaman",
     SS_ACTIVATION_REFERENT: "Steve Doweney - sdd@hannaman.co.uk"
@@ -508,6 +539,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 16,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Lampocar SRL",
     SS_ACTIVATION_REFERENT: "NASH - PC nuovo 2018"
@@ -524,6 +556,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 21,
     SS_SP_ID: 29,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Hummelbrunner",
     SS_ACTIVATION_REFERENT: "Christian - Hans"
@@ -540,6 +573,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 20,
     SS_SP_ID: 28,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "PETZ AU",
     SS_ACTIVATION_REFERENT: " - "
@@ -556,6 +590,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 30,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Lampocar",
     SS_ACTIVATION_REFERENT: "Massimo - massiomo@raniero-carrelli.com"
@@ -572,6 +607,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 30,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Lampocar",
     SS_ACTIVATION_REFERENT: "Massimo - massimo@raniero-carrelli.com"
@@ -588,6 +624,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 12,
     SS_SP_ID: 15,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "E.Van.Gent",
     SS_ACTIVATION_REFERENT: "Perry - "
@@ -604,6 +641,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 12,
     SS_SP_ID: 0,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "",
     SS_ACTIVATION_REFERENT: ""
@@ -620,6 +658,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 12,
     SS_SP_ID: 15,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "E.Van.Gent",
     SS_ACTIVATION_REFERENT: "louis - "
@@ -636,6 +675,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 12,
     SS_SP_ID: 15,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "E.Van.Gent",
     SS_ACTIVATION_REFERENT: "louis - "
@@ -652,6 +692,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 9,
     SS_SP_ID: 7,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "GR srl",
     SS_ACTIVATION_REFERENT: "Daniele - "
@@ -668,6 +709,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 31,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "lampocar",
     SS_ACTIVATION_REFERENT: "Florian - "
@@ -684,6 +726,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 22,
     SS_SP_ID: 35,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "STILL",
     SS_ACTIVATION_REFERENT: " - "
@@ -700,6 +743,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 23,
     SS_SP_ID: 33,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Officina del Carrello",
     SS_ACTIVATION_REFERENT: "Andrea - officina@officinadelcarrello.it"
@@ -716,6 +760,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 24,
     SS_SP_ID: 32,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "S.G Carrelli",
     SS_ACTIVATION_REFERENT: "Marco - "
@@ -732,6 +777,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 23,
     SS_SP_ID: 33,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Officina dell Carrello",
     SS_ACTIVATION_REFERENT: "Andrea - "
@@ -748,6 +794,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 24,
     SS_SP_ID: 32,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "S.G Carrelli",
     SS_ACTIVATION_REFERENT: "Marco - "
@@ -764,6 +811,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 23,
     SS_SP_ID: 34,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "officina del carrello ",
     SS_ACTIVATION_REFERENT: "ibraimi - cantiere.abs@officinadelcarrello.it"
@@ -780,6 +828,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 9,
     SS_SP_ID: 7,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "GR srl",
     SS_ACTIVATION_REFERENT: "Daniele Parazza - "
@@ -796,6 +845,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 36,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Lampocar",
     SS_ACTIVATION_REFERENT: "Roberto - Demo"
@@ -812,6 +862,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 12,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "RANIERO R&D",
     SS_ACTIVATION_REFERENT: "Daniele M. - Notebook  ASUS"
@@ -828,6 +879,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 12,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "RANIERO R&D",
     SS_ACTIVATION_REFERENT: "Daniele M. - Notebook ASUS"
@@ -844,6 +896,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 37,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "RANIERO R&D",
     SS_ACTIVATION_REFERENT: "PC Fisso Olidata Banco - "
@@ -860,6 +913,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 20,
     SS_SP_ID: 38,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Neubauer",
     SS_ACTIVATION_REFERENT: " - "
@@ -876,6 +930,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 12,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "lampocar",
     SS_ACTIVATION_REFERENT: " Lecu_PC2 beta"
@@ -892,6 +947,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 25,
     SS_SP_ID: 38,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "EMHILIA MATERIAL HANDLING",
     SS_ACTIVATION_REFERENT: "MANICARDI - marco.manicardi@emhilia-mh.it"
@@ -908,6 +964,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 39,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Lampocar",
     SS_ACTIVATION_REFERENT: "Paolo Bosa -  PC Fujitsu"
@@ -924,6 +981,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 39,
+    SS_SPK_ID: 3,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Lampocar",
     SS_ACTIVATION_REFERENT: "Paolo Bosa - PC Fujitsu"
@@ -940,6 +998,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 40,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Lampocar",
     SS_ACTIVATION_REFERENT: "L03 Bilibio - PC Fujitsu"
@@ -956,6 +1015,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 10,
     SS_SP_ID: 40,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Lampocar",
     SS_ACTIVATION_REFERENT: "L03 Bilibio - PC Fujitsu"
@@ -972,6 +1032,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 26,
     SS_SP_ID: 0,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "",
     SS_ACTIVATION_REFERENT: ""
@@ -988,6 +1049,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 27,
     SS_SP_ID: 41,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "Montorfano & Beretta",
     SS_ACTIVATION_REFERENT: " - "
@@ -1004,6 +1066,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 35,
     SS_SP_ID: 0,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "",
     SS_ACTIVATION_REFERENT: ""
@@ -1020,6 +1083,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 9,
     SS_SP_ID: 0,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "",
     SS_ACTIVATION_REFERENT: ""
@@ -1036,6 +1100,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 9,
     SS_SP_ID: 0,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "",
     SS_ACTIVATION_REFERENT: ""
@@ -1052,6 +1117,7 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 9,
     SS_SP_ID: 0,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "",
     SS_ACTIVATION_REFERENT: ""
@@ -1068,11 +1134,13 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 9,
     SS_SP_ID: 51,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "GR TEST",
     SS_ACTIVATION_REFERENT: "grtest - 7777"
   },
   {
+    SS_ID: 137,
     SS_KEY: "vH58Munqx0GdIhIQNZI0KQnt4",
     SS_OEM: 12,
     SS_ACTIVATION_DATE: "2018-10-01 13:36:53",
@@ -1083,83 +1151,94 @@ module.exports = [
     SS_STATUS: 1,
     SS_SC_ID: 9,
     SS_SP_ID: 51,
+    SS_SPK_ID: 0,
     SS_CREATOR_ID: 83,
     SS_ACTIVATED_BY: "test2",
     SS_ACTIVATION_REFERENT: "nomemio - 0178/7852"
   },
   {
-    "SS_KEY": "hE4t9H5CP742fcxsxAKKSPv3l",
-    "SS_OEM": 2,
-    "SS_ACTIVATION_DATE": null,
-    "SS_EXPIRE": "2018-10-31",
-    "SS_CREATED": "2018-10-23 10:02:41",
-    "SS_LAST_EDIT": "2018-10-23 07:36:57",
-    "SS_MISMATCH_COUNT": 0,
-    "SS_STATUS": 1,
-    "SS_SC_ID": 9,
-    "SS_SP_ID": 0,
-    "SS_CREATOR_ID": 102,
-    "SS_ACTIVATED_BY": "",
-    "SS_ACTIVATION_REFERENT": ""
+    SS_ID: 138,
+    SS_KEY: "hE4t9H5CP742fcxsxAKKSPv3l",
+    SS_OEM: 2,
+    SS_ACTIVATION_DATE: null,
+    SS_EXPIRE: "2018-10-31",
+    SS_CREATED: "2018-10-23 10:02:41",
+    SS_LAST_EDIT: "2018-10-23 07:36:57",
+    SS_MISMATCH_COUNT: 0,
+    SS_STATUS: 1,
+    SS_SC_ID: 9,
+    SS_SP_ID: 0,
+    SS_SPK_ID: 4,
+    SS_CREATOR_ID: 102,
+    SS_ACTIVATED_BY: "",
+    SS_ACTIVATION_REFERENT: ""
   },
   {
-    "SS_KEY": "QRCr3hDvYdw5Ro1zJhq9rirUG",
-    "SS_OEM": 2,
-    "SS_ACTIVATION_DATE": null,
-    "SS_EXPIRE": "2018-10-16",
-    "SS_CREATED": "2018-10-23 10:03:16",
-    "SS_LAST_EDIT": "2018-10-23 07:36:57",
-    "SS_MISMATCH_COUNT": 0,
-    "SS_STATUS": 1,
-    "SS_SC_ID": 12,
-    "SS_SP_ID": 0,
-    "SS_CREATOR_ID": 102,
-    "SS_ACTIVATED_BY": "",
-    "SS_ACTIVATION_REFERENT": ""
+    SS_ID: 139,
+    SS_KEY: "QRCr3hDvYdw5Ro1zJhq9rirUG",
+    SS_OEM: 2,
+    SS_ACTIVATION_DATE: null,
+    SS_EXPIRE: "2018-10-16",
+    SS_CREATED: "2018-10-23 10:03:16",
+    SS_LAST_EDIT: "2018-10-23 07:36:57",
+    SS_MISMATCH_COUNT: 0,
+    SS_STATUS: 1,
+    SS_SC_ID: 12,
+    SS_SP_ID: 0,
+    SS_SPK_ID: 5,
+    SS_CREATOR_ID: 102,
+    SS_ACTIVATED_BY: "",
+    SS_ACTIVATION_REFERENT: ""
   },
   {
-    "SS_KEY": "vA448dGoEUkEatbeDjD3mcTg4",
-    "SS_OEM": 1,
-    "SS_ACTIVATION_DATE": null,
-    "SS_EXPIRE": "2018-10-30",
-    "SS_CREATED": "2018-10-23 00:25:49",
-    "SS_LAST_EDIT": "2018-10-23 11:20:51",
-    "SS_MISMATCH_COUNT": 0,
-    "SS_STATUS": 1,
-    "SS_SC_ID": 9,
-    "SS_SP_ID": 0,
-    "SS_CREATOR_ID": 102,
-    "SS_ACTIVATED_BY": "",
-    "SS_ACTIVATION_REFERENT": ""
+    SS_ID: 140,
+    SS_KEY: "vA448dGoEUkEatbeDjD3mcTg4",
+    SS_OEM: 1,
+    SS_ACTIVATION_DATE: null,
+    SS_EXPIRE: "2018-10-30",
+    SS_CREATED: "2018-10-23 00:25:49",
+    SS_LAST_EDIT: "2018-10-23 11:20:51",
+    SS_MISMATCH_COUNT: 0,
+    SS_STATUS: 1,
+    SS_SC_ID: 9,
+    SS_SP_ID: 0,
+    SS_SPK_ID: 6,
+    SS_CREATOR_ID: 102,
+    SS_ACTIVATED_BY: "",
+    SS_ACTIVATION_REFERENT: ""
   },
   {
-    "SS_KEY": "5cNrnRedMLZNwfWun3Y1JhhLY",
-    "SS_OEM": 1,
-    "SS_ACTIVATION_DATE": null,
-    "SS_EXPIRE": "2018-10-30",
-    "SS_CREATED": "2018-10-23 00:25:59",
-    "SS_LAST_EDIT": "2018-10-23 11:20:51",
-    "SS_MISMATCH_COUNT": 0,
-    "SS_STATUS": 1,
-    "SS_SC_ID": 9,
-    "SS_SP_ID": 0,
-    "SS_CREATOR_ID": 102,
-    "SS_ACTIVATED_BY": "",
-    "SS_ACTIVATION_REFERENT": ""
+    SS_ID: 141,
+    SS_KEY: "5cNrnRedMLZNwfWun3Y1JhhLY",
+    SS_OEM: 1,
+    SS_ACTIVATION_DATE: null,
+    SS_EXPIRE: "2018-10-30",
+    SS_CREATED: "2018-10-23 00:25:59",
+    SS_LAST_EDIT: "2018-10-23 11:20:51",
+    SS_MISMATCH_COUNT: 0,
+    SS_STATUS: 1,
+    SS_SC_ID: 9,
+    SS_SP_ID: 0,
+    SS_SPK_ID: 7,
+    SS_CREATOR_ID: 102,
+    SS_ACTIVATED_BY: "",
+    SS_ACTIVATION_REFERENT: ""
   },
   {
-    "SS_KEY": "ijsAUwkFWHSCP5NQM1O1LxG7a",
-    "SS_OEM": 1,
-    "SS_ACTIVATION_DATE": null,
-    "SS_EXPIRE": "2018-10-31",
-    "SS_CREATED": "2018-10-23 00:32:40",
-    "SS_LAST_EDIT": "2018-10-23 11:20:51",
-    "SS_MISMATCH_COUNT": 0,
-    "SS_STATUS": 1,
-    "SS_SC_ID": 59,
-    "SS_SP_ID": 0,
-    "SS_CREATOR_ID": 103,
-    "SS_ACTIVATED_BY": "",
-    "SS_ACTIVATION_REFERENT": ""
+    SS_ID: 142,
+    SS_KEY: "ijsAUwkFWHSCP5NQM1O1LxG7a",
+    SS_OEM: 1,
+    SS_ACTIVATION_DATE: null,
+    SS_EXPIRE: "2018-10-31",
+    SS_CREATED: "2018-10-23 00:32:40",
+    SS_LAST_EDIT: "2018-10-23 11:20:51",
+    SS_MISMATCH_COUNT: 0,
+    SS_STATUS: 1,
+    SS_SC_ID: 59,
+    SS_SP_ID: 0,
+    SS_SPK_ID: 8,
+    SS_CREATOR_ID: 103,
+    SS_ACTIVATED_BY: "",
+    SS_ACTIVATION_REFERENT: ""
   }
 ];

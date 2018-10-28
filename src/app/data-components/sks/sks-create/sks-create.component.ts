@@ -36,6 +36,7 @@ export class SksCreateComponent implements OnInit {
   // SS_ACTIVATION_DATE = '';
   SS_EXPIRE = "";
   SS_SP_ID = "";
+  SS_SPK_ID = "";
   // SS_SC_ID = '';
   // SS_ACTIVATED_BY = '';
   // SS_ACTIVATION_REFERENT = '';
@@ -85,7 +86,8 @@ export class SksCreateComponent implements OnInit {
       // 'SS_ACTIVATION_DATE': [null],
       SS_EXPIRE: [null, Validators.required],
       // 'SS_SP_ID': [null, [Validators.required]],
-      SS_SC_ID: [null, [Validators.required]]
+      SS_SC_ID: [null, [Validators.required]],
+      SS_SPK_ID: [null]
       // 'SS_ACTIVATED_BY': [null, Validators.required],
       // 'SS_ACTIVATION_REFERENT': [null, Validators.required],
       // 'SS_LAST_EDIT' : [null]
@@ -93,9 +95,9 @@ export class SksCreateComponent implements OnInit {
   }
 
   onFormSubmit(form: NgForm) {
+    form["SS_SPK_ID"] = this.selectedPack["SPK_ID"];
     this.api.postSks(form).subscribe(
       key => {
-        console.log(this.selectedPack);
         this.packsApiService
           .updatePack(this.selectedPack["SPK_ID"], {
             SPK_USED_SKS_COUNT: this.selectedPack["SPK_USED_SKS_COUNT"] + 1
@@ -118,7 +120,8 @@ export class SksCreateComponent implements OnInit {
           .postPack({
             SPKH_SPK_ID: this.selectedPack["SPK_ID"],
             SPKH_SU_ID: this.selectedPack["SPK_SU_OWNER_ID"],
-            SPKH_SS_ID: key["SS_ID"]
+            SPKH_SS_ID: key["SS_ID"],
+            SPKH_ACTION: "created"
           })
           .subscribe(
             res => {
