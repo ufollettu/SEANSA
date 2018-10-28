@@ -378,4 +378,9 @@ export class SksTableComponent implements OnInit {
       this.userId = utente["SU_ID"];
     });
   }
+
+  onMatricoleLink(url, id) {
+    this.data.changeUrl(url);
+    this.router.navigate([url, id]);
+  }
 }

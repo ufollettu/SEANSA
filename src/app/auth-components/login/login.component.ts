@@ -77,6 +77,7 @@ export class LoginComponent implements OnInit {
             localStorage.setItem("userName", user["SU_UNA"]);
             this.sendUser(user);
             this.notificationService.success(`benvenuto ${user["SU_UNA"]}!`);
+            this.data.changeUrl("/sks");
             this.router.navigate(["/sks"]);
           });
       },

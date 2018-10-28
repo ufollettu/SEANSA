@@ -129,7 +129,7 @@
           <mat-icon>desktop_access_disabled</mat-icon>
         </a>
 
-        <a mat-icon-button matTooltip="Matricole Associate" color="accent" [routerLink]="['/matricole', element.SS_ID]"
+        <a mat-icon-button matTooltip="Matricole Associate" color="accent" (click)="onMatricoleLink('/matricole', element.SS_ID)"
           [appCheckPermissions]="8">
           <mat-icon>ballot</mat-icon>
         </a>

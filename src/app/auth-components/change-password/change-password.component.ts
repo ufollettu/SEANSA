@@ -15,10 +15,9 @@ import { NotificationService } from "../../services/layout-services/notification
   animations: [slideInOutAnimation],
   // attach the slide in/out animation to the host (root) element of this component
   // tslint:disable-next-line:use-host-property-decorator
-  host: { '[@slideInOutAnimation]': '' }
+  host: { "[@slideInOutAnimation]": "" }
 })
 export class ChangePasswordComponent implements OnInit {
-
   user: object;
   utenteForm: FormGroup;
 
@@ -32,7 +31,7 @@ export class ChangePasswordComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private formBuilder: FormBuilder
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.data.getUserFromToken().subscribe(utente => {
@@ -42,39 +41,48 @@ export class ChangePasswordComponent implements OnInit {
 
     this.getUtente();
     this.utenteForm = this.formBuilder.group({
-      'username': [null, Validators.required],
-      'password': [null, Validators.required],
-      'SU_LAST_EDIT': new Date()
+      username: [null, Validators.required],
+      password: [null, Validators.required],
+      SU_LAST_EDIT: new Date()
     });
   }
 
   getUtente() {
     this.data.getUserFromToken().subscribe(utente => {
-      this.SU_ID = utente['SU_ID'];
+      this.SU_ID = utente["SU_ID"];
       this.utenteForm.setValue({
-        username: utente['SU_UNA'],
-        password: '',
-        SU_LAST_EDIT: new Date(),
+        username: utente["SU_UNA"],
+        password: "",
+        SU_LAST_EDIT: new Date()
       });
     });
   }
 
   onFormSubmit(form: NgForm) {
-    this.authService.changePwd(form)
-      .subscribe(res => {
-        localStorage.setItem('token', res['idToken']);
-        this.sendUser(res['user']);
-        this.notificationService.success(`password utente ${res['user']['SU_UNA']} cambiata correttamente`);
-        this.router.navigate(['/clienti']);
-      }, (err) => {
+    this.authService.changePwd(form).subscribe(
+      res => {
+        localStorage.setItem("token", res["idToken"]);
+        this.sendUser(res["user"]);
+        this.notificationService.success(
+          `password utente ${res["user"]["SU_UNA"]} cambiata correttamente`
+        );
+        this.router.navigate(["/clienti"]);
+      },
+      err => {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 422) {
-            this.notificationService.warn('error changing password');
-            this.router.navigate(['/changepwd']);
+            this.notificationService.warn("error changing password");
+            this.router.navigate(["/changepwd"]);
           }
         }
         this.authService.handleLoginError(err);
-      });
+      }
+    );
+  }
+
+  onBackward(url) {
+    this.data.changeUrl(url);
+    this.router.navigate([url]);
   }
 
   sendUser(user) {

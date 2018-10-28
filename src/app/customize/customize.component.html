@@ -22,7 +22,7 @@
     </div>
 
     <div class="button-row">
-      <a mat-stroked-button color="basic" [routerLink]="['/sks']" class="mat-stroked-button">
+      <a mat-stroked-button color="basic" (click)="onBackward('/sks')" class="mat-stroked-button">
         <mat-icon>keyboard_backspace</mat-icon>
       </a>
       <button mat-raised-button color="primary" (click)="upload()">

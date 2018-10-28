@@ -30,7 +30,8 @@ export class HeaderComponent implements OnInit {
     private customizeService: CustomizeService,
     // private renderer: Renderer2,
     // private el: ElementRef
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -83,6 +84,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getUrl() {
+    console.log(this.route.snapshot.url);
     this.data.getUrl().subscribe(url => {
       this.listUrl =
         url

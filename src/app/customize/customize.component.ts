@@ -56,7 +56,7 @@ export class CustomizeComponent implements OnInit, OnDestroy {
     private uploadService: UploadFileService,
     private customizeService: CustomizeService,
     private authService: AuthService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.customizeService.currentTheme.subscribe(theme => {
@@ -131,6 +131,11 @@ export class CustomizeComponent implements OnInit, OnDestroy {
 
   imgError() {
     this.url = "../../assets/images/placeholder.png";
+  }
+
+  onBackward(url) {
+    this.router.navigate([url]);
+    this.data.changeUrl(url);
   }
 
   ngOnDestroy() {
