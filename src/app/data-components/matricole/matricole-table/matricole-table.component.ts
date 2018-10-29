@@ -53,12 +53,7 @@ export class MatricoleTableComponent implements OnInit {
   sort: MatSort;
 
   constructor(
-    private authService: AuthService,
-    private notificationService: NotificationService,
-    private dialogService: DialogService,
-    private api: MatricoleApiService,
     private changeDetectorRefs: ChangeDetectorRef,
-    private router: Router,
     private route: ActivatedRoute,
     private dataComponentsManagementService: DataComponentsManagementService
   ) {
@@ -73,19 +68,14 @@ export class MatricoleTableComponent implements OnInit {
   refreshMatricoleList() {
     this.dataComponentsManagementService
       .getMatricoleBySks(this.sksId)
-      .subscribe(
-        res => {
-          this.matricole = res;
-          this.dataSource = new MatTableDataSource(this.matricole);
-          this.dataSource.sort = this.sort;
-          this.changeDetectorRefs.detectChanges();
-          this.loading = false;
-          this.onNoData(res);
-        },
-        err => {
-          this.authService.handleLoginError(err);
-        }
-      );
+      .add(td => {
+        this.dataSource = new MatTableDataSource(
+          this.dataComponentsManagementService.matricole
+        );
+        this.dataSource.sort = this.sort;
+        this.changeDetectorRefs.detectChanges();
+        this.loading = false;
+      });
   }
 
   onNoData(data: Matricola[]) {

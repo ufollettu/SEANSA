@@ -1,22 +1,52 @@
+import { MatTableDataSource, MatSort, MatPaginator } from "@angular/material";
+import { RinnoviApiService } from "./../api-services/rinnovi-api.service";
+import { PacksHistory } from "./../../models/packs-history";
+import { Rinnovo } from "./../../models/rinnovo";
+import { Cliente } from "./../../models/cliente";
+import { Pc } from "./../../models/pc";
+import { Sks } from "./../../models/sks";
+import { Matricola } from "./../../models/matricola";
+import { Utente } from "./../../models/utente";
+import { Packs } from "./../../models/packs";
+import { map } from "rxjs/operators";
+import { SksApiService } from "./../api-services/sks-api.service";
+import { PcApiService } from "./../api-services/pc-api.service";
+import { UtentiApiService } from "./../api-services/utenti-api.service";
+import { PacksHistoryApiService } from "./../api-services/packs-history-api.service";
 import { MatricoleApiService } from "./../api-services/matricole-api.service";
 import { AuthService } from "./../auth-services/auth.service";
 import { ClientiApiService } from "./../api-services/clienti-api.service";
 import { NotificationService } from "./../layout-services/notification.service";
 import { DialogService } from "./../layout-services/dialog.service";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Injectable, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
 import { FormBuilder, Validators } from "@angular/forms";
+import { PacksApiService } from "../api-services/packs-api.service";
 
 @Injectable({
   providedIn: "root"
 })
-export class DataComponentsManagementService {
+export class DataComponentsManagementService implements OnDestroy {
+  clienti: Cliente[];
+  utenti: Utente[];
+  sks: Sks[];
+  matricole: Matricola[];
+  rinnovi: Rinnovo[];
+  pcs: Pc[];
+  packs: Packs[];
+  packHistory: PacksHistory[];
+
   constructor(
+    private clientiApi: ClientiApiService,
+    private utentiApi: UtentiApiService,
+    private sksApi: SksApiService,
+    private matricoleApi: MatricoleApiService,
+    private rinnoviApi: RinnoviApiService,
+    private pcsApi: PcApiService,
+    private packsApi: PacksApiService,
+    private packsHistoryApi: PacksHistoryApiService,
     private dialogService: DialogService,
     private notificationService: NotificationService,
-    private clientiApi: ClientiApiService,
-    private matricoleApi: MatricoleApiService,
     private authService: AuthService,
     private router: Router,
     private formBuilder: FormBuilder
@@ -31,7 +61,15 @@ export class DataComponentsManagementService {
   /* Customer Management */
 
   refreshCustomersList() {
-    return this.clientiApi.getCustomers();
+    return this.clientiApi.getCustomers().subscribe(
+      res => {
+        this.clienti = res;
+        this.noData(res);
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
   }
 
   clientiFormInit() {
@@ -131,7 +169,15 @@ export class DataComponentsManagementService {
   }
 
   getMatricoleBySks(sksId) {
-    return this.matricoleApi.getMatricoleBySks(sksId);
+    return this.matricoleApi.getMatricoleBySks(sksId).subscribe(
+      res => {
+        this.matricole = res;
+        this.noData(res);
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
   }
 
   postMatricola(form, sksId, destUrl) {
@@ -190,5 +236,39 @@ export class DataComponentsManagementService {
           );
         }
       });
+  }
+
+  /* Packs Management */
+
+  refreshPacksList() {
+    return this.packsApi.getPacks();
+  }
+
+  deletePack(id: number) {
+    return this.dialogService
+      .openConfirmDialog("sei sicuro?")
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.packsApi.deletePack(id).subscribe(
+            pack => {
+              this.notificationService.warn(`pacchetto rimosso`);
+            },
+            err => {
+              this.authService.handleLoginError(err);
+            }
+          );
+        }
+      });
+  }
+
+  /* Utenti Management */
+
+  getUtenti() {
+    return this.utentiApi.getUtenti();
+  }
+
+  ngOnDestroy(): void {
+    console.log("service destroyed");
   }
 }

@@ -1,3 +1,4 @@
+import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from "@angular/core";
 import { MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
 import { AuthService } from "../../../services/auth-services/auth.service";
@@ -41,12 +42,8 @@ export class PacksTableComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private data: DataService,
-    private notificationService: NotificationService,
-    private dialogService: DialogService,
-    private api: PacksApiService,
     private changeDetectorRefs: ChangeDetectorRef,
-    private router: Router,
-    private utentiApi: UtentiApiService
+    private dataComponentsManagementService: DataComponentsManagementService
   ) {
     this.loading = true;
   }
@@ -59,17 +56,16 @@ export class PacksTableComponent implements OnInit {
   }
 
   refreshPacksList() {
-    this.api.getPacks().subscribe(
+    this.dataComponentsManagementService.refreshPacksList().subscribe(
       res => {
         this.mapPacks(res);
-        // console.log(res);
         this.packs = res;
         this.dataSource = new MatTableDataSource(this.packs);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
         this.loading = false;
-        this.noData(res);
+        this.onNoData(res);
       },
       err => {
         this.authService.handleLoginError(err);
@@ -77,29 +73,14 @@ export class PacksTableComponent implements OnInit {
     );
   }
 
-  noData(data: Packs[]) {
-    if (data.length === 0) {
-      this.notificationService.noData();
-    }
+  onNoData(data: Packs[]) {
+    this.dataComponentsManagementService.noData(data);
   }
 
-  deletePack(id: number) {
-    this.dialogService
-      .openConfirmDialog("sei sicuro?")
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          this.api.deletePack(id).subscribe(
-            pack => {
-              this.notificationService.warn(`pacchetto rimosso`);
-              this.refreshPacksList();
-            },
-            err => {
-              this.authService.handleLoginError(err);
-            }
-          );
-        }
-      });
+  onDeletePack(id: number) {
+    this.dataComponentsManagementService.deletePack(id).add(td => {
+      this.refreshPacksList();
+    });
   }
 
   mapPacks(packs: Packs[]) {
@@ -111,7 +92,7 @@ export class PacksTableComponent implements OnInit {
   }
 
   fetchUtenti() {
-    this.utentiApi.getUtenti().subscribe(
+    this.dataComponentsManagementService.getUtenti().subscribe(
       utenti => {
         this.utenti = utenti;
         this.refreshPacksList();

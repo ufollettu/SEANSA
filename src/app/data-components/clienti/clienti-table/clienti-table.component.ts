@@ -58,7 +58,6 @@ export class ClientiTableComponent implements OnInit {
   paginator: MatPaginator;
 
   constructor(
-    private authService: AuthService,
     private dataComponentsManagement: DataComponentsManagementService,
     private changeDetectorRefs: ChangeDetectorRef
   ) {
@@ -70,20 +69,15 @@ export class ClientiTableComponent implements OnInit {
   }
 
   onRefreshCustomersList() {
-    this.dataComponentsManagement.refreshCustomersList().subscribe(
-      res => {
-        this.clienti = res;
-        this.dataSource = new MatTableDataSource(this.clienti);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.changeDetectorRefs.detectChanges();
-        this.loading = false;
-        this.onNodata(res);
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
+    this.dataComponentsManagement.refreshCustomersList().add(td => {
+      this.dataSource = new MatTableDataSource(
+        this.dataComponentsManagement.clienti
+      );
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.changeDetectorRefs.detectChanges();
+      this.loading = false;
+    });
   }
 
   onNodata(data: Cliente[]) {
