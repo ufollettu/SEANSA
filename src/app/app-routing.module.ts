@@ -59,7 +59,8 @@ import { CustomizeComponent } from "./customize/customize.component";
 import { LoadingTableSpinnerComponent } from "./layout-components/loading-table-spinner/loading-table-spinner.component";
 import { ConfirmDialogComponent } from "./layout-components/confirm-dialog/confirm-dialog.component";
 import { SearchBarComponent } from "./layout-components/search-bar/search-bar.component";
-import { CustomizeUserComponent } from './customize/customize-user/customize-user.component';
+import { CustomizeUserComponent } from "./customize/customize-user/customize-user.component";
+import { PacksHistoryTableComponent } from "./data-components/packs-history/packs-history-table/packs-history-table.component";
 
 const appRoutes: Routes = [
   {
@@ -182,6 +183,13 @@ const appRoutes: Routes = [
   },
 
   {
+    path: "packs-history",
+    component: PacksHistoryTableComponent,
+    canActivate: [AuthGuard, PermsGuard],
+    data: { expectedPerm: 9 }
+  },
+
+  {
     path: "clienti",
     component: ClientiTableComponent,
     canActivate: [AuthGuard]
@@ -267,7 +275,8 @@ const appRoutes: Routes = [
     ForgotPwdComponent,
     CustomizeComponent,
     SearchBarComponent,
-    CustomizeUserComponent
+    CustomizeUserComponent,
+    PacksHistoryTableComponent
     // CheckPermissionsDirective
   ],
   entryComponents: [SksDetailsComponent]

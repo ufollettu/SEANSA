@@ -1,20 +1,19 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input } from "@angular/core";
 
 @Component({
-  selector: 'app-search-bar',
-  templateUrl: './search-bar.component.html',
-  styleUrls: ['./search-bar.component.css']
+  selector: "app-search-bar",
+  templateUrl: "./search-bar.component.html",
+  styleUrls: ["./search-bar.component.css"]
 })
 export class SearchBarComponent implements OnInit {
-
   isActive = false;
   searchKey: string;
-  @Input() dataSource: any;
+  @Input()
+  dataSource: any;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   onSearchClear() {
     this.searchKey = "";
@@ -22,7 +21,7 @@ export class SearchBarComponent implements OnInit {
   }
 
   applyFilter() {
+    console.log(this.dataSource);
     this.dataSource.filter = this.searchKey.trim().toLowerCase();
   }
-
 }

@@ -1,3 +1,4 @@
+import { Sks } from "./../../../models/sks";
 import { PacksHistoryApiService } from "./../../../services/api-services/packs-history-api.service";
 import { PacksApiService } from "./../../../services/api-services/packs-api.service";
 import { DataService } from "../../../services/shared-services/data.service";
@@ -37,7 +38,6 @@ import { ClientiApiService } from "../../../services/api-services/clienti-api.se
 import { DialogService } from "../../../services/layout-services/dialog.service";
 import { NotificationService } from "../../../services/layout-services/notification.service";
 import { Cliente } from "../../../models/cliente";
-import { Sks } from "../../../models/sks";
 import { Matricola } from "../../../models/matricola";
 import { SksCreateComponent } from "../sks-create/sks-create.component";
 import { SksDetailsComponent } from "../sks-details/sks-details.component";
@@ -63,7 +63,7 @@ import { AuthService } from "../../../services/auth-services/auth.service";
 })
 export class SksTableComponent implements OnInit {
   loading;
-  oems = oems;
+  oems;
 
   sks: Sks[];
   rinnovi: object = {};
@@ -73,6 +73,7 @@ export class SksTableComponent implements OnInit {
   packUsedCount;
   userId;
 
+  sksPcHwId;
   // tslint:disable-next-line:max-line-length
   displayedColumns = [
     "SS_KEY",
@@ -117,14 +118,21 @@ export class SksTableComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.oems = oems;
     this.getUtente();
     this.warningDate = moment().format("YYYY-MM-DD");
     this.refreshSkssList();
   }
 
-  refreshSkssList() {
-    this.api.getSkss().subscribe(
+  async refreshSkssList() {
+    await this.fetchRinnovi();
+    await this.fetchPcs();
+    await this.fetchMatricole();
+    await this.fetchClienti();
+    await this.api.getSkss().subscribe(
       res => {
+        // add field useful to search bar in sks array
+        this.mapSks(res);
         this.sks = res;
         this.dataSource = new MatTableDataSource(this.sks);
         this.dataSource.paginator = this.paginator;
@@ -137,10 +145,6 @@ export class SksTableComponent implements OnInit {
         this.authService.handleLoginError(err);
       }
     );
-    this.fetchRinnovi();
-    this.fetchPcs();
-    this.fetchMatricole();
-    this.fetchClienti();
   }
 
   noData(data: Sks[]) {
@@ -238,6 +242,20 @@ export class SksTableComponent implements OnInit {
           );
         }
       });
+  }
+
+  mapSks(sks: Sks[]) {
+    const sksDataSource = sks.map(sk => {
+      sk["sksPcHwId"] = this.getPcHwId(sk["SS_SP_ID"]);
+      sk["sksPcLastConnection"] = this.getPcLastConnection(sk["SS_SP_ID"]);
+      sk["sksCustomerName"] = this.getCustomerName(sk["SS_SC_ID"]);
+      sk["sksOems"] = this.fetchOemsValue(sk["SS_OEM"]);
+      sk["sksStatus"] = sk["SS_STATUS"] ? "abilitata" : "disabilitata";
+
+      return sk;
+    });
+    // return sksDataSource;
+    // console.log(sksDataSource);
   }
 
   getPcHwId(id) {
