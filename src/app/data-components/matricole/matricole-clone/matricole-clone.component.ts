@@ -1,3 +1,4 @@
+import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
 import { Component, OnInit, Input } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { MatricoleApiService } from "../../../services/api-services/matricole-api.service";
@@ -20,57 +21,34 @@ export class MatricoleCloneComponent implements OnInit {
   sksId: any;
   matricoleCloneForm: FormGroup;
 
-  SS_ID = 0;
-  // SM_MATRICOLA = '';
-  // SM_SS_ID = '';
-  // SM_DETTAGLI = '';
-  // SM_CREATION_DATE = '';
-  // SM_LAST_UPDATE = '';
+  SM_SS_ID = 0;
 
   constructor(
-    private notificationService: NotificationService,
-    private router: Router,
     private route: ActivatedRoute,
-    private api: MatricoleApiService,
-    private formBuilder: FormBuilder,
-    private authService: AuthService
-  ) { }
+    private dataComponentsManagementService: DataComponentsManagementService
+  ) {}
 
   ngOnInit() {
     this.route.fragment.subscribe((fragment: string) => {
       this.sksId = fragment;
     });
 
-    this.matricoleCloneForm = this.formBuilder.group({
-      SS_ID: [null, Validators.required]
-    });
+    this.onFormInit();
   }
 
-  cloneMatricoleFromSksId(licenseId) {
-    this.api.getMatricoleBySks(licenseId).subscribe(matricole => {
-      const data = matricole.map(matricola => {
-        const resMatr = {};
-        resMatr["SM_MATRICOLA"] = matricola["SM_MATRICOLA"];
-        resMatr["SM_DETTAGLI"] = matricola["SM_DETTAGLI"];
-        resMatr["SM_SS_ID"] = this.sksId;
-        return resMatr;
-      });
-      data.forEach(matricola => {
-        this.api.postMatricola(matricola).subscribe(
-          res => {
-            this.notificationService.success(
-              `matricola ${res["SM_MATRICOLA"]} creata`
-            );
-          }, (err) => {
-            this.authService.handleLoginError(err);
-          }
-        );
-      });
-      this.router.navigate(["/matricole", this.sksId]);
-    });
+  onFormInit() {
+    this.matricoleCloneForm = this.dataComponentsManagementService.matricoleCloneForm();
+  }
+
+  onCloneMatricoleFromSksId(licenseId) {
+    this.dataComponentsManagementService.cloneMatricoleFromSksId(
+      licenseId,
+      this.sksId,
+      "/matricole"
+    );
   }
 
   onFormSubmit(form: NgForm) {
-    this.cloneMatricoleFromSksId(form["SS_ID"]);
+    this.onCloneMatricoleFromSksId(form["SS_ID"]);
   }
 }

@@ -2,7 +2,7 @@ import { AppDirectivesModule } from "./app-directives.module";
 import { CheckPackResolverService } from "./services/resolver-services/check-pack-resolver.service";
 import { ApiResolverService } from "./services/resolver-services/api-resolver.service";
 
-import { CheckPermissionsDirective } from "./directives/check-permissions.directive";
+// import { CheckPermissionsDirective } from "./directives/check-permissions.directive";
 
 import { AuthGuard } from "./guards/auth.guard";
 import { PermsGuard } from "./guards/perms.guard";
@@ -42,7 +42,7 @@ import { PcEditComponent } from "./data-components/pc/pc-edit/pc-edit.component"
 
 import { MatricoleTableComponent } from "./data-components/matricole/matricole-table/matricole-table.component";
 import { MatricoleCreateComponent } from "./data-components/matricole/matricole-create/matricole-create.component";
-import { MatricoleEditComponent } from "./data-components/matricole/matricole-edit/matricole-edit.component";
+// import { MatricoleEditComponent } from "./data-components/matricole/matricole-edit/matricole-edit.component";
 import { MatricoleCloneComponent } from "./data-components/matricole/matricole-clone/matricole-clone.component";
 
 import { PacksTableComponent } from "./data-components/packs/packs-table/packs-table.component";
@@ -57,7 +57,7 @@ import { ForgotPwdComponent } from "./auth-components/forgot-pwd/forgot-pwd.comp
 import { CustomizeComponent } from "./customize/customize.component";
 
 import { LoadingTableSpinnerComponent } from "./layout-components/loading-table-spinner/loading-table-spinner.component";
-import { ConfirmDialogComponent } from "./layout-components/confirm-dialog/confirm-dialog.component";
+// import { ConfirmDialogComponent } from "./layout-components/confirm-dialog/confirm-dialog.component";
 import { SearchBarComponent } from "./layout-components/search-bar/search-bar.component";
 import { CustomizeUserComponent } from "./customize/customize-user/customize-user.component";
 import { PacksHistoryTableComponent } from "./data-components/packs-history/packs-history-table/packs-history-table.component";
@@ -263,7 +263,7 @@ const appRoutes: Routes = [
     PcEditComponent,
     MatricoleTableComponent,
     MatricoleCreateComponent,
-    MatricoleEditComponent,
+    // MatricoleEditComponent,
     MatricoleCloneComponent,
     PacksTableComponent,
     PacksCreateComponent,

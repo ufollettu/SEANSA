@@ -1,3 +1,4 @@
+import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
 import { Matricola } from "./../../../models/matricola";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
@@ -58,7 +59,8 @@ export class MatricoleTableComponent implements OnInit {
     private api: MatricoleApiService,
     private changeDetectorRefs: ChangeDetectorRef,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dataComponentsManagementService: DataComponentsManagementService
   ) {
     this.loading = true;
   }
@@ -69,43 +71,30 @@ export class MatricoleTableComponent implements OnInit {
   }
 
   refreshMatricoleList() {
-    this.api.getMatricoleBySks(this.sksId).subscribe(
-      res => {
-        this.matricole = res;
-        this.dataSource = new MatTableDataSource(this.matricole);
-        this.dataSource.sort = this.sort;
-        this.changeDetectorRefs.detectChanges();
-        this.loading = false;
-        this.noData(res);
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
-
-  noData(data: Matricola[]) {
-    if (data.length === 0) {
-      this.notificationService.noData();
-    }
-  }
-
-  deleteMatricola(id) {
-    this.dialogService
-      .openConfirmDialog("Sei sicuro?")
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          this.api.deleteMatricola(id).subscribe(
-            matr => {
-              this.notificationService.warn(`Matricola ${id} rimossa`);
-              this.refreshMatricoleList();
-            },
-            err => {
-              this.authService.handleLoginError(err);
-            }
-          );
+    this.dataComponentsManagementService
+      .getMatricoleBySks(this.sksId)
+      .subscribe(
+        res => {
+          this.matricole = res;
+          this.dataSource = new MatTableDataSource(this.matricole);
+          this.dataSource.sort = this.sort;
+          this.changeDetectorRefs.detectChanges();
+          this.loading = false;
+          this.onNoData(res);
+        },
+        err => {
+          this.authService.handleLoginError(err);
         }
-      });
+      );
+  }
+
+  onNoData(data: Matricola[]) {
+    this.dataComponentsManagementService.noData(data);
+  }
+
+  onDeleteMatricola(id) {
+    this.dataComponentsManagementService.deleteMatricola(id).add(tearDown => {
+      this.refreshMatricoleList();
+    });
   }
 }

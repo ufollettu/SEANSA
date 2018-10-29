@@ -1,3 +1,4 @@
+import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
 import { Router } from "@angular/router";
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
@@ -58,21 +59,18 @@ export class ClientiTableComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private notificationService: NotificationService,
-    private dialogService: DialogService,
-    private api: ClientiApiService,
-    private changeDetectorRefs: ChangeDetectorRef,
-    private router: Router
+    private dataComponentsManagement: DataComponentsManagementService,
+    private changeDetectorRefs: ChangeDetectorRef
   ) {
     this.loading = true;
   }
 
   ngOnInit() {
-    this.refreshCustomersList();
+    this.onRefreshCustomersList();
   }
 
-  refreshCustomersList() {
-    this.api.getCustomers().subscribe(
+  onRefreshCustomersList() {
+    this.dataComponentsManagement.refreshCustomersList().subscribe(
       res => {
         this.clienti = res;
         this.dataSource = new MatTableDataSource(this.clienti);
@@ -80,7 +78,7 @@ export class ClientiTableComponent implements OnInit {
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
         this.loading = false;
-        this.noData(res);
+        this.onNodata(res);
       },
       err => {
         this.authService.handleLoginError(err);
@@ -88,31 +86,13 @@ export class ClientiTableComponent implements OnInit {
     );
   }
 
-  noData(data: Cliente[]) {
-    if (data.length === 0) {
-      this.notificationService.noData();
-    }
+  onNodata(data: Cliente[]) {
+    this.dataComponentsManagement.noData(data);
   }
 
-  deleteCustomer(id: number) {
-    this.dialogService
-      .openConfirmDialog("sei sicuro?")
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          const deleted = 1;
-          this.api.updateCustomer(id, { SC_DELETED: deleted }).subscribe(
-            cust => {
-              this.notificationService.warn(
-                `cliente ${cust["SC_NOME"]} rimosso`
-              );
-              this.refreshCustomersList();
-            },
-            err => {
-              this.authService.handleLoginError(err);
-            }
-          );
-        }
-      });
+  onDeleteCustomer(id: number) {
+    this.dataComponentsManagement.deleteCustomer(id).add(tearDown => {
+      this.onRefreshCustomersList();
+    });
   }
 }
