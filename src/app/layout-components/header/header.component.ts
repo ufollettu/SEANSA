@@ -1,5 +1,5 @@
+import { Location } from "@angular/common";
 import { Renderer2, ElementRef, ChangeDetectorRef, Input } from "@angular/core";
-// import { trigger, state, transition, style, animate } from '@angular/animations';
 import { Router, ActivatedRoute } from "@angular/router";
 import { AuthService } from "../../services/auth-services/auth.service";
 import { Component, OnInit } from "@angular/core";
@@ -30,6 +30,7 @@ export class HeaderComponent implements OnInit {
     private customizeService: CustomizeService,
     // private renderer: Renderer2,
     // private el: ElementRef
+    private location: Location,
     private cdRef: ChangeDetectorRef,
     private route: ActivatedRoute
   ) {}
@@ -39,6 +40,7 @@ export class HeaderComponent implements OnInit {
     this.getLogo();
     this.getUserFromLocalStorage();
     this.getUrl();
+    this.getLocation();
     // this.getLogoFromLocalStorage();
   }
 
@@ -81,6 +83,16 @@ export class HeaderComponent implements OnInit {
   toggleSideNav() {
     this.permsService.getPerms();
     this.sideNavService.toggle();
+  }
+
+  getLocation() {
+    this.location.subscribe(loc => {
+      this.listUrl =
+        loc.url
+          .substring(1)
+          .charAt(0)
+          .toUpperCase() + loc.url.slice(2);
+    });
   }
 
   getUrl() {

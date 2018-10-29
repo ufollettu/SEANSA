@@ -21,7 +21,6 @@ export class SearchBarComponent implements OnInit {
   }
 
   applyFilter() {
-    console.log(this.dataSource);
     this.dataSource.filter = this.searchKey.trim().toLowerCase();
   }
 }

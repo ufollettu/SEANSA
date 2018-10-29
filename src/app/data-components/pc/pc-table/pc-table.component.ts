@@ -71,6 +71,7 @@ export class PcTableComponent implements OnInit {
   refreshPcsList() {
     this.api.getPcs().subscribe(
       res => {
+        this.mapPcs(res);
         this.pc = res;
         this.dataSource = new MatTableDataSource(this.pc);
         this.dataSource.paginator = this.paginator;
@@ -89,6 +90,13 @@ export class PcTableComponent implements OnInit {
     if (data.length === 0) {
       this.notificationService.noData();
     }
+  }
+
+  mapPcs(pcs: Pc[]) {
+    pcs.map(pc => {
+      pc["statusDescription"] = pc["SP_STATUS"] ? "bannato" : "non bannato";
+      return pc;
+    });
   }
 
   banPc(id: number) {

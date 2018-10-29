@@ -51,6 +51,8 @@ export class PacksHistoryTableComponent implements OnInit {
   refreshPacksHistoryList() {
     this.api.getPacks().subscribe(
       res => {
+        this.mapPacksHistory(res);
+
         this.packsHistory = res;
         this.dataSource = new MatTableDataSource(this.packsHistory);
         this.dataSource.paginator = this.paginator;
@@ -69,6 +71,13 @@ export class PacksHistoryTableComponent implements OnInit {
     if (data.length === 0) {
       this.notificationService.noData();
     }
+  }
+
+  mapPacksHistory(packsHistory: PacksHistory[]) {
+    packsHistory.map(ph => {
+      ph["username"] = this.getUserName(ph["SPKH_SU_ID"]);
+      return ph;
+    });
   }
 
   fetchUtenti() {

@@ -61,6 +61,7 @@ export class PacksTableComponent implements OnInit {
   refreshPacksList() {
     this.api.getPacks().subscribe(
       res => {
+        this.mapPacks(res);
         // console.log(res);
         this.packs = res;
         this.dataSource = new MatTableDataSource(this.packs);
@@ -99,6 +100,14 @@ export class PacksTableComponent implements OnInit {
           );
         }
       });
+  }
+
+  mapPacks(packs: Packs[]) {
+    packs.map(pack => {
+      pack["ownerUsername"] = this.getUserName(pack["SPK_SU_OWNER_ID"]);
+      pack["creatorUsername"] = this.getUserName(pack["SPK_SU_CREATOR_ID"]);
+      return pack;
+    });
   }
 
   fetchUtenti() {
