@@ -32,12 +32,8 @@ export class ClientiEditComponent implements OnInit {
   SC_TS = "";
 
   constructor(
-    private notificationService: NotificationService,
     private router: Router,
     private route: ActivatedRoute,
-    private api: ClientiApiService,
-    private formBuilder: FormBuilder,
-    private authService: AuthService,
     private dataComponentsManagementService: DataComponentsManagementService
   ) {}
 

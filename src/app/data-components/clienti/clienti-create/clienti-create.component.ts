@@ -31,11 +31,6 @@ export class ClientiCreateComponent implements OnInit {
   SC_TS = "";
 
   constructor(
-    private notificationService: NotificationService,
-    private router: Router,
-    private api: ClientiApiService,
-    private formBuilder: FormBuilder,
-    private authService: AuthService,
     private dataComponentsManagement: DataComponentsManagementService
   ) {}
 

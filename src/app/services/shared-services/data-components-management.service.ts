@@ -241,7 +241,25 @@ export class DataComponentsManagementService implements OnDestroy {
   /* Packs Management */
 
   refreshPacksList() {
-    return this.packsApi.getPacks();
+    return this.packsApi.getPacks().subscribe(
+      res => {
+        this.mapPacks(res);
+        this.packs = res;
+
+        this.noData(res);
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
+  mapPacks(packs: Packs[]) {
+    packs.map(pack => {
+      pack["ownerUsername"] = this.getUserName(pack["SPK_SU_OWNER_ID"]);
+      pack["creatorUsername"] = this.getUserName(pack["SPK_SU_CREATOR_ID"]);
+      return pack;
+    });
   }
 
   deletePack(id: number) {
@@ -265,7 +283,25 @@ export class DataComponentsManagementService implements OnDestroy {
   /* Utenti Management */
 
   getUtenti() {
-    return this.utentiApi.getUtenti();
+    return this.utentiApi.getUtenti().subscribe(
+      utenti => {
+        this.utenti = utenti;
+        // this.refreshPacksList();
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
+  getUserName(id) {
+    let result = "";
+    this.utenti.forEach(utente => {
+      if (utente["SU_ID"] === id) {
+        result = utente["SU_UNA"];
+      }
+    });
+    return result;
   }
 
   ngOnDestroy(): void {

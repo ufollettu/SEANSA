@@ -28,12 +28,7 @@ export class MatricoleCreateComponent implements OnInit {
   SM_LAST_UPDATE = "";
 
   constructor(
-    private notificationService: NotificationService,
-    private router: Router,
     private route: ActivatedRoute,
-    private api: MatricoleApiService,
-    private formBuilder: FormBuilder,
-    private authService: AuthService,
     private dataComponentsManagementService: DataComponentsManagementService
   ) {}
 

@@ -40,7 +40,6 @@ export class PacksTableComponent implements OnInit {
   paginator: MatPaginator;
 
   constructor(
-    private authService: AuthService,
     private data: DataService,
     private changeDetectorRefs: ChangeDetectorRef,
     private dataComponentsManagementService: DataComponentsManagementService
@@ -52,25 +51,18 @@ export class PacksTableComponent implements OnInit {
     this.getUserFromLocalStorage();
     this.getIsAdmin();
     this.fetchUtenti();
-    // this.refreshPacksList();
   }
 
   refreshPacksList() {
-    this.dataComponentsManagementService.refreshPacksList().subscribe(
-      res => {
-        this.mapPacks(res);
-        this.packs = res;
-        this.dataSource = new MatTableDataSource(this.packs);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.changeDetectorRefs.detectChanges();
-        this.loading = false;
-        this.onNoData(res);
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
+    this.dataComponentsManagementService.refreshPacksList().add(td => {
+      this.dataSource = new MatTableDataSource(
+        this.dataComponentsManagementService.packs
+      );
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.changeDetectorRefs.detectChanges();
+      this.loading = false;
+    });
   }
 
   onNoData(data: Packs[]) {
@@ -83,34 +75,10 @@ export class PacksTableComponent implements OnInit {
     });
   }
 
-  mapPacks(packs: Packs[]) {
-    packs.map(pack => {
-      pack["ownerUsername"] = this.getUserName(pack["SPK_SU_OWNER_ID"]);
-      pack["creatorUsername"] = this.getUserName(pack["SPK_SU_CREATOR_ID"]);
-      return pack;
-    });
-  }
-
   fetchUtenti() {
-    this.dataComponentsManagementService.getUtenti().subscribe(
-      utenti => {
-        this.utenti = utenti;
-        this.refreshPacksList();
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
-
-  getUserName(id) {
-    let result = "";
-    this.utenti.forEach(utente => {
-      if (utente["SU_ID"] === id) {
-        result = utente["SU_UNA"];
-      }
+    this.dataComponentsManagementService.getUtenti().add(td => {
+      this.refreshPacksList();
     });
-    return result;
   }
 
   getIsAdmin() {
