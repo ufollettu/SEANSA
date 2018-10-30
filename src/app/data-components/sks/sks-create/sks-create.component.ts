@@ -1,3 +1,4 @@
+import { ErrorHandlerService } from "./../../../services/shared-services/error-handler.service";
 import { PacksApiService } from "../../../services/api-services/packs-api.service";
 import { map } from "rxjs/operators";
 import { Component, OnInit } from "@angular/core";
@@ -52,7 +53,8 @@ export class SksCreateComponent implements OnInit {
     private clientiApi: ClientiApiService,
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public matcher: ErrorHandlerService
   ) {
     this.isPack = false;
     this.packs = [];

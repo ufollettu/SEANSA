@@ -1,3 +1,4 @@
+import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, NgForm } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -32,8 +33,9 @@ export class MatricoleEditComponent implements OnInit {
     private route: ActivatedRoute,
     private api: MatricoleApiService,
     private formBuilder: FormBuilder,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+    public matcher: ErrorHandlerService
+  ) {}
 
   ngOnInit() {
     this.getMatricola(this.route.snapshot.params["id"]);
@@ -73,7 +75,7 @@ export class MatricoleEditComponent implements OnInit {
     );
   }
 
-  sksDetails() {
+  onMatricoleDetails() {
     this.router.navigate(["/matricole"]);
   }
 }

@@ -1,3 +1,4 @@
+import { ErrorHandlerService } from "./../../services/shared-services/error-handler.service";
 import { Component, OnInit } from "@angular/core";
 import { DataService } from "../../services/shared-services/data.service";
 import { Router } from "@angular/router";
@@ -30,7 +31,8 @@ export class ChangePasswordComponent implements OnInit {
     private data: DataService,
     private router: Router,
     private authService: AuthService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    public matcher: ErrorHandlerService
   ) {}
 
   ngOnInit() {

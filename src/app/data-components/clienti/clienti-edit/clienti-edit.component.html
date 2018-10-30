@@ -20,7 +20,8 @@
       <mat-form-field class="example-full-width">
         <input matInput placeholder="Indirizzo" formControlName="SC_INDIRIZZO" [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!clienteForm.get('SC_INDIRIZZO').valid && clienteForm.get('SC_INDIRIZZO').touched">Inserisci l'indirizzo</span>
+          <span *ngIf="!clienteForm.get('SC_INDIRIZZO').valid && clienteForm.get('SC_INDIRIZZO').touched">Inserisci
+            l'indirizzo</span>
         </mat-error>
       </mat-form-field>
 
@@ -38,14 +39,16 @@
       <mat-form-field class="example-full-width">
         <input matInput placeholder="nome referente" formControlName="SC_REFERENTE_NOME" [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!clienteForm.get('SC_REFERENTE_NOME').valid && clienteForm.get('SC_REFERENTE_NOME').touched">Inserisci il nome referente</span>
+          <span *ngIf="!clienteForm.get('SC_REFERENTE_NOME').valid && clienteForm.get('SC_REFERENTE_NOME').touched">Inserisci
+            il nome referente</span>
         </mat-error>
       </mat-form-field>
 
       <mat-form-field class="example-full-width">
         <input matInput placeholder="telefono referente" formControlName="SC_TEL_REFERENTE" [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!clienteForm.get('SC_TEL_REFERENTE').valid && clienteForm.get('SC_TEL_REFERENTE').touched">Inserisci il telefono del referente</span>
+          <span *ngIf="!clienteForm.get('SC_TEL_REFERENTE').valid && clienteForm.get('SC_TEL_REFERENTE').touched">Inserisci
+            il telefono del referente</span>
         </mat-error>
       </mat-form-field>
 

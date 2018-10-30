@@ -1,3 +1,4 @@
+import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, NgForm } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -40,8 +41,9 @@ export class SksRenewComponent implements OnInit {
     private clientiApi: ClientiApiService,
     private rinnoviApi: RinnoviApiService,
     private formBuilder: FormBuilder,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+    public matcher: ErrorHandlerService
+  ) {}
 
   ngOnInit() {
     this.getSks(this.route.snapshot.params["id"]);
@@ -76,9 +78,10 @@ export class SksRenewComponent implements OnInit {
 
   onFormSubmit(form: NgForm) {
     this.api.updateSks(this.SS_ID, form).subscribe(
-      (res) => {
+      res => {
         this.insertRinnovo(res["SS_ID"]);
-      }, (err) => {
+      },
+      err => {
         this.authService.handleLoginError(err);
       }
     );
@@ -90,10 +93,13 @@ export class SksRenewComponent implements OnInit {
       SR_TS: new Date().toISOString().replace(/([^T]+)T([^\.]+).*/g, "$1 $2")
     };
     this.rinnoviApi.postRinnovo(data).subscribe(
-      (res) => {
-        this.notificationeService.success(`Sks key ${res["SS_KEY"]} aggiornata`);
+      res => {
+        this.notificationeService.success(
+          `Sks key ${res["SS_KEY"]} aggiornata`
+        );
         this.router.navigate(["/sks"]);
-      }, (err) => {
+      },
+      err => {
         this.authService.handleLoginError(err);
       }
     );

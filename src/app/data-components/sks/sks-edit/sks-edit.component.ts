@@ -7,6 +7,7 @@ import { slideInOutAnimation } from "../../../animations";
 import { ClientiApiService } from "../../../services/api-services/clienti-api.service";
 import { NotificationService } from "../../../services/layout-services/notification.service";
 import { AuthService } from "../../../services/auth-services/auth.service";
+import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
 
 @Component({
   selector: "app-sks-edit",
@@ -42,8 +43,9 @@ export class SksEditComponent implements OnInit {
     private api: SksApiService,
     private clientiApi: ClientiApiService,
     private formBuilder: FormBuilder,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+    public matcher: ErrorHandlerService
+  ) {}
 
   ngOnInit() {
     this.getSks(this.route.snapshot.params["id"]);
@@ -92,7 +94,8 @@ export class SksEditComponent implements OnInit {
         console.log(res);
         this.notificationService.success(`Sks key ${res["SS_KEY"]} aggiornata`);
         this.router.navigate(["/sks"]);
-      }, (err) => {
+      },
+      err => {
         this.authService.handleLoginError(err);
       }
     );

@@ -24,7 +24,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private sideNavService: SidenavService,
-    private authService: AuthService,
+    public authService: AuthService,
     private data: DataService,
     private permsService: PermissionService,
     private customizeService: CustomizeService,

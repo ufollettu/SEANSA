@@ -1,3 +1,4 @@
+import { ErrorHandlerService } from "./../../services/shared-services/error-handler.service";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -35,7 +36,8 @@ export class LoginComponent implements OnInit {
     private userApi: UtentiApiService,
     private data: DataService,
     private uploadService: UploadFileService,
-    private customizeService: CustomizeService
+    private customizeService: CustomizeService,
+    public matcher: ErrorHandlerService
   ) {}
 
   ngOnInit() {

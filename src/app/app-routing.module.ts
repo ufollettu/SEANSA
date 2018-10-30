@@ -42,14 +42,14 @@ import { PcEditComponent } from "./data-components/pc/pc-edit/pc-edit.component"
 
 import { MatricoleTableComponent } from "./data-components/matricole/matricole-table/matricole-table.component";
 import { MatricoleCreateComponent } from "./data-components/matricole/matricole-create/matricole-create.component";
-// import { MatricoleEditComponent } from "./data-components/matricole/matricole-edit/matricole-edit.component";
+import { MatricoleEditComponent } from "./data-components/matricole/matricole-edit/matricole-edit.component";
 import { MatricoleCloneComponent } from "./data-components/matricole/matricole-clone/matricole-clone.component";
 
 import { PacksTableComponent } from "./data-components/packs/packs-table/packs-table.component";
 import { PacksCreateComponent } from "./data-components/packs/packs-create/packs-create.component";
 import { PacksEditComponent } from "./data-components/packs/packs-edit/packs-edit.component";
 
-// import { RegisterComponent } from './auth-components/register/register.component';
+import { RegisterComponent } from "./auth-components/register/register.component";
 import { LoginComponent } from "./auth-components/login/login.component";
 import { ChangePasswordComponent } from "./auth-components/change-password/change-password.component";
 import { ForgotPwdComponent } from "./auth-components/forgot-pwd/forgot-pwd.component";
@@ -61,6 +61,7 @@ import { LoadingTableSpinnerComponent } from "./layout-components/loading-table-
 import { SearchBarComponent } from "./layout-components/search-bar/search-bar.component";
 import { CustomizeUserComponent } from "./customize/customize-user/customize-user.component";
 import { PacksHistoryTableComponent } from "./data-components/packs-history/packs-history-table/packs-history-table.component";
+import { UtentiEditComponent } from "./data-components/utenti/utenti-edit/utenti-edit.component";
 
 const appRoutes: Routes = [
   {
@@ -257,18 +258,19 @@ const appRoutes: Routes = [
     RinnoviEditComponent,
     UtentiTableComponent,
     UtentiCreateComponent,
+    UtentiEditComponent,
     UtentiResetpwdComponent,
     PcTableComponent,
     PcCreateComponent,
     PcEditComponent,
     MatricoleTableComponent,
     MatricoleCreateComponent,
-    // MatricoleEditComponent,
+    MatricoleEditComponent,
     MatricoleCloneComponent,
     PacksTableComponent,
     PacksCreateComponent,
     PacksEditComponent,
-    // RegisterComponent,
+    RegisterComponent,
     LoginComponent,
     ChangePasswordComponent,
     RolesEditComponent,

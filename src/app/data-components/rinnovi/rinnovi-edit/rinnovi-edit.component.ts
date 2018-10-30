@@ -1,3 +1,4 @@
+import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, NgForm } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -29,8 +30,9 @@ export class RinnoviEditComponent implements OnInit {
     private route: ActivatedRoute,
     private api: RinnoviApiService,
     private formBuilder: FormBuilder,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+    public matcher: ErrorHandlerService
+  ) {}
 
   ngOnInit() {
     this.getRinnovo(this.route.snapshot.params["id"]);
@@ -55,7 +57,8 @@ export class RinnoviEditComponent implements OnInit {
       res => {
         this.notificationService.success("rinnovo aggiornato");
         this.router.navigate(["/rinnovi"]);
-      }, (err) => {
+      },
+      err => {
         this.authService.handleLoginError(err);
       }
     );

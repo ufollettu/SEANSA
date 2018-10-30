@@ -1,3 +1,4 @@
+import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
 import { Component, OnInit } from "@angular/core";
 import { slideInOutAnimation } from "../../../animations";
@@ -32,7 +33,8 @@ export class PacksCreateComponent implements OnInit {
 
   constructor(
     private data: DataService,
-    private manager: DataComponentsManagementService
+    private manager: DataComponentsManagementService,
+    public matcher: ErrorHandlerService
   ) {}
 
   ngOnInit() {

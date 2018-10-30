@@ -1,7 +1,7 @@
 <div class="container">
   <mat-card>
     <div class="button-row">
-      <a mat-raised-button color="primary" (click)="matricoleDetails()">
+      <a mat-raised-button color="primary" (click)="onMatricoleDetails()">
         <mat-icon>arrow_back_ios</mat-icon>
       </a>
     </div>
@@ -10,7 +10,8 @@
       <mat-form-field class="example-full-width">
         <input matInput placeholder="Matricola" formControlName="SM_MATRICOLA" [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!matricoleForm.get('SM_MATRICOLA').valid && matricoleForm.get('SM_MATRICOLA').touched">Inserisci la chiave</span>
+          <span *ngIf="!matricoleForm.get('SM_MATRICOLA').valid && matricoleForm.get('SM_MATRICOLA').touched">Inserisci
+            la chiave</span>
         </mat-error>
       </mat-form-field>
 

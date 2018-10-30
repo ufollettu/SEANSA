@@ -1,3 +1,4 @@
+import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
 import { Component, OnInit, Input } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -29,7 +30,8 @@ export class MatricoleCreateComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private manager: DataComponentsManagementService
+    private manager: DataComponentsManagementService,
+    public matcher: ErrorHandlerService
   ) {}
 
   ngOnInit() {

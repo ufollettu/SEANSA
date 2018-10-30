@@ -1,3 +1,4 @@
+import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { UtentiApiService } from "../../../services/api-services/utenti-api.service";
@@ -34,8 +35,9 @@ export class UtentiEditComponent implements OnInit {
     private route: ActivatedRoute,
     private api: UtentiApiService,
     private formBuilder: FormBuilder,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+    public matcher: ErrorHandlerService
+  ) {}
 
   ngOnInit() {
     this.getCustomer(this.route.snapshot.params["id"]);

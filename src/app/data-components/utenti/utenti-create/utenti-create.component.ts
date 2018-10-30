@@ -18,22 +18,23 @@ import { slideInOutAnimation } from "../../../animations";
 import { UploadFileService } from "../../../services/api-services/upload.service";
 import { NotificationService } from "../../../services/layout-services/notification.service";
 import { AuthService } from "../../../services/auth-services/auth.service";
+import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
-  ): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(
-      control &&
-      control.invalid &&
-      (control.dirty || control.touched || isSubmitted)
-    );
-  }
-}
+// export class MyErrorStateMatcher implements ErrorStateMatcher {
+//   isErrorState(
+//     control: FormControl | null,
+//     form: FormGroupDirective | NgForm | null
+//   ): boolean {
+//     const isSubmitted = form && form.submitted;
+//     return !!(
+//       control &&
+//       control.invalid &&
+//       (control.dirty || control.touched || isSubmitted)
+//     );
+//   }
+// }
 
 @Component({
   selector: "app-utenti-create",
@@ -48,7 +49,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 export class UtentiCreateComponent implements OnInit {
   ipAddress: any;
   utenteForm: FormGroup;
-  matcher = new MyErrorStateMatcher();
+  // matcher = new MyErrorStateMatcher();
+  // matcher;
 
   SU_UNA: "";
   SU_PAW: "";
@@ -65,7 +67,8 @@ export class UtentiCreateComponent implements OnInit {
     private formBuilder: FormBuilder,
     private uploadService: UploadFileService,
     private rolesService: RolesApiService,
-    private authService: AuthService
+    private authService: AuthService,
+    public matcher: ErrorHandlerService
   ) {}
 
   ngOnInit() {
