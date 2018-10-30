@@ -30,19 +30,17 @@ export class ClientiCreateComponent implements OnInit {
   SC_TEL_REFERENTE = "";
   SC_TS = "";
 
-  constructor(
-    private dataComponentsManagement: DataComponentsManagementService
-  ) {}
+  constructor(private manager: DataComponentsManagementService) {}
 
   ngOnInit() {
     this.onInitForm();
   }
 
   onInitForm() {
-    this.clienteForm = this.dataComponentsManagement.clientiFormInit();
+    this.clienteForm = this.manager.clientiFormInit();
   }
 
   onFormSubmit(form: NgForm) {
-    this.dataComponentsManagement.postCustomer(form, "/clienti");
+    this.manager.postCustomer(form, "/clienti");
   }
 }

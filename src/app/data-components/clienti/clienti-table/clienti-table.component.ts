@@ -58,7 +58,7 @@ export class ClientiTableComponent implements OnInit {
   paginator: MatPaginator;
 
   constructor(
-    private dataComponentsManagement: DataComponentsManagementService,
+    private manager: DataComponentsManagementService,
     private changeDetectorRefs: ChangeDetectorRef
   ) {
     this.loading = true;
@@ -69,10 +69,8 @@ export class ClientiTableComponent implements OnInit {
   }
 
   onRefreshCustomersList() {
-    this.dataComponentsManagement.refreshCustomersList().add(td => {
-      this.dataSource = new MatTableDataSource(
-        this.dataComponentsManagement.clienti
-      );
+    this.manager.refreshCustomersList().add(td => {
+      this.dataSource = new MatTableDataSource(this.manager.clienti);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.changeDetectorRefs.detectChanges();
@@ -81,11 +79,11 @@ export class ClientiTableComponent implements OnInit {
   }
 
   onNodata(data: Cliente[]) {
-    this.dataComponentsManagement.noData(data);
+    this.manager.noData(data);
   }
 
   onDeleteCustomer(id: number) {
-    this.dataComponentsManagement.deleteCustomer(id).add(tearDown => {
+    this.manager.deleteCustomer(id).add(tearDown => {
       this.onRefreshCustomersList();
     });
   }

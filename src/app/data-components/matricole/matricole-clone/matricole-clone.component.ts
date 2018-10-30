@@ -25,7 +25,7 @@ export class MatricoleCloneComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private dataComponentsManagementService: DataComponentsManagementService
+    private manager: DataComponentsManagementService
   ) {}
 
   ngOnInit() {
@@ -37,15 +37,11 @@ export class MatricoleCloneComponent implements OnInit {
   }
 
   onFormInit() {
-    this.matricoleCloneForm = this.dataComponentsManagementService.matricoleCloneForm();
+    this.matricoleCloneForm = this.manager.matricoleCloneForm();
   }
 
   onCloneMatricoleFromSksId(licenseId) {
-    this.dataComponentsManagementService.cloneMatricoleFromSksId(
-      licenseId,
-      this.sksId,
-      "/matricole"
-    );
+    this.manager.cloneMatricoleFromSksId(licenseId, this.sksId, "/matricole");
   }
 
   onFormSubmit(form: NgForm) {

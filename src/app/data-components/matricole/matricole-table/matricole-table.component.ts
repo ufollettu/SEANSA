@@ -55,7 +55,7 @@ export class MatricoleTableComponent implements OnInit {
   constructor(
     private changeDetectorRefs: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private dataComponentsManagementService: DataComponentsManagementService
+    private manager: DataComponentsManagementService
   ) {
     this.loading = true;
   }
@@ -66,24 +66,20 @@ export class MatricoleTableComponent implements OnInit {
   }
 
   refreshMatricoleList() {
-    this.dataComponentsManagementService
-      .getMatricoleBySks(this.sksId)
-      .add(td => {
-        this.dataSource = new MatTableDataSource(
-          this.dataComponentsManagementService.matricole
-        );
-        this.dataSource.sort = this.sort;
-        this.changeDetectorRefs.detectChanges();
-        this.loading = false;
-      });
+    this.manager.getMatricoleBySks(this.sksId).add(td => {
+      this.dataSource = new MatTableDataSource(this.manager.matricole);
+      this.dataSource.sort = this.sort;
+      this.changeDetectorRefs.detectChanges();
+      this.loading = false;
+    });
   }
 
   onNoData(data: Matricola[]) {
-    this.dataComponentsManagementService.noData(data);
+    this.manager.noData(data);
   }
 
   onDeleteMatricola(id) {
-    this.dataComponentsManagementService.deleteMatricola(id).add(tearDown => {
+    this.manager.deleteMatricola(id).add(tearDown => {
       this.refreshMatricoleList();
     });
   }

@@ -262,6 +262,53 @@ export class DataComponentsManagementService implements OnDestroy {
     });
   }
 
+  getPack(id, form) {
+    this.packsApi.getPack(id).subscribe(pack => {
+      // this.SPK_ID = pack['SPK_ID'];
+      form.patchValue({
+        SPK_SU_CREATOR_ID: pack["SPK_SU_CREATOR_ID"],
+        SPK_SU_OWNER_ID: pack["SPK_SU_OWNER_ID"],
+        SPK_EXPIRE: pack["SPK_EXPIRE"],
+        SPK_SKS_COUNT: pack["SPK_SKS_COUNT"]
+      });
+    });
+  }
+
+  packsFormInit() {
+    return this.formBuilder.group({
+      SPK_SU_CREATOR_ID: [null],
+      SPK_SU_OWNER_ID: [null, Validators.required],
+      SPK_EXPIRE: [null, Validators.required],
+      SPK_SKS_COUNT: [null, Validators.required]
+    });
+  }
+
+  postPack(form, destUrl) {
+    this.packsApi.postPack(form).subscribe(
+      pack => {
+        this.notificationService.success(`pack id: ${pack["SPK_ID"]} creato`);
+        this.router.navigate([destUrl]);
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
+  updatePack(id, form, destUrl) {
+    this.packsApi.updatePack(id, form).subscribe(
+      pack => {
+        this.notificationService.success(
+          `pack id: ${pack["SPK_ID"]} aggiornato`
+        );
+        this.router.navigate([destUrl]);
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
   deletePack(id: number) {
     return this.dialogService
       .openConfirmDialog("sei sicuro?")
@@ -292,6 +339,15 @@ export class DataComponentsManagementService implements OnDestroy {
         this.authService.handleLoginError(err);
       }
     );
+  }
+
+  mapUtenti() {
+    return this.utenti.map(utente => {
+      const resUtenti = {};
+      resUtenti["value"] = utente["SU_ID"];
+      resUtenti["name"] = utente["SU_UNA"];
+      return resUtenti;
+    });
   }
 
   getUserName(id) {

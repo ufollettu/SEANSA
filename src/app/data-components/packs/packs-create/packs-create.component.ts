@@ -1,3 +1,4 @@
+import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
 import { Component, OnInit } from "@angular/core";
 import { slideInOutAnimation } from "../../../animations";
 import { NotificationService } from "../../../services/layout-services/notification.service";
@@ -30,52 +31,33 @@ export class PacksCreateComponent implements OnInit {
   SPK_USED_SKS_COUNT = "";
 
   constructor(
-    private notificationService: NotificationService,
-    private router: Router,
-    private api: PacksApiService,
-    private utentiApi: UtentiApiService,
-    private formBuilder: FormBuilder,
-    private authService: AuthService,
-    private data: DataService
+    private data: DataService,
+    private manager: DataComponentsManagementService
   ) {}
 
   ngOnInit() {
-    this.utentiApi.getUtenti().subscribe(utenti => {
-      console.log(utenti);
-      const utenteMap = utenti.map(utente => {
-        const resUtenti = {};
-        resUtenti["value"] = utente["SU_ID"];
-        resUtenti["name"] = utente["SU_UNA"];
-        return resUtenti;
-      });
-      this.utenti = utenteMap;
-    });
-    this.packForm = this.formBuilder.group({
-      SPK_SU_CREATOR_ID: [null],
-      SPK_SU_OWNER_ID: [null, Validators.required],
-      SPK_EXPIRE: [null, Validators.required],
-      SPK_SKS_COUNT: [null, Validators.required]
-    });
-    this.getUtente();
+    this.onFormInit();
+    this.fetchUtenti();
+    this.utenti = this.manager.mapUtenti();
   }
 
-  getUtente() {
+  onFormInit() {
+    this.packForm = this.manager.packsFormInit();
+    this.getUtente(this.packForm);
+  }
+
+  fetchUtenti() {
+    this.manager.getUtenti();
+  }
+  getUtente(form) {
     this.data.getUserIdFromToken().subscribe(userId => {
-      this.packForm.patchValue({
+      form.patchValue({
         SPK_SU_CREATOR_ID: userId
       });
     });
   }
 
   onFormSubmit(form: NgForm) {
-    this.api.postPack(form).subscribe(
-      pack => {
-        this.notificationService.success(`pack id: ${pack["SPK_ID"]} creato`);
-        this.router.navigate(["/packs"]);
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
+    this.manager.postPack(form, "/packs");
   }
 }

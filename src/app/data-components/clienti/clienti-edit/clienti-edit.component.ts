@@ -34,20 +34,20 @@ export class ClientiEditComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private dataComponentsManagementService: DataComponentsManagementService
+    private manager: DataComponentsManagementService
   ) {}
 
   ngOnInit() {
-    this.clienteForm = this.dataComponentsManagementService.clientiFormInit();
+    this.clienteForm = this.manager.clientiFormInit();
     this.onGetCustomer(this.route.snapshot.params["id"], this.clienteForm);
   }
 
   onGetCustomer(id, form) {
-    this.dataComponentsManagementService.getCustomer(id, form);
+    this.manager.getCustomer(id, form);
   }
 
   onFormSubmit(form: NgForm) {
-    this.dataComponentsManagementService.updateCustomer(
+    this.manager.updateCustomer(
       this.route.snapshot.params["id"],
       form,
       "/clienti"

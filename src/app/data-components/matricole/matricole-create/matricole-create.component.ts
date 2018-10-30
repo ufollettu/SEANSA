@@ -29,7 +29,7 @@ export class MatricoleCreateComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private dataComponentsManagementService: DataComponentsManagementService
+    private manager: DataComponentsManagementService
   ) {}
 
   ngOnInit() {
@@ -40,16 +40,10 @@ export class MatricoleCreateComponent implements OnInit {
   }
 
   onInitForm() {
-    this.matricoleForm = this.dataComponentsManagementService.matricoleFormInit(
-      this.sksId
-    );
+    this.matricoleForm = this.manager.matricoleFormInit(this.sksId);
   }
 
   onFormSubmit(form: NgForm) {
-    this.dataComponentsManagementService.postMatricola(
-      form,
-      this.sksId,
-      "/matricole"
-    );
+    this.manager.postMatricola(form, this.sksId, "/matricole");
   }
 }

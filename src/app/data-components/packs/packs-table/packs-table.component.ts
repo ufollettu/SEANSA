@@ -42,7 +42,7 @@ export class PacksTableComponent implements OnInit {
   constructor(
     private data: DataService,
     private changeDetectorRefs: ChangeDetectorRef,
-    private dataComponentsManagementService: DataComponentsManagementService
+    private manager: DataComponentsManagementService
   ) {
     this.loading = true;
   }
@@ -54,10 +54,8 @@ export class PacksTableComponent implements OnInit {
   }
 
   refreshPacksList() {
-    this.dataComponentsManagementService.refreshPacksList().add(td => {
-      this.dataSource = new MatTableDataSource(
-        this.dataComponentsManagementService.packs
-      );
+    this.manager.refreshPacksList().add(td => {
+      this.dataSource = new MatTableDataSource(this.manager.packs);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.changeDetectorRefs.detectChanges();
@@ -66,17 +64,17 @@ export class PacksTableComponent implements OnInit {
   }
 
   onNoData(data: Packs[]) {
-    this.dataComponentsManagementService.noData(data);
+    this.manager.noData(data);
   }
 
   onDeletePack(id: number) {
-    this.dataComponentsManagementService.deletePack(id).add(td => {
+    this.manager.deletePack(id).add(td => {
       this.refreshPacksList();
     });
   }
 
   fetchUtenti() {
-    this.dataComponentsManagementService.getUtenti().add(td => {
+    this.manager.getUtenti().add(td => {
       this.refreshPacksList();
     });
   }
