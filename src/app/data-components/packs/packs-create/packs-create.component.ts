@@ -2,12 +2,7 @@ import { ErrorHandlerService } from "src/app/services/shared-services/error-hand
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
 import { Component, OnInit } from "@angular/core";
 import { slideInOutAnimation } from "../../../animations";
-import { NotificationService } from "../../../services/layout-services/notification.service";
-import { Router } from "@angular/router";
-import { PacksApiService } from "../../../services/api-services/packs-api.service";
-import { UtentiApiService } from "../../../services/api-services/utenti-api.service";
-import { FormBuilder, FormGroup, Validators, NgForm } from "@angular/forms";
-import { AuthService } from "../../../services/auth-services/auth.service";
+import { FormGroup, NgForm } from "@angular/forms";
 import { DataService } from "../../../services/shared-services/data.service";
 
 @Component({

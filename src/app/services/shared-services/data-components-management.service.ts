@@ -34,7 +34,7 @@ export class DataComponentsManagementService implements OnDestroy {
   rinnovi: Rinnovo[];
   pcs: Pc[];
   packs: Packs[];
-  packHistory: PacksHistory[];
+  packsHistory: PacksHistory[];
 
   constructor(
     private clientiApi: ClientiApiService,
@@ -325,6 +325,76 @@ export class DataComponentsManagementService implements OnDestroy {
           );
         }
       });
+  }
+  /* Packs-History Management */
+
+  refreshPacksHistoryList() {
+    return this.packsHistoryApi.getPacks().subscribe(
+      res => {
+        this.mapPacksHistory(res);
+        this.packsHistory = res;
+
+        this.noData(res);
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
+  mapPacksHistory(packsHistory: PacksHistory[]) {
+    packsHistory.map(ph => {
+      ph["username"] = this.getUserName(ph["SPKH_SU_ID"]);
+      return ph;
+    });
+  }
+
+  /* Pc Management */
+
+  refershPcList() {
+    return this.pcsApi.getPcs().subscribe(
+      res => {
+        this.mapPcs(res);
+        this.pcs = res;
+
+        this.noData(res);
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
+  mapPcs(pcs: Pc[]) {
+    pcs.map(pc => {
+      pc["statusDescription"] = pc["SP_STATUS"] ? "bannato" : "non bannato";
+      return pc;
+    });
+  }
+
+  banPc(id: number) {
+    const status = 1;
+    return this.pcsApi.updatePc(id, { SP_STATUS: status }).subscribe(
+      res => {
+        this.notificationService.warn(`pc ${res["SP_HW_ID"]} bannato`);
+        // this.refreshPcsList();
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
+  unbanPc(id: number) {
+    const status = 0;
+    return this.pcsApi.updatePc(id, { SP_STATUS: status }).subscribe(
+      res => {
+        this.notificationService.success(`pc ${res["SP_HW_ID"]} sbannato`);
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
   }
 
   /* Utenti Management */

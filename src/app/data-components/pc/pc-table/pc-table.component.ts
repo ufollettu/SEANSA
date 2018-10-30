@@ -1,5 +1,4 @@
-import { HttpErrorResponse } from "@angular/common/http";
-import { Router } from "@angular/router";
+import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
 import {
   animate,
@@ -8,13 +7,7 @@ import {
   transition,
   trigger
 } from "@angular/animations";
-import { PcApiService } from "../../../services/api-services/pc-api.service";
 import { MatSort, MatTableDataSource, MatPaginator } from "@angular/material";
-import { NotificationService } from "../../../services/layout-services/notification.service";
-import { Observable } from "rxjs";
-import { Pc } from "../../../models/pc";
-import { AuthService } from "../../../services/auth-services/auth.service";
-import { PermissionService } from "src/app/services/auth-services/permission.service";
 
 @Component({
   selector: "app-pc-table",
@@ -36,7 +29,6 @@ import { PermissionService } from "src/app/services/auth-services/permission.ser
 })
 export class PcTableComponent implements OnInit {
   loading;
-  pc: Pc[];
   isBanned = false;
 
   displayedColumns = [
@@ -55,11 +47,8 @@ export class PcTableComponent implements OnInit {
   paginator: MatPaginator;
 
   constructor(
-    private notificationService: NotificationService,
-    private api: PcApiService,
     private changeDetectorRefs: ChangeDetectorRef,
-    private router: Router,
-    private authService: AuthService
+    private manager: DataComponentsManagementService
   ) {
     this.loading = true;
   }
@@ -69,59 +58,24 @@ export class PcTableComponent implements OnInit {
   }
 
   refreshPcsList() {
-    this.api.getPcs().subscribe(
-      res => {
-        this.mapPcs(res);
-        this.pc = res;
-        this.dataSource = new MatTableDataSource(this.pc);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.changeDetectorRefs.detectChanges();
-        this.loading = false;
-        this.noData(res);
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
-
-  noData(data: Pc[]) {
-    if (data.length === 0) {
-      this.notificationService.noData();
-    }
-  }
-
-  mapPcs(pcs: Pc[]) {
-    pcs.map(pc => {
-      pc["statusDescription"] = pc["SP_STATUS"] ? "bannato" : "non bannato";
-      return pc;
+    this.manager.refershPcList().add(td => {
+      this.dataSource = new MatTableDataSource(this.manager.pcs);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.changeDetectorRefs.detectChanges();
+      this.loading = false;
     });
   }
 
   banPc(id: number) {
-    const status = 1;
-    this.api.updatePc(id, { SP_STATUS: status }).subscribe(
-      res => {
-        this.notificationService.warn(`pc ${res["SP_HW_ID"]} bannato`);
-        this.refreshPcsList();
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
+    this.manager.banPc(id).add(td => {
+      this.refreshPcsList();
+    });
   }
 
   unbanPc(id: number) {
-    const status = 0;
-    this.api.updatePc(id, { SP_STATUS: status }).subscribe(
-      res => {
-        this.notificationService.success(`pc ${res["SP_HW_ID"]} sbannato`);
-        this.refreshPcsList();
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
+    this.manager.unbanPc(id).add(td => {
+      this.refreshPcsList();
+    });
   }
 }

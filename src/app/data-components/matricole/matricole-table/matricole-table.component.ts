@@ -1,6 +1,4 @@
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
-import { Matricola } from "./../../../models/matricola";
-import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
 import {
   animate,
@@ -9,12 +7,8 @@ import {
   transition,
   trigger
 } from "@angular/animations";
-import { MatricoleApiService } from "../../../services/api-services/matricole-api.service";
-import { Router, ActivatedRoute } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { MatSort, MatTableDataSource } from "@angular/material";
-import { DialogService } from "../../../services/layout-services/dialog.service";
-import { NotificationService } from "../../../services/layout-services/notification.service";
-import { AuthService } from "../../../services/auth-services/auth.service";
 
 @Component({
   selector: "app-matricole-table",
@@ -36,7 +30,6 @@ import { AuthService } from "../../../services/auth-services/auth.service";
 })
 export class MatricoleTableComponent implements OnInit {
   loading;
-  matricole: any;
   sksId: any;
 
   displayedColumns = [
@@ -72,10 +65,6 @@ export class MatricoleTableComponent implements OnInit {
       this.changeDetectorRefs.detectChanges();
       this.loading = false;
     });
-  }
-
-  onNoData(data: Matricola[]) {
-    this.manager.noData(data);
   }
 
   onDeleteMatricola(id) {

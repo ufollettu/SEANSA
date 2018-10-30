@@ -29,7 +29,7 @@ import { AuthService } from "../../../services/auth-services/auth.service";
 export class RolesEditComponent implements OnInit, OnDestroy {
   keyForm: FormGroup;
   userId;
-  permArr: [];
+  permArr;
   levels;
   controls: FormControl[];
 

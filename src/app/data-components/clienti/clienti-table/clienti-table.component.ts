@@ -1,6 +1,4 @@
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
-import { Router } from "@angular/router";
-import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
 import {
   animate,
@@ -9,12 +7,7 @@ import {
   transition,
   trigger
 } from "@angular/animations";
-import { ClientiApiService } from "../../../services/api-services/clienti-api.service";
 import { MatTableDataSource, MatSort, MatPaginator } from "@angular/material";
-import { DialogService } from "../../../services/layout-services/dialog.service";
-import { NotificationService } from "../../../services/layout-services/notification.service";
-import { Cliente } from "../../../models/cliente";
-import { AuthService } from "../../../services/auth-services/auth.service";
 
 @Component({
   selector: "app-clienti-table",
@@ -36,7 +29,6 @@ import { AuthService } from "../../../services/auth-services/auth.service";
 })
 export class ClientiTableComponent implements OnInit {
   loading;
-  clienti: Cliente[];
 
   // tslint:disable-next-line:max-line-length
   displayedColumns = [
@@ -76,10 +68,6 @@ export class ClientiTableComponent implements OnInit {
       this.changeDetectorRefs.detectChanges();
       this.loading = false;
     });
-  }
-
-  onNodata(data: Cliente[]) {
-    this.manager.noData(data);
   }
 
   onDeleteCustomer(id: number) {

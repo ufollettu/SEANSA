@@ -1,14 +1,6 @@
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from "@angular/core";
 import { MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
-import { AuthService } from "../../../services/auth-services/auth.service";
-import { NotificationService } from "../../../services/layout-services/notification.service";
-import { DialogService } from "../../../services/layout-services/dialog.service";
-import { Router } from "@angular/router";
-import { Packs } from "../../../models/packs";
-import { PacksApiService } from "../../../services/api-services/packs-api.service";
-import { Utente } from "../../../models/utente";
-import { UtentiApiService } from "../../../services/api-services/utenti-api.service";
 import { DataService } from "src/app/services/shared-services/data.service";
 
 @Component({
@@ -18,8 +10,6 @@ import { DataService } from "src/app/services/shared-services/data.service";
 })
 export class PacksTableComponent implements OnInit {
   loading;
-  packs: Packs[];
-  utenti: Utente[];
   isAdmin: boolean;
   username: string;
   // tslint:disable-next-line:max-line-length
@@ -61,10 +51,6 @@ export class PacksTableComponent implements OnInit {
       this.changeDetectorRefs.detectChanges();
       this.loading = false;
     });
-  }
-
-  onNoData(data: Packs[]) {
-    this.manager.noData(data);
   }
 
   onDeletePack(id: number) {

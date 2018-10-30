@@ -2,8 +2,6 @@ import { AppDirectivesModule } from "./app-directives.module";
 import { CheckPackResolverService } from "./services/resolver-services/check-pack-resolver.service";
 import { ApiResolverService } from "./services/resolver-services/api-resolver.service";
 
-// import { CheckPermissionsDirective } from "./directives/check-permissions.directive";
-
 import { AuthGuard } from "./guards/auth.guard";
 import { PermsGuard } from "./guards/perms.guard";
 import { IsAdminGuard } from "./guards/is-admin.guard";
@@ -37,12 +35,9 @@ import { UtentiResetpwdComponent } from "./data-components/utenti/utenti-resetpw
 import { RolesEditComponent } from "./auth-components/roles/roles-edit/roles-edit.component";
 
 import { PcTableComponent } from "./data-components/pc/pc-table/pc-table.component";
-import { PcCreateComponent } from "./data-components/pc/pc-create/pc-create.component";
-import { PcEditComponent } from "./data-components/pc/pc-edit/pc-edit.component";
 
 import { MatricoleTableComponent } from "./data-components/matricole/matricole-table/matricole-table.component";
 import { MatricoleCreateComponent } from "./data-components/matricole/matricole-create/matricole-create.component";
-import { MatricoleEditComponent } from "./data-components/matricole/matricole-edit/matricole-edit.component";
 import { MatricoleCloneComponent } from "./data-components/matricole/matricole-clone/matricole-clone.component";
 
 import { PacksTableComponent } from "./data-components/packs/packs-table/packs-table.component";
@@ -124,18 +119,6 @@ const appRoutes: Routes = [
   },
 
   { path: "pc", component: PcTableComponent, canActivate: [AuthGuard] },
-  {
-    path: "pc-create",
-    component: PcCreateComponent,
-    canActivate: [AuthGuard, PermsGuard],
-    data: { expectedPerm: 7 }
-  },
-  {
-    path: "pc-edit/:id",
-    component: PcEditComponent,
-    canActivate: [AuthGuard, PermsGuard],
-    data: { expectedPerm: 7 }
-  },
 
   { path: "sks", component: SksTableComponent, canActivate: [AuthGuard] },
   {
@@ -261,11 +244,8 @@ const appRoutes: Routes = [
     UtentiEditComponent,
     UtentiResetpwdComponent,
     PcTableComponent,
-    PcCreateComponent,
-    PcEditComponent,
     MatricoleTableComponent,
     MatricoleCreateComponent,
-    MatricoleEditComponent,
     MatricoleCloneComponent,
     PacksTableComponent,
     PacksCreateComponent,

@@ -1,11 +1,7 @@
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { ClientiApiService } from "../../../services/api-services/clienti-api.service";
-import { FormBuilder, FormGroup, Validators, NgForm } from "@angular/forms";
+import { FormGroup, NgForm } from "@angular/forms";
 import { slideInOutAnimation } from "../../../animations";
-import { NotificationService } from "../../../services/layout-services/notification.service";
-import { AuthService } from "../../../services/auth-services/auth.service";
 import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
 
 @Component({
