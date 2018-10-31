@@ -1,5 +1,4 @@
-import { Router } from "@angular/router";
-import { HttpErrorResponse } from "@angular/common/http";
+import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
 import {
   animate,
@@ -8,13 +7,8 @@ import {
   transition,
   trigger
 } from "@angular/animations";
-import { UtentiApiService } from "../../../services/api-services/utenti-api.service";
 import { MatSort, MatTableDataSource, MatPaginator } from "@angular/material";
-import { DialogService } from "../../../services/layout-services/dialog.service";
-import { NotificationService } from "../../../services/layout-services/notification.service";
-import { Utente } from "../../../models/utente";
 import { AuthService } from "../../../services/auth-services/auth.service";
-import { DataService } from "src/app/services/shared-services/data.service";
 
 @Component({
   selector: "app-utenti-table",
@@ -36,7 +30,6 @@ import { DataService } from "src/app/services/shared-services/data.service";
 })
 export class UtentiTableComponent implements OnInit {
   loading;
-  utenti: Utente[];
   currentUsername;
 
   displayedColumns = [
@@ -55,12 +48,9 @@ export class UtentiTableComponent implements OnInit {
   paginator: MatPaginator;
 
   constructor(
-    private notificationService: NotificationService,
-    private dialogService: DialogService,
-    private api: UtentiApiService,
     private changeDetectorRefs: ChangeDetectorRef,
-    private router: Router,
     private authService: AuthService,
+    private manager: DataComponentsManagementService
   ) {
     this.loading = true;
   }
@@ -71,49 +61,22 @@ export class UtentiTableComponent implements OnInit {
   }
 
   getUsername() {
-     this.currentUsername = this.authService.getUsername();
+    this.currentUsername = this.authService.getUsername();
   }
 
   refreshUsersList() {
-    this.api.getUtenti().subscribe(
-      res => {
-        this.utenti = res;
-        this.dataSource = new MatTableDataSource(this.utenti);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.changeDetectorRefs.detectChanges();
-        this.loading = false;
-        this.noData(res);
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
-
-  noData(data: Utente[]) {
-    if (data.length === 0) {
-      this.notificationService.noData();
-    }
+    this.manager.refreshUsersList().add(td => {
+      this.dataSource = new MatTableDataSource(this.manager.utenti);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.changeDetectorRefs.detectChanges();
+      this.loading = false;
+    });
   }
 
   deleteUser(id: number) {
-    this.dialogService
-      .openConfirmDialog("sei Sicuro?")
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          const deleted = 1;
-          this.api.updateUtente(id, { SU_DELETED: deleted }).subscribe(
-            user => {
-              this.notificationService.warn(`utente ${user["SU_UNA"]} rimosso`);
-              this.refreshUsersList();
-            },
-            err => {
-              this.authService.handleLoginError(err);
-            }
-          );
-        }
-      });
+    this.manager.deleteUser(id).add(td => {
+      this.refreshUsersList();
+    });
   }
 }

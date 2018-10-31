@@ -1,17 +1,16 @@
+import { NgModule } from "@angular/core";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { RouterModule, Routes } from "@angular/router";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { AppMaterialModule } from "./app-material.module";
+import { ColorPickerModule } from "ngx-color-picker";
+
 import { AppDirectivesModule } from "./app-directives.module";
 import { CheckPackResolverService } from "./services/resolver-services/check-pack-resolver.service";
 import { ApiResolverService } from "./services/resolver-services/api-resolver.service";
-
 import { AuthGuard } from "./guards/auth.guard";
 import { PermsGuard } from "./guards/perms.guard";
 import { IsAdminGuard } from "./guards/is-admin.guard";
-
-import { AppMaterialModule } from "./app-material.module";
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { ColorPickerModule } from "ngx-color-picker";
 
 import { ClientiTableComponent } from "./data-components/clienti/clienti-table/clienti-table.component";
 import { ClientiCreateComponent } from "./data-components/clienti/clienti-create/clienti-create.component";
@@ -29,7 +28,7 @@ import { RinnoviTableComponent } from "./data-components/rinnovi/rinnovi-table/r
 import { UtentiTableComponent } from "./data-components/utenti/utenti-table/utenti-table.component";
 import { UtentiCreateComponent } from "./data-components/utenti/utenti-create/utenti-create.component";
 import { UtentiResetpwdComponent } from "./data-components/utenti/utenti-resetpwd/utenti-resetpwd.component";
-
+import { CustomizeUserComponent } from "./data-components/utenti/customize-user/customize-user.component";
 import { RolesEditComponent } from "./auth-components/roles/roles-edit/roles-edit.component";
 
 import { PcTableComponent } from "./data-components/pc/pc-table/pc-table.component";
@@ -42,19 +41,15 @@ import { PacksTableComponent } from "./data-components/packs/packs-table/packs-t
 import { PacksCreateComponent } from "./data-components/packs/packs-create/packs-create.component";
 import { PacksEditComponent } from "./data-components/packs/packs-edit/packs-edit.component";
 
+import { PacksHistoryTableComponent } from "./data-components/packs-history/packs-history-table/packs-history-table.component";
+
 import { RegisterComponent } from "./auth-components/register/register.component";
 import { LoginComponent } from "./auth-components/login/login.component";
 import { ChangePasswordComponent } from "./auth-components/change-password/change-password.component";
 import { ForgotPwdComponent } from "./auth-components/forgot-pwd/forgot-pwd.component";
 
-import { CustomizeComponent } from "./customize/customize.component";
-
 import { LoadingTableSpinnerComponent } from "./layout-components/loading-table-spinner/loading-table-spinner.component";
-// import { ConfirmDialogComponent } from "./layout-components/confirm-dialog/confirm-dialog.component";
 import { SearchBarComponent } from "./layout-components/search-bar/search-bar.component";
-import { CustomizeUserComponent } from "./customize/customize-user/customize-user.component";
-import { PacksHistoryTableComponent } from "./data-components/packs-history/packs-history-table/packs-history-table.component";
-import { UtentiEditComponent } from "./data-components/utenti/utenti-edit/utenti-edit.component";
 
 const appRoutes: Routes = [
   {
@@ -186,11 +181,6 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: "customize",
-    component: CustomizeComponent,
-    canActivate: [AuthGuard, IsAdminGuard]
-  },
-  {
     path: "customize/:id",
     component: CustomizeUserComponent,
     canActivate: [AuthGuard, IsAdminGuard]
@@ -225,7 +215,6 @@ const appRoutes: Routes = [
     RinnoviTableComponent,
     UtentiTableComponent,
     UtentiCreateComponent,
-    UtentiEditComponent,
     UtentiResetpwdComponent,
     PcTableComponent,
     MatricoleTableComponent,
@@ -239,11 +228,9 @@ const appRoutes: Routes = [
     ChangePasswordComponent,
     RolesEditComponent,
     ForgotPwdComponent,
-    CustomizeComponent,
     SearchBarComponent,
     CustomizeUserComponent,
     PacksHistoryTableComponent
-    // CheckPermissionsDirective
   ],
   entryComponents: [SksDetailsComponent]
 })

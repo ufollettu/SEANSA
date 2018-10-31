@@ -1,40 +1,8 @@
-import { HttpErrorResponse } from "@angular/common/http";
-import { RolesApiService } from "../../../services/auth-services/roles-api.service";
-import { UtentiPermessi } from "../../../models/utenti-permessi";
 import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  NgForm,
-  FormControl,
-  FormGroupDirective
-} from "@angular/forms";
-import { UtentiApiService } from "../../../services/api-services/utenti-api.service";
-import { IpService } from "../../../services/ip.service";
-import { ErrorStateMatcher } from "@angular/material";
+import { FormGroup, NgForm } from "@angular/forms";
 import { slideInOutAnimation } from "../../../animations";
-import { UploadFileService } from "../../../services/api-services/upload.service";
-import { NotificationService } from "../../../services/layout-services/notification.service";
-import { AuthService } from "../../../services/auth-services/auth.service";
 import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
-
-/** Error when invalid control is dirty, touched, or submitted. */
-/** TODO copy error matcher in all components */
-// export class MyErrorStateMatcher implements ErrorStateMatcher {
-//   isErrorState(
-//     control: FormControl | null,
-//     form: FormGroupDirective | NgForm | null
-//   ): boolean {
-//     const isSubmitted = form && form.submitted;
-//     return !!(
-//       control &&
-//       control.invalid &&
-//       (control.dirty || control.touched || isSubmitted)
-//     );
-//   }
-// }
+import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
 
 @Component({
   selector: "app-utenti-create",
@@ -49,61 +17,21 @@ import { ErrorHandlerService } from "src/app/services/shared-services/error-hand
 export class UtentiCreateComponent implements OnInit {
   ipAddress: any;
   utenteForm: FormGroup;
-  // matcher = new MyErrorStateMatcher();
-  // matcher;
 
   SU_UNA: "";
   SU_PAW: "";
   SU_LEVEL: "";
-  // SU_LAST_LOGIN: '';
-  // SU_CREATION: '';
-  // SU_LAST_EDIT: '';
-  // SU_LAST_IP: '';
 
   constructor(
-    private notificationService: NotificationService,
-    private router: Router,
-    private api: UtentiApiService,
-    private formBuilder: FormBuilder,
-    private uploadService: UploadFileService,
-    private rolesService: RolesApiService,
-    private authService: AuthService,
-    public matcher: ErrorHandlerService
+    public matcher: ErrorHandlerService,
+    private manager: DataComponentsManagementService
   ) {}
 
   ngOnInit() {
-    this.utenteForm = this.formBuilder.group({
-      SU_UNA: [null, Validators.required],
-      SU_PAW: [null, Validators.required],
-      SU_LEVEL: [0],
-      SU_LAST_LOGIN: new Date(),
-      SU_CREATION: new Date(),
-      SU_LAST_EDIT: new Date(),
-      SU_LAST_IP: [null]
-    });
+    this.utenteForm = this.manager.usersFormInit();
   }
 
   onFormSubmit(form: NgForm) {
-    this.api.postUtente(form).subscribe(
-      res => {
-        const id = res["SU_ID"];
-        const data = { UP_U_ID: res["SU_ID"], UP_P_ID: 4 };
-        this.rolesService.postKey(data);
-        this.uploadService.postCustomization(id);
-        this.notificationService.success(`utente ${res["SU_UNA"]} creato`);
-        this.router.navigate(["/utenti"]);
-      },
-      err => {
-        console.log(err);
-        if (err instanceof HttpErrorResponse) {
-          if (err.status === 422) {
-            this.notificationService.warn(
-              "username exists or was previously deleted"
-            );
-          }
-          this.authService.handleLoginError(err);
-        }
-      }
-    );
+    this.manager.usersFormSubmit(form, "/utenti");
   }
 }

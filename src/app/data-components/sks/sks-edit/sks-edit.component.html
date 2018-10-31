@@ -22,7 +22,7 @@
 
       <mat-form-field class="example-full-width">
         <mat-select placeholder="Cliente" formControlName="SS_SC_ID" [errorStateMatcher]="matcher">
-          <mat-option *ngFor="let cliente of clienti" [value]="cliente.value">
+          <mat-option *ngFor="let cliente of clientiMap" [value]="cliente.value">
             {{cliente.name}}
           </mat-option>
         </mat-select>
@@ -34,13 +34,15 @@
       <mat-form-field class="example-full-width">
         <input matInput placeholder="Attivato da" formControlName="SS_ACTIVATED_BY" [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!sksForm.get('SS_ACTIVATED_BY').valid && sksForm.get('SS_ACTIVATED_BY').touched">Inserisci il nome
+          <span *ngIf="!sksForm.get('SS_ACTIVATED_BY').valid && sksForm.get('SS_ACTIVATED_BY').touched">Inserisci il
+            nome
             di chi attiva la chiave</span>
         </mat-error>
       </mat-form-field>
 
       <mat-form-field class="example-full-width">
-        <input matInput placeholder="Referente attivazione" formControlName="SS_ACTIVATION_REFERENT" [errorStateMatcher]="matcher">
+        <input matInput placeholder="Referente attivazione" formControlName="SS_ACTIVATION_REFERENT"
+          [errorStateMatcher]="matcher">
         <mat-error>
           <span *ngIf="!sksForm.get('SS_ACTIVATION_REFERENT').valid && sksForm.get('SS_ACTIVATION_REFERENT').touched">Inserisci
             il nome del referente</span>

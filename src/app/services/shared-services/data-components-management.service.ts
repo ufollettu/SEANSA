@@ -1,3 +1,5 @@
+import { UploadFileService } from "./../api-services/upload.service";
+import { RolesApiService } from "./../auth-services/roles-api.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { MatTableDataSource, MatSort, MatPaginator } from "@angular/material";
 import { RinnoviApiService } from "./../api-services/rinnovi-api.service";
@@ -52,6 +54,8 @@ export class DataComponentsManagementService implements OnDestroy {
     private pcsApi: PcApiService,
     private packsApi: PacksApiService,
     private packsHistoryApi: PacksHistoryApiService,
+    private uploadApi: UploadFileService,
+    private rolesApi: RolesApiService,
     private dialogService: DialogService,
     private notificationService: NotificationService,
     private authService: AuthService,
@@ -879,11 +883,92 @@ export class DataComponentsManagementService implements OnDestroy {
 
   /* Utenti Management */
 
+  refreshUsersList() {
+    return this.utentiApi.getUtenti().subscribe(
+      res => {
+        this.utenti = res;
+
+        this.noData(res);
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
+  usersFormInit() {
+    return this.formBuilder.group({
+      SU_UNA: [null, Validators.required],
+      SU_PAW: [null, Validators.required],
+      SU_LEVEL: [0],
+      SU_LAST_LOGIN: new Date(),
+      SU_CREATION: new Date(),
+      SU_LAST_EDIT: new Date(),
+      SU_LAST_IP: [null]
+    });
+  }
+
+  usersFormSubmit(form, destUrl) {
+    return this.utentiApi.postUtente(form).subscribe(
+      res => {
+        const id = res["SU_ID"];
+        const data = { UP_U_ID: res["SU_ID"], UP_P_ID: 4 };
+        this.rolesApi.postKey(data);
+        this.uploadApi.postCustomization(id);
+        this.notificationService.success(`utente ${res["SU_UNA"]} creato`);
+        this.router.navigate([destUrl]);
+      },
+      err => {
+        console.log(err);
+        if (err instanceof HttpErrorResponse) {
+          if (err.status === 422) {
+            this.notificationService.warn(
+              "username exists or was previously deleted"
+            );
+          }
+          this.authService.handleLoginError(err);
+        }
+      }
+    );
+  }
+
   getUtenti() {
     return this.utentiApi.getUtenti().subscribe(
       utenti => {
         this.utenti = utenti;
         // this.refreshPacksList();
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
+  getUser(id, form) {
+    return this.utentiApi.getUtente(id).subscribe(data => {
+      form.setValue({
+        SU_UNA: data["SU_UNA"],
+        SU_PAW: null,
+        SU_LAST_EDIT: new Date()
+      });
+    });
+  }
+
+  resetPwdFormInit() {
+    return this.formBuilder.group({
+      SU_UNA: [null, Validators.required],
+      SU_PAW: [null, Validators.required],
+      SU_LAST_EDIT: new Date()
+    });
+  }
+
+  resetPwdFormSubmit(id, form, destUrl) {
+    return this.utentiApi.updateUtente(id, form).subscribe(
+      res => {
+        this.notificationService.success(
+          `password utente ${res["SU_UNA"]} aggiornata`
+        );
+        this.router.navigate([destUrl]);
       },
       err => {
         this.authService.handleLoginError(err);
@@ -910,6 +995,26 @@ export class DataComponentsManagementService implements OnDestroy {
     return result;
   }
 
+  deleteUser(id: number) {
+    return this.dialogService
+      .openConfirmDialog("sei Sicuro?")
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          const deleted = 1;
+          this.utentiApi.updateUtente(id, { SU_DELETED: deleted }).subscribe(
+            user => {
+              this.notificationService.warn(`utente ${user["SU_UNA"]} rimosso`);
+            },
+            err => {
+              this.authService.handleLoginError(err);
+            }
+          );
+        }
+      });
+  }
+
+  /* On Destroy */
   ngOnDestroy(): void {
     console.log("service destroyed");
   }

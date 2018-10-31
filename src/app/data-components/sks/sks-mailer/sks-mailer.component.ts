@@ -2,12 +2,8 @@ import { DataComponentsManagementService } from "./../../../services/shared-serv
 import { ErrorHandlerService } from "./../../../services/shared-services/error-handler.service";
 import { Component, OnInit } from "@angular/core";
 import { slideInOutAnimation } from "../../../animations";
-import { FormGroup, FormBuilder, Validators, NgForm } from "@angular/forms";
-import { Router, ActivatedRoute } from "@angular/router";
-import { HttpErrorResponse } from "@angular/common/http";
-import { SksApiService } from "../../../services/api-services/sks-api.service";
-import { NotificationService } from "../../../services/layout-services/notification.service";
-import { AuthService } from "../../../services/auth-services/auth.service";
+import { FormGroup, NgForm } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-sks-mailer",
@@ -25,12 +21,7 @@ export class SksMailerComponent implements OnInit {
   message: "";
 
   constructor(
-    private notificationService: NotificationService,
-    private router: Router,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
-    private api: SksApiService,
-    private authService: AuthService,
     public matcher: ErrorHandlerService,
     private manager: DataComponentsManagementService
   ) {}

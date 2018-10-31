@@ -1,14 +1,8 @@
+import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
 import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  NgForm,
-  FormControl,
-  FormGroupDirective
-} from "@angular/forms";
+import { FormBuilder, FormGroup, Validators, NgForm } from "@angular/forms";
 import { UtentiApiService } from "../../../services/api-services/utenti-api.service";
 import { slideInOutAnimation } from "../../../animations";
 import { NotificationService } from "../../../services/layout-services/notification.service";
@@ -32,10 +26,6 @@ export class UtentiResetpwdComponent implements OnInit {
   SU_UNA: string;
   SU_PAW: string;
   SU_LEVEL: any;
-  // SU_LAST_LOGIN: '';
-  // SU_CREATION: '';
-  // SU_LAST_EDIT: '';
-  // SU_LAST_IP: '';
 
   constructor(
     private notificationService: NotificationService,
@@ -44,46 +34,24 @@ export class UtentiResetpwdComponent implements OnInit {
     private api: UtentiApiService,
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    public matcher: ErrorHandlerService
+    public matcher: ErrorHandlerService,
+    private manager: DataComponentsManagementService
   ) {}
 
   ngOnInit() {
-    this.getCustomer(this.route.snapshot.params["id"]);
-    this.utenteForm = this.formBuilder.group({
-      SU_UNA: [null, Validators.required],
-      SU_PAW: [null, Validators.required],
-      // 'SU_LEVEL': [0],
-      // 'SU_LAST_LOGIN' : new Date(),
-      // 'SU_CREATION': new Date(),
-      SU_LAST_EDIT: new Date()
-      // 'SU_LAST_IP': [null]
-    });
+    this.utenteForm = this.manager.resetPwdFormInit();
+    this.getUser(this.route.snapshot.params["id"]);
   }
 
-  getCustomer(id) {
-    this.api.getUtente(id).subscribe(data => {
-      this.SU_ID = data["SU_ID"];
-      this.utenteForm.setValue({
-        SU_UNA: data["SU_UNA"],
-        SU_PAW: null,
-        // SU_LEVEL: data.SU_LEVEL,
-        SU_LAST_EDIT: new Date()
-        // SU_LAST_IP: data.SU_LAST_IP
-      });
-    });
+  getUser(id) {
+    this.manager.getUser(id, this.utenteForm);
   }
 
   onFormSubmit(form: NgForm) {
-    this.api.updateUtente(this.SU_ID, form).subscribe(
-      res => {
-        this.notificationService.success(
-          `password utente ${res["SU_UNA"]} aggiornata`
-        );
-        this.router.navigate(["/utenti"]);
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
+    this.manager.resetPwdFormSubmit(
+      this.route.snapshot.params["id"],
+      form,
+      "/utenti"
     );
   }
 }

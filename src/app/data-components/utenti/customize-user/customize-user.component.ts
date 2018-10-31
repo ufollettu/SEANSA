@@ -1,18 +1,16 @@
+import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
+import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
 import { Component, OnInit, OnDestroy, ViewContainerRef } from "@angular/core";
-import { slideInOutAnimation } from "../../animations";
+import { slideInOutAnimation } from "../../../animations";
 import { FormControl, FormGroupDirective, NgForm } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material";
 import { Router, ActivatedRoute } from "@angular/router";
-import { DataService } from "../../services/shared-services/data.service";
-import { CustomizeService } from "../../services/shared-services/customize.service";
-import { UploadFileService } from "../../services/api-services/upload.service";
-import {
-  HttpResponse,
-  HttpEventType,
-  HttpErrorResponse
-} from "@angular/common/http";
-import { NotificationService } from "../../services/layout-services/notification.service";
-import { AuthService } from "../../services/auth-services/auth.service";
+import { DataService } from "../../../services/shared-services/data.service";
+import { CustomizeService } from "../../../services/shared-services/customize.service";
+import { UploadFileService } from "../../../services/api-services/upload.service";
+import { HttpResponse, HttpErrorResponse } from "@angular/common/http";
+import { NotificationService } from "../../../services/layout-services/notification.service";
+import { AuthService } from "../../../services/auth-services/auth.service";
 import { ColorPickerService, Cmyk } from "ngx-color-picker";
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -53,6 +51,7 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
   ];
   userId = 0;
   username;
+  currentUsername;
   userTheme = "";
   logo = "";
   url = "../../assets/images/placeholder.png";
@@ -65,14 +64,14 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
 
   constructor(
     public vcRef: ViewContainerRef,
-    private cpService: ColorPickerService,
     private notificationService: NotificationService,
-    private data: DataService,
     private router: Router,
     private route: ActivatedRoute,
     private uploadService: UploadFileService,
     private customizeService: CustomizeService,
-    private authService: AuthService
+    private authService: AuthService,
+    public matcher: ErrorHandlerService,
+    private manager: DataComponentsManagementService
   ) {}
 
   ngOnInit() {
@@ -95,6 +94,8 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
     this.customizeService.currentWarnColor.subscribe(wColor => {
       this.warnColor = wColor;
     });
+
+    this.currentUsername = this.authService.getUsername();
   }
 
   styleInit() {
@@ -194,9 +195,32 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
     this.url = "../../assets/images/placeholder.png";
   }
 
+  setNewStyle() {
+    this.uploadService.getCustomStyle(this.userId).subscribe(style => {
+      // console.log(style);
+      const customColors: string[] = [
+        style["SCZ_PRIMARY_COLOR"],
+        style["SCZ_ACCENT_COLOR"],
+        style["SCZ_WARN_COLOR"]
+      ];
+      localStorage.setItem("customLogo", style["SCZ_LOGO_NAME"]);
+      localStorage.setItem("customStyle", style["SCZ_THEME"]);
+      localStorage.setItem("customColors", customColors.join("|"));
+      this.customizeService.changeTheme(style["SCZ_THEME"]);
+      this.customizeService.changeLogo(style["SCZ_LOGO_NAME"]);
+      this.customizeService.changePrimaryColor(style["SCZ_PRIMARY_COLOR"]);
+      this.customizeService.changeAccentColor(style["SCZ_ACCENT_COLOR"]);
+      this.customizeService.changeWarnColor(style["SCZ_WARN_COLOR"]);
+    });
+  }
+
   ngOnDestroy() {
-    this.resetLogo();
-    this.resetTheme();
-    this.resetColors();
+    if (this.currentUsername !== this.username) {
+      this.resetLogo();
+      this.resetTheme();
+      this.resetColors();
+    } else {
+      this.setNewStyle();
+    }
   }
 }

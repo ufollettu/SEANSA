@@ -2,7 +2,6 @@ import { DataComponentsManagementService } from "./../../../services/shared-serv
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, NgForm } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
-import { oems } from "../sks-oem-data";
 import { slideInOutAnimation } from "../../../animations";
 import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
 
@@ -18,7 +17,7 @@ import { ErrorHandlerService } from "src/app/services/shared-services/error-hand
 })
 export class SksEditComponent implements OnInit {
   clientiMap = [];
-  // oems = oems;
+  oems;
 
   sksForm: FormGroup;
 
@@ -41,6 +40,7 @@ export class SksEditComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.oems = this.manager.oems;
     this.sksForm = this.manager.sksEditFormInit();
     this.getSks(this.route.snapshot.params["id"]);
     this.manager.getCustomers().add(td => {

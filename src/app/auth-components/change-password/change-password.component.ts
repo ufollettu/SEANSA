@@ -61,6 +61,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   onFormSubmit(form: NgForm) {
+    console.log(form);
     this.authService.changePwd(form).subscribe(
       res => {
         localStorage.setItem("token", res["idToken"]);
