@@ -248,28 +248,30 @@ export class DataComponentsManagementService implements OnDestroy {
   }
 
   cloneMatricoleFromSksId(licenseId, sksId, destUrl) {
-    this.matricoleApi.getMatricoleBySks(licenseId).subscribe(matricole => {
-      const data = matricole.map(matricola => {
-        const resMatr = {};
-        resMatr["SM_MATRICOLA"] = matricola["SM_MATRICOLA"];
-        resMatr["SM_DETTAGLI"] = matricola["SM_DETTAGLI"];
-        resMatr["SM_SS_ID"] = sksId;
-        return resMatr;
+    return this.matricoleApi
+      .getMatricoleBySks(licenseId)
+      .subscribe(matricole => {
+        const data = matricole.map(matricola => {
+          const resMatr = {};
+          resMatr["SM_MATRICOLA"] = matricola["SM_MATRICOLA"];
+          resMatr["SM_DETTAGLI"] = matricola["SM_DETTAGLI"];
+          resMatr["SM_SS_ID"] = sksId;
+          return resMatr;
+        });
+        data.forEach(matricola => {
+          this.matricoleApi.postMatricola(matricola).subscribe(
+            res => {
+              this.notificationService.success(
+                `matricola ${res["SM_MATRICOLA"]} creata`
+              );
+            },
+            err => {
+              this.authService.handleLoginError(err);
+            }
+          );
+        });
+        this.router.navigate([destUrl, sksId]);
       });
-      data.forEach(matricola => {
-        this.matricoleApi.postMatricola(matricola).subscribe(
-          res => {
-            this.notificationService.success(
-              `matricola ${res["SM_MATRICOLA"]} creata`
-            );
-          },
-          err => {
-            this.authService.handleLoginError(err);
-          }
-        );
-      });
-      this.router.navigate([destUrl, sksId]);
-    });
   }
 
   deleteMatricola(id) {
@@ -316,7 +318,7 @@ export class DataComponentsManagementService implements OnDestroy {
   }
 
   getPack(id, form) {
-    this.packsApi.getPack(id).subscribe(pack => {
+    return this.packsApi.getPack(id).subscribe(pack => {
       // this.SPK_ID = pack['SPK_ID'];
       form.patchValue({
         SPK_SU_CREATOR_ID: pack["SPK_SU_CREATOR_ID"],
@@ -337,7 +339,7 @@ export class DataComponentsManagementService implements OnDestroy {
   }
 
   postPack(form, destUrl) {
-    this.packsApi.postPack(form).subscribe(
+    return this.packsApi.postPack(form).subscribe(
       pack => {
         this.notificationService.success(`pack id: ${pack["SPK_ID"]} creato`);
         this.router.navigate([destUrl]);
@@ -349,7 +351,7 @@ export class DataComponentsManagementService implements OnDestroy {
   }
 
   updatePack(id, form, destUrl) {
-    this.packsApi.updatePack(id, form).subscribe(
+    return this.packsApi.updatePack(id, form).subscribe(
       pack => {
         this.notificationService.success(
           `pack id: ${pack["SPK_ID"]} aggiornato`
@@ -532,7 +534,7 @@ export class DataComponentsManagementService implements OnDestroy {
       SR_SS_ID: sksId,
       SR_TS: new Date().toISOString().replace(/([^T]+)T([^\.]+).*/g, "$1 $2")
     };
-    this.rinnoviApi.postRinnovo(data).subscribe(
+    return this.rinnoviApi.postRinnovo(data).subscribe(
       res => {
         this.notificationService.success(`Sks key ${res["SS_KEY"]} aggiornata`);
         this.router.navigate([destUrl]);
@@ -645,7 +647,7 @@ export class DataComponentsManagementService implements OnDestroy {
   }
 
   getSks(id, form) {
-    this.sksApi.getSks(id).subscribe(data => {
+    return this.sksApi.getSks(id).subscribe(data => {
       form.setValue({
         SS_KEY: data["SS_KEY"],
         SS_OEM: data["SS_OEM"],
@@ -660,7 +662,7 @@ export class DataComponentsManagementService implements OnDestroy {
   }
 
   getSksRenew(id, form) {
-    this.sksApi.getSks(id).subscribe(data => {
+    return this.sksApi.getSks(id).subscribe(data => {
       form.setValue({
         SS_KEY: data["SS_KEY"],
         SS_EXPIRE: data["SS_EXPIRE"]
@@ -669,7 +671,7 @@ export class DataComponentsManagementService implements OnDestroy {
   }
 
   getSksDetails(id, pcHwId, customerName, oem, form) {
-    this.sksApi.getSks(id).subscribe(data => {
+    return this.sksApi.getSks(id).subscribe(data => {
       form.setValue({
         SS_ID: data["SS_ID"],
         SS_KEY: data["SS_KEY"],

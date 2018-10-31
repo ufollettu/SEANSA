@@ -41,6 +41,6 @@ export class ClientiCreateComponent implements OnInit {
   }
 
   onFormSubmit(form: NgForm) {
-    this.manager.postCustomer(form, "/clienti");
+    this.manager.postCustomerFormSubmit(form, "/clienti");
   }
 }
