@@ -2,6 +2,7 @@ import { DataComponentsManagementService } from "./../../../services/shared-serv
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from "@angular/core";
 import { MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
 import { DataService } from "src/app/services/shared-services/data.service";
+import * as moment from "moment";
 
 @Component({
   selector: "app-packs-table",
@@ -23,6 +24,7 @@ export class PacksTableComponent implements OnInit {
     "actions"
   ];
   dataSource: any;
+  warningDate: any;
 
   @ViewChild(MatSort)
   sort: MatSort;
@@ -38,6 +40,7 @@ export class PacksTableComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.warningDate = moment().format("YYYY-MM-DD");
     this.getUserFromLocalStorage();
     this.getIsAdmin();
     this.fetchUtenti();
@@ -51,6 +54,13 @@ export class PacksTableComponent implements OnInit {
       this.changeDetectorRefs.detectChanges();
       this.loading = false;
     });
+  }
+
+  checkExpDate(expDate) {
+    if (expDate <= this.warningDate) {
+      return "red";
+    }
+    return "";
   }
 
   onDeletePack(id: number) {

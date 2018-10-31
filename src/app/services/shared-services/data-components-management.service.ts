@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from "@angular/common/http";
 import { MatTableDataSource, MatSort, MatPaginator } from "@angular/material";
 import { RinnoviApiService } from "./../api-services/rinnovi-api.service";
 import { PacksHistory } from "./../../models/packs-history";
@@ -29,6 +30,7 @@ import { oems } from "src/app/data-components/sks/sks-oem-data";
 })
 export class DataComponentsManagementService implements OnDestroy {
   clienti: Cliente[];
+  clientiMap: {}[];
   utenti: Utente[];
   sks: Sks[];
   matricole: Matricola[];
@@ -90,6 +92,18 @@ export class DataComponentsManagementService implements OnDestroy {
       SC_REFERENTE_NOME: [null, Validators.required],
       SC_TEL_REFERENTE: [null, Validators.required]
       // 'SC_TS' : [null]
+    });
+  }
+
+  getCustomers() {
+    return this.clientiApi.getCustomers().subscribe(clienti => {
+      const clientiMap = clienti.map(cliente => {
+        const resClienti = {};
+        resClienti["value"] = cliente["SC_ID"];
+        resClienti["name"] = cliente["SC_NOME"];
+        return resClienti;
+      });
+      this.clientiMap = clientiMap;
     });
   }
 
@@ -509,19 +523,29 @@ export class DataComponentsManagementService implements OnDestroy {
     );
   }
 
+  insertRinnovo(sksId, destUrl) {
+    const data = {
+      SR_SS_ID: sksId,
+      SR_TS: new Date().toISOString().replace(/([^T]+)T([^\.]+).*/g, "$1 $2")
+    };
+    this.rinnoviApi.postRinnovo(data).subscribe(
+      res => {
+        this.notificationService.success(`Sks key ${res["SS_KEY"]} aggiornata`);
+        this.router.navigate([destUrl]);
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
   /* Sks Management */
 
   refreshSkssList() {
-    // this.fetchRinnovi();
-    // this.refershPcList();
-    // this.getMatricole();
-    // this.refreshCustomersList();
     return this.sksApi.getSkss().subscribe(
       res => {
-        // add field useful to search bar in sks array
         this.mapSks(res);
         this.sks = res;
-
         this.noData(res);
       },
       err => {
@@ -552,6 +576,28 @@ export class DataComponentsManagementService implements OnDestroy {
     return oemName;
   }
 
+  sksCreateFormInit() {
+    return this.formBuilder.group({
+      SS_OEM: [null, Validators.required],
+      SS_EXPIRE: [null, Validators.required],
+      SS_SC_ID: [null, [Validators.required]],
+      SS_SPK_ID: [null]
+    });
+  }
+
+  sksEditFormInit() {
+    return this.formBuilder.group({
+      SS_KEY: [null, Validators.required],
+      SS_OEM: [null, Validators.required],
+      SS_ACTIVATION_DATE: [null],
+      SS_EXPIRE: [null],
+      SS_SP_ID: [null, [Validators.required]],
+      SS_SC_ID: [null, [Validators.required]],
+      SS_ACTIVATED_BY: [null, Validators.required],
+      SS_ACTIVATION_REFERENT: [null, Validators.required]
+    });
+  }
+
   sksFormInit() {
     return this.formBuilder.group({
       SS_ID: [null],
@@ -567,6 +613,54 @@ export class DataComponentsManagementService implements OnDestroy {
       SS_STATUS: [null],
       SS_ACTIVATED_BY: [null],
       SS_ACTIVATION_REFERENT: [null]
+    });
+  }
+
+  sksRenewFormInit() {
+    return this.formBuilder.group({
+      SS_KEY: [null, Validators.required],
+      SS_EXPIRE: [null, [Validators.required]]
+    });
+  }
+
+  sksSendMailFormInit() {
+    return this.formBuilder.group({
+      sks: [null, Validators.required],
+      email: [
+        null,
+        Validators.compose([Validators.required, Validators.email])
+      ],
+      message: [null]
+    });
+  }
+
+  patchMailerFormValue(sksId, form) {
+    form.patchValue({
+      sks: sksId
+    });
+  }
+
+  getSks(id, form) {
+    this.sksApi.getSks(id).subscribe(data => {
+      form.setValue({
+        SS_KEY: data["SS_KEY"],
+        SS_OEM: data["SS_OEM"],
+        SS_ACTIVATION_DATE: data["SS_ACTIVATION_DATE"],
+        SS_EXPIRE: data["SS_EXPIRE"],
+        SS_SP_ID: data["SS_SP_ID"],
+        SS_SC_ID: data["SS_SC_ID"],
+        SS_ACTIVATED_BY: data["SS_ACTIVATED_BY"],
+        SS_ACTIVATION_REFERENT: data["SS_ACTIVATION_REFERENT"]
+      });
+    });
+  }
+
+  getSksRenew(id, form) {
+    this.sksApi.getSks(id).subscribe(data => {
+      form.setValue({
+        SS_KEY: data["SS_KEY"],
+        SS_EXPIRE: data["SS_EXPIRE"]
+      });
     });
   }
 
@@ -679,6 +773,108 @@ export class DataComponentsManagementService implements OnDestroy {
           );
         }
       });
+  }
+
+  sksCreateFormSubmit(form, selectedPack) {
+    return this.sksApi.postSks(form).subscribe(
+      key => {
+        this.packsApi
+          .updatePack(selectedPack["SPK_ID"], {
+            SPK_USED_SKS_COUNT: selectedPack["SPK_USED_SKS_COUNT"] + 1
+          })
+          .subscribe(
+            res => {
+              if (selectedPack["SPK_ID"] !== undefined) {
+                this.notificationService.success(
+                  `pack ${selectedPack["SPK_ID"]} updated`
+                );
+              }
+            },
+            err => {
+              this.notificationService.warn(
+                `error updating pack id: ${selectedPack["SPK_ID"]}`
+              );
+            }
+          );
+        this.packsHistoryApi
+          .postPack({
+            SPKH_SPK_ID: selectedPack["SPK_ID"],
+            SPKH_SU_ID: selectedPack["SPK_SU_OWNER_ID"],
+            SPKH_SS_ID: key["SS_ID"],
+            SPKH_ACTION: "created"
+          })
+          .subscribe(
+            res => {
+              console.log("new history row created");
+            },
+            err => console.log(err)
+          );
+        this.dialogService
+          .openConfirmDialog(
+            `sks key ${key["SS_KEY"]} creata. Vuoi inviarla al Cliente?`
+          )
+          .afterClosed()
+          .subscribe(res => {
+            if (res) {
+              this.router.navigate(["/sks-mailer", key["SS_KEY"]]);
+            } else {
+              this.router.navigate(["/sks"]);
+            }
+          });
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
+  sksEditFormSubmit(id, form, destUrl) {
+    return this.sksApi.updateSks(id, form).subscribe(
+      res => {
+        console.log(res);
+        this.notificationService.success(`Sks key ${res["SS_KEY"]} aggiornata`);
+        this.router.navigate([destUrl]);
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
+  sksRenewFormSubmit(id, form, destUrl) {
+    return this.sksApi.updateSks(id, form).subscribe(
+      res => {
+        this.insertRinnovo(res["SS_ID"], destUrl);
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
+  sksSendMailFormSubmit(form) {
+    return this.sksApi.sendEmail(form).subscribe(
+      res => {
+        console.log(res);
+        if (res.responseCode === 535) {
+          this.notificationService.warn(
+            "error in mail account, please contact helpdesk"
+          );
+        } else {
+          this.notificationService.success("mail correctly sent to " + res[0]);
+          this.router.navigate(["/sks"]);
+        }
+      },
+      err => {
+        if (err instanceof HttpErrorResponse) {
+          if (err.status === 422) {
+            this.notificationService.warn("sks does not exists");
+            this.router.navigate(["/sks-mailer"]);
+          }
+        }
+        this.authService.handleLoginError(err);
+      }
+    );
   }
 
   /* Utenti Management */

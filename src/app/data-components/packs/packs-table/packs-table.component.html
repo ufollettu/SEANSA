@@ -33,7 +33,8 @@
     <!-- Indirizzo Column -->
     <ng-container matColumnDef="SPK_EXPIRE">
       <th mat-header-cell *matHeaderCellDef> Data Scadenza </th>
-      <td mat-cell *matCellDef="let element"> {{element.SPK_EXPIRE | date:'yyyy-MM-dd'}} </td>
+      <td mat-cell *matCellDef="let element" [ngStyle]="{'color':checkExpDate(element.SPK_EXPIRE)}" [matTooltip]="checkExpDate(element.SPK_EXPIRE) == 'red' ? 'il pacchetto è scaduto!' : ''"
+        matTooltipPosition="above"> {{element.SPK_EXPIRE | date:'yyyy-MM-dd'}} </td>
     </ng-container>
 
 

@@ -33,6 +33,7 @@ export class CheckPackResolverService implements Resolve<any> {
     // console.log(ownerId);
     return this.packsApiService.getPackFromOwnerId(ownerId).pipe(
       map(packs => {
+        console.log(packs);
         if (!packs.filter(this.filterPacks)) {
           return true;
         } else {
