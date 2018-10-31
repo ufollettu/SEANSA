@@ -112,7 +112,7 @@ export class DataComponentsManagementService implements OnDestroy {
   }
 
   getCustomer(id, form) {
-    this.clientiApi.getCustomer(id).subscribe(data => {
+    return this.clientiApi.getCustomer(id).subscribe(data => {
       // this.SC_ID = data["SC_ID"];
       form.setValue({
         SC_NOME: data["SC_NOME"],
@@ -127,8 +127,8 @@ export class DataComponentsManagementService implements OnDestroy {
     });
   }
 
-  postCustomer(form, destUrl) {
-    this.clientiApi.postCustomer(form).subscribe(
+  postCustomerFormSubmit(form, destUrl) {
+    return this.clientiApi.postCustomer(form).subscribe(
       res => {
         this.notificationService.success(`cliente ${res["SC_NOME"]} creato`);
         this.router.navigate([destUrl]);
@@ -140,7 +140,7 @@ export class DataComponentsManagementService implements OnDestroy {
   }
 
   updateCustomer(id, form, destUrl) {
-    this.clientiApi.updateCustomer(id, form).subscribe(
+    return this.clientiApi.updateCustomer(id, form).subscribe(
       res => {
         this.notificationService.success(
           `cliente ${res["SC_NOME"]} aggiornato`
