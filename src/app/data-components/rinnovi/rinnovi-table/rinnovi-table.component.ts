@@ -1,7 +1,4 @@
-import { NotificationService } from "./../../../services/layout-services/notification.service";
-import { Rinnovo } from "./../../../models/rinnovo";
-import { HttpErrorResponse } from "@angular/common/http";
-import { Router } from "@angular/router";
+import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
 import {
   animate,
@@ -10,9 +7,7 @@ import {
   transition,
   trigger
 } from "@angular/animations";
-import { RinnoviApiService } from "../../../services/api-services/rinnovi-api.service";
 import { MatSort, MatTableDataSource, MatPaginator } from "@angular/material";
-import { AuthService } from "../../../services/auth-services/auth.service";
 
 @Component({
   selector: "app-rinnovi-table",
@@ -34,7 +29,6 @@ import { AuthService } from "../../../services/auth-services/auth.service";
 })
 export class RinnoviTableComponent implements OnInit {
   loading;
-  rinnovi: any;
 
   displayedColumns = ["KeyId", "Chiave", "Timestamp"];
   dataSource: any;
@@ -45,11 +39,8 @@ export class RinnoviTableComponent implements OnInit {
   paginator: MatPaginator;
 
   constructor(
-    private notificationService: NotificationService,
-    private authService: AuthService,
-    private api: RinnoviApiService,
     private changeDetectorRefs: ChangeDetectorRef,
-    private router: Router
+    private manager: DataComponentsManagementService
   ) {
     this.loading = true;
   }
@@ -59,27 +50,12 @@ export class RinnoviTableComponent implements OnInit {
   }
 
   refreshRinnoviList() {
-    this.api.getRinnovi().subscribe(
-      res => {
-        // if (Object.keys(res).length > 0) {
-        this.rinnovi = res;
-        this.dataSource = new MatTableDataSource(this.rinnovi);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.changeDetectorRefs.detectChanges();
-        this.loading = false;
-        this.noData(res);
-        // }
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
-
-  noData(data: Rinnovo[]) {
-    if (data.length === 0) {
-      this.notificationService.noData();
-    }
+    this.manager.refreshRinnoviList().add(td => {
+      this.dataSource = new MatTableDataSource(this.manager.rinnovi);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.changeDetectorRefs.detectChanges();
+      this.loading = false;
+    });
   }
 }

@@ -25,8 +25,6 @@ import { SksRenewComponent } from "./data-components/sks/sks-renew/sks-renew.com
 import { SksMailerComponent } from "./data-components/sks/sks-mailer/sks-mailer.component";
 
 import { RinnoviTableComponent } from "./data-components/rinnovi/rinnovi-table/rinnovi-table.component";
-import { RinnoviCreateComponent } from "./data-components/rinnovi/rinnovi-create/rinnovi-create.component";
-import { RinnoviEditComponent } from "./data-components/rinnovi/rinnovi-edit/rinnovi-edit.component";
 
 import { UtentiTableComponent } from "./data-components/utenti/utenti-table/utenti-table.component";
 import { UtentiCreateComponent } from "./data-components/utenti/utenti-create/utenti-create.component";
@@ -63,18 +61,6 @@ const appRoutes: Routes = [
     path: "rinnovi",
     component: RinnoviTableComponent,
     canActivate: [AuthGuard]
-  },
-  {
-    path: "rinnovi-create",
-    component: RinnoviCreateComponent,
-    canActivate: [AuthGuard, PermsGuard],
-    data: { expectedPerm: 5 }
-  },
-  {
-    path: "rinnovi-edit/:id",
-    component: RinnoviEditComponent,
-    canActivate: [AuthGuard, PermsGuard],
-    data: { expectedPerm: 4 }
   },
 
   { path: "utenti", component: UtentiTableComponent, canActivate: [AuthGuard] },
@@ -237,8 +223,6 @@ const appRoutes: Routes = [
     SksRenewComponent,
     SksMailerComponent,
     RinnoviTableComponent,
-    RinnoviCreateComponent,
-    RinnoviEditComponent,
     UtentiTableComponent,
     UtentiCreateComponent,
     UtentiEditComponent,

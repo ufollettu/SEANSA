@@ -22,6 +22,7 @@ import { Injectable, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
 import { FormBuilder, Validators } from "@angular/forms";
 import { PacksApiService } from "../api-services/packs-api.service";
+import { oems } from "src/app/data-components/sks/sks-oem-data";
 
 @Injectable({
   providedIn: "root"
@@ -31,10 +32,14 @@ export class DataComponentsManagementService implements OnDestroy {
   utenti: Utente[];
   sks: Sks[];
   matricole: Matricola[];
+  serials: {};
   rinnovi: Rinnovo[];
+  rinnoviObj: {};
   pcs: Pc[];
+  pcsObjArr: object[];
   packs: Packs[];
   packsHistory: PacksHistory[];
+  oems;
 
   constructor(
     private clientiApi: ClientiApiService,
@@ -50,7 +55,9 @@ export class DataComponentsManagementService implements OnDestroy {
     private authService: AuthService,
     private router: Router,
     private formBuilder: FormBuilder
-  ) {}
+  ) {
+    this.oems = oems;
+  }
 
   noData(data) {
     if (data.length === 0) {
@@ -128,6 +135,16 @@ export class DataComponentsManagementService implements OnDestroy {
     );
   }
 
+  getCustomerName(id) {
+    let result = "";
+    this.clienti.forEach(cliente => {
+      if (cliente["SC_ID"] === id) {
+        result = cliente["SC_NOME"];
+      }
+    });
+    return result;
+  }
+
   deleteCustomer(id: number) {
     return this.dialogService
       .openConfirmDialog("sei sicuro?")
@@ -178,6 +195,24 @@ export class DataComponentsManagementService implements OnDestroy {
         this.authService.handleLoginError(err);
       }
     );
+  }
+
+  fetchMatricole() {
+    return this.matricoleApi.getMatricole().subscribe(matricole => {
+      const matricoleCount = matricole
+        .map(matricola => {
+          return matricola["SM_SS_ID"];
+        })
+        .reduce((allIds, id) => {
+          if (id in allIds) {
+            allIds[id]++;
+          } else {
+            allIds[id] = 1;
+          }
+          return allIds;
+        }, {});
+      this.serials = matricoleCount;
+    });
   }
 
   postMatricola(form, sksId, destUrl) {
@@ -365,6 +400,24 @@ export class DataComponentsManagementService implements OnDestroy {
     );
   }
 
+  fetchPcs() {
+    return this.pcsApi.getPcs().subscribe(
+      pcs => {
+        const pcsCount = pcs.map(pc => {
+          const pcRes = {};
+          pcRes["pcId"] = pc["SP_ID"];
+          pcRes["hwId"] = pc["SP_HW_ID"];
+          pcRes["lastConnection"] = pc["SP_LAST_RX"];
+          return pcRes;
+        });
+        this.pcsObjArr = pcsCount;
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
   mapPcs(pcs: Pc[]) {
     pcs.map(pc => {
       pc["statusDescription"] = pc["SP_STATUS"] ? "bannato" : "non bannato";
@@ -395,6 +448,237 @@ export class DataComponentsManagementService implements OnDestroy {
         this.authService.handleLoginError(err);
       }
     );
+  }
+
+  getPcHwId(id) {
+    let result = "";
+    this.pcs.forEach(pc => {
+      if (pc["SP_ID"] === id) {
+        result = pc["SP_HW_ID"];
+      }
+    });
+    return result;
+  }
+
+  getPcLastConnection(id) {
+    let result;
+    this.pcs.forEach(pc => {
+      if (pc["SP_ID"] === id) {
+        result = pc["SP_LAST_RX"];
+      }
+    });
+    return result;
+  }
+
+  /* Rinnovi Management */
+
+  refreshRinnoviList() {
+    return this.rinnoviApi.getRinnovi().subscribe(
+      res => {
+        this.rinnovi = res;
+        this.noData(res);
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
+  fetchRinnovi() {
+    return this.rinnoviApi.getRinnovi().subscribe(
+      rinnovi => {
+        if (Object.keys(rinnovi).length > 0) {
+          const rinnoviCount = rinnovi
+            .map(rinnovo => {
+              return rinnovo["Chiave"];
+            })
+            .reduce((allIds, id) => {
+              if (id in allIds) {
+                allIds[id]++;
+              } else {
+                allIds[id] = 1;
+              }
+              return allIds;
+            }, {});
+          this.rinnoviObj = rinnoviCount;
+        }
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
+  /* Sks Management */
+
+  refreshSkssList() {
+    // this.fetchRinnovi();
+    // this.refershPcList();
+    // this.getMatricole();
+    // this.refreshCustomersList();
+    return this.sksApi.getSkss().subscribe(
+      res => {
+        // add field useful to search bar in sks array
+        this.mapSks(res);
+        this.sks = res;
+
+        this.noData(res);
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
+  mapSks(sks: Sks[]) {
+    sks.map(sk => {
+      sk["sksPcHwId"] = this.getPcHwId(sk["SS_SP_ID"]);
+      sk["sksPcLastConnection"] = this.getPcLastConnection(sk["SS_SP_ID"]);
+      sk["sksCustomerName"] = this.getCustomerName(sk["SS_SC_ID"]);
+      sk["sksOems"] = this.fetchOemsValue(sk["SS_OEM"]);
+      sk["sksStatus"] = sk["SS_STATUS"] ? "abilitata" : "disabilitata";
+
+      return sk;
+    });
+  }
+
+  fetchOemsValue(keyOem) {
+    let oemName = "";
+    this.oems.forEach(oem => {
+      if (keyOem === oem.value) {
+        oemName = oem.name;
+      }
+    });
+    return oemName;
+  }
+
+  sksFormInit() {
+    return this.formBuilder.group({
+      SS_ID: [null],
+      SS_KEY: [null],
+      SS_OEM: [null],
+      SS_ACTIVATION_DATE: [null],
+      SS_EXPIRE: [null],
+      SS_CREATED: [null],
+      SS_LAST_EDIT: [null],
+      SS_MISMATCH_COUNT: [null],
+      SS_SP_ID: [null],
+      SS_SC_ID: [null],
+      SS_STATUS: [null],
+      SS_ACTIVATED_BY: [null],
+      SS_ACTIVATION_REFERENT: [null]
+    });
+  }
+
+  getSksDetails(id, pcHwId, customerName, oem, form) {
+    this.sksApi.getSks(id).subscribe(data => {
+      form.setValue({
+        SS_ID: data["SS_ID"],
+        SS_KEY: data["SS_KEY"],
+        SS_OEM: oem,
+        SS_ACTIVATION_DATE: data["SS_ACTIVATION_DATE"],
+        SS_EXPIRE: data["SS_EXPIRE"],
+        SS_CREATED: data["SS_CREATED"],
+        SS_LAST_EDIT: data["SS_LAST_EDIT"],
+        SS_MISMATCH_COUNT: data["SS_MISMATCH_COUNT"],
+        SS_SP_ID: pcHwId,
+        SS_SC_ID: customerName,
+        SS_STATUS: data["SS_STATUS"] !== 0 ? "abilitata" : "disabilitata",
+        SS_ACTIVATED_BY: data["SS_ACTIVATED_BY"],
+        SS_ACTIVATION_REFERENT: data["SS_ACTIVATION_REFERENT"]
+      });
+    });
+  }
+
+  decouplePC(id) {
+    const status = 1;
+    return this.sksApi.getSks(id).subscribe(
+      key => {
+        if (key["SS_SP_ID"] === 0) {
+          this.notificationService.warn(
+            `non ci sono pc associati a questa chiave`
+          );
+        } else {
+          this.sksApi
+            .updateSks(id, { SS_SP_ID: "", SS_STATUS: status })
+            .subscribe(res => {
+              this.notificationService.success(
+                `chiave ${res["SS_KEY"]} disassociata`
+              );
+              // this.refreshSkssList();
+            });
+        }
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
+  disableSks(id) {
+    const status = 0;
+    return this.sksApi.updateSks(id, { SS_STATUS: status }).subscribe(
+      res => {
+        this.notificationService.warn(`chiave ${res["SS_KEY"]} disabilitata`);
+        // this.refreshSkssList();
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
+  enableSks(id) {
+    const status = 1;
+    return this.sksApi.updateSks(id, { SS_STATUS: status }).subscribe(
+      res => {
+        this.notificationService.success(`chiave ${res["SS_KEY"]} abilitata`);
+        // this.refreshSkssList();
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+  }
+
+  deleteSks(id) {
+    return this.dialogService
+      .openConfirmDialog(`sei sicuro?`)
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          const status = -1;
+          this.sksApi.updateSks(id, { SS_STATUS: status }).subscribe(
+            key => {
+              this.packsApi.getPack(key["SS_SPK_ID"]).subscribe(pack => {
+                this.packsApi
+                  .updatePack(key["SS_SPK_ID"], {
+                    SPK_USED_SKS_COUNT: pack["SPK_USED_SKS_COUNT"] - 1
+                  })
+                  .subscribe(updatedPack => {
+                    this.notificationService.warn(
+                      `chiave ${key["SS_KEY"]} eliminata`
+                    );
+                    // this.refreshSkssList();
+                  });
+                this.packsHistoryApi
+                  .postPack({
+                    SPKH_SPK_ID: pack["SPK_ID"],
+                    SPKH_SU_ID: pack["SPK_SU_OWNER_ID"],
+                    SPKH_SS_ID: key["SS_ID"],
+                    SPKH_ACTION: "deleted"
+                  })
+                  .subscribe(history => {
+                    console.log("new history row created");
+                  });
+              });
+            },
+            err => {
+              this.authService.handleLoginError(err);
+            }
+          );
+        }
+      });
   }
 
   /* Utenti Management */

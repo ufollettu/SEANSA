@@ -1,18 +1,8 @@
+import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
 import { Sks } from "./../../../models/sks";
-import { PacksHistoryApiService } from "./../../../services/api-services/packs-history-api.service";
-import { PacksApiService } from "./../../../services/api-services/packs-api.service";
 import { DataService } from "../../../services/shared-services/data.service";
-import { Pc } from "../../../models/pc";
-import { Rinnovo } from "../../../models/rinnovo";
-import {
-  Component,
-  OnInit,
-  ChangeDetectorRef,
-  ViewChild,
-  HostListener
-} from "@angular/core";
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
-import { HttpErrorResponse } from "@angular/common/http";
 import {
   MatSort,
   MatTableDataSource,
@@ -30,18 +20,8 @@ import {
 import * as moment from "moment";
 
 import { oems } from "../sks-oem-data";
-import { SksApiService } from "../../../services/api-services/sks-api.service";
-import { RinnoviApiService } from "../../../services/api-services/rinnovi-api.service";
-import { PcApiService } from "../../../services/api-services/pc-api.service";
-import { MatricoleApiService } from "../../../services/api-services/matricole-api.service";
-import { ClientiApiService } from "../../../services/api-services/clienti-api.service";
-import { DialogService } from "../../../services/layout-services/dialog.service";
-import { NotificationService } from "../../../services/layout-services/notification.service";
 import { Cliente } from "../../../models/cliente";
-import { Matricola } from "../../../models/matricola";
-import { SksCreateComponent } from "../sks-create/sks-create.component";
 import { SksDetailsComponent } from "../sks-details/sks-details.component";
-import { AuthService } from "../../../services/auth-services/auth.service";
 
 @Component({
   selector: "app-sks-table",
@@ -66,8 +46,8 @@ export class SksTableComponent implements OnInit {
   oems;
 
   sks: Sks[];
-  rinnovi: object = {};
-  pcs: object[] = [];
+  rinnoviObj: object = {};
+  pcsObjArr: object[] = [];
   clienti: Cliente[] = [];
   serials: object = {};
   packUsedCount;
@@ -77,10 +57,8 @@ export class SksTableComponent implements OnInit {
   // tslint:disable-next-line:max-line-length
   displayedColumns = [
     "SS_KEY",
-    // "SS_ID",
     "SS_SC_ID",
     "SS_OEM",
-    // "SS_SP_ID",
     "SS_CREATED",
     "SS_ACTIVATION_DATE",
     "SS_EXPIRE",
@@ -99,193 +77,59 @@ export class SksTableComponent implements OnInit {
   paginator: MatPaginator;
 
   constructor(
-    private authService: AuthService,
-    private notificationService: NotificationService,
     private dialog: MatDialog,
-    private dialogService: DialogService,
-    private api: SksApiService,
-    private rinnoviApi: RinnoviApiService,
-    private pcApi: PcApiService,
-    private clientiApi: ClientiApiService,
-    private matricoleApi: MatricoleApiService,
-    private packsApi: PacksApiService,
-    private packsHistoryApi: PacksHistoryApiService,
     private changeDetectorRefs: ChangeDetectorRef,
     private router: Router,
-    private data: DataService
+    private data: DataService,
+    private manager: DataComponentsManagementService
   ) {
     this.loading = true;
   }
 
   ngOnInit() {
     this.oems = oems;
-    this.getUtente();
     this.warningDate = moment().format("YYYY-MM-DD");
+    this.getUtente();
     this.refreshSkssList();
   }
 
   async refreshSkssList() {
     await this.fetchRinnovi();
+    await this.fetchClienti();
     await this.fetchPcs();
     await this.fetchMatricole();
-    await this.fetchClienti();
-    await this.api.getSkss().subscribe(
-      res => {
-        // add field useful to search bar in sks array
-        this.mapSks(res);
-        this.sks = res;
-        this.dataSource = new MatTableDataSource(this.sks);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.changeDetectorRefs.detectChanges();
-        this.loading = false;
-        this.noData(res);
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
-
-  noData(data: Sks[]) {
-    if (data.length === 0) {
-      this.notificationService.noData();
-    }
+    this.manager.refreshSkssList().add(td => {
+      this.sks = this.manager.sks;
+      this.dataSource = new MatTableDataSource(this.manager.sks);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.changeDetectorRefs.detectChanges();
+      this.loading = false;
+    });
   }
 
   decouplePC(id) {
-    const status = 1;
-    this.api.getSks(id).subscribe(
-      key => {
-        if (key["SS_SP_ID"] === 0) {
-          this.notificationService.warn(
-            `non ci sono pc associati a questa chiave`
-          );
-        } else {
-          this.api
-            .updateSks(id, { SS_SP_ID: "", SS_STATUS: status })
-            .subscribe(res => {
-              this.notificationService.success(
-                `chiave ${res["SS_KEY"]} disassociata`
-              );
-              this.refreshSkssList();
-            });
-        }
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
+    this.manager.decouplePC(id).add(td => {
+      this.refreshSkssList();
+    });
   }
 
   disableSks(id) {
-    const status = 0;
-    this.api.updateSks(id, { SS_STATUS: status }).subscribe(
-      res => {
-        this.notificationService.warn(`chiave ${res["SS_KEY"]} disabilitata`);
-        this.refreshSkssList();
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
+    this.manager.disableSks(id).add(td => {
+      this.refreshSkssList();
+    });
   }
 
   enableSks(id) {
-    const status = 1;
-    this.api.updateSks(id, { SS_STATUS: status }).subscribe(
-      res => {
-        this.notificationService.success(`chiave ${res["SS_KEY"]} abilitata`);
-        this.refreshSkssList();
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
+    this.manager.enableSks(id).add(td => {
+      this.refreshSkssList();
+    });
   }
 
   deleteSks(id) {
-    this.dialogService
-      .openConfirmDialog(`sei sicuro?`)
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          const status = -1;
-          this.api.updateSks(id, { SS_STATUS: status }).subscribe(
-            key => {
-              this.packsApi.getPack(key["SS_SPK_ID"]).subscribe(pack => {
-                this.packsApi
-                  .updatePack(key["SS_SPK_ID"], {
-                    SPK_USED_SKS_COUNT: pack["SPK_USED_SKS_COUNT"] - 1
-                  })
-                  .subscribe(updatedPack => {
-                    this.notificationService.warn(
-                      `chiave ${key["SS_KEY"]} eliminata`
-                    );
-                    this.refreshSkssList();
-                  });
-                this.packsHistoryApi
-                  .postPack({
-                    SPKH_SPK_ID: pack["SPK_ID"],
-                    SPKH_SU_ID: pack["SPK_SU_OWNER_ID"],
-                    SPKH_SS_ID: key["SS_ID"],
-                    SPKH_ACTION: "deleted"
-                  })
-                  .subscribe(history => {
-                    console.log("new history row created");
-                  });
-              });
-            },
-            err => {
-              this.authService.handleLoginError(err);
-            }
-          );
-        }
-      });
-  }
-
-  mapSks(sks: Sks[]) {
-    const sksDataSource = sks.map(sk => {
-      sk["sksPcHwId"] = this.getPcHwId(sk["SS_SP_ID"]);
-      sk["sksPcLastConnection"] = this.getPcLastConnection(sk["SS_SP_ID"]);
-      sk["sksCustomerName"] = this.getCustomerName(sk["SS_SC_ID"]);
-      sk["sksOems"] = this.fetchOemsValue(sk["SS_OEM"]);
-      sk["sksStatus"] = sk["SS_STATUS"] ? "abilitata" : "disabilitata";
-
-      return sk;
+    this.manager.deleteSks(id).add(td => {
+      this.refreshSkssList();
     });
-    // return sksDataSource;
-    // console.log(sksDataSource);
-  }
-
-  getPcHwId(id) {
-    let result = "";
-    this.pcs.forEach(pc => {
-      if (pc["pcId"] === id) {
-        result = pc["hwId"];
-      }
-    });
-    return result;
-  }
-
-  getCustomerName(id) {
-    let result = "";
-    this.clienti.forEach(cliente => {
-      if (cliente["SC_ID"] === id) {
-        result = cliente["SC_NOME"];
-      }
-    });
-    return result;
-  }
-
-  getPcLastConnection(id) {
-    let result = "";
-    this.pcs.forEach(pc => {
-      if (pc["pcId"] === id) {
-        result = pc["lastConnection"];
-      }
-    });
-    return result;
   }
 
   checkExpDate(expDate) {
@@ -295,98 +139,40 @@ export class SksTableComponent implements OnInit {
     return "";
   }
 
-  fetchOemsValue(keyOem) {
-    let oemName = "";
-    this.oems.forEach(oem => {
-      if (keyOem === oem.value) {
-        oemName = oem.name;
-      }
-    });
-    return oemName;
-  }
-
   fetchClienti() {
-    this.clientiApi.getCustomers().subscribe(
-      clienti => {
-        this.clienti = clienti;
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
+    this.manager.refreshCustomersList().add(td => {
+      this.clienti = this.manager.clienti;
+    });
   }
 
   fetchRinnovi() {
-    this.rinnoviApi.getRinnovi().subscribe(
-      rinnovi => {
-        if (Object.keys(rinnovi).length > 0) {
-          const rinnoviCount = rinnovi
-            .map(rinnovo => {
-              return rinnovo["Chiave"];
-            })
-            .reduce((allIds, id) => {
-              if (id in allIds) {
-                allIds[id]++;
-              } else {
-                allIds[id] = 1;
-              }
-              return allIds;
-            }, {});
-          this.rinnovi = rinnoviCount;
-        }
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
-
-  fetchPcs() {
-    this.pcApi.getPcs().subscribe(
-      pcs => {
-        const pcsCount = pcs.map(pc => {
-          const pcRes = {};
-          pcRes["pcId"] = pc["SP_ID"];
-          pcRes["hwId"] = pc["SP_HW_ID"];
-          pcRes["lastConnection"] = pc["SP_LAST_RX"];
-          return pcRes;
-        });
-        this.pcs = pcsCount;
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
-
-  fetchMatricole() {
-    this.matricoleApi.getMatricole().subscribe(matricole => {
-      const matricoleCount = matricole
-        .map(matricola => {
-          return matricola["SM_SS_ID"];
-        })
-        .reduce((allIds, id) => {
-          if (id in allIds) {
-            allIds[id]++;
-          } else {
-            allIds[id] = 1;
-          }
-          return allIds;
-        }, {});
-      this.serials = matricoleCount;
+    this.manager.fetchRinnovi().add(td => {
+      this.rinnoviObj = this.manager.rinnoviObj;
     });
   }
 
-  showDetails(sksId) {
+  fetchPcs() {
+    this.manager.refershPcList().add(td => {
+      this.pcsObjArr = this.manager.pcsObjArr;
+    });
+  }
+
+  fetchMatricole() {
+    this.manager.fetchMatricole().add(td => {
+      this.serials = this.manager.serials;
+    });
+  }
+
+  showDetails(sksId, pcHwId, customerName, oem) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.width = "60%";
     dialogConfig.data = {
       sksId: sksId,
-      sks: this.sks,
-      pcs: this.pcs,
-      clienti: this.clienti
+      pcHwId: pcHwId,
+      oem: oem,
+      customerName: customerName
     };
     this.dialog.open(SksDetailsComponent, dialogConfig);
   }

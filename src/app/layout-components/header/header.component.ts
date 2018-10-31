@@ -96,7 +96,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getUrl() {
-    console.log(this.route.snapshot.url);
+    // console.log(this.route.snapshot.url);
     this.data.getUrl().subscribe(url => {
       this.listUrl =
         url
