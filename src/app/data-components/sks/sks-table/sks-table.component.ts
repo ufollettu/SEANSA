@@ -90,6 +90,10 @@ export class SksTableComponent implements OnInit, OnDestroy {
     private manager: DataComponentsManagementService
   ) {
     this.loading = true;
+    this.fetchRinnovi();
+    this.fetchClienti();
+    this.fetchPcs();
+    this.fetchMatricole();
   }
 
   ngOnInit() {
@@ -100,10 +104,6 @@ export class SksTableComponent implements OnInit, OnDestroy {
   }
 
   async refreshSkssList() {
-    await this.fetchRinnovi();
-    await this.fetchClienti();
-    await this.fetchPcs();
-    await this.fetchMatricole();
     const sksList: Subscription = this.manager.refreshSkssList().add(td => {
       this.sks = this.manager.sks;
       this.dataSource = new MatTableDataSource(this.manager.sks);

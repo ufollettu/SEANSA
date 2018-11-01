@@ -174,11 +174,10 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
     this.formdata.append("SCZ_WARN_COLOR", this.warnColor);
 
     if (this.currentUsername === this.username) {
-      const name =
-        this.selectedFile === null
-          ? localStorage.getItem("customLogo").slice(18)
-          : this.selectedFile.name;
-      const logoName = `logo-${moment().format("YYYYMMDDHHMM")}-${name}`;
+      const logoName =
+        this.selectedFile !== null
+          ? `logo-${moment().format("YYYYMMDDhhmm")}-${this.selectedFile.name}`
+          : localStorage.getItem("customLogo");
       localStorage.setItem("customLogo", logoName);
       localStorage.setItem("customStyle", this.userTheme);
       const customColorsArr = Array.of(
