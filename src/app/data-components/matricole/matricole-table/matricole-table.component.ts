@@ -1,5 +1,11 @@
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  ViewChild,
+  OnDestroy
+} from "@angular/core";
 import {
   animate,
   state,
@@ -9,6 +15,7 @@ import {
 } from "@angular/animations";
 import { ActivatedRoute } from "@angular/router";
 import { MatSort, MatTableDataSource } from "@angular/material";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-matricole-table",
@@ -28,7 +35,7 @@ import { MatSort, MatTableDataSource } from "@angular/material";
     ])
   ]
 })
-export class MatricoleTableComponent implements OnInit {
+export class MatricoleTableComponent implements OnInit, OnDestroy {
   loading;
   sksId: any;
 
@@ -59,17 +66,27 @@ export class MatricoleTableComponent implements OnInit {
   }
 
   refreshMatricoleList() {
-    this.manager.getMatricoleBySks(this.sksId).add(td => {
-      this.dataSource = new MatTableDataSource(this.manager.matricole);
-      this.dataSource.sort = this.sort;
-      this.changeDetectorRefs.detectChanges();
-      this.loading = false;
-    });
+    const getMatr: Subscription = this.manager
+      .getMatricoleBySks(this.sksId)
+      .add(td => {
+        this.dataSource = new MatTableDataSource(this.manager.matricole);
+        this.dataSource.sort = this.sort;
+        this.changeDetectorRefs.detectChanges();
+        this.loading = false;
+      });
+    this.manager.subscriptions.push(getMatr);
   }
 
   onDeleteMatricola(id) {
-    this.manager.deleteMatricola(id).add(tearDown => {
-      this.refreshMatricoleList();
-    });
+    const deleteMatr: Subscription = this.manager
+      .deleteMatricola(id)
+      .add(tearDown => {
+        this.refreshMatricoleList();
+      });
+    this.manager.subscriptions.push(deleteMatr);
+  }
+
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }

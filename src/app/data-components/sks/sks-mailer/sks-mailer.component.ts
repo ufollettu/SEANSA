@@ -1,9 +1,10 @@
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
 import { ErrorHandlerService } from "./../../../services/shared-services/error-handler.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { slideInOutAnimation } from "../../../animations";
 import { FormGroup, NgForm } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-sks-mailer",
@@ -15,7 +16,7 @@ import { ActivatedRoute } from "@angular/router";
   // tslint:disable-next-line:use-host-property-decorator
   host: { "[@slideInOutAnimation]": "" }
 })
-export class SksMailerComponent implements OnInit {
+export class SksMailerComponent implements OnInit, OnDestroy {
   sksMailerForm: FormGroup;
   email: "";
   message: "";
@@ -28,6 +29,10 @@ export class SksMailerComponent implements OnInit {
 
   ngOnInit() {
     this.sksMailerForm = this.manager.sksSendMailFormInit();
+    this.patchMailerValue();
+  }
+
+  patchMailerValue() {
     this.manager.patchMailerFormValue(
       this.route.snapshot.params["id"],
       this.sksMailerForm
@@ -35,6 +40,11 @@ export class SksMailerComponent implements OnInit {
   }
 
   onFormSubmit(form: NgForm) {
-    this.manager.sksSendMailFormSubmit(form);
+    const submitForm: Subscription = this.manager.sksSendMailFormSubmit(form);
+    this.manager.subscriptions.push(submitForm);
+  }
+
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }

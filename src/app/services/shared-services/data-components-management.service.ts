@@ -1,3 +1,4 @@
+import { Subscription } from "rxjs";
 import { UploadFileService } from "./../api-services/upload.service";
 import { RolesApiService } from "./../auth-services/roles-api.service";
 import { HttpErrorResponse } from "@angular/common/http";
@@ -31,6 +32,7 @@ import { oems } from "src/app/data-components/sks/sks-oem-data";
   providedIn: "root"
 })
 export class DataComponentsManagementService implements OnDestroy {
+  subscriptions: Subscription[];
   clienti: Cliente[];
   clientiMap: {}[];
   utenti: Utente[];
@@ -63,6 +65,7 @@ export class DataComponentsManagementService implements OnDestroy {
     private formBuilder: FormBuilder
   ) {
     this.oems = oems;
+    this.subscriptions = [];
   }
 
   noData(data) {
@@ -1014,6 +1017,15 @@ export class DataComponentsManagementService implements OnDestroy {
           );
         }
       });
+  }
+
+  unsubAll() {
+    if (this.subscriptions.length > 0) {
+      this.subscriptions.forEach(sub => {
+        sub.unsubscribe();
+        console.log(`unsubscribe ${sub}`);
+      });
+    }
   }
 
   /* On Destroy */

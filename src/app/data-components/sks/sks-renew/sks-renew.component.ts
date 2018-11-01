@@ -1,6 +1,7 @@
+import { Subscription } from "rxjs";
 import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
 import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormGroup, NgForm } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { slideInOutAnimation } from "../../../animations";
@@ -15,7 +16,7 @@ import { slideInOutAnimation } from "../../../animations";
   // tslint:disable-next-line:use-host-property-decorator
   host: { "[@slideInOutAnimation]": "" }
 })
-export class SksRenewComponent implements OnInit {
+export class SksRenewComponent implements OnInit, OnDestroy {
   sksForm: FormGroup;
 
   SS_ID = 0;
@@ -35,18 +36,24 @@ export class SksRenewComponent implements OnInit {
   }
 
   getSks(id) {
-    this.manager.getSksRenew(id, this.sksForm);
+    const getSks: Subscription = this.manager.getSksRenew(id, this.sksForm);
+    this.manager.subscriptions.push(getSks);
   }
 
   onFormSubmit(form: NgForm) {
-    this.manager.sksRenewFormSubmit(
+    const submitForm: Subscription = this.manager.sksRenewFormSubmit(
       this.route.snapshot.params["id"],
       form,
       "/sks"
     );
+    this.manager.subscriptions.push(submitForm);
   }
 
   sksDetails() {
     this.router.navigate(["/sks"]);
+  }
+
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }

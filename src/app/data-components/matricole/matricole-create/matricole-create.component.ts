@@ -1,9 +1,10 @@
 import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { FormGroup, NgForm } from "@angular/forms";
 import { slideInOutAnimation } from "../../../animations";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-matricole-create",
@@ -15,7 +16,7 @@ import { slideInOutAnimation } from "../../../animations";
   // tslint:disable-next-line:use-host-property-decorator
   host: { "[@slideInOutAnimation]": "" }
 })
-export class MatricoleCreateComponent implements OnInit {
+export class MatricoleCreateComponent implements OnInit, OnDestroy {
   sksId: any;
   matricoleForm: FormGroup;
 
@@ -43,6 +44,15 @@ export class MatricoleCreateComponent implements OnInit {
   }
 
   onFormSubmit(form: NgForm) {
-    this.manager.postMatricola(form, this.sksId, "/matricole");
+    const submitForm: Subscription = this.manager.postMatricola(
+      form,
+      this.sksId,
+      "/matricole"
+    );
+    this.manager.subscriptions.push(submitForm);
+  }
+
+  ngOnDestroy(): void {
+    this.manager.unsubAll();
   }
 }

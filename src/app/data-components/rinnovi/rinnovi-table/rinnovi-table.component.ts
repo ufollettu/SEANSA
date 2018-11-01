@@ -1,5 +1,12 @@
+import { Subscription } from "rxjs";
 import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  ViewChild,
+  OnDestroy
+} from "@angular/core";
 import {
   animate,
   state,
@@ -27,7 +34,7 @@ import { MatSort, MatTableDataSource, MatPaginator } from "@angular/material";
     ])
   ]
 })
-export class RinnoviTableComponent implements OnInit {
+export class RinnoviTableComponent implements OnInit, OnDestroy {
   loading;
 
   displayedColumns = ["KeyId", "Chiave", "Timestamp"];
@@ -50,12 +57,19 @@ export class RinnoviTableComponent implements OnInit {
   }
 
   refreshRinnoviList() {
-    this.manager.refreshRinnoviList().add(td => {
-      this.dataSource = new MatTableDataSource(this.manager.rinnovi);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.changeDetectorRefs.detectChanges();
-      this.loading = false;
-    });
+    const rinnoviList: Subscription = this.manager
+      .refreshRinnoviList()
+      .add(td => {
+        this.dataSource = new MatTableDataSource(this.manager.rinnovi);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.changeDetectorRefs.detectChanges();
+        this.loading = false;
+      });
+    this.manager.subscriptions.push(rinnoviList);
+  }
+
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }

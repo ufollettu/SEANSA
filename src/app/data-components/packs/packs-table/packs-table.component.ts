@@ -1,15 +1,22 @@
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ChangeDetectorRef,
+  OnDestroy
+} from "@angular/core";
 import { MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
 import { DataService } from "src/app/services/shared-services/data.service";
 import * as moment from "moment";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-packs-table",
   templateUrl: "./packs-table.component.html",
   styleUrls: ["./packs-table.component.css"]
 })
-export class PacksTableComponent implements OnInit {
+export class PacksTableComponent implements OnInit, OnDestroy {
   loading;
   isAdmin: boolean;
   username: string;
@@ -47,13 +54,14 @@ export class PacksTableComponent implements OnInit {
   }
 
   refreshPacksList() {
-    this.manager.refreshPacksList().add(td => {
+    const listPacks: Subscription = this.manager.refreshPacksList().add(td => {
       this.dataSource = new MatTableDataSource(this.manager.packs);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.changeDetectorRefs.detectChanges();
       this.loading = false;
     });
+    this.manager.subscriptions.push(listPacks);
   }
 
   checkExpDate(expDate) {
@@ -64,25 +72,35 @@ export class PacksTableComponent implements OnInit {
   }
 
   onDeletePack(id: number) {
-    this.manager.deletePack(id).add(td => {
+    const deletePack: Subscription = this.manager.deletePack(id).add(td => {
       this.refreshPacksList();
     });
+
+    this.manager.subscriptions.push(deletePack);
   }
 
   fetchUtenti() {
-    this.manager.getUtenti().add(td => {
+    const fetchUsers: Subscription = this.manager.getUtenti().add(td => {
       this.refreshPacksList();
     });
+    this.manager.subscriptions.push(fetchUsers);
   }
 
   getIsAdmin() {
-    this.data.getAdminFromToken().subscribe(admin => {
-      this.isAdmin = admin;
-    });
+    const getAdmin: Subscription = this.data
+      .getAdminFromToken()
+      .subscribe(admin => {
+        this.isAdmin = admin;
+      });
+    this.manager.subscriptions.push(getAdmin);
   }
 
   getUserFromLocalStorage() {
     const localUsername = localStorage.getItem("userName");
     this.username = localUsername;
+  }
+
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }

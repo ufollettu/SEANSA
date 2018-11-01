@@ -1,13 +1,20 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ChangeDetectorRef,
+  OnDestroy
+} from "@angular/core";
 import { MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
 import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-packs-history-table",
   templateUrl: "./packs-history-table.component.html",
   styleUrls: ["./packs-history-table.component.css"]
 })
-export class PacksHistoryTableComponent implements OnInit {
+export class PacksHistoryTableComponent implements OnInit, OnDestroy {
   loading;
   isAdmin: boolean;
   username: string;
@@ -40,18 +47,25 @@ export class PacksHistoryTableComponent implements OnInit {
   }
 
   refreshPacksHistoryList() {
-    this.manager.refreshPacksHistoryList().add(td => {
-      this.dataSource = new MatTableDataSource(this.manager.packsHistory);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.changeDetectorRefs.detectChanges();
-      this.loading = false;
-    });
+    const packsHistList: Subscription = this.manager
+      .refreshPacksHistoryList()
+      .add(td => {
+        this.dataSource = new MatTableDataSource(this.manager.packsHistory);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.changeDetectorRefs.detectChanges();
+        this.loading = false;
+      });
+    this.manager.subscriptions.push(packsHistList);
   }
 
   fetchUtenti() {
-    this.manager.getUtenti().add(td => {
+    const fetchUsers: Subscription = this.manager.getUtenti().add(td => {
       this.refreshPacksHistoryList();
     });
+    this.manager.subscriptions.push(fetchUsers);
+  }
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }

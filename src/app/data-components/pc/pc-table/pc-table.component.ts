@@ -1,5 +1,12 @@
+import { Subscription } from "rxjs";
 import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  ViewChild,
+  OnDestroy
+} from "@angular/core";
 import {
   animate,
   state,
@@ -27,7 +34,7 @@ import { MatSort, MatTableDataSource, MatPaginator } from "@angular/material";
     ])
   ]
 })
-export class PcTableComponent implements OnInit {
+export class PcTableComponent implements OnInit, OnDestroy {
   loading;
   isBanned = false;
 
@@ -58,24 +65,31 @@ export class PcTableComponent implements OnInit {
   }
 
   refreshPcsList() {
-    this.manager.refershPcList().add(td => {
+    const pcList: Subscription = this.manager.refershPcList().add(td => {
       this.dataSource = new MatTableDataSource(this.manager.pcs);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.changeDetectorRefs.detectChanges();
       this.loading = false;
     });
+    this.manager.subscriptions.push(pcList);
   }
 
   banPc(id: number) {
-    this.manager.banPc(id).add(td => {
+    const banPc: Subscription = this.manager.banPc(id).add(td => {
       this.refreshPcsList();
     });
+    this.manager.subscriptions.push(banPc);
   }
 
   unbanPc(id: number) {
-    this.manager.unbanPc(id).add(td => {
+    const unbanPc: Subscription = this.manager.unbanPc(id).add(td => {
       this.refreshPcsList();
     });
+    this.manager.subscriptions.push(unbanPc);
+  }
+
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }

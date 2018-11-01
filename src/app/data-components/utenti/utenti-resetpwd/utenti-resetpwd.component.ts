@@ -1,6 +1,7 @@
+import { Subscription } from "rxjs";
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
 import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormGroup, Validators, NgForm } from "@angular/forms";
 import { UtentiApiService } from "../../../services/api-services/utenti-api.service";
@@ -18,7 +19,7 @@ import { AuthService } from "../../../services/auth-services/auth.service";
   // tslint:disable-next-line:use-host-property-decorator
   host: { "[@slideInOutAnimation]": "" }
 })
-export class UtentiResetpwdComponent implements OnInit {
+export class UtentiResetpwdComponent implements OnInit, OnDestroy {
   ipAddress: any;
   utenteForm: FormGroup;
 
@@ -44,14 +45,20 @@ export class UtentiResetpwdComponent implements OnInit {
   }
 
   getUser(id) {
-    this.manager.getUser(id, this.utenteForm);
+    const getUser: Subscription = this.manager.getUser(id, this.utenteForm);
+    this.manager.subscriptions.push(getUser);
   }
 
   onFormSubmit(form: NgForm) {
-    this.manager.resetPwdFormSubmit(
+    const formSubmit: Subscription = this.manager.resetPwdFormSubmit(
       this.route.snapshot.params["id"],
       form,
       "/utenti"
     );
+    this.manager.subscriptions.push(formSubmit);
+  }
+
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }

@@ -1,5 +1,11 @@
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  ViewChild,
+  OnDestroy
+} from "@angular/core";
 import {
   animate,
   state,
@@ -9,6 +15,7 @@ import {
 } from "@angular/animations";
 import { MatSort, MatTableDataSource, MatPaginator } from "@angular/material";
 import { AuthService } from "../../../services/auth-services/auth.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-utenti-table",
@@ -28,7 +35,7 @@ import { AuthService } from "../../../services/auth-services/auth.service";
     ])
   ]
 })
-export class UtentiTableComponent implements OnInit {
+export class UtentiTableComponent implements OnInit, OnDestroy {
   loading;
   currentUsername;
 
@@ -65,18 +72,24 @@ export class UtentiTableComponent implements OnInit {
   }
 
   refreshUsersList() {
-    this.manager.refreshUsersList().add(td => {
+    const listUsers: Subscription = this.manager.refreshUsersList().add(td => {
       this.dataSource = new MatTableDataSource(this.manager.utenti);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.changeDetectorRefs.detectChanges();
       this.loading = false;
     });
+    this.manager.subscriptions.push(listUsers);
   }
 
   deleteUser(id: number) {
-    this.manager.deleteUser(id).add(td => {
+    const delUser: Subscription = this.manager.deleteUser(id).add(td => {
       this.refreshUsersList();
     });
+    this.manager.subscriptions.push(delUser);
+  }
+
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }

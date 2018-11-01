@@ -1,5 +1,6 @@
+import { Subscription } from "rxjs";
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormGroup, NgForm } from "@angular/forms";
 import { slideInOutAnimation } from "../../../animations";
@@ -15,7 +16,7 @@ import { ErrorHandlerService } from "src/app/services/shared-services/error-hand
   // tslint:disable-next-line:use-host-property-decorator
   host: { "[@slideInOutAnimation]": "" }
 })
-export class ClientiEditComponent implements OnInit {
+export class ClientiEditComponent implements OnInit, OnDestroy {
   clienteForm: FormGroup;
 
   SC_ID = 0;
@@ -42,18 +43,24 @@ export class ClientiEditComponent implements OnInit {
   }
 
   onGetCustomer(id, form) {
-    this.manager.getCustomer(id, form);
+    const getCustomer: Subscription = this.manager.getCustomer(id, form);
+    this.manager.subscriptions.push(getCustomer);
   }
 
   onFormSubmit(form: NgForm) {
-    this.manager.updateCustomer(
+    const submitForm: Subscription = this.manager.updateCustomer(
       this.route.snapshot.params["id"],
       form,
       "/clienti"
     );
+    this.manager.subscriptions.push(submitForm);
   }
 
   clientiDetails() {
     this.router.navigate(["/clienti"]);
+  }
+
+  ngOnDestroy(): void {
+    this.manager.unsubAll();
   }
 }

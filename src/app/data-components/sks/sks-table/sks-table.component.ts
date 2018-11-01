@@ -1,7 +1,14 @@
+import { Subscription } from "rxjs";
 import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
 import { Sks } from "./../../../models/sks";
 import { DataService } from "../../../services/shared-services/data.service";
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  ViewChild,
+  OnDestroy
+} from "@angular/core";
 import { Router } from "@angular/router";
 import {
   MatSort,
@@ -19,7 +26,6 @@ import {
 } from "@angular/animations";
 import * as moment from "moment";
 
-import { oems } from "../sks-oem-data";
 import { Cliente } from "../../../models/cliente";
 import { SksDetailsComponent } from "../sks-details/sks-details.component";
 
@@ -41,7 +47,7 @@ import { SksDetailsComponent } from "../sks-details/sks-details.component";
     ])
   ]
 })
-export class SksTableComponent implements OnInit {
+export class SksTableComponent implements OnInit, OnDestroy {
   loading;
   oems;
 
@@ -87,7 +93,7 @@ export class SksTableComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.oems = oems;
+    this.oems = this.manager.oems;
     this.warningDate = moment().format("YYYY-MM-DD");
     this.getUtente();
     this.refreshSkssList();
@@ -98,7 +104,7 @@ export class SksTableComponent implements OnInit {
     await this.fetchClienti();
     await this.fetchPcs();
     await this.fetchMatricole();
-    this.manager.refreshSkssList().add(td => {
+    const sksList: Subscription = this.manager.refreshSkssList().add(td => {
       this.sks = this.manager.sks;
       this.dataSource = new MatTableDataSource(this.manager.sks);
       this.dataSource.paginator = this.paginator;
@@ -106,30 +112,35 @@ export class SksTableComponent implements OnInit {
       this.changeDetectorRefs.detectChanges();
       this.loading = false;
     });
+    this.manager.subscriptions.push(sksList);
   }
 
   decouplePC(id) {
-    this.manager.decouplePC(id).add(td => {
+    const decPc: Subscription = this.manager.decouplePC(id).add(td => {
       this.refreshSkssList();
     });
+    this.manager.subscriptions.push(decPc);
   }
 
   disableSks(id) {
-    this.manager.disableSks(id).add(td => {
+    const disSks: Subscription = this.manager.disableSks(id).add(td => {
       this.refreshSkssList();
     });
+    this.manager.subscriptions.push(disSks);
   }
 
   enableSks(id) {
-    this.manager.enableSks(id).add(td => {
+    const enaSks: Subscription = this.manager.enableSks(id).add(td => {
       this.refreshSkssList();
     });
+    this.manager.subscriptions.push(enaSks);
   }
 
   deleteSks(id) {
-    this.manager.deleteSks(id).add(td => {
+    const delSks: Subscription = this.manager.deleteSks(id).add(td => {
       this.refreshSkssList();
     });
+    this.manager.subscriptions.push(delSks);
   }
 
   checkExpDate(expDate) {
@@ -140,27 +151,33 @@ export class SksTableComponent implements OnInit {
   }
 
   fetchClienti() {
-    this.manager.refreshCustomersList().add(td => {
-      this.clienti = this.manager.clienti;
-    });
+    const fetchCust: Subscription = this.manager
+      .refreshCustomersList()
+      .add(td => {
+        this.clienti = this.manager.clienti;
+      });
+    this.manager.subscriptions.push(fetchCust);
   }
 
   fetchRinnovi() {
-    this.manager.fetchRinnovi().add(td => {
+    const fetchRinnovi: Subscription = this.manager.fetchRinnovi().add(td => {
       this.rinnoviObj = this.manager.rinnoviObj;
     });
+    this.manager.subscriptions.push(fetchRinnovi);
   }
 
   fetchPcs() {
-    this.manager.refershPcList().add(td => {
+    const fetchPcs: Subscription = this.manager.refershPcList().add(td => {
       this.pcsObjArr = this.manager.pcsObjArr;
     });
+    this.manager.subscriptions.push(fetchPcs);
   }
 
   fetchMatricole() {
-    this.manager.fetchMatricole().add(td => {
+    const fetchMatr: Subscription = this.manager.fetchMatricole().add(td => {
       this.serials = this.manager.serials;
     });
+    this.manager.subscriptions.push(fetchMatr);
   }
 
   showDetails(sksId, pcHwId, customerName, oem) {
@@ -178,13 +195,20 @@ export class SksTableComponent implements OnInit {
   }
 
   getUtente() {
-    this.data.getUserFromToken().subscribe(utente => {
-      this.userId = utente["SU_ID"];
-    });
+    const getUser: Subscription = this.data
+      .getUserFromToken()
+      .subscribe(utente => {
+        this.userId = utente["SU_ID"];
+      });
+    this.manager.subscriptions.push(getUser);
   }
 
   onMatricoleLink(url, id) {
     this.data.changeUrl(url);
     this.router.navigate([url, id]);
+  }
+
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }

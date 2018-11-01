@@ -1,6 +1,7 @@
+import { Subscription } from "rxjs";
 import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
 import { Router } from "@angular/router";
-import { Component, OnInit, Inject } from "@angular/core";
+import { Component, OnInit, Inject, OnDestroy } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
 
@@ -9,7 +10,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
   templateUrl: "./sks-details.component.html",
   styleUrls: ["./sks-details.component.css"]
 })
-export class SksDetailsComponent implements OnInit {
+export class SksDetailsComponent implements OnInit, OnDestroy {
   sksForm: FormGroup;
 
   constructor(
@@ -21,14 +22,18 @@ export class SksDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.sksForm = this.manager.sksFormInit();
+    this.getSksDetails();
+  }
 
-    this.manager.getSksDetails(
+  getSksDetails() {
+    const getDetails: Subscription = this.manager.getSksDetails(
       this.data.sksId,
       this.data.pcHwId,
       this.data.customerName,
       this.data.oem,
       this.sksForm
     );
+    this.manager.subscriptions.push(getDetails);
   }
 
   onClose() {
@@ -38,5 +43,9 @@ export class SksDetailsComponent implements OnInit {
   sendMail(sksKey) {
     this.onClose();
     this.router.navigate(["/sks-mailer", sksKey]);
+  }
+
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }

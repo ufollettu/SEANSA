@@ -1,8 +1,9 @@
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormGroup, NgForm } from "@angular/forms";
 import { slideInOutAnimation } from "../../../animations";
 import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-clienti-create",
@@ -14,7 +15,7 @@ import { ErrorHandlerService } from "src/app/services/shared-services/error-hand
   // tslint:disable-next-line:use-host-property-decorator
   host: { "[@slideInOutAnimation]": "" }
 })
-export class ClientiCreateComponent implements OnInit {
+export class ClientiCreateComponent implements OnInit, OnDestroy {
   clienteForm: FormGroup;
 
   SC_NOME = "";
@@ -41,6 +42,14 @@ export class ClientiCreateComponent implements OnInit {
   }
 
   onFormSubmit(form: NgForm) {
-    this.manager.postCustomerFormSubmit(form, "/clienti");
+    const submitForm: Subscription = this.manager.postCustomerFormSubmit(
+      form,
+      "/clienti"
+    );
+    this.manager.subscriptions.push(submitForm);
+  }
+
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }

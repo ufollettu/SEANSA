@@ -12,6 +12,8 @@ import { HttpResponse, HttpErrorResponse } from "@angular/common/http";
 import { NotificationService } from "../../../services/layout-services/notification.service";
 import { AuthService } from "../../../services/auth-services/auth.service";
 import { ColorPickerService, Cmyk } from "ngx-color-picker";
+import { Subscription } from "rxjs";
+import * as moment from "moment";
 
 /** Error when invalid control is dirty, touched, or submitted. */
 /** TODO copy error matcher in all components */
@@ -76,42 +78,63 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.styleInit();
-
-    this.customizeService.currentLogo.subscribe(logo => {
-      this.logo = logo;
-    });
-    this.customizeService.currentTheme.subscribe(theme => {
-      this.userTheme = theme || "default-theme";
-    });
-
-    // custom color picker
-    this.customizeService.currentPrimaryColor.subscribe(pColor => {
-      this.primaryColor = pColor;
-    });
-    this.customizeService.currentAccentColor.subscribe(aColor => {
-      this.accentColor = aColor;
-    });
-    this.customizeService.currentWarnColor.subscribe(wColor => {
-      this.warnColor = wColor;
-    });
-
+    this.getUserTheme();
     this.currentUsername = this.authService.getUsername();
+  }
+
+  getUserTheme() {
+    const logoSub: Subscription = this.customizeService.currentLogo.subscribe(
+      logo => {
+        this.logo = logo;
+      }
+    );
+    const themeSub: Subscription = this.customizeService.currentTheme.subscribe(
+      theme => {
+        this.userTheme = theme || "default-theme";
+      }
+    );
+    // custom color picker
+    const pColorSub: Subscription = this.customizeService.currentPrimaryColor.subscribe(
+      pColor => {
+        this.primaryColor = pColor;
+      }
+    );
+    const aColorSub: Subscription = this.customizeService.currentAccentColor.subscribe(
+      aColor => {
+        this.accentColor = aColor;
+      }
+    );
+    const wColorSub: Subscription = this.customizeService.currentWarnColor.subscribe(
+      wColor => {
+        this.warnColor = wColor;
+      }
+    );
+    this.manager.subscriptions.push(
+      logoSub,
+      themeSub,
+      pColorSub,
+      aColorSub,
+      wColorSub
+    );
   }
 
   styleInit() {
     const id = this.route.snapshot.params["id"];
     this.username = this.route.snapshot.fragment;
-    this.uploadService.getCustomStyle(id).subscribe(style => {
-      this.userTheme = style["SCZ_THEME"];
-      this.logo = style["SCZ_LOGO_NAME"];
-      this.userId = style["SCZ_SU_ID"];
-      this.url = `../../assets/images/${style["SCZ_LOGO_NAME"]}` || this.url;
-      this.onSetTheme(style["SCZ_THEME"]);
-      this.customizeService.changeLogo(style["SCZ_LOGO_NAME"]);
-      this.customizeService.changePrimaryColor(style["SCZ_PRIMARY_COLOR"]);
-      this.customizeService.changeAccentColor(style["SCZ_ACCENT_COLOR"]);
-      this.customizeService.changeWarnColor(style["SCZ_WARN_COLOR"]);
-    });
+    const getStyle: Subscription = this.uploadService
+      .getCustomStyle(id)
+      .subscribe(style => {
+        this.userTheme = style["SCZ_THEME"];
+        this.logo = style["SCZ_LOGO_NAME"];
+        this.userId = style["SCZ_SU_ID"];
+        this.url = `../../assets/images/${style["SCZ_LOGO_NAME"]}` || this.url;
+        this.onSetTheme(style["SCZ_THEME"]);
+        this.customizeService.changeLogo(style["SCZ_LOGO_NAME"]);
+        this.customizeService.changePrimaryColor(style["SCZ_PRIMARY_COLOR"]);
+        this.customizeService.changeAccentColor(style["SCZ_ACCENT_COLOR"]);
+        this.customizeService.changeWarnColor(style["SCZ_WARN_COLOR"]);
+      });
+    this.manager.subscriptions.push(getStyle);
   }
 
   onFileSelected(event) {
@@ -150,28 +173,47 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
     this.formdata.append("SCZ_ACCENT_COLOR", this.accentColor);
     this.formdata.append("SCZ_WARN_COLOR", this.warnColor);
 
-    this.uploadService.pushFileToStorage(this.userId, this.formdata).subscribe(
-      res => {
-        if (res instanceof HttpResponse) {
-          this.notificationService.success(
-            `user id: ${this.userId} style and logo updated`
-          );
-          this.router.navigate(["/utenti"]);
-        }
-      },
-      err => {
-        console.log(err);
-        if (err instanceof HttpErrorResponse) {
-          if (err.status === 422 || 500) {
-            this.notificationService.warn(
-              "error uploading file, please try again"
+    if (this.currentUsername === this.username) {
+      const name =
+        this.selectedFile === null
+          ? localStorage.getItem("customLogo").slice(18)
+          : this.selectedFile.name;
+      const logoName = `logo-${moment().format("YYYYMMDDHHMM")}-${name}`;
+      localStorage.setItem("customLogo", logoName);
+      localStorage.setItem("customStyle", this.userTheme);
+      const customColorsArr = Array.of(
+        this.primaryColor,
+        this.accentColor,
+        this.warnColor
+      );
+      localStorage.setItem("customColors", customColorsArr.join("|"));
+    }
+
+    const upload: Subscription = this.uploadService
+      .pushFileToStorage(this.userId, this.formdata)
+      .subscribe(
+        res => {
+          if (res instanceof HttpResponse) {
+            this.notificationService.success(
+              `user id: ${this.userId} style and logo updated`
             );
             this.router.navigate(["/utenti"]);
           }
+        },
+        err => {
+          console.log(err);
+          if (err instanceof HttpErrorResponse) {
+            if (err.status === 422 || 500) {
+              this.notificationService.warn(
+                "error uploading file, please try again"
+              );
+              this.router.navigate(["/utenti"]);
+            }
+          }
+          this.authService.handleLoginError(err);
         }
-        this.authService.handleLoginError(err);
-      }
-    );
+      );
+    this.manager.subscriptions.push(upload);
   }
 
   resetLogo() {
@@ -195,32 +237,10 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
     this.url = "../../assets/images/placeholder.png";
   }
 
-  setNewStyle() {
-    this.uploadService.getCustomStyle(this.userId).subscribe(style => {
-      // console.log(style);
-      const customColors: string[] = [
-        style["SCZ_PRIMARY_COLOR"],
-        style["SCZ_ACCENT_COLOR"],
-        style["SCZ_WARN_COLOR"]
-      ];
-      localStorage.setItem("customLogo", style["SCZ_LOGO_NAME"]);
-      localStorage.setItem("customStyle", style["SCZ_THEME"]);
-      localStorage.setItem("customColors", customColors.join("|"));
-      this.customizeService.changeTheme(style["SCZ_THEME"]);
-      this.customizeService.changeLogo(style["SCZ_LOGO_NAME"]);
-      this.customizeService.changePrimaryColor(style["SCZ_PRIMARY_COLOR"]);
-      this.customizeService.changeAccentColor(style["SCZ_ACCENT_COLOR"]);
-      this.customizeService.changeWarnColor(style["SCZ_WARN_COLOR"]);
-    });
-  }
-
   ngOnDestroy() {
-    if (this.currentUsername !== this.username) {
-      this.resetLogo();
-      this.resetTheme();
-      this.resetColors();
-    } else {
-      this.setNewStyle();
-    }
+    this.resetLogo();
+    this.resetTheme();
+    this.resetColors();
+    this.manager.unsubAll();
   }
 }

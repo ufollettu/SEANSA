@@ -1,6 +1,7 @@
+import { Subscription } from "rxjs";
 import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { FormGroup, NgForm } from "@angular/forms";
 import { slideInOutAnimation } from "../../../animations";
@@ -15,7 +16,7 @@ import { slideInOutAnimation } from "../../../animations";
   // tslint:disable-next-line:use-host-property-decorator
   host: { "[@slideInOutAnimation]": "" }
 })
-export class MatricoleCloneComponent implements OnInit {
+export class MatricoleCloneComponent implements OnInit, OnDestroy {
   sksId: any;
   matricoleCloneForm: FormGroup;
 
@@ -28,11 +29,17 @@ export class MatricoleCloneComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.fragment.subscribe((fragment: string) => {
-      this.sksId = fragment;
-    });
-
+    this.getSksIdFormFragment();
     this.onFormInit();
+  }
+
+  getSksIdFormFragment() {
+    const getSksId: Subscription = this.route.fragment.subscribe(
+      (fragment: string) => {
+        this.sksId = fragment;
+      }
+    );
+    this.manager.subscriptions.push(getSksId);
   }
 
   onFormInit() {
@@ -40,10 +47,19 @@ export class MatricoleCloneComponent implements OnInit {
   }
 
   onCloneMatricoleFromSksId(licenseId) {
-    this.manager.cloneMatricoleFromSksId(licenseId, this.sksId, "/matricole");
+    const cloneMatr: Subscription = this.manager.cloneMatricoleFromSksId(
+      licenseId,
+      this.sksId,
+      "/matricole"
+    );
+    this.manager.subscriptions.push(cloneMatr);
   }
 
   onFormSubmit(form: NgForm) {
     this.onCloneMatricoleFromSksId(form["SS_ID"]);
+  }
+
+  ngOnDestroy(): void {
+    this.manager.unsubAll();
   }
 }

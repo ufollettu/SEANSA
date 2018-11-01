@@ -1,5 +1,6 @@
+import { Subscription } from "rxjs";
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormGroup, NgForm } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { slideInOutAnimation } from "../../../animations";
@@ -15,7 +16,7 @@ import { ErrorHandlerService } from "src/app/services/shared-services/error-hand
   // tslint:disable-next-line:use-host-property-decorator
   host: { "[@slideInOutAnimation]": "" }
 })
-export class SksEditComponent implements OnInit {
+export class SksEditComponent implements OnInit, OnDestroy {
   clientiMap = [];
   oems;
 
@@ -43,24 +44,35 @@ export class SksEditComponent implements OnInit {
     this.oems = this.manager.oems;
     this.sksForm = this.manager.sksEditFormInit();
     this.getSks(this.route.snapshot.params["id"]);
-    this.manager.getCustomers().add(td => {
+    this.getCustomers();
+  }
+
+  getCustomers() {
+    const getCust: Subscription = this.manager.getCustomers().add(td => {
       this.clientiMap = this.manager.clientiMap;
     });
+    this.manager.subscriptions.push(getCust);
   }
 
   getSks(id) {
-    this.manager.getSks(id, this.sksForm);
+    const getSks: Subscription = this.manager.getSks(id, this.sksForm);
+    this.manager.subscriptions.push(getSks);
   }
 
   onFormSubmit(form: NgForm) {
-    this.manager.sksEditFormSubmit(
+    const submitForm: Subscription = this.manager.sksEditFormSubmit(
       this.route.snapshot.params["id"],
       form,
       "/sks"
     );
+    this.manager.subscriptions.push(submitForm);
   }
 
   sksDetails() {
     this.router.navigate(["/sks"]);
+  }
+
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }

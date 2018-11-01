@@ -1,5 +1,12 @@
+import { Subscription } from "rxjs";
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  ViewChild,
+  OnDestroy
+} from "@angular/core";
 import {
   animate,
   state,
@@ -27,7 +34,7 @@ import { MatTableDataSource, MatSort, MatPaginator } from "@angular/material";
     ])
   ]
 })
-export class ClientiTableComponent implements OnInit {
+export class ClientiTableComponent implements OnInit, OnDestroy {
   loading;
 
   // tslint:disable-next-line:max-line-length
@@ -61,18 +68,28 @@ export class ClientiTableComponent implements OnInit {
   }
 
   onRefreshCustomersList() {
-    this.manager.refreshCustomersList().add(td => {
-      this.dataSource = new MatTableDataSource(this.manager.clienti);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.changeDetectorRefs.detectChanges();
-      this.loading = false;
-    });
+    const refreshList: Subscription = this.manager
+      .refreshCustomersList()
+      .add(td => {
+        this.dataSource = new MatTableDataSource(this.manager.clienti);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.changeDetectorRefs.detectChanges();
+        this.loading = false;
+      });
+    this.manager.subscriptions.push(refreshList);
   }
 
   onDeleteCustomer(id: number) {
-    this.manager.deleteCustomer(id).add(tearDown => {
-      this.onRefreshCustomersList();
-    });
+    const deleteCust: Subscription = this.manager
+      .deleteCustomer(id)
+      .add(tearDown => {
+        this.onRefreshCustomersList();
+      });
+    this.manager.subscriptions.push(deleteCust);
+  }
+
+  ngOnDestroy(): void {
+    this.manager.unsubAll();
   }
 }

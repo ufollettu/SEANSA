@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { Subscription } from "rxjs";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormGroup, NgForm } from "@angular/forms";
 import { slideInOutAnimation } from "../../../animations";
 import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
@@ -14,7 +15,7 @@ import { DataComponentsManagementService } from "src/app/services/shared-service
   // tslint:disable-next-line:use-host-property-decorator
   host: { "[@slideInOutAnimation]": "" }
 })
-export class UtentiCreateComponent implements OnInit {
+export class UtentiCreateComponent implements OnInit, OnDestroy {
   ipAddress: any;
   utenteForm: FormGroup;
 
@@ -32,6 +33,14 @@ export class UtentiCreateComponent implements OnInit {
   }
 
   onFormSubmit(form: NgForm) {
-    this.manager.usersFormSubmit(form, "/utenti");
+    const formSubmit: Subscription = this.manager.usersFormSubmit(
+      form,
+      "/utenti"
+    );
+    this.manager.subscriptions.push(formSubmit);
+  }
+
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }

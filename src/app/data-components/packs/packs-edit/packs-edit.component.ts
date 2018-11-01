@@ -1,9 +1,10 @@
 import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { slideInOutAnimation } from "../../../animations";
 import { ActivatedRoute } from "@angular/router";
 import { FormGroup, NgForm } from "@angular/forms";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-packs-edit",
@@ -15,7 +16,7 @@ import { FormGroup, NgForm } from "@angular/forms";
   // tslint:disable-next-line:use-host-property-decorator
   host: { "[@slideInOutAnimation]": "" }
 })
-export class PacksEditComponent implements OnInit {
+export class PacksEditComponent implements OnInit, OnDestroy {
   utenti = [];
   packForm: FormGroup;
 
@@ -40,14 +41,32 @@ export class PacksEditComponent implements OnInit {
 
   onFormInit() {
     this.packForm = this.manager.packsFormInit();
-    this.manager.getPack(this.route.snapshot.params["id"], this.packForm);
+    this.getPack();
+  }
+
+  getPack() {
+    const getPack: Subscription = this.manager.getPack(
+      this.route.snapshot.params["id"],
+      this.packForm
+    );
+    this.manager.subscriptions.push(getPack);
   }
 
   fetchUtenti() {
-    this.manager.getUtenti();
+    const fetchUser: Subscription = this.manager.getUtenti();
+    this.manager.subscriptions.push(fetchUser);
   }
 
   onFormSubmit(form: NgForm) {
-    this.manager.updatePack(this.route.snapshot.params["id"], form, "/packs");
+    const submitForm: Subscription = this.manager.updatePack(
+      this.route.snapshot.params["id"],
+      form,
+      "/packs"
+    );
+    this.manager.subscriptions.push(submitForm);
+  }
+
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }

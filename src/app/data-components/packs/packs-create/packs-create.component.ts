@@ -1,9 +1,10 @@
 import { ErrorHandlerService } from "src/app/services/shared-services/error-handler.service";
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { slideInOutAnimation } from "../../../animations";
 import { FormGroup, NgForm } from "@angular/forms";
 import { DataService } from "../../../services/shared-services/data.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-packs-create",
@@ -15,7 +16,7 @@ import { DataService } from "../../../services/shared-services/data.service";
   // tslint:disable-next-line:use-host-property-decorator
   host: { "[@slideInOutAnimation]": "" }
 })
-export class PacksCreateComponent implements OnInit {
+export class PacksCreateComponent implements OnInit, OnDestroy {
   utenti = [];
   packForm: FormGroup;
 
@@ -44,17 +45,26 @@ export class PacksCreateComponent implements OnInit {
   }
 
   fetchUtenti() {
-    this.manager.getUtenti();
+    const fetchUser: Subscription = this.manager.getUtenti();
+    this.manager.subscriptions.push(fetchUser);
   }
   getUtente(form) {
-    this.data.getUserIdFromToken().subscribe(userId => {
-      form.patchValue({
-        SPK_SU_CREATOR_ID: userId
+    const getUser: Subscription = this.data
+      .getUserIdFromToken()
+      .subscribe(userId => {
+        form.patchValue({
+          SPK_SU_CREATOR_ID: userId
+        });
       });
-    });
+    this.manager.subscriptions.push(getUser);
   }
 
   onFormSubmit(form: NgForm) {
-    this.manager.postPack(form, "/packs");
+    const submitForm: Subscription = this.manager.postPack(form, "/packs");
+    this.manager.subscriptions.push(submitForm);
+  }
+
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }
