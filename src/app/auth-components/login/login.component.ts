@@ -1,5 +1,7 @@
+import { Subscription } from "rxjs";
+import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
 import { ErrorHandlerService } from "./../../services/shared-services/error-handler.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { FormGroup, FormBuilder, Validators, NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
 import { AuthService } from "../../services/auth-services/auth.service";
@@ -21,8 +23,10 @@ import { NotificationService } from "../../services/layout-services/notification
   // tslint:disable-next-line:use-host-property-decorator
   host: { "[@slideInOutAnimation]": "" }
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   user: object;
+  userId: number;
+  lastLoginDate: any;
   utenteForm: FormGroup;
 
   SU_UNA: "";
@@ -37,11 +41,12 @@ export class LoginComponent implements OnInit {
     private data: DataService,
     private uploadService: UploadFileService,
     private customizeService: CustomizeService,
-    public matcher: ErrorHandlerService
+    public matcher: ErrorHandlerService,
+    private manager: DataComponentsManagementService
   ) {}
 
   ngOnInit() {
-    this.data.currentUser.subscribe(user => (this.user = user));
+    this.getCurrentUser();
     // this.getIp();
     this.utenteForm = this.formBuilder.group({
       username: [null, Validators.required],
@@ -49,39 +54,21 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  getCurrentUser() {
+    const getUser: Subscription = this.data.currentUser.subscribe(
+      user => (this.user = user)
+    );
+    this.manager.subscriptions.push(getUser);
+  }
+
   onFormSubmit(form: NgForm) {
-    this.auth.loginUser(form).subscribe(
+    const submitForm: Subscription = this.auth.loginUser(form).subscribe(
       res => {
         localStorage.setItem("token", res["idToken"]);
-        const userId = res["user"]["SU_ID"];
-        const lastLoginDate = Date.now();
-
-        this.uploadService.getCustomStyle(userId).subscribe(style => {
-          // console.log(style);
-          const customColors: string[] = [
-            style["SCZ_PRIMARY_COLOR"],
-            style["SCZ_ACCENT_COLOR"],
-            style["SCZ_WARN_COLOR"]
-          ];
-          localStorage.setItem("customLogo", style["SCZ_LOGO_NAME"]);
-          localStorage.setItem("customStyle", style["SCZ_THEME"]);
-          localStorage.setItem("customColors", customColors.join("|"));
-          this.customizeService.changeTheme(style["SCZ_THEME"]);
-          this.customizeService.changeLogo(style["SCZ_LOGO_NAME"]);
-          this.customizeService.changePrimaryColor(style["SCZ_PRIMARY_COLOR"]);
-          this.customizeService.changeAccentColor(style["SCZ_ACCENT_COLOR"]);
-          this.customizeService.changeWarnColor(style["SCZ_WARN_COLOR"]);
-        });
-
-        this.userApi
-          .updateUtente(userId, { SU_LAST_LOGIN: lastLoginDate })
-          .subscribe(user => {
-            localStorage.setItem("userName", user["SU_UNA"]);
-            this.sendUser(user);
-            this.notificationService.success(`benvenuto ${user["SU_UNA"]}!`);
-            this.data.changeUrl("/sks");
-            this.router.navigate(["/sks"]);
-          });
+        this.userId = res["user"]["SU_ID"];
+        this.lastLoginDate = Date.now();
+        this.getCustomStyle();
+        this.updateUser();
       },
       err => {
         console.log(err);
@@ -93,9 +80,49 @@ export class LoginComponent implements OnInit {
         }
       }
     );
+    this.manager.subscriptions.push(submitForm);
+  }
+
+  getCustomStyle() {
+    const getStyle: Subscription = this.uploadService
+      .getCustomStyle(this.userId)
+      .subscribe(style => {
+        // console.log(style);
+        const customColors: string[] = [
+          style["SCZ_PRIMARY_COLOR"],
+          style["SCZ_ACCENT_COLOR"],
+          style["SCZ_WARN_COLOR"]
+        ];
+        localStorage.setItem("customLogo", style["SCZ_LOGO_NAME"]);
+        localStorage.setItem("customStyle", style["SCZ_THEME"]);
+        localStorage.setItem("customColors", customColors.join("|"));
+        this.customizeService.changeTheme(style["SCZ_THEME"]);
+        this.customizeService.changeLogo(style["SCZ_LOGO_NAME"]);
+        this.customizeService.changePrimaryColor(style["SCZ_PRIMARY_COLOR"]);
+        this.customizeService.changeAccentColor(style["SCZ_ACCENT_COLOR"]);
+        this.customizeService.changeWarnColor(style["SCZ_WARN_COLOR"]);
+      });
+    this.manager.subscriptions.push(getStyle);
+  }
+
+  updateUser() {
+    const updateUser: Subscription = this.userApi
+      .updateUtente(this.userId, { SU_LAST_LOGIN: this.lastLoginDate })
+      .subscribe(user => {
+        localStorage.setItem("userName", user["SU_UNA"]);
+        this.sendUser(user);
+        this.notificationService.success(`benvenuto ${user["SU_UNA"]}!`);
+        this.data.changeUrl("/sks");
+        this.router.navigate(["/sks"]);
+      });
+    this.manager.subscriptions.push(updateUser);
   }
 
   sendUser(user) {
     this.data.changeUser(user);
+  }
+
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }

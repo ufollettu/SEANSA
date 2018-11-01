@@ -1,5 +1,6 @@
+import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
 import { ErrorHandlerService } from "./../../services/shared-services/error-handler.service";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { DataService } from "../../services/shared-services/data.service";
 import { Router } from "@angular/router";
 import { FormBuilder, FormGroup, Validators, NgForm } from "@angular/forms";
@@ -7,6 +8,7 @@ import { AuthService } from "../../services/auth-services/auth.service";
 import { HttpErrorResponse } from "@angular/common/http";
 import { slideInOutAnimation } from "../../animations";
 import { NotificationService } from "../../services/layout-services/notification.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-change-password",
@@ -18,7 +20,7 @@ import { NotificationService } from "../../services/layout-services/notification
   // tslint:disable-next-line:use-host-property-decorator
   host: { "[@slideInOutAnimation]": "" }
 })
-export class ChangePasswordComponent implements OnInit {
+export class ChangePasswordComponent implements OnInit, OnDestroy {
   user: object;
   utenteForm: FormGroup;
 
@@ -32,15 +34,12 @@ export class ChangePasswordComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    public matcher: ErrorHandlerService
+    public matcher: ErrorHandlerService,
+    private manager: DataComponentsManagementService
   ) {}
 
   ngOnInit() {
-    this.data.getUserFromToken().subscribe(utente => {
-      this.user = utente;
-    });
     // this.data.currentUser.subscribe(user => { this.user = user; });
-
     this.getUtente();
     this.utenteForm = this.formBuilder.group({
       username: [null, Validators.required],
@@ -50,19 +49,22 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   getUtente() {
-    this.data.getUserFromToken().subscribe(utente => {
-      this.SU_ID = utente["SU_ID"];
-      this.utenteForm.setValue({
-        username: utente["SU_UNA"],
-        password: "",
-        SU_LAST_EDIT: new Date()
+    const getUser: Subscription = this.data
+      .getUserFromToken()
+      .subscribe(utente => {
+        this.user = utente;
+        this.SU_ID = utente["SU_ID"];
+        this.utenteForm.setValue({
+          username: utente["SU_UNA"],
+          password: "",
+          SU_LAST_EDIT: new Date()
+        });
       });
-    });
+    this.manager.subscriptions.push(getUser);
   }
 
   onFormSubmit(form: NgForm) {
-    console.log(form);
-    this.authService.changePwd(form).subscribe(
+    const submitForm = this.authService.changePwd(form).subscribe(
       res => {
         localStorage.setItem("token", res["idToken"]);
         this.sendUser(res["user"]);
@@ -81,6 +83,7 @@ export class ChangePasswordComponent implements OnInit {
         this.authService.handleLoginError(err);
       }
     );
+    this.manager.subscriptions.push(submitForm);
   }
 
   onBackward(url) {
@@ -90,5 +93,9 @@ export class ChangePasswordComponent implements OnInit {
 
   sendUser(user) {
     this.data.changeUser(user);
+  }
+
+  ngOnDestroy() {
+    this.manager.unsubAll();
   }
 }

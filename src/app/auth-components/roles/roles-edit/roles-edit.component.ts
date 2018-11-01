@@ -15,6 +15,8 @@ import { map } from "rxjs/operators";
 import { slideInOutAnimation } from "../../../animations";
 import { NotificationService } from "../../../services/layout-services/notification.service";
 import { AuthService } from "../../../services/auth-services/auth.service";
+import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-roles-edit",
@@ -40,16 +42,24 @@ export class RolesEditComponent implements OnInit, OnDestroy {
     private api: RolesApiService,
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    public matcher: ErrorHandlerService
+    public matcher: ErrorHandlerService,
+    private manager: DataComponentsManagementService
   ) {
-    this.route.data.pipe(map(data => data.cres)).subscribe(res => {
-      this.permArr = res;
-    });
+    this.getPermsArr();
     this.userId = this.route.snapshot.params["id"];
   }
 
   ngOnInit() {
     this.checkPermArr();
+  }
+
+  getPermsArr() {
+    const getPerms: Subscription = this.route.data
+      .pipe(map(data => data.cres))
+      .subscribe(res => {
+        this.permArr = res;
+      });
+    this.manager.subscriptions.push(getPerms);
   }
 
   checkPermArr() {
@@ -73,17 +83,20 @@ export class RolesEditComponent implements OnInit, OnDestroy {
       .map((v, i) => (v ? this.levels[i].name : null))
       .filter(v => v !== null);
     const newPerms = this.mapForDb(selectedPermName);
-    this.api.updateKeys(this.userId, newPerms).subscribe(
-      res => {
-        this.notificationService.success(
-          `permessi utente Id: ${this.userId} modificati`
-        );
-        this.router.navigate(["/utenti"]);
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
+    const submitForm: Subscription = this.api
+      .updateKeys(this.userId, newPerms)
+      .subscribe(
+        res => {
+          this.notificationService.success(
+            `permessi utente Id: ${this.userId} modificati`
+          );
+          this.router.navigate(["/utenti"]);
+        },
+        err => {
+          this.authService.handleLoginError(err);
+        }
+      );
+    this.manager.subscriptions.push(submitForm);
   }
 
   mapForDb(newPerms) {
@@ -99,5 +112,6 @@ export class RolesEditComponent implements OnInit, OnDestroy {
     this.levels.forEach(level => {
       level["selected"] = false;
     });
+    this.manager.unsubAll();
   }
 }

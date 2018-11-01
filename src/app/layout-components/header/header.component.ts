@@ -1,12 +1,13 @@
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Location } from "@angular/common";
-import { Renderer2, ElementRef, ChangeDetectorRef, Input } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
+import { ChangeDetectorRef } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { AuthService } from "../../services/auth-services/auth.service";
-import { Component, OnInit } from "@angular/core";
 import { DataService } from "../../services/shared-services/data.service";
 import { CustomizeService } from "../../services/shared-services/customize.service";
 import { SidenavService } from "src/app/services/layout-services/sidenav.service";
 import { PermissionService } from "src/app/services/auth-services/permission.service";
+import { take } from "rxjs/operators";
 
 @Component({
   selector: "app-header",
@@ -28,8 +29,6 @@ export class HeaderComponent implements OnInit {
     private data: DataService,
     private permsService: PermissionService,
     private customizeService: CustomizeService,
-    // private renderer: Renderer2,
-    // private el: ElementRef
     private location: Location,
     private cdRef: ChangeDetectorRef,
     private route: ActivatedRoute
@@ -41,15 +40,17 @@ export class HeaderComponent implements OnInit {
     this.getUserFromLocalStorage();
     this.getUrl();
     this.getLocation();
-    // this.getLogoFromLocalStorage();
   }
 
   getUser() {
-    this.data.getUser().subscribe(utente => {
-      this.user = utente;
-      this.userId = utente["SU_ID"];
-      // this.sendUser(this.user);
-    });
+    this.data
+      .getUser()
+      .pipe(take(1))
+      .subscribe(utente => {
+        this.user = utente;
+        this.userId = utente["SU_ID"];
+        // this.sendUser(this.user);
+      });
   }
 
   onLogout() {
