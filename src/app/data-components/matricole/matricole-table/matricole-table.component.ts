@@ -1,3 +1,8 @@
+import { NotificationService } from "./../../../services/layout-services/notification.service";
+import { DialogService } from "./../../../services/layout-services/dialog.service";
+import { AuthService } from "./../../../services/auth-services/auth.service";
+import { Matricola } from "./../../../models/matricola";
+import { MatricoleApiService } from "./../../../services/api-services/matricole-api.service";
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
 import {
   Component,
@@ -38,6 +43,7 @@ import { Subscription } from "rxjs";
 export class MatricoleTableComponent implements OnInit, OnDestroy {
   loading;
   sksId: any;
+  matricole: Matricola[];
 
   displayedColumns = [
     "SM_MATRICOLA",
@@ -53,9 +59,13 @@ export class MatricoleTableComponent implements OnInit, OnDestroy {
   sort: MatSort;
 
   constructor(
+    private authService: AuthService,
+    private matricoleApi: MatricoleApiService,
     private changeDetectorRefs: ChangeDetectorRef,
     private route: ActivatedRoute,
-    private manager: DataComponentsManagementService
+    private manager: DataComponentsManagementService,
+    private dialogService: DialogService,
+    private notificationService: NotificationService
   ) {
     this.loading = true;
   }
@@ -66,22 +76,40 @@ export class MatricoleTableComponent implements OnInit, OnDestroy {
   }
 
   refreshMatricoleList() {
-    const getMatr: Subscription = this.manager
+    const getMatr: Subscription = this.matricoleApi
       .getMatricoleBySks(this.sksId)
-      .add(td => {
-        this.dataSource = new MatTableDataSource(this.manager.matricole);
-        this.dataSource.sort = this.sort;
-        this.changeDetectorRefs.detectChanges();
-        this.loading = false;
-      });
+      .subscribe(
+        res => {
+          this.matricole = res;
+          this.dataSource = new MatTableDataSource(this.matricole);
+          this.dataSource.sort = this.sort;
+          this.changeDetectorRefs.detectChanges();
+          this.loading = false;
+          this.manager.noData(res);
+        },
+        err => {
+          this.authService.handleLoginError(err);
+        }
+      );
     this.manager.subscriptions.push(getMatr);
   }
 
   onDeleteMatricola(id) {
-    const deleteMatr: Subscription = this.manager
-      .deleteMatricola(id)
-      .add(tearDown => {
-        this.refreshMatricoleList();
+    const deleteMatr: Subscription = this.dialogService
+      .openConfirmDialog("Sei sicuro?")
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.matricoleApi.deleteMatricola(id).subscribe(
+            matr => {
+              this.notificationService.warn(`Matricola ${id} rimossa`);
+              this.refreshMatricoleList();
+            },
+            err => {
+              this.authService.handleLoginError(err);
+            }
+          );
+        }
       });
     this.manager.subscriptions.push(deleteMatr);
   }

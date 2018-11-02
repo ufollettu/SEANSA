@@ -1,3 +1,9 @@
+import { AuthService } from "./../../../services/auth-services/auth.service";
+import { Router } from "@angular/router";
+import { DialogService } from "./../../../services/layout-services/dialog.service";
+import { NotificationService } from "./../../../services/layout-services/notification.service";
+import { Cliente } from "./../../../models/cliente";
+import { ClientiApiService } from "./../../../services/api-services/clienti-api.service";
 import { Subscription } from "rxjs";
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
 import {
@@ -36,7 +42,7 @@ import { MatTableDataSource, MatSort, MatPaginator } from "@angular/material";
 })
 export class ClientiTableComponent implements OnInit, OnDestroy {
   loading;
-
+  clienti: Cliente[];
   // tslint:disable-next-line:max-line-length
   displayedColumns = [
     "SC_NOME",
@@ -57,7 +63,11 @@ export class ClientiTableComponent implements OnInit, OnDestroy {
   paginator: MatPaginator;
 
   constructor(
+    private authService: AuthService,
     private manager: DataComponentsManagementService,
+    private notificationService: NotificationService,
+    private dialogService: DialogService,
+    private clientiApi: ClientiApiService,
     private changeDetectorRefs: ChangeDetectorRef
   ) {
     this.loading = true;
@@ -68,23 +78,40 @@ export class ClientiTableComponent implements OnInit, OnDestroy {
   }
 
   onRefreshCustomersList() {
-    const refreshList: Subscription = this.manager
-      .refreshCustomersList()
-      .add(td => {
-        this.dataSource = new MatTableDataSource(this.manager.clienti);
+    const refreshList: Subscription = this.clientiApi
+      .getCustomers()
+      .subscribe(res => {
+        this.clienti = res;
+        this.dataSource = new MatTableDataSource(this.clienti);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
         this.loading = false;
+        this.manager.noData(res);
       });
+
     this.manager.subscriptions.push(refreshList);
   }
 
   onDeleteCustomer(id: number) {
-    const deleteCust: Subscription = this.manager
-      .deleteCustomer(id)
-      .add(tearDown => {
-        this.onRefreshCustomersList();
+    const deleteCust: Subscription = this.dialogService
+      .openConfirmDialog("sei sicuro?")
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          const deleted = 1;
+          this.clientiApi.updateCustomer(id, { SC_DELETED: deleted }).subscribe(
+            cust => {
+              this.notificationService.warn(
+                `cliente ${cust["SC_NOME"]} rimosso`
+              );
+              this.onRefreshCustomersList();
+            },
+            err => {
+              this.authService.handleLoginError(err);
+            }
+          );
+        }
       });
     this.manager.subscriptions.push(deleteCust);
   }

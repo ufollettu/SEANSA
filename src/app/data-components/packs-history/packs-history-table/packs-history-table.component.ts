@@ -1,3 +1,4 @@
+import { PacksHistory } from "./../../../models/packs-history";
 import {
   Component,
   OnInit,
@@ -8,6 +9,8 @@ import {
 import { MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
 import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
 import { Subscription } from "rxjs";
+import { PacksHistoryApiService } from "src/app/services/api-services/packs-history-api.service";
+import { AuthService } from "src/app/services/auth-services/auth.service";
 
 @Component({
   selector: "app-packs-history-table",
@@ -18,6 +21,7 @@ export class PacksHistoryTableComponent implements OnInit, OnDestroy {
   loading;
   isAdmin: boolean;
   username: string;
+  packsHistory: PacksHistory[];
   // tslint:disable-next-line:max-line-length
   displayedColumns = [
     "SPKH_ID",
@@ -35,8 +39,10 @@ export class PacksHistoryTableComponent implements OnInit, OnDestroy {
   paginator: MatPaginator;
 
   constructor(
+    private packsHistoryApi: PacksHistoryApiService,
     private changeDetectorRefs: ChangeDetectorRef,
-    private manager: DataComponentsManagementService
+    private manager: DataComponentsManagementService,
+    private authService: AuthService
   ) {
     this.loading = true;
   }
@@ -47,16 +53,31 @@ export class PacksHistoryTableComponent implements OnInit, OnDestroy {
   }
 
   refreshPacksHistoryList() {
-    const packsHistList: Subscription = this.manager
-      .refreshPacksHistoryList()
-      .add(td => {
-        this.dataSource = new MatTableDataSource(this.manager.packsHistory);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.changeDetectorRefs.detectChanges();
-        this.loading = false;
-      });
+    const packsHistList: Subscription = this.packsHistoryApi
+      .getPacks()
+      .subscribe(
+        res => {
+          this.mapPacksHistory(res);
+          this.packsHistory = res;
+          this.dataSource = new MatTableDataSource(this.packsHistory);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+          this.changeDetectorRefs.detectChanges();
+          this.loading = false;
+          this.manager.noData(res);
+        },
+        err => {
+          this.authService.handleLoginError(err);
+        }
+      );
     this.manager.subscriptions.push(packsHistList);
+  }
+
+  mapPacksHistory(packsHistory: PacksHistory[]) {
+    packsHistory.map(ph => {
+      ph["username"] = this.manager.getUserName(ph["SPKH_SU_ID"]);
+      return ph;
+    });
   }
 
   fetchUtenti() {

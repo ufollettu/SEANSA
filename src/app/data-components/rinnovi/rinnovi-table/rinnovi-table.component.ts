@@ -1,3 +1,5 @@
+import { AuthService } from "./../../../services/auth-services/auth.service";
+import { RinnoviApiService } from "./../../../services/api-services/rinnovi-api.service";
 import { Subscription } from "rxjs";
 import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
 import {
@@ -15,6 +17,7 @@ import {
   trigger
 } from "@angular/animations";
 import { MatSort, MatTableDataSource, MatPaginator } from "@angular/material";
+import { Rinnovo } from "src/app/models/rinnovo";
 
 @Component({
   selector: "app-rinnovi-table",
@@ -36,6 +39,7 @@ import { MatSort, MatTableDataSource, MatPaginator } from "@angular/material";
 })
 export class RinnoviTableComponent implements OnInit, OnDestroy {
   loading;
+  rinnovi: Rinnovo[];
 
   displayedColumns = ["KeyId", "Chiave", "Timestamp"];
   dataSource: any;
@@ -47,7 +51,9 @@ export class RinnoviTableComponent implements OnInit, OnDestroy {
 
   constructor(
     private changeDetectorRefs: ChangeDetectorRef,
-    private manager: DataComponentsManagementService
+    private manager: DataComponentsManagementService,
+    private rinnoviApi: RinnoviApiService,
+    private authService: AuthService
   ) {
     this.loading = true;
   }
@@ -57,15 +63,20 @@ export class RinnoviTableComponent implements OnInit, OnDestroy {
   }
 
   refreshRinnoviList() {
-    const rinnoviList: Subscription = this.manager
-      .refreshRinnoviList()
-      .add(td => {
-        this.dataSource = new MatTableDataSource(this.manager.rinnovi);
+    const rinnoviList: Subscription = this.rinnoviApi.getRinnovi().subscribe(
+      res => {
+        this.rinnovi = res;
+        this.dataSource = new MatTableDataSource(this.rinnovi);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.changeDetectorRefs.detectChanges();
         this.loading = false;
-      });
+        this.manager.noData(res);
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
     this.manager.subscriptions.push(rinnoviList);
   }
 

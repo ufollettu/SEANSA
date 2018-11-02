@@ -1,3 +1,6 @@
+import { Pc } from "./../../../models/pc";
+import { AuthService } from "./../../../services/auth-services/auth.service";
+import { PcApiService } from "./../../../services/api-services/pc-api.service";
 import { Subscription } from "rxjs";
 import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
 import {
@@ -37,6 +40,7 @@ import { MatSort, MatTableDataSource, MatPaginator } from "@angular/material";
 export class PcTableComponent implements OnInit, OnDestroy {
   loading;
   isBanned = false;
+  pcs: Pc[];
 
   displayedColumns = [
     "SP_HW_ID",
@@ -55,7 +59,9 @@ export class PcTableComponent implements OnInit, OnDestroy {
 
   constructor(
     private changeDetectorRefs: ChangeDetectorRef,
-    private manager: DataComponentsManagementService
+    private manager: DataComponentsManagementService,
+    private pcsApi: PcApiService,
+    private authService: AuthService
   ) {
     this.loading = true;
   }
@@ -65,14 +71,29 @@ export class PcTableComponent implements OnInit, OnDestroy {
   }
 
   refreshPcsList() {
-    const pcList: Subscription = this.manager.refershPcList().add(td => {
-      this.dataSource = new MatTableDataSource(this.manager.pcs);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.changeDetectorRefs.detectChanges();
-      this.loading = false;
-    });
+    const pcList: Subscription = this.pcsApi.getPcs().subscribe(
+      res => {
+        this.mapPcs(res);
+        this.pcs = res;
+        this.dataSource = new MatTableDataSource(this.pcs);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.changeDetectorRefs.detectChanges();
+        this.loading = false;
+        this.manager.noData(res);
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
     this.manager.subscriptions.push(pcList);
+  }
+
+  mapPcs(pcs: Pc[]) {
+    pcs.map(pc => {
+      pc["statusDescription"] = pc["SP_STATUS"] ? "bannato" : "non bannato";
+      return pc;
+    });
   }
 
   banPc(id: number) {

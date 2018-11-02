@@ -76,18 +76,6 @@ export class DataComponentsManagementService implements OnDestroy {
 
   /* Customer Management */
 
-  refreshCustomersList() {
-    return this.clientiApi.getCustomers().subscribe(
-      res => {
-        this.clienti = res;
-        this.noData(res);
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
-
   clientiFormInit() {
     return this.formBuilder.group({
       SC_NOME: [null, Validators.required],
@@ -104,6 +92,7 @@ export class DataComponentsManagementService implements OnDestroy {
 
   getCustomers() {
     return this.clientiApi.getCustomers().subscribe(clienti => {
+      this.clienti = clienti;
       const clientiMap = clienti.map(cliente => {
         const resClienti = {};
         resClienti["value"] = cliente["SC_ID"];
@@ -166,28 +155,6 @@ export class DataComponentsManagementService implements OnDestroy {
     return result;
   }
 
-  deleteCustomer(id: number) {
-    return this.dialogService
-      .openConfirmDialog("sei sicuro?")
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          const deleted = 1;
-          this.clientiApi.updateCustomer(id, { SC_DELETED: deleted }).subscribe(
-            cust => {
-              this.notificationService.warn(
-                `cliente ${cust["SC_NOME"]} rimosso`
-              );
-              // this.refreshCustomersList();
-            },
-            err => {
-              this.authService.handleLoginError(err);
-            }
-          );
-        }
-      });
-  }
-
   /* Matricole Management */
 
   matricoleFormInit(sksId) {
@@ -204,18 +171,6 @@ export class DataComponentsManagementService implements OnDestroy {
     return this.formBuilder.group({
       SS_ID: [null, Validators.required]
     });
-  }
-
-  getMatricoleBySks(sksId) {
-    return this.matricoleApi.getMatricoleBySks(sksId).subscribe(
-      res => {
-        this.matricole = res;
-        this.noData(res);
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
   }
 
   fetchMatricole() {
@@ -277,48 +232,7 @@ export class DataComponentsManagementService implements OnDestroy {
       });
   }
 
-  deleteMatricola(id) {
-    return this.dialogService
-      .openConfirmDialog("Sei sicuro?")
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          this.matricoleApi.deleteMatricola(id).subscribe(
-            matr => {
-              this.notificationService.warn(`Matricola ${id} rimossa`);
-              // this.refreshMatricoleList();
-            },
-            err => {
-              this.authService.handleLoginError(err);
-            }
-          );
-        }
-      });
-  }
-
   /* Packs Management */
-
-  refreshPacksList() {
-    return this.packsApi.getPacks().subscribe(
-      res => {
-        this.mapPacks(res);
-        this.packs = res;
-
-        this.noData(res);
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
-
-  mapPacks(packs: Packs[]) {
-    packs.map(pack => {
-      pack["ownerUsername"] = this.getUserName(pack["SPK_SU_OWNER_ID"]);
-      pack["creatorUsername"] = this.getUserName(pack["SPK_SU_CREATOR_ID"]);
-      return pack;
-    });
-  }
 
   getPack(id, form) {
     return this.packsApi.getPack(id).subscribe(pack => {
@@ -367,65 +281,14 @@ export class DataComponentsManagementService implements OnDestroy {
     );
   }
 
-  deletePack(id: number) {
-    return this.dialogService
-      .openConfirmDialog("sei sicuro?")
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          this.packsApi.deletePack(id).subscribe(
-            pack => {
-              this.notificationService.warn(`pacchetto rimosso`);
-            },
-            err => {
-              this.authService.handleLoginError(err);
-            }
-          );
-        }
-      });
-  }
   /* Packs-History Management */
 
-  refreshPacksHistoryList() {
-    return this.packsHistoryApi.getPacks().subscribe(
-      res => {
-        this.mapPacksHistory(res);
-        this.packsHistory = res;
-
-        this.noData(res);
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
-
-  mapPacksHistory(packsHistory: PacksHistory[]) {
-    packsHistory.map(ph => {
-      ph["username"] = this.getUserName(ph["SPKH_SU_ID"]);
-      return ph;
-    });
-  }
-
   /* Pc Management */
-
-  refershPcList() {
-    return this.pcsApi.getPcs().subscribe(
-      res => {
-        this.mapPcs(res);
-        this.pcs = res;
-
-        this.noData(res);
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
 
   fetchPcs() {
     return this.pcsApi.getPcs().subscribe(
       pcs => {
+        this.pcs = pcs;
         const pcsCount = pcs.map(pc => {
           const pcRes = {};
           pcRes["pcId"] = pc["SP_ID"];
@@ -439,13 +302,6 @@ export class DataComponentsManagementService implements OnDestroy {
         this.authService.handleLoginError(err);
       }
     );
-  }
-
-  mapPcs(pcs: Pc[]) {
-    pcs.map(pc => {
-      pc["statusDescription"] = pc["SP_STATUS"] ? "bannato" : "non bannato";
-      return pc;
-    });
   }
 
   banPc(id: number) {
@@ -495,18 +351,6 @@ export class DataComponentsManagementService implements OnDestroy {
 
   /* Rinnovi Management */
 
-  refreshRinnoviList() {
-    return this.rinnoviApi.getRinnovi().subscribe(
-      res => {
-        this.rinnovi = res;
-        this.noData(res);
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
-
   fetchRinnovi() {
     return this.rinnoviApi.getRinnovi().subscribe(
       rinnovi => {
@@ -549,31 +393,6 @@ export class DataComponentsManagementService implements OnDestroy {
   }
 
   /* Sks Management */
-
-  refreshSkssList() {
-    return this.sksApi.getSkss().subscribe(
-      res => {
-        this.mapSks(res);
-        this.sks = res;
-        this.noData(res);
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
-
-  mapSks(sks: Sks[]) {
-    sks.map(sk => {
-      sk["sksPcHwId"] = this.getPcHwId(sk["SS_SP_ID"]);
-      sk["sksPcLastConnection"] = this.getPcLastConnection(sk["SS_SP_ID"]);
-      sk["sksCustomerName"] = this.getCustomerName(sk["SS_SC_ID"]);
-      sk["sksOems"] = this.fetchOemsValue(sk["SS_OEM"]);
-      sk["sksStatus"] = sk["SS_STATUS"] ? "abilitata" : "disabilitata";
-
-      return sk;
-    });
-  }
 
   fetchOemsValue(keyOem) {
     let oemName = "";
@@ -888,19 +707,6 @@ export class DataComponentsManagementService implements OnDestroy {
 
   /* Utenti Management */
 
-  refreshUsersList() {
-    return this.utentiApi.getUtenti().subscribe(
-      res => {
-        this.utenti = res;
-
-        this.noData(res);
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
-
   usersFormInit() {
     return this.formBuilder.group({
       SU_UNA: [null, Validators.required],
@@ -998,25 +804,6 @@ export class DataComponentsManagementService implements OnDestroy {
       }
     });
     return result;
-  }
-
-  deleteUser(id: number) {
-    return this.dialogService
-      .openConfirmDialog("sei Sicuro?")
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          const deleted = 1;
-          this.utentiApi.updateUtente(id, { SU_DELETED: deleted }).subscribe(
-            user => {
-              this.notificationService.warn(`utente ${user["SU_UNA"]} rimosso`);
-            },
-            err => {
-              this.authService.handleLoginError(err);
-            }
-          );
-        }
-      });
   }
 
   unsubAll() {

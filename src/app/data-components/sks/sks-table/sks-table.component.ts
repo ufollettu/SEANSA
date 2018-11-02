@@ -1,3 +1,5 @@
+import { AuthService } from "./../../../services/auth-services/auth.service";
+import { SksApiService } from "./../../../services/api-services/sks-api.service";
 import { Subscription } from "rxjs";
 import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
 import { Sks } from "./../../../models/sks";
@@ -87,7 +89,9 @@ export class SksTableComponent implements OnInit, OnDestroy {
     private changeDetectorRefs: ChangeDetectorRef,
     private router: Router,
     private data: DataService,
-    private manager: DataComponentsManagementService
+    private manager: DataComponentsManagementService,
+    private sksApi: SksApiService,
+    private authService: AuthService
   ) {
     this.loading = true;
     this.fetchRinnovi();
@@ -104,15 +108,36 @@ export class SksTableComponent implements OnInit, OnDestroy {
   }
 
   async refreshSkssList() {
-    const sksList: Subscription = this.manager.refreshSkssList().add(td => {
-      this.sks = this.manager.sks;
-      this.dataSource = new MatTableDataSource(this.manager.sks);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.changeDetectorRefs.detectChanges();
-      this.loading = false;
-    });
+    const sksList: Subscription = this.sksApi.getSkss().subscribe(
+      res => {
+        this.sks = res;
+        this.mapSks(this.sks);
+        this.dataSource = new MatTableDataSource(this.sks);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.changeDetectorRefs.detectChanges();
+        this.loading = false;
+        this.manager.noData(res);
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
     this.manager.subscriptions.push(sksList);
+  }
+
+  mapSks(sks: Sks[]) {
+    sks.map(sk => {
+      sk["sksPcHwId"] = this.manager.getPcHwId(sk["SS_SP_ID"]);
+      sk["sksPcLastConnection"] = this.manager.getPcLastConnection(
+        sk["SS_SP_ID"]
+      );
+      sk["sksCustomerName"] = this.manager.getCustomerName(sk["SS_SC_ID"]);
+      sk["sksOems"] = this.manager.fetchOemsValue(sk["SS_OEM"]);
+      sk["sksStatus"] = sk["SS_STATUS"] ? "abilitata" : "disabilitata";
+
+      return sk;
+    });
   }
 
   decouplePC(id) {
@@ -151,11 +176,9 @@ export class SksTableComponent implements OnInit, OnDestroy {
   }
 
   fetchClienti() {
-    const fetchCust: Subscription = this.manager
-      .refreshCustomersList()
-      .add(td => {
-        this.clienti = this.manager.clienti;
-      });
+    const fetchCust: Subscription = this.manager.getCustomers().add(td => {
+      this.clienti = this.manager.clienti;
+    });
     this.manager.subscriptions.push(fetchCust);
   }
 
@@ -167,7 +190,7 @@ export class SksTableComponent implements OnInit, OnDestroy {
   }
 
   fetchPcs() {
-    const fetchPcs: Subscription = this.manager.refershPcList().add(td => {
+    const fetchPcs: Subscription = this.manager.fetchPcs().add(td => {
       this.pcsObjArr = this.manager.pcsObjArr;
     });
     this.manager.subscriptions.push(fetchPcs);
