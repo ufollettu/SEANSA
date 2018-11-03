@@ -59,6 +59,8 @@ export class UtentiTableComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
 
+  title: string;
+
   constructor(
     private changeDetectorRefs: ChangeDetectorRef,
     private authService: AuthService,
@@ -67,6 +69,7 @@ export class UtentiTableComponent implements OnInit, OnDestroy {
     private dialogService: DialogService,
     private notificationService: NotificationService
   ) {
+    this.title = "Utenti";
     this.loading = true;
   }
 

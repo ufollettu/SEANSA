@@ -22,10 +22,13 @@ import { DataService } from "./services/shared-services/data.service";
 export class AppComponent implements AfterViewInit, OnInit {
   loading;
   customTheme;
+  customColors;
   passedUrl: string;
   // theme: string;
-  @HostBinding("class") componentCssClass;
-  @ViewChild("sidenav") public sidenav: MatSidenav;
+  @HostBinding("class")
+  componentCssClass;
+  @ViewChild("sidenav")
+  public sidenav: MatSidenav;
 
   constructor(
     private router: Router,
@@ -42,6 +45,8 @@ export class AppComponent implements AfterViewInit, OnInit {
   ngOnInit() {
     this.getTheme();
     this.sidenavService.setSidenav(this.sidenav);
+    this.customColors = this.getColors();
+    this.sendColors(this.customColors);
   }
 
   ngAfterViewInit() {
@@ -58,6 +63,11 @@ export class AppComponent implements AfterViewInit, OnInit {
     });
   }
 
+  setTitle(component: string) {
+    // console.log(component["title"]);
+    this.passedUrl = component["title"];
+  }
+
   getTheme() {
     this.customizeService.getTheme().subscribe(theme => {
       this.overlayContainer.getContainerElement().classList.add(theme);
@@ -68,6 +78,16 @@ export class AppComponent implements AfterViewInit, OnInit {
 
   getLogoFromLocalStorage() {
     return localStorage.getItem("customStyle");
+  }
+
+  getColors() {
+    return this.customizeService.getColorsFromToken();
+  }
+
+  sendColors(colors) {
+    this.customizeService.changePrimaryColor(colors[0]);
+    this.customizeService.changeAccentColor(colors[1]);
+    this.customizeService.changeWarnColor(colors[2]);
   }
 
   closeSidenav() {

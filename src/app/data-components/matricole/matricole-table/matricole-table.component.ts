@@ -58,6 +58,8 @@ export class MatricoleTableComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort)
   sort: MatSort;
 
+  title: string;
+
   constructor(
     private authService: AuthService,
     private matricoleApi: MatricoleApiService,
@@ -67,6 +69,7 @@ export class MatricoleTableComponent implements OnInit, OnDestroy {
     private dialogService: DialogService,
     private notificationService: NotificationService
   ) {
+    this.title = "Matricole";
     this.loading = true;
   }
 

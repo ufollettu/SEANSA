@@ -57,12 +57,15 @@ export class PcTableComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
 
+  title: string;
+
   constructor(
     private changeDetectorRefs: ChangeDetectorRef,
     private manager: DataComponentsManagementService,
     private pcsApi: PcApiService,
     private authService: AuthService
   ) {
+    this.title = "Pc";
     this.loading = true;
   }
 

@@ -84,6 +84,8 @@ export class SksTableComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
 
+  title: string;
+
   constructor(
     private dialog: MatDialog,
     private changeDetectorRefs: ChangeDetectorRef,
@@ -93,6 +95,7 @@ export class SksTableComponent implements OnInit, OnDestroy {
     private sksApi: SksApiService,
     private authService: AuthService
   ) {
+    this.title = "Sks";
     this.loading = true;
     this.fetchRinnovi();
     this.fetchClienti();

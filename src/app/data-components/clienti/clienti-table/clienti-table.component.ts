@@ -11,7 +11,9 @@ import {
   OnInit,
   ChangeDetectorRef,
   ViewChild,
-  OnDestroy
+  OnDestroy,
+  Output,
+  EventEmitter
 } from "@angular/core";
 import {
   animate,
@@ -62,6 +64,10 @@ export class ClientiTableComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
 
+  // @Output()
+  // title = new EventEmitter<string>();
+  title: string;
+
   constructor(
     private authService: AuthService,
     private manager: DataComponentsManagementService,
@@ -70,6 +76,7 @@ export class ClientiTableComponent implements OnInit, OnDestroy {
     private clientiApi: ClientiApiService,
     private changeDetectorRefs: ChangeDetectorRef
   ) {
+    this.title = "Clienti";
     this.loading = true;
   }
 

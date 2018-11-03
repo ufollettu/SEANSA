@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy, Input } from "@angular/core";
 import { Location } from "@angular/common";
 import { ChangeDetectorRef } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, UrlSegment } from "@angular/router";
 import { AuthService } from "../../services/auth-services/auth.service";
 import { DataService } from "../../services/shared-services/data.service";
 import { CustomizeService } from "../../services/shared-services/customize.service";
@@ -21,7 +21,8 @@ export class HeaderComponent implements OnInit {
   logoPath: string;
   defaultLogoPath = "assets/images/raniero.png";
   changeLog;
-  listUrl: string;
+  @Input()
+  listUrl;
 
   constructor(
     private sideNavService: SidenavService,
@@ -38,8 +39,6 @@ export class HeaderComponent implements OnInit {
     this.getUser();
     this.getLogo();
     this.getUserFromLocalStorage();
-    this.getUrl();
-    this.getLocation();
   }
 
   getUser() {
@@ -84,27 +83,5 @@ export class HeaderComponent implements OnInit {
   toggleSideNav() {
     this.permsService.getPerms();
     this.sideNavService.toggle();
-  }
-
-  getLocation() {
-    this.location.subscribe(loc => {
-      this.listUrl =
-        loc.url
-          .substring(1)
-          .charAt(0)
-          .toUpperCase() + loc.url.slice(2);
-    });
-  }
-
-  getUrl() {
-    // console.log(this.route.snapshot.url);
-    this.data.getUrl().subscribe(url => {
-      this.listUrl =
-        url
-          .substring(1)
-          .charAt(0)
-          .toUpperCase() + url.slice(2);
-      // console.log(this.listUrl);
-    });
   }
 }

@@ -38,12 +38,15 @@ export class PacksHistoryTableComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
 
+  title: string;
+
   constructor(
     private packsHistoryApi: PacksHistoryApiService,
     private changeDetectorRefs: ChangeDetectorRef,
     private manager: DataComponentsManagementService,
     private authService: AuthService
   ) {
+    this.title = "Pacchetti History";
     this.loading = true;
   }
 

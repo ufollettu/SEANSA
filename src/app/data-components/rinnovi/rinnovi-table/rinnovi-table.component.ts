@@ -49,12 +49,15 @@ export class RinnoviTableComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
 
+  title: string;
+
   constructor(
     private changeDetectorRefs: ChangeDetectorRef,
     private manager: DataComponentsManagementService,
     private rinnoviApi: RinnoviApiService,
     private authService: AuthService
   ) {
+    this.title = "Rinnovi";
     this.loading = true;
   }
 

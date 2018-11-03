@@ -44,6 +44,8 @@ export class PacksTableComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
 
+  title: string;
+
   constructor(
     private data: DataService,
     private packsApi: PacksApiService,
@@ -53,6 +55,7 @@ export class PacksTableComponent implements OnInit, OnDestroy {
     private changeDetectorRefs: ChangeDetectorRef,
     private manager: DataComponentsManagementService
   ) {
+    this.title = "Pacchetti";
     this.loading = true;
   }
 
