@@ -1,8 +1,8 @@
-import { Injectable, OnInit, AfterViewInit } from '@angular/core';
-import { DataService } from '../shared-services/data.service';
+import { Injectable, OnInit, AfterViewInit } from "@angular/core";
+import { DataService } from "../shared-services/data.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class PermissionService {
   permissions = [];

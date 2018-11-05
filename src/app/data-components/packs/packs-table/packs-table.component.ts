@@ -92,9 +92,7 @@ export class PacksTableComponent implements OnInit, OnDestroy {
   mapPacks(packs: Packs[]) {
     packs.map(pack => {
       pack["ownerUsername"] = this.getUserName(pack["SPK_SU_OWNER_ID"]);
-      pack["creatorUsername"] = this.getUserName(
-        pack["SPK_SU_CREATOR_ID"]
-      );
+      pack["creatorUsername"] = this.getUserName(pack["SPK_SU_CREATOR_ID"]);
       return pack;
     });
   }
@@ -130,7 +128,7 @@ export class PacksTableComponent implements OnInit, OnDestroy {
     const fetchUser: Subscription = this.utentiApi.getUtenti().subscribe(
       utenti => {
         this.utenti = utenti;
-        // this.refreshPacksList();
+        this.refreshPacksList();
       },
       err => {
         this.authService.handleLoginError(err);
@@ -139,7 +137,7 @@ export class PacksTableComponent implements OnInit, OnDestroy {
     this.manager.subscriptions.push(fetchUser);
   }
 
-    getUserName(id) {
+  getUserName(id) {
     let result = "";
     this.utenti.forEach(utente => {
       if (utente["SU_ID"] === id) {

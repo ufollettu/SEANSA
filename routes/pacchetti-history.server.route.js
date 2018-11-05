@@ -1,8 +1,9 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const can = require('../middleware').can;
+const adminCheck = require("../middleware").adminCheck;
+const can = require("../middleware").can;
 
-const PacksHistoryController = require('./../controllers/pacchetti-history.server.controller');
+const PacksHistoryController = require("./../controllers/pacchetti-history.server.controller");
 
 // // RESTful API
 //
@@ -14,10 +15,10 @@ const PacksHistoryController = require('./../controllers/pacchetti-history.serve
 // router.put('/:id',       Controller.update);     // Update
 // router.delete('/:id',    Controller.destroy);    // Destroy
 
-router.get('/', PacksHistoryController.list); // Index
-router.post('/', can(9), PacksHistoryController.create); // Create
-router.get('/:id', PacksHistoryController.show); // Show
-router.put('/:id', can(9), PacksHistoryController.update); // Update
-router.delete('/:id', can(9), PacksHistoryController.destroy); // Destroy
+router.get("/", can(9), adminCheck(), PacksHistoryController.list); // Index
+router.post("/", can(9), PacksHistoryController.create); // Create
+router.get("/:id", can(9), adminCheck(), PacksHistoryController.show); // Show
+router.put("/:id", can(9), PacksHistoryController.update); // Update
+router.delete("/:id", can(9), PacksHistoryController.destroy); // Destroy
 
 module.exports = router;

@@ -51,6 +51,11 @@ export class DataService {
     return of(userToken.isAdmin);
   }
 
+  getAdminFromTokenBool(): boolean {
+    const userToken = this.getToken() || false;
+    return userToken.isAdmin;
+  }
+
   getUser() {
     return this.currentUser;
   }

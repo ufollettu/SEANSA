@@ -20,9 +20,8 @@ import { DataService } from "./services/shared-services/data.service";
   styleUrls: ["./app.component.css"]
 })
 export class AppComponent implements AfterViewInit, OnInit {
-
   isAdmin: boolean;
-  loading;
+  loading: boolean;
   customTheme;
   customColors;
   passedUrl: string;
@@ -42,10 +41,10 @@ export class AppComponent implements AfterViewInit, OnInit {
     private customizeService: CustomizeService
   ) {
     this.loading = true;
+    this.isAdmin = false;
   }
 
   ngOnInit() {
-    // this.getAdmin();
     this.customTheme = this.getTheme();
     // this.sendTheme(this.customTheme);
     this.customColors = this.getColors();
@@ -63,6 +62,12 @@ export class AppComponent implements AfterViewInit, OnInit {
         event instanceof NavigationCancel
       ) {
         this.loading = false;
+        // console.log(this.data.getAdminFromTokenBool());
+        if (!this.data.getAdminFromTokenBool()) {
+          this.isAdmin = false;
+        } else {
+          this.isAdmin = true;
+        }
       }
     });
   }
@@ -82,13 +87,6 @@ export class AppComponent implements AfterViewInit, OnInit {
 
   getLogoFromLocalStorage() {
     return localStorage.getItem("customStyle");
-  }
-
-  getAdmin() {
-    this.data.getAdminFromToken().subscribe(isAdmin => {
-      console.log(isAdmin);
-      this.isAdmin = isAdmin;
-    });
   }
 
   getColors() {

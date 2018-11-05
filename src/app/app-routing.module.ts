@@ -150,7 +150,7 @@ const appRoutes: Routes = [
   {
     path: "packs-history",
     component: PacksHistoryTableComponent,
-    canActivate: [AuthGuard, IsAdminGuard],
+    canActivate: [AuthGuard, PermsGuard, IsAdminGuard],
     data: { expectedPerm: 9 }
   },
 

@@ -27,6 +27,16 @@ function verifyToken(req, res, next) {
   next();
 }
 
+function adminCheck() {
+  return (req, res, next) => {
+    if (req.isAdmin) {
+      next();
+    } else {
+      throw new Error("Solo l'amministratore può accedere a questa risorsa");
+    }
+  };
+}
+
 function can(permissionId, userId) {
   return (req, res, next) => {
     userId = req.userId || userId;
@@ -87,6 +97,7 @@ function disallow(permissionId, userId) {
 module.exports = {
   verifyToken,
   can,
+  adminCheck,
   allow,
   disallow
 };
