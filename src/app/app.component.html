@@ -11,7 +11,7 @@
         <mat-list-item (click)="closeSidenav()" *ngIf="permsService.packManagerEnable()">
           <button mat-button [routerLink]="['/packs']" routerLinkActive="mat-accent">Pacchetti</button>
         </mat-list-item>
-        <mat-list-item (click)="closeSidenav()" *ngIf="permsService.packManagerEnable()">
+        <mat-list-item (click)="closeSidenav()" *ngIf="isAdmin">
           <button mat-button [routerLink]="['/packs-history']" routerLinkActive="mat-accent">Pacchetti History</button>
         </mat-list-item>
         <mat-list-item (click)="closeSidenav()"><button mat-button [routerLink]="['/pc']" routerLinkActive="mat-accent">Pc</button></mat-list-item>

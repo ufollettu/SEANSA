@@ -4,7 +4,7 @@ module.exports = [
     SPKH_SPK_ID: 1,
     SPKH_SU_ID: 107,
     SPKH_SS_ID: 38,
-    SPKH_ACTION: "created",
+    SPKH_ACTION: "sks created",
     SPKH_TS: "2018-10-15 10:52:44"
   },
   {
@@ -12,7 +12,7 @@ module.exports = [
     SPKH_SPK_ID: 2,
     SPKH_SU_ID: 102,
     SPKH_SS_ID: 96,
-    SPKH_ACTION: "created",
+    SPKH_ACTION: "sks created",
     SPKH_TS: "2018-10-15 10:52:44"
   },
   {
@@ -20,7 +20,7 @@ module.exports = [
     SPKH_SPK_ID: 10,
     SPKH_SU_ID: 102,
     SPKH_SS_ID: 138,
-    SPKH_ACTION: "created",
+    SPKH_ACTION: "sks created",
     SPKH_TS: "2018-10-23 10:02:41"
   },
   {
@@ -28,7 +28,7 @@ module.exports = [
     SPKH_SPK_ID: 10,
     SPKH_SU_ID: 102,
     SPKH_SS_ID: 139,
-    SPKH_ACTION: "created",
+    SPKH_ACTION: "sks created",
     SPKH_TS: "2018-10-23 10:03:16"
   },
   {
@@ -36,7 +36,7 @@ module.exports = [
     SPKH_SPK_ID: 13,
     SPKH_SU_ID: 102,
     SPKH_SS_ID: 140,
-    SPKH_ACTION: "created",
+    SPKH_ACTION: "sks created",
     SPKH_TS: "2018-10-23 00:25:49"
   },
   {
@@ -44,7 +44,7 @@ module.exports = [
     SPKH_SPK_ID: 13,
     SPKH_SU_ID: 102,
     SPKH_SS_ID: 141,
-    SPKH_ACTION: "created",
+    SPKH_ACTION: "sks created",
     SPKH_TS: "2018-10-23 00:25:59"
   },
   {
@@ -52,7 +52,7 @@ module.exports = [
     SPKH_SPK_ID: 12,
     SPKH_SU_ID: 103,
     SPKH_SS_ID: 142,
-    SPKH_ACTION: "created",
+    SPKH_ACTION: "sks created",
     SPKH_TS: "2018-10-23 00:32:40"
   }
 ];

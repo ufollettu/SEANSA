@@ -145,15 +145,15 @@ export class DataComponentsManagementService implements OnDestroy {
     );
   }
 
-  getCustomerName(id) {
-    let result = "";
-    this.clienti.forEach(cliente => {
-      if (cliente["SC_ID"] === id) {
-        result = cliente["SC_NOME"];
-      }
-    });
-    return result;
-  }
+  // getCustomerName(id) {
+  //   let result = "";
+  //   this.clienti.forEach(cliente => {
+  //     if (cliente["SC_ID"] === id) {
+  //       result = cliente["SC_NOME"];
+  //     }
+  //   });
+  //   return result;
+  // }
 
   /* Matricole Management */
 
@@ -173,23 +173,23 @@ export class DataComponentsManagementService implements OnDestroy {
     });
   }
 
-  fetchMatricole() {
-    return this.matricoleApi.getMatricole().subscribe(matricole => {
-      const matricoleCount = matricole
-        .map(matricola => {
-          return matricola["SM_SS_ID"];
-        })
-        .reduce((allIds, id) => {
-          if (id in allIds) {
-            allIds[id]++;
-          } else {
-            allIds[id] = 1;
-          }
-          return allIds;
-        }, {});
-      this.serials = matricoleCount;
-    });
-  }
+  // fetchMatricole() {
+  //   return this.matricoleApi.getMatricole().subscribe(matricole => {
+  //     const matricoleCount = matricole
+  //       .map(matricola => {
+  //         return matricola["SM_SS_ID"];
+  //       })
+  //       .reduce((allIds, id) => {
+  //         if (id in allIds) {
+  //           allIds[id]++;
+  //         } else {
+  //           allIds[id] = 1;
+  //         }
+  //         return allIds;
+  //       }, {});
+  //     this.serials = matricoleCount;
+  //   });
+  // }
 
   postMatricola(form, sksId, destUrl) {
     return this.matricoleApi.postMatricola(form).subscribe(
@@ -285,24 +285,24 @@ export class DataComponentsManagementService implements OnDestroy {
 
   /* Pc Management */
 
-  fetchPcs() {
-    return this.pcsApi.getPcs().subscribe(
-      pcs => {
-        this.pcs = pcs;
-        const pcsCount = pcs.map(pc => {
-          const pcRes = {};
-          pcRes["pcId"] = pc["SP_ID"];
-          pcRes["hwId"] = pc["SP_HW_ID"];
-          pcRes["lastConnection"] = pc["SP_LAST_RX"];
-          return pcRes;
-        });
-        this.pcsObjArr = pcsCount;
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
+  // fetchPcs() {
+  //   return this.pcsApi.getPcs().subscribe(
+  //     pcs => {
+  //       this.pcs = pcs;
+  //       const pcsCount = pcs.map(pc => {
+  //         const pcRes = {};
+  //         pcRes["pcId"] = pc["SP_ID"];
+  //         pcRes["hwId"] = pc["SP_HW_ID"];
+  //         pcRes["lastConnection"] = pc["SP_LAST_RX"];
+  //         return pcRes;
+  //       });
+  //       this.pcsObjArr = pcsCount;
+  //     },
+  //     err => {
+  //       this.authService.handleLoginError(err);
+  //     }
+  //   );
+  // }
 
   banPc(id: number) {
     const status = 1;
@@ -329,52 +329,27 @@ export class DataComponentsManagementService implements OnDestroy {
     );
   }
 
-  getPcHwId(id) {
-    let result = "";
-    this.pcs.forEach(pc => {
-      if (pc["SP_ID"] === id) {
-        result = pc["SP_HW_ID"];
-      }
-    });
-    return result;
-  }
+  // getPcHwId(id) {
+  //   let result = "";
+  //   this.pcs.forEach(pc => {
+  //     if (pc["SP_ID"] === id) {
+  //       result = pc["SP_HW_ID"];
+  //     }
+  //   });
+  //   return result;
+  // }
 
-  getPcLastConnection(id) {
-    let result;
-    this.pcs.forEach(pc => {
-      if (pc["SP_ID"] === id) {
-        result = pc["SP_LAST_RX"];
-      }
-    });
-    return result;
-  }
+  // getPcLastConnection(id) {
+  //   let result;
+  //   this.pcs.forEach(pc => {
+  //     if (pc["SP_ID"] === id) {
+  //       result = pc["SP_LAST_RX"];
+  //     }
+  //   });
+  //   return result;
+  // }
 
   /* Rinnovi Management */
-
-  fetchRinnovi() {
-    return this.rinnoviApi.getRinnovi().subscribe(
-      rinnovi => {
-        if (Object.keys(rinnovi).length > 0) {
-          const rinnoviCount = rinnovi
-            .map(rinnovo => {
-              return rinnovo["Chiave"];
-            })
-            .reduce((allIds, id) => {
-              if (id in allIds) {
-                allIds[id]++;
-              } else {
-                allIds[id] = 1;
-              }
-              return allIds;
-            }, {});
-          this.rinnoviObj = rinnoviCount;
-        }
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
 
   insertRinnovo(sksId, destUrl) {
     const data = {
@@ -588,7 +563,7 @@ export class DataComponentsManagementService implements OnDestroy {
                     SPKH_SPK_ID: pack["SPK_ID"],
                     SPKH_SU_ID: pack["SPK_SU_OWNER_ID"],
                     SPKH_SS_ID: key["SS_ID"],
-                    SPKH_ACTION: "deleted"
+                    SPKH_ACTION: "sks deleted"
                   })
                   .subscribe(history => {
                     console.log("new history row created");
@@ -629,7 +604,7 @@ export class DataComponentsManagementService implements OnDestroy {
             SPKH_SPK_ID: selectedPack["SPK_ID"],
             SPKH_SU_ID: selectedPack["SPK_SU_OWNER_ID"],
             SPKH_SS_ID: key["SS_ID"],
-            SPKH_ACTION: "created"
+            SPKH_ACTION: "sks created"
           })
           .subscribe(
             res => {
@@ -743,17 +718,17 @@ export class DataComponentsManagementService implements OnDestroy {
     );
   }
 
-  getUtenti() {
-    return this.utentiApi.getUtenti().subscribe(
-      utenti => {
-        this.utenti = utenti;
-        // this.refreshPacksList();
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
-  }
+  // getUtenti() {
+  //   return this.utentiApi.getUtenti().subscribe(
+  //     utenti => {
+  //       this.utenti = utenti;
+  //       // this.refreshPacksList();
+  //     },
+  //     err => {
+  //       this.authService.handleLoginError(err);
+  //     }
+  //   );
+  // }
 
   getUser(id, form) {
     return this.utentiApi.getUtente(id).subscribe(data => {
@@ -796,15 +771,15 @@ export class DataComponentsManagementService implements OnDestroy {
     });
   }
 
-  getUserName(id) {
-    let result = "";
-    this.utenti.forEach(utente => {
-      if (utente["SU_ID"] === id) {
-        result = utente["SU_UNA"];
-      }
-    });
-    return result;
-  }
+  // getUserName(id) {
+  //   let result = "";
+  //   this.utenti.forEach(utente => {
+  //     if (utente["SU_ID"] === id) {
+  //       result = utente["SU_UNA"];
+  //     }
+  //   });
+  //   return result;
+  // }
 
   unsubAll() {
     if (this.subscriptions.length > 0) {

@@ -11,6 +11,8 @@ import { DataComponentsManagementService } from "src/app/services/shared-service
 import { Subscription } from "rxjs";
 import { PacksHistoryApiService } from "src/app/services/api-services/packs-history-api.service";
 import { AuthService } from "src/app/services/auth-services/auth.service";
+import { Utente } from "src/app/models/utente";
+import { UtentiApiService } from "src/app/services/api-services/utenti-api.service";
 
 @Component({
   selector: "app-packs-history-table",
@@ -22,6 +24,7 @@ export class PacksHistoryTableComponent implements OnInit, OnDestroy {
   isAdmin: boolean;
   username: string;
   packsHistory: PacksHistory[];
+  utenti: Utente[];
   // tslint:disable-next-line:max-line-length
   displayedColumns = [
     "SPKH_ID",
@@ -44,6 +47,7 @@ export class PacksHistoryTableComponent implements OnInit, OnDestroy {
     private packsHistoryApi: PacksHistoryApiService,
     private changeDetectorRefs: ChangeDetectorRef,
     private manager: DataComponentsManagementService,
+    private utentiApi: UtentiApiService,
     private authService: AuthService
   ) {
     this.title = "Pacchetti History";
@@ -51,8 +55,8 @@ export class PacksHistoryTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.refreshPacksHistoryList();
     this.fetchUtenti();
+    this.refreshPacksHistoryList();
   }
 
   refreshPacksHistoryList() {
@@ -78,15 +82,31 @@ export class PacksHistoryTableComponent implements OnInit, OnDestroy {
 
   mapPacksHistory(packsHistory: PacksHistory[]) {
     packsHistory.map(ph => {
-      ph["username"] = this.manager.getUserName(ph["SPKH_SU_ID"]);
+      ph["username"] = this.getUserName(ph["SPKH_SU_ID"]);
       return ph;
     });
   }
 
-  fetchUtenti() {
-    const fetchUsers: Subscription = this.manager.getUtenti().add(td => {
-      this.refreshPacksHistoryList();
+  getUserName(id) {
+    let result = "";
+    this.utenti.forEach(utente => {
+      if (utente["SU_ID"] === id) {
+        result = utente["SU_UNA"];
+      }
     });
+    return result;
+  }
+
+  fetchUtenti() {
+    const fetchUsers: Subscription = this.utentiApi.getUtenti().subscribe(
+      utenti => {
+        this.utenti = utenti;
+        this.refreshPacksHistoryList();
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
     this.manager.subscriptions.push(fetchUsers);
   }
   ngOnDestroy() {

@@ -23,7 +23,6 @@ const create = async (req, res) => {
     SPK_CREATED: moment().format("YYYY-MM-DD hh:mm:ss"),
     SPK_EXPIRE: req.body.SPK_EXPIRE,
     SPK_SKS_COUNT: req.body.SPK_SKS_COUNT
-    // "SPK_USED_SKS_COUNT": req.body.SPK_USED_SKS_COUNT
   };
 
   repository

@@ -20,6 +20,8 @@ import { DataService } from "./services/shared-services/data.service";
   styleUrls: ["./app.component.css"]
 })
 export class AppComponent implements AfterViewInit, OnInit {
+
+  isAdmin: boolean;
   loading;
   customTheme;
   customColors;
@@ -43,10 +45,12 @@ export class AppComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
-    this.getTheme();
-    this.sidenavService.setSidenav(this.sidenav);
+    // this.getAdmin();
+    this.customTheme = this.getTheme();
+    // this.sendTheme(this.customTheme);
     this.customColors = this.getColors();
     this.sendColors(this.customColors);
+    this.sidenavService.setSidenav(this.sidenav);
   }
 
   ngAfterViewInit() {
@@ -80,6 +84,13 @@ export class AppComponent implements AfterViewInit, OnInit {
     return localStorage.getItem("customStyle");
   }
 
+  getAdmin() {
+    this.data.getAdminFromToken().subscribe(isAdmin => {
+      console.log(isAdmin);
+      this.isAdmin = isAdmin;
+    });
+  }
+
   getColors() {
     return this.customizeService.getColorsFromToken();
   }
@@ -88,6 +99,10 @@ export class AppComponent implements AfterViewInit, OnInit {
     this.customizeService.changePrimaryColor(colors[0]);
     this.customizeService.changeAccentColor(colors[1]);
     this.customizeService.changeWarnColor(colors[2]);
+  }
+
+  sendTheme(theme) {
+    this.customizeService.changeTheme(theme);
   }
 
   closeSidenav() {

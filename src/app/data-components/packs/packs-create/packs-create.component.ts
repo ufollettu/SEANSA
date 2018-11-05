@@ -5,6 +5,8 @@ import { slideInOutAnimation } from "../../../animations";
 import { FormGroup, NgForm } from "@angular/forms";
 import { DataService } from "../../../services/shared-services/data.service";
 import { Subscription } from "rxjs";
+import { UtentiApiService } from "src/app/services/api-services/utenti-api.service";
+import { AuthService } from "src/app/services/auth-services/auth.service";
 
 @Component({
   selector: "app-packs-create",
@@ -29,6 +31,8 @@ export class PacksCreateComponent implements OnInit, OnDestroy {
 
   constructor(
     private data: DataService,
+    private utentiApi: UtentiApiService,
+    private authService: AuthService,
     private manager: DataComponentsManagementService,
     public matcher: ErrorHandlerService
   ) {}
@@ -45,9 +49,18 @@ export class PacksCreateComponent implements OnInit, OnDestroy {
   }
 
   fetchUtenti() {
-    const fetchUser: Subscription = this.manager.getUtenti();
+    const fetchUser: Subscription = this.utentiApi.getUtenti().subscribe(
+      utenti => {
+        this.utenti = utenti;
+        // this.refreshPacksList();
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
     this.manager.subscriptions.push(fetchUser);
   }
+
   getUtente(form) {
     const getUser: Subscription = this.data
       .getUserIdFromToken()

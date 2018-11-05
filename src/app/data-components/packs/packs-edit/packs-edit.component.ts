@@ -5,6 +5,8 @@ import { slideInOutAnimation } from "../../../animations";
 import { ActivatedRoute } from "@angular/router";
 import { FormGroup, NgForm } from "@angular/forms";
 import { Subscription } from "rxjs";
+import { UtentiApiService } from "src/app/services/api-services/utenti-api.service";
+import { AuthService } from "src/app/services/auth-services/auth.service";
 
 @Component({
   selector: "app-packs-edit",
@@ -30,6 +32,8 @@ export class PacksEditComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private manager: DataComponentsManagementService,
+    private utentiApi: UtentiApiService,
+    private authService: AuthService,
     public matcher: ErrorHandlerService
   ) {}
 
@@ -53,7 +57,15 @@ export class PacksEditComponent implements OnInit, OnDestroy {
   }
 
   fetchUtenti() {
-    const fetchUser: Subscription = this.manager.getUtenti();
+    const fetchUser: Subscription = this.utentiApi.getUtenti().subscribe(
+      utenti => {
+        this.utenti = utenti;
+        // this.refreshPacksList();
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
     this.manager.subscriptions.push(fetchUser);
   }
 

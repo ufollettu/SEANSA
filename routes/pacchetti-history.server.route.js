@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const can = require('../middleware').can;
 
 const PacksHistoryController = require('./../controllers/pacchetti-history.server.controller');
 
@@ -14,9 +15,9 @@ const PacksHistoryController = require('./../controllers/pacchetti-history.serve
 // router.delete('/:id',    Controller.destroy);    // Destroy
 
 router.get('/', PacksHistoryController.list); // Index
-router.post('/', PacksHistoryController.create); // Create
+router.post('/', can(9), PacksHistoryController.create); // Create
 router.get('/:id', PacksHistoryController.show); // Show
-router.put('/:id', PacksHistoryController.update); // Update
-router.delete('/:id', PacksHistoryController.destroy); // Destroy
+router.put('/:id', can(9), PacksHistoryController.update); // Update
+router.delete('/:id', can(9), PacksHistoryController.destroy); // Destroy
 
 module.exports = router;

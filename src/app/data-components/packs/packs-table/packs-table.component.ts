@@ -15,6 +15,8 @@ import { DataService } from "src/app/services/shared-services/data.service";
 import * as moment from "moment";
 import { Subscription } from "rxjs";
 import { PacksApiService } from "src/app/services/api-services/packs-api.service";
+import { UtentiApiService } from "src/app/services/api-services/utenti-api.service";
+import { Utente } from "src/app/models/utente";
 
 @Component({
   selector: "app-packs-table",
@@ -26,6 +28,7 @@ export class PacksTableComponent implements OnInit, OnDestroy {
   isAdmin: boolean;
   username: string;
   packs: Packs[];
+  utenti: Utente[];
   // tslint:disable-next-line:max-line-length
   displayedColumns = [
     "SPK_SU_CREATOR_ID",
@@ -49,6 +52,7 @@ export class PacksTableComponent implements OnInit, OnDestroy {
   constructor(
     private data: DataService,
     private packsApi: PacksApiService,
+    private utentiApi: UtentiApiService,
     private authService: AuthService,
     private dialogService: DialogService,
     private notificationService: NotificationService,
@@ -87,8 +91,8 @@ export class PacksTableComponent implements OnInit, OnDestroy {
 
   mapPacks(packs: Packs[]) {
     packs.map(pack => {
-      pack["ownerUsername"] = this.manager.getUserName(pack["SPK_SU_OWNER_ID"]);
-      pack["creatorUsername"] = this.manager.getUserName(
+      pack["ownerUsername"] = this.getUserName(pack["SPK_SU_OWNER_ID"]);
+      pack["creatorUsername"] = this.getUserName(
         pack["SPK_SU_CREATOR_ID"]
       );
       return pack;
@@ -123,10 +127,26 @@ export class PacksTableComponent implements OnInit, OnDestroy {
   }
 
   fetchUtenti() {
-    const fetchUsers: Subscription = this.manager.getUtenti().add(td => {
-      this.refreshPacksList();
+    const fetchUser: Subscription = this.utentiApi.getUtenti().subscribe(
+      utenti => {
+        this.utenti = utenti;
+        // this.refreshPacksList();
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
+    this.manager.subscriptions.push(fetchUser);
+  }
+
+    getUserName(id) {
+    let result = "";
+    this.utenti.forEach(utente => {
+      if (utente["SU_ID"] === id) {
+        result = utente["SU_UNA"];
+      }
     });
-    this.manager.subscriptions.push(fetchUsers);
+    return result;
   }
 
   getIsAdmin() {

@@ -15,6 +15,7 @@ import { take } from "rxjs/operators";
   styleUrls: ["./header.component.css"]
 })
 export class HeaderComponent implements OnInit {
+
   user: object;
   userId: string;
   username: string;
@@ -68,10 +69,7 @@ export class HeaderComponent implements OnInit {
 
   getLogo() {
     this.customizeService.getLogo().subscribe(logo => {
-      // console.log(logo);
-      if (logo.startsWith("logo")) {
-        this.logoPath = "assets/images/" + logo;
-      } else if (logo.startsWith("raniero")) {
+      if (logo.startsWith("logo") || logo.startsWith("raniero")) {
         this.logoPath = "assets/images/" + logo;
       } else {
         this.logoPath = logo;

@@ -1,9 +1,4 @@
-import { AuthService } from "./../../../services/auth-services/auth.service";
-import { SksApiService } from "./../../../services/api-services/sks-api.service";
 import { Subscription } from "rxjs";
-import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
-import { Sks } from "./../../../models/sks";
-import { DataService } from "../../../services/shared-services/data.service";
 import {
   Component,
   OnInit,
@@ -28,8 +23,20 @@ import {
 } from "@angular/animations";
 import * as moment from "moment";
 
+import { Sks } from "./../../../models/sks";
 import { Cliente } from "../../../models/cliente";
+import { Pc } from "src/app/models/pc";
 import { SksDetailsComponent } from "../sks-details/sks-details.component";
+
+import { SksApiService } from "./../../../services/api-services/sks-api.service";
+import { RinnoviApiService } from "src/app/services/api-services/rinnovi-api.service";
+import { ClientiApiService } from "src/app/services/api-services/clienti-api.service";
+import { PcApiService } from "src/app/services/api-services/pc-api.service";
+import { MatricoleApiService } from "src/app/services/api-services/matricole-api.service";
+
+import { AuthService } from "./../../../services/auth-services/auth.service";
+import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
+import { DataService } from "../../../services/shared-services/data.service";
 
 @Component({
   selector: "app-sks-table",
@@ -53,10 +60,12 @@ export class SksTableComponent implements OnInit, OnDestroy {
   loading;
   oems;
 
+  pcs: Pc[];
   sks: Sks[];
   rinnoviObj: object = {};
   pcsObjArr: object[] = [];
   clienti: Cliente[] = [];
+  clientiMap: {}[] = [];
   serials: object = {};
   packUsedCount;
   userId;
@@ -93,6 +102,10 @@ export class SksTableComponent implements OnInit, OnDestroy {
     private data: DataService,
     private manager: DataComponentsManagementService,
     private sksApi: SksApiService,
+    private rinnoviApi: RinnoviApiService,
+    private clientiApi: ClientiApiService,
+    private pcsApi: PcApiService,
+    private matricoleApi: MatricoleApiService,
     private authService: AuthService
   ) {
     this.title = "Sks";
@@ -131,16 +144,46 @@ export class SksTableComponent implements OnInit, OnDestroy {
 
   mapSks(sks: Sks[]) {
     sks.map(sk => {
-      sk["sksPcHwId"] = this.manager.getPcHwId(sk["SS_SP_ID"]);
-      sk["sksPcLastConnection"] = this.manager.getPcLastConnection(
+      sk["sksPcHwId"] = this.getPcHwId(sk["SS_SP_ID"]);
+      sk["sksPcLastConnection"] = this.getPcLastConnection(
         sk["SS_SP_ID"]
       );
-      sk["sksCustomerName"] = this.manager.getCustomerName(sk["SS_SC_ID"]);
+      sk["sksCustomerName"] = this.getCustomerName(sk["SS_SC_ID"]);
       sk["sksOems"] = this.manager.fetchOemsValue(sk["SS_OEM"]);
       sk["sksStatus"] = sk["SS_STATUS"] ? "abilitata" : "disabilitata";
 
       return sk;
     });
+  }
+
+  getPcHwId(id) {
+    let result = "";
+    this.pcs.forEach(pc => {
+      if (pc["SP_ID"] === id) {
+        result = pc["SP_HW_ID"];
+      }
+    });
+    return result;
+  }
+
+  getCustomerName(id) {
+    let result = "";
+    this.clienti.forEach(cliente => {
+      if (cliente["SC_ID"] === id) {
+        result = cliente["SC_NOME"];
+      }
+    });
+    return result;
+  }
+
+  getPcLastConnection(id) {
+    let result;
+    this.pcs.forEach(pc => {
+      if (pc["SP_ID"] === id) {
+        result = pc["SP_LAST_RX"];
+      }
+    });
+    return result;
   }
 
   decouplePC(id) {
@@ -179,29 +222,80 @@ export class SksTableComponent implements OnInit, OnDestroy {
   }
 
   fetchClienti() {
-    const fetchCust: Subscription = this.manager.getCustomers().add(td => {
-      this.clienti = this.manager.clienti;
+    const fetchCust: Subscription = this.clientiApi.getCustomers().subscribe(clienti => {
+      this.clienti = clienti;
+      const clientiMap = clienti.map(cliente => {
+        const resClienti = {};
+        resClienti["value"] = cliente["SC_ID"];
+        resClienti["name"] = cliente["SC_NOME"];
+        return resClienti;
+      });
+      this.clientiMap = clientiMap;
     });
     this.manager.subscriptions.push(fetchCust);
   }
 
   fetchRinnovi() {
-    const fetchRinnovi: Subscription = this.manager.fetchRinnovi().add(td => {
-      this.rinnoviObj = this.manager.rinnoviObj;
-    });
+    const fetchRinnovi: Subscription = this.rinnoviApi.getRinnovi().subscribe(
+      rinnovi => {
+        if (Object.keys(rinnovi).length > 0) {
+          const rinnoviCount = rinnovi
+            .map(rinnovo => {
+              return rinnovo["Chiave"];
+            })
+            .reduce((allIds, id) => {
+              if (id in allIds) {
+                allIds[id]++;
+              } else {
+                allIds[id] = 1;
+              }
+              return allIds;
+            }, {});
+          this.rinnoviObj = rinnoviCount;
+        }
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
     this.manager.subscriptions.push(fetchRinnovi);
   }
 
   fetchPcs() {
-    const fetchPcs: Subscription = this.manager.fetchPcs().add(td => {
-      this.pcsObjArr = this.manager.pcsObjArr;
-    });
+    const fetchPcs: Subscription = this.pcsApi.getPcs().subscribe(
+      pcs => {
+        this.pcs = pcs;
+        const pcsCount = pcs.map(pc => {
+          const pcRes = {};
+          pcRes["pcId"] = pc["SP_ID"];
+          pcRes["hwId"] = pc["SP_HW_ID"];
+          pcRes["lastConnection"] = pc["SP_LAST_RX"];
+          return pcRes;
+        });
+        this.pcsObjArr = pcsCount;
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
     this.manager.subscriptions.push(fetchPcs);
   }
 
   fetchMatricole() {
-    const fetchMatr: Subscription = this.manager.fetchMatricole().add(td => {
-      this.serials = this.manager.serials;
+    const fetchMatr: Subscription = this.matricoleApi.getMatricole().subscribe(matricole => {
+      const matricoleCount = matricole
+        .map(matricola => {
+          return matricola["SM_SS_ID"];
+        })
+        .reduce((allIds, id) => {
+          if (id in allIds) {
+            allIds[id]++;
+          } else {
+            allIds[id] = 1;
+          }
+          return allIds;
+        }, {});
+      this.serials = matricoleCount;
     });
     this.manager.subscriptions.push(fetchMatr);
   }
