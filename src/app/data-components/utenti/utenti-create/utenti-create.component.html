@@ -10,7 +10,7 @@
       </mat-form-field>
 
       <mat-form-field class="example-full-width">
-        <input matInput placeholder="Password" formControlName="SU_PAW" [errorStateMatcher]="matcher">
+        <input matInput placeholder="Password" formControlName="SU_PAW" [errorStateMatcher]="matcher" type="password">
         <mat-error>
           <span *ngIf="!utenteForm.get('SU_PAW').valid && utenteForm.get('SU_PAW').touched">Inserisci password</span>
         </mat-error>

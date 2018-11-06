@@ -38,9 +38,8 @@ export class PacksEditComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.onFormInit();
     this.fetchUtenti();
-    this.utenti = this.manager.mapUtenti();
+    this.onFormInit();
   }
 
   onFormInit() {
@@ -59,14 +58,22 @@ export class PacksEditComponent implements OnInit, OnDestroy {
   fetchUtenti() {
     const fetchUser: Subscription = this.utentiApi.getUtenti().subscribe(
       utenti => {
-        this.utenti = utenti;
-        // this.refreshPacksList();
+        this.utenti = this.mapUtenti(utenti);
       },
       err => {
         this.authService.handleLoginError(err);
       }
     );
     this.manager.subscriptions.push(fetchUser);
+  }
+
+  mapUtenti(utenti) {
+    return utenti.map(utente => {
+      const resUtenti = {};
+      resUtenti["value"] = utente["SU_ID"];
+      resUtenti["name"] = utente["SU_UNA"];
+      return resUtenti;
+    });
   }
 
   onFormSubmit(form: NgForm) {

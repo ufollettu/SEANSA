@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.INTEGER(10)
       },
       SPKH_SS_ID: {
-        allowNull: false,
+        // allowNull: false,
         type: Sequelize.INTEGER(10)
       },
       SPKH_ACTION: {

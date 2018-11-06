@@ -30,7 +30,6 @@ export class PermsGuard implements CanActivate {
     this.getPermsArr();
 
     if (this.permissions.includes(expectedPerm)) {
-      console.log("perm ok");
       return true;
     } else {
       this.notificationSrvice.warn("you are not allowed to use this resource");

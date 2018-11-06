@@ -258,6 +258,18 @@ export class DataComponentsManagementService implements OnDestroy {
   postPack(form, destUrl) {
     return this.packsApi.postPack(form).subscribe(
       pack => {
+        this.packsHistoryApi
+          .postPack({
+            SPKH_SPK_ID: pack["SPK_ID"],
+            SPKH_SU_ID: pack["SPK_SU_OWNER_ID"],
+            SPKH_ACTION: "pack created"
+          })
+          .subscribe(
+            res => {
+              console.log("new history row created");
+            },
+            err => console.log(err)
+          );
         this.notificationService.success(`pack id: ${pack["SPK_ID"]} creato`);
         this.router.navigate([destUrl]);
       },
@@ -270,6 +282,18 @@ export class DataComponentsManagementService implements OnDestroy {
   updatePack(id, form, destUrl) {
     return this.packsApi.updatePack(id, form).subscribe(
       pack => {
+        this.packsHistoryApi
+          .postPack({
+            SPKH_SPK_ID: pack["SPK_ID"],
+            SPKH_SU_ID: pack["SPK_SU_OWNER_ID"],
+            SPKH_ACTION: "pack updated"
+          })
+          .subscribe(
+            res => {
+              console.log("new history row created");
+            },
+            err => console.log(err)
+          );
         this.notificationService.success(
           `pack id: ${pack["SPK_ID"]} aggiornato`
         );
@@ -634,7 +658,6 @@ export class DataComponentsManagementService implements OnDestroy {
   sksEditFormSubmit(id, form, destUrl) {
     return this.sksApi.updateSks(id, form).subscribe(
       res => {
-        console.log(res);
         this.notificationService.success(`Sks key ${res["SS_KEY"]} aggiornata`);
         this.router.navigate([destUrl]);
       },
@@ -699,10 +722,15 @@ export class DataComponentsManagementService implements OnDestroy {
       res => {
         const id = res["SU_ID"];
         const data = { UP_U_ID: res["SU_ID"], UP_P_ID: 4 };
-        this.rolesApi.postKey(data);
-        this.uploadApi.postCustomization(id);
+        this.rolesApi.postKey(data).subscribe(r => {
+          console.log(r);
+        });
+        this.uploadApi.postCustomization(id).subscribe(s => {
+          console.log(s);
+        });
         this.notificationService.success(`utente ${res["SU_UNA"]} creato`);
         this.router.navigate([destUrl]);
+
       },
       err => {
         console.log(err);
@@ -712,7 +740,7 @@ export class DataComponentsManagementService implements OnDestroy {
               "username exists or was previously deleted"
             );
           }
-          this.authService.handleLoginError(err);
+          // this.authService.handleLoginError(err);
         }
       }
     );
@@ -762,14 +790,14 @@ export class DataComponentsManagementService implements OnDestroy {
     );
   }
 
-  mapUtenti() {
-    return this.utenti.map(utente => {
-      const resUtenti = {};
-      resUtenti["value"] = utente["SU_ID"];
-      resUtenti["name"] = utente["SU_UNA"];
-      return resUtenti;
-    });
-  }
+  // mapUtenti() {
+  //   return this.utenti.map(utente => {
+  //     const resUtenti = {};
+  //     resUtenti["value"] = utente["SU_ID"];
+  //     resUtenti["name"] = utente["SU_UNA"];
+  //     return resUtenti;
+  //   });
+  // }
 
   // getUserName(id) {
   //   let result = "";

@@ -64,8 +64,6 @@ export class ClientiTableComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator)
   paginator: MatPaginator;
 
-  // @Output()
-  // title = new EventEmitter<string>();
   title: string;
 
   constructor(

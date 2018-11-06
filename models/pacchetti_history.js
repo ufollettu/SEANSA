@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER(10)
       },
       SPKH_SS_ID: {
-        allowNull: false,
+        // allowNull: false,
         type: DataTypes.INTEGER(10)
       },
       SPKH_ACTION: {

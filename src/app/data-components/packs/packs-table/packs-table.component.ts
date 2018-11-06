@@ -17,6 +17,7 @@ import { Subscription } from "rxjs";
 import { PacksApiService } from "src/app/services/api-services/packs-api.service";
 import { UtentiApiService } from "src/app/services/api-services/utenti-api.service";
 import { Utente } from "src/app/models/utente";
+import { PacksHistoryApiService } from "src/app/services/api-services/packs-history-api.service";
 
 @Component({
   selector: "app-packs-table",
@@ -53,6 +54,7 @@ export class PacksTableComponent implements OnInit, OnDestroy {
     private data: DataService,
     private packsApi: PacksApiService,
     private utentiApi: UtentiApiService,
+    private packsHistoryApi: PacksHistoryApiService,
     private authService: AuthService,
     private dialogService: DialogService,
     private notificationService: NotificationService,
@@ -104,7 +106,7 @@ export class PacksTableComponent implements OnInit, OnDestroy {
     return "";
   }
 
-  onDeletePack(id: number) {
+  onDeletePack(id: number, owner) {
     const deletePack: Subscription = this.dialogService
       .openConfirmDialog("sei sicuro?")
       .afterClosed()
@@ -112,6 +114,18 @@ export class PacksTableComponent implements OnInit, OnDestroy {
         if (res) {
           this.packsApi.deletePack(id).subscribe(
             pack => {
+              this.packsHistoryApi
+              .postPack({
+                SPKH_SPK_ID: id,
+                SPKH_SU_ID: owner,
+                SPKH_ACTION: "pack deleted"
+              })
+              .subscribe(
+                ph => {
+                  console.log("new history row created");
+                },
+                err => console.log(err)
+              );
               this.notificationService.warn(`pacchetto rimosso`);
               this.refreshPacksList();
             },
