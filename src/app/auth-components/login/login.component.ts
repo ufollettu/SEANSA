@@ -112,8 +112,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         localStorage.setItem("userName", user["SU_UNA"]);
         this.sendUser(user);
         this.notificationService.success(`benvenuto ${user["SU_UNA"]}!`);
-        this.data.changeUrl("/sks");
-        this.router.navigate(["/sks"]);
+        this.data.changeUrl("/home");
+        this.router.navigate(["/home"]);
       });
     this.manager.subscriptions.push(updateUser);
   }

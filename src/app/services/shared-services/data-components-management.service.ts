@@ -813,7 +813,7 @@ export class DataComponentsManagementService implements OnDestroy {
     if (this.subscriptions.length > 0) {
       this.subscriptions.forEach(sub => {
         sub.unsubscribe();
-        console.log(`unsubscribe ${sub}`);
+        console.log(`unsubscribe ${sub['destination']['destination']['closed']}`);
       });
     }
   }

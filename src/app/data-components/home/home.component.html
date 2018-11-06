@@ -1,0 +1,66 @@
+<mat-grid-list cols="3" rowHeight="3:2" gutterSize="20px">
+  <mat-grid-tile [routerLink]="['/sks']">
+    <mat-grid-tile-header>
+      <mat-icon>list</mat-icon>
+      Sks
+    </mat-grid-tile-header>
+
+    <div>
+      <img src="assets/images/sks-thumb.PNG" alt="">
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [routerLink]="['/utenti']">
+    <mat-grid-tile-header>
+      <mat-icon>list</mat-icon>
+      Utenti
+    </mat-grid-tile-header>
+    <div>
+      <img src="assets/images/user-thumb.PNG" alt="">
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [routerLink]="['/clienti']">
+    <mat-grid-tile-header>
+      <mat-icon>list</mat-icon>
+      Clienti
+    </mat-grid-tile-header>
+    <div>
+      <img src="assets/images/cust-thumb.PNG" alt="">
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [routerLink]="['/rinnovi']">
+    <mat-grid-tile-header>
+      <mat-icon>list</mat-icon>
+      Rinnovi
+    </mat-grid-tile-header>
+    <div>
+      <img src="assets/images/rinnovi-thumb.PNG" alt="">
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [routerLink]="['/pc']">
+    <mat-grid-tile-header>
+      <mat-icon>list</mat-icon>
+      Pc
+    </mat-grid-tile-header>
+    <div>
+      <img src="assets/images/pc-thumb.PNG" alt="">
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [routerLink]="['/packs']" [appCheckPermissions]="9">
+    <mat-grid-tile-header>
+      <mat-icon>list</mat-icon>
+      Packs
+    </mat-grid-tile-header>
+    <div>
+      <img src="assets/images/packs-thumb.PNG" alt="">
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [routerLink]="['/packs-history']" *ngIf="isAdmin">
+    <mat-grid-tile-header>
+      <mat-icon>list</mat-icon>
+      Packs History
+    </mat-grid-tile-header>
+    <div>
+      <img src="assets/images/packs-history-thumb.PNG" alt="">
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>

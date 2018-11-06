@@ -53,7 +53,7 @@ export class AppComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit() {
-    this.focusMonitor.stopMonitoring(document.getElementById("clienti"));
+    this.focusMonitor.stopMonitoring(document.getElementById("home"));
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         this.loading = true;

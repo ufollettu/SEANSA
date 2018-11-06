@@ -3,6 +3,7 @@
   <mat-sidenav-container class="example-container" (backdropClick)="closeSidenav()">
     <mat-sidenav #sidenav (keydown.escape)="closeSidenav()" disableClose>
       <mat-list>
+        <mat-list-item (click)="closeSidenav()"><button id="home" mat-button [routerLink]="['/home']" routerLinkActive="mat-accent">Home</button></mat-list-item>
         <mat-list-item (click)="closeSidenav()"><button id="clienti" mat-button [routerLink]="['/clienti']"
             routerLinkActive="mat-accent">Clienti</button></mat-list-item>
         <mat-list-item (click)="closeSidenav()"><button mat-button [routerLink]="['/utenti']" routerLinkActive="mat-accent">Utenti</button></mat-list-item>

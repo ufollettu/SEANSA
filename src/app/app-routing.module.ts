@@ -12,6 +12,8 @@ import { AuthGuard } from "./guards/auth.guard";
 import { PermsGuard } from "./guards/perms.guard";
 import { IsAdminGuard } from "./guards/is-admin.guard";
 
+import { HomeComponent } from './data-components/home/home.component';
+
 import { ClientiTableComponent } from "./data-components/clienti/clienti-table/clienti-table.component";
 import { ClientiCreateComponent } from "./data-components/clienti/clienti-create/clienti-create.component";
 import { ClientiEditComponent } from "./data-components/clienti/clienti-edit/clienti-edit.component";
@@ -186,7 +188,13 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard, IsAdminGuard]
   },
 
-  { path: "", redirectTo: "/login", pathMatch: "full" },
+  {
+    path: "home",
+    component: HomeComponent,
+    canActivate: [AuthGuard]
+  },
+
+  { path: "", redirectTo: "/home", pathMatch: "full" },
   { path: "**", redirectTo: "/login", pathMatch: "full" }
 ];
 
@@ -230,7 +238,8 @@ const appRoutes: Routes = [
     ForgotPwdComponent,
     SearchBarComponent,
     CustomizeUserComponent,
-    PacksHistoryTableComponent
+    PacksHistoryTableComponent,
+    HomeComponent
   ],
   entryComponents: [SksDetailsComponent]
 })
