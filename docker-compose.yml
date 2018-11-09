@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  client:
+    image: "ngapp"
+    build: "client/dist/."
+    ports:
+      - "4200:80"
+  server:
+    image: "exapp"
+    build: "server/."
+    ports:
+      - "3000:3000"
+    links:
+      - db
+  # MySQL
+  db:
+    image: mysql:5.6
+    environment:
+      MYSQL_ROOT_PASSWORD: radiohead
+      MYSQL_DATABASE: webgrit_superactivation
+      MYSQL_USER: pasquale_sup
+      MYSQL_PASSWORD: radiohead
+    volumes:
+      - /mnt/sequelize-mysql-57-ramdisk:/var/lib/mysql
+    ports:
+      - "8980:3306"
+    container_name: mysql-57
