@@ -1,0 +1,24 @@
+{
+  "name": "db",
+  "version": "1.0.0",
+  "scripts": {
+    "dbinit": "node_modules/.bin/sequelize db:migrate && sequelize db:seed:all",
+    "dbreset": "node_modules/.bin/sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
+    "dbreload": "node_modules/.bin/sequelize db:seed:undo:all && sequelize db:seed:all",
+    "migrations": "node_modules/.bin/sequelize db:migrate",
+    "undomigrate": "node_modules/.bin/sequelize db:migrate:undo:all",
+    "seeders": "node_modules/.bin/sequelize db:seed:all",
+    "undoseed": "node_modules/.bin/sequelize db:seed:undo:all"
+  },
+  "private": true,
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "mysql2": "^1.5.3",
+    "sequelize": "^4.37.10",
+    "sequelize-cli": "^4.0.0"
+  },
+  "devDependencies": {
+    "sequelize-mock": "^0.10.2",
+    "sequelize-test-helpers": "^1.0.4"
+  }
+}
