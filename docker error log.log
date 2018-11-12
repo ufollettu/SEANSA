@@ -1,0 +1,238 @@
+Starting superactivatornodeng_db_1     ... done
+Starting superactivatornodeng_client_1 ... done
+Starting superactivatornodeng_server_1 ... done
+Attaching to superactivatornodeng_db_1, superactivatornodeng_client_1, superactivatornodeng_server_1
+db_1      | 2018-11-12T10:11:22.194973Z 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
+db_1      | 2018-11-12T10:11:22.196622Z 0 [Note] mysqld (mysqld 5.7.24) starting as process 1 ...
+db_1      | 2018-11-12T10:11:22.199308Z 0 [Warning] One can only use the --user switch if running as root
+db_1      |
+db_1      | 2018-11-12T10:11:22.200896Z 0 [Note] InnoDB: PUNCH HOLE support available
+db_1      | 2018-11-12T10:11:22.200919Z 0 [Note] InnoDB: Mutexes and rw_locks use GCC atomic builtins
+db_1      | 2018-11-12T10:11:22.200924Z 0 [Note] InnoDB: Uses event mutexes
+db_1      | 2018-11-12T10:11:22.200929Z 0 [Note] InnoDB: GCC builtin __atomic_thread_fence() is used for memory barrier
+db_1      | 2018-11-12T10:11:22.200934Z 0 [Note] InnoDB: Compressed tables use zlib 1.2.11
+db_1      | 2018-11-12T10:11:22.200939Z 0 [Note] InnoDB: Using Linux native AIO
+db_1      | 2018-11-12T10:11:22.201251Z 0 [Note] InnoDB: Number of pools: 1
+db_1      | 2018-11-12T10:11:22.201402Z 0 [Note] InnoDB: Using CPU crc32 instructions
+db_1      | 2018-11-12T10:11:22.206543Z 0 [Note] InnoDB: Initializing buffer pool, total size = 128M, instances = 1, chunk size = 128M
+db_1      | 2018-11-12T10:11:22.217012Z 0 [Note] InnoDB: Completed initialization of buffer pool
+db_1      | 2018-11-12T10:11:22.220046Z 0 [Note] InnoDB: If the mysqld execution user is authorized, page cleaner thread priority can be changed. See the man page of setpriority().
+db_1      | 2018-11-12T10:11:22.231950Z 0 [Note] InnoDB: Highest supported file format is Barracuda.
+db_1      | 2018-11-12T10:11:22.251761Z 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+db_1      | 2018-11-12T10:11:22.251872Z 0 [Note] InnoDB: Setting file './ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+db_1      | 2018-11-12T10:11:22.276196Z 0 [Note] InnoDB: File './ibtmp1' size is now 12 MB.
+db_1      | 2018-11-12T10:11:22.277147Z 0 [Note] InnoDB: 96 redo rollback segment(s) found. 96 redo rollback segment(s) are active.
+db_1      | 2018-11-12T10:11:22.277186Z 0 [Note] InnoDB: 32 non-redo rollback segment(s) are active.
+db_1      | 2018-11-12T10:11:22.277597Z 0 [Note] InnoDB: Waiting for purge to start
+db_1      | 2018-11-12T10:11:22.327823Z 0 [Note] InnoDB: 5.7.24 started; log sequence number 1629104
+db_1      | 2018-11-12T10:11:22.328223Z 0 [Note] Plugin 'FEDERATED' is disabled.
+db_1      | 2018-11-12T10:11:22.331921Z 0 [Warning] System table 'plugin' is expected to be transactional.
+db_1      | 2018-11-12T10:11:22.332739Z 0 [Warning] Gtid table is not ready to be used. Table 'mysql.gtid_executed' cannot be opened.
+db_1      | 2018-11-12T10:11:22.332809Z 0 [Warning] Failed to set up SSL because of the following SSL library error: SSL context is not usable without certificate and private key
+db_1      | 2018-11-12T10:11:22.333020Z 0 [Note] Server hostname (bind-address): '*'; port: 3306
+db_1      | 2018-11-12T10:11:22.333057Z 0 [Note] IPv6 is available.
+db_1      | 2018-11-12T10:11:22.333070Z 0 [Note]   - '::' resolves to '::';
+db_1      | 2018-11-12T10:11:22.333084Z 0 [Note] Server socket created on IP: '::'.
+db_1      | 2018-11-12T10:11:22.333894Z 0 [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
+db_1      | 2018-11-12T10:11:22.334079Z 0 [Note] InnoDB: Buffer pool(s) load completed at 181112 10:11:22
+db_1      | 2018-11-12T10:11:22.388275Z 0 [Warning] Insecure configuration for --pid-file: Location '/var/run/mysqld' in the path is accessible to all OS users. Consider choosing a different directory.
+db_1      | 2018-11-12T10:11:22.388499Z 0 [Warning] Failed to open optimizer cost constant tables
+db_1      |
+db_1      | 2018-11-12T10:11:22.389171Z 0 [Warning] 'user' entry 'root@localhost' ignored in --skip-name-resolve mode.
+db_1      | 2018-11-12T10:11:22.389216Z 0 [Warning] 'proxies_priv' entry '@ root@localhost' ignored in --skip-name-resolve mode.
+db_1      | 2018-11-12T10:11:22.389223Z 0 [Warning] 'proxies_priv' entry '@ root@f0589d4c3cb2' ignored in --skip-name-resolve mode.
+db_1      | 2018-11-12T10:11:22.389899Z 0 [Warning] System table 'time_zone_leap_second' is expected to be transactional.
+db_1      | 2018-11-12T10:11:22.389908Z 0 [Warning] System table 'time_zone_name' is expected to be transactional.
+db_1      | 2018-11-12T10:11:22.389911Z 0 [Warning] System table 'time_zone' is expected to be transactional.
+db_1      | 2018-11-12T10:11:22.389914Z 0 [Warning] System table 'time_zone_transition_type' is expected to be transactional.
+db_1      | 2018-11-12T10:11:22.389917Z 0 [Warning] System table 'time_zone_transition' is expected to be transactional.
+db_1      | 2018-11-12T10:11:22.390529Z 0 [Warning] System table 'servers' is expected to be transactional.
+db_1      | 2018-11-12T10:11:22.390964Z 0 [ERROR] Incorrect definition of table performance_schema.events_waits_current: expected column 'NESTING_EVENT_TYPE' at position 15 to have type enum('TRANSACTION','STATEMENT','STAGE','WAIT', found type enum('STATEMENT','STAGE','WAIT').
+db_1      | 2018-11-12T10:11:22.392646Z 0 [ERROR] Incorrect definition of table performance_schema.events_waits_history: expected column 'NESTING_EVENT_TYPE' at position 15 to have type enum('TRANSACTION','STATEMENT','STAGE','WAIT', found type enum('STATEMENT','STAGE','WAIT').
+db_1      | 2018-11-12T10:11:22.393192Z 0 [ERROR] Incorrect definition of table performance_schema.events_waits_history_long: expected column 'NESTING_EVENT_TYPE' at position 15 to have type enum('TRANSACTION','STATEMENT','STAGE','WAIT', found type enum('STATEMENT','STAGE','WAIT').
+db_1      | 2018-11-12T10:11:22.394107Z 0 [ERROR] Incorrect definition of table performance_schema.events_waits_summary_by_user_by_event_name: expected column 'USER' at position 0 to have type char(32), found type char(16).
+db_1      | 2018-11-12T10:11:22.394514Z 0 [ERROR] Incorrect definition of table performance_schema.events_waits_summary_by_account_by_event_name: expected column 'USER' at position 0 to have type char(32), found type char(16).
+db_1      | 2018-11-12T10:11:22.395671Z 0 [ERROR] Column count of performance_schema.setup_actors is wrong. Expected 5, found 3. Created with MySQL 50642, now running 50724. Please use mysql_upgrade to fix this error.
+db_1      | 2018-11-12T10:11:22.396159Z 0 [ERROR] Incorrect definition of table performance_schema.setup_objects: expected column 'OBJECT_TYPE' at position 0 to have type enum('EVENT','FUNCTION','PROCEDURE','TABLE','TRIGGER', found type enum('TABLE').
+db_1      | 2018-11-12T10:11:22.396813Z 0 [ERROR] Column count of performance_schema.table_lock_waits_summary_by_table is wrong. Expected 68, found 73. Created with MySQL 50642, now running 50724. Please use mysql_upgrade to fix this error.
+db_1      | 2018-11-12T10:11:22.397126Z 0 [ERROR] Column count of performance_schema.threads is wrong. Expected 17, found 14. Created with MySQL 50642, now running 50724. Please use mysql_upgrade to fix this error.
+db_1      | 2018-11-12T10:11:22.397422Z 0 [ERROR] Column count of performance_schema.events_stages_current is wrong. Expected 12, found 10. Created with MySQL 50642, now running 50724. Please use mysql_upgrade to fix this error.
+db_1      | 2018-11-12T10:11:22.397724Z 0 [ERROR] Column count of performance_schema.events_stages_history is wrong. Expected 12, found 10. Created with MySQL 50642, now running 50724. Please use mysql_upgrade to fix this error.
+db_1      | 2018-11-12T10:11:22.398075Z 0 [ERROR] Column count of performance_schema.events_stages_history_long is wrong. Expected 12, found 10. Created with MySQL 50642, now running 50724. Please use mysql_upgrade to fix this error.
+db_1      | 2018-11-12T10:11:22.398499Z 0 [ERROR] Incorrect definition of table performance_schema.events_stages_summary_by_account_by_event_name: expected column 'USER' at position 0 to have type char(32), found type char(16).
+db_1      | 2018-11-12T10:11:22.398803Z 0 [ERROR] Incorrect definition of table performance_schema.events_stages_summary_by_user_by_event_name: expected column 'USER' at position 0 to have type char(32), found type char(16).
+db_1      | 2018-11-12T10:11:22.399378Z 0 [ERROR] Column count of performance_schema.events_statements_current is wrong. Expected 41, found 40. Created with MySQL 50642, now running 50724. Please use mysql_upgrade to fix this error.
+db_1      | 2018-11-12T10:11:22.399980Z 0 [ERROR] Column count of performance_schema.events_statements_history is wrong. Expected 41, found 40. Created with MySQL 50642, now running 50724. Please use mysql_upgrade to fix this error.
+db_1      | 2018-11-12T10:11:22.400317Z 0 [ERROR] Column count of performance_schema.events_statements_history_long is wrong. Expected 41, found 40. Created with MySQL 50642, now running 50724. Please use mysql_upgrade
+to fix this error.
+db_1      | 2018-11-12T10:11:22.400818Z 0 [ERROR] Incorrect definition of table performance_schema.events_statements_summary_by_account_by_event_name: expected column 'USER' at position 0 to have type char(32), found type char(16).
+db_1      | 2018-11-12T10:11:22.401161Z 0 [ERROR] Incorrect definition of table performance_schema.events_statements_summary_by_user_by_event_name: expected column 'USER' at position 0 to have type char(32), found type
+char(16).
+db_1      | 2018-11-12T10:11:22.401693Z 0 [ERROR] Native table 'performance_schema'.'events_statements_summary_by_program' has the wrong structure
+db_1      | 2018-11-12T10:11:22.401950Z 0 [ERROR] Native table 'performance_schema'.'events_transactions_current' has the wrong structure
+db_1      | 2018-11-12T10:11:22.402209Z 0 [ERROR] Native table 'performance_schema'.'events_transactions_history' has the wrong structure
+db_1      | 2018-11-12T10:11:22.402522Z 0 [ERROR] Native table 'performance_schema'.'events_transactions_history_long' has the wrong structure
+db_1      | 2018-11-12T10:11:22.402877Z 0 [ERROR] Native table 'performance_schema'.'events_transactions_summary_by_thread_by_event_name' has the wrong structure
+db_1      | 2018-11-12T10:11:22.403089Z 0 [ERROR] Native table 'performance_schema'.'events_transactions_summary_by_account_by_event_name' has the wrong structure
+db_1      | 2018-11-12T10:11:22.403419Z 0 [ERROR] Native table 'performance_schema'.'events_transactions_summary_by_user_by_event_name' has the wrong structure
+db_1      | 2018-11-12T10:11:22.403693Z 0 [ERROR] Native table 'performance_schema'.'events_transactions_summary_by_host_by_event_name' has the wrong structure
+db_1      | 2018-11-12T10:11:22.403947Z 0 [ERROR] Native table 'performance_schema'.'events_transactions_summary_global_by_event_name' has the wrong structure
+db_1      | 2018-11-12T10:11:22.404263Z 0 [ERROR] Incorrect definition of table performance_schema.users: expected column 'USER' at position 0 to have type char(32), found type char(16).
+db_1      | 2018-11-12T10:11:22.404730Z 0 [ERROR] Incorrect definition of table performance_schema.accounts: expected column 'USER' at position 0 to have type char(32), found type char(16).
+db_1      | 2018-11-12T10:11:22.406189Z 0 [ERROR] Native table 'performance_schema'.'memory_summary_global_by_event_name' has the wrong structure
+db_1      | 2018-11-12T10:11:22.406498Z 0 [ERROR] Native table 'performance_schema'.'memory_summary_by_account_by_event_name' has the wrong structure
+db_1      | 2018-11-12T10:11:22.406769Z 0 [ERROR] Native table 'performance_schema'.'memory_summary_by_host_by_event_name' has the wrong structure
+db_1      | 2018-11-12T10:11:22.407091Z 0 [ERROR] Native table 'performance_schema'.'memory_summary_by_thread_by_event_name' has the wrong structure
+db_1      | 2018-11-12T10:11:22.407458Z 0 [ERROR] Native table 'performance_schema'.'memory_summary_by_user_by_event_name' has the wrong structure
+db_1      | 2018-11-12T10:11:22.407761Z 0 [ERROR] Native table 'performance_schema'.'table_handles' has the wrong structure
+db_1      | 2018-11-12T10:11:22.408077Z 0 [ERROR] Native table 'performance_schema'.'metadata_locks' has the wrong structure
+db_1      | 2018-11-12T10:11:22.408386Z 0 [ERROR] Native table 'performance_schema'.'replication_connection_configuration' has the wrong structure
+db_1      | 2018-11-12T10:11:22.408664Z 0 [ERROR] Native table 'performance_schema'.'replication_group_members' has the wrong structure
+db_1      | 2018-11-12T10:11:22.408937Z 0 [ERROR] Native table 'performance_schema'.'replication_connection_status' has the wrong structure
+db_1      | 2018-11-12T10:11:22.409206Z 0 [ERROR] Native table 'performance_schema'.'replication_applier_configuration' has the wrong structure
+db_1      | 2018-11-12T10:11:22.409493Z 0 [ERROR] Native table 'performance_schema'.'replication_applier_status' has the wrong structure
+db_1      | 2018-11-12T10:11:22.409747Z 0 [ERROR] Native table 'performance_schema'.'replication_applier_status_by_coordinator' has the wrong structure
+db_1      | 2018-11-12T10:11:22.410137Z 0 [ERROR] Native table 'performance_schema'.'replication_applier_status_by_worker' has the wrong structure
+db_1      | 2018-11-12T10:11:22.410497Z 0 [ERROR] Native table 'performance_schema'.'replication_group_member_stats' has the wrong structure
+db_1      | 2018-11-12T10:11:22.410715Z 0 [ERROR] Native table 'performance_schema'.'prepared_statements_instances' has the wrong structure
+db_1      | 2018-11-12T10:11:22.411003Z 0 [ERROR] Native table 'performance_schema'.'user_variables_by_thread' has the wrong structure
+db_1      | 2018-11-12T10:11:22.411234Z 0 [ERROR] Native table 'performance_schema'.'status_by_account' has the wrong structure
+db_1      | 2018-11-12T10:11:22.411483Z 0 [ERROR] Native table 'performance_schema'.'status_by_host' has the wrong structure
+db_1      | 2018-11-12T10:11:22.411710Z 0 [ERROR] Native table 'performance_schema'.'status_by_thread' has the wrong structure
+db_1      | 2018-11-12T10:11:22.411957Z 0 [ERROR] Native table 'performance_schema'.'status_by_user' has the wrong structure
+db_1      | 2018-11-12T10:11:22.412178Z 0 [ERROR] Native table 'performance_schema'.'global_status' has the wrong structure
+db_1      | 2018-11-12T10:11:22.412456Z 0 [ERROR] Native table 'performance_schema'.'session_status' has the wrong structure
+db_1      | 2018-11-12T10:11:22.412690Z 0 [ERROR] Native table 'performance_schema'.'variables_by_thread' has the wrong structure
+db_1      | 2018-11-12T10:11:22.412947Z 0 [ERROR] Native table 'performance_schema'.'global_variables' has the wrong structure
+db_1      | 2018-11-12T10:11:22.413251Z 0 [ERROR] Native table 'performance_schema'.'session_variables' has the wrong structure
+db_1      | 2018-11-12T10:11:22.413818Z 0 [ERROR] Incorrect definition of table mysql.db: expected column 'User' at position 2 to have type char(32), found type char(16).
+db_1      | 2018-11-12T10:11:22.414228Z 0 [ERROR] mysql.user has no `Event_priv` column at position 28
+db_1      | 2018-11-12T10:11:22.414776Z 0 [ERROR] Event Scheduler: An error occurred when initializing system tables. Disabling the Event Scheduler.
+db_1      | 2018-11-12T10:11:22.415308Z 0 [Note] mysqld: ready for connections.
+db_1      | Version: '5.7.24'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server (GPL)
+server_1  |
+server_1  | > server@1.0.0 start /src
+server_1  | > node ./bin/www
+server_1  |
+server_1  | Environment: dev
+server_1  | Server listenning on port: 3000
+server_1  | Unable to connect to SQL database: webgrit_superactivation { SequelizeConnectionRefusedError: connect ECONNREFUSED 127.0.0.1:3306
+server_1  |     at Utils.Promise.tap.then.catch.err (/src/node_modules/sequelize/lib/dialects/mysql/connection-manager.js:139:19)
+server_1  | From previous event:
+server_1  |     at ConnectionManager.connect (/src/node_modules/sequelize/lib/dialects/mysql/connection-manager.js:136:13)
+server_1  |     at sequelize.runHooks.then (/src/node_modules/sequelize/lib/dialects/abstract/connection-manager.js:320:50)
+server_1  |     at runCallback (timers.js:810:20)
+server_1  |     at tryOnImmediate (timers.js:768:5)
+server_1  |     at processImmediate [as _immediateCallback] (timers.js:745:5)
+server_1  | From previous event:
+server_1  |     at ConnectionManager._connect (/src/node_modules/sequelize/lib/dialects/abstract/connection-manager.js:320:8)
+server_1  |     at ConnectionManager.getConnection (/src/node_modules/sequelize/lib/dialects/abstract/connection-manager.js:250:46)
+server_1  |     at Promise.try (/src/node_modules/sequelize/lib/sequelize.js:554:34)
+server_1  | From previous event:
+server_1  |     at Promise.resolve.retryParameters (/src/node_modules/sequelize/lib/sequelize.js:454:64)
+server_1  |     at /src/node_modules/retry-as-promised/index.js:39:21
+server_1  |     at retryAsPromised (/src/node_modules/retry-as-promised/index.js:29:10)
+server_1  |     at Sequelize.query (/src/node_modules/sequelize/lib/sequelize.js:454:28)
+server_1  |     at Sequelize.authenticate (/src/node_modules/sequelize/lib/sequelize.js:783:17)
+server_1  |     at Object.<anonymous> (/src/app.js:60:4)
+server_1  |     at Module._compile (module.js:653:30)
+server_1  |     at Object.Module._extensions..js (module.js:664:10)
+server_1  |     at Module.load (module.js:566:32)
+server_1  |     at tryModuleLoad (module.js:506:12)
+server_1  |     at Function.Module._load (module.js:498:3)
+server_1  |     at Module.require (module.js:597:17)
+server_1  |     at require (internal/module.js:11:18)
+server_1  |     at Object.<anonymous> (/src/bin/www:7:13)
+server_1  |     at Module._compile (module.js:653:30)
+server_1  |     at Object.Module._extensions..js (module.js:664:10)
+server_1  |     at Module.load (module.js:566:32)
+server_1  |     at tryModuleLoad (module.js:506:12)
+server_1  |     at Function.Module._load (module.js:498:3)
+server_1  |     at Function.Module.runMain (module.js:694:10)
+server_1  |     at startup (bootstrap_node.js:204:16)
+server_1  |     at bootstrap_node.js:625:3
+server_1  |   name: 'SequelizeConnectionRefusedError',
+server_1  |   parent:
+server_1  |    { Error: connect ECONNREFUSED 127.0.0.1:3306
+server_1  |     at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1191:14)
+server_1  | From previous event:
+server_1  |     at ConnectionManager.connect (/src/node_modules/sequelize/lib/dialects/mysql/connection-manager.js:92:12)
+server_1  |     at sequelize.runHooks.then (/src/node_modules/sequelize/lib/dialects/abstract/connection-manager.js:320:50)
+server_1  |     at runCallback (timers.js:810:20)
+server_1  |     at tryOnImmediate (timers.js:768:5)
+server_1  |     at processImmediate [as _immediateCallback] (timers.js:745:5)
+server_1  | From previous event:
+server_1  |     at ConnectionManager._connect (/src/node_modules/sequelize/lib/dialects/abstract/connection-manager.js:320:8)
+server_1  |     at ConnectionManager.getConnection (/src/node_modules/sequelize/lib/dialects/abstract/connection-manager.js:250:46)
+server_1  |     at Promise.try (/src/node_modules/sequelize/lib/sequelize.js:554:34)
+server_1  | From previous event:
+server_1  |     at Promise.resolve.retryParameters (/src/node_modules/sequelize/lib/sequelize.js:454:64)
+server_1  |     at /src/node_modules/retry-as-promised/index.js:39:21
+server_1  |     at retryAsPromised (/src/node_modules/retry-as-promised/index.js:29:10)
+server_1  |     at Sequelize.query (/src/node_modules/sequelize/lib/sequelize.js:454:28)
+server_1  |     at Sequelize.authenticate (/src/node_modules/sequelize/lib/sequelize.js:783:17)
+server_1  |     at Object.<anonymous> (/src/app.js:60:4)
+server_1  |     at Module._compile (module.js:653:30)
+server_1  |     at Object.Module._extensions..js (module.js:664:10)
+server_1  |     at Module.load (module.js:566:32)
+server_1  |     at tryModuleLoad (module.js:506:12)
+server_1  |     at Function.Module._load (module.js:498:3)
+server_1  |     at Module.require (module.js:597:17)
+server_1  |     at require (internal/module.js:11:18)
+server_1  |     at Object.<anonymous> (/src/bin/www:7:13)
+server_1  |     at Module._compile (module.js:653:30)
+server_1  |     at Object.Module._extensions..js (module.js:664:10)
+server_1  |     at Module.load (module.js:566:32)
+server_1  |     at tryModuleLoad (module.js:506:12)
+server_1  |     at Function.Module._load (module.js:498:3)
+server_1  |     at Function.Module.runMain (module.js:694:10)
+server_1  |     at startup (bootstrap_node.js:204:16)
+server_1  |     at bootstrap_node.js:625:3
+server_1  |      errno: 'ECONNREFUSED',
+server_1  |      code: 'ECONNREFUSED',
+server_1  |      syscall: 'connect',
+server_1  |      address: '127.0.0.1',
+server_1  |      port: 3306,
+server_1  |      fatal: true },
+server_1  |   original:
+server_1  |    { Error: connect ECONNREFUSED 127.0.0.1:3306
+server_1  |     at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1191:14)
+server_1  | From previous event:
+server_1  |     at ConnectionManager.connect (/src/node_modules/sequelize/lib/dialects/mysql/connection-manager.js:92:12)
+server_1  |     at sequelize.runHooks.then (/src/node_modules/sequelize/lib/dialects/abstract/connection-manager.js:320:50)
+server_1  |     at runCallback (timers.js:810:20)
+server_1  |     at tryOnImmediate (timers.js:768:5)
+server_1  |     at processImmediate [as _immediateCallback] (timers.js:745:5)
+server_1  | From previous event:
+server_1  |     at ConnectionManager._connect (/src/node_modules/sequelize/lib/dialects/abstract/connection-manager.js:320:8)
+server_1  |     at ConnectionManager.getConnection (/src/node_modules/sequelize/lib/dialects/abstract/connection-manager.js:250:46)
+server_1  |     at Promise.try (/src/node_modules/sequelize/lib/sequelize.js:554:34)
+server_1  | From previous event:
+server_1  |     at Promise.resolve.retryParameters (/src/node_modules/sequelize/lib/sequelize.js:454:64)
+server_1  |     at /src/node_modules/retry-as-promised/index.js:39:21
+server_1  |     at retryAsPromised (/src/node_modules/retry-as-promised/index.js:29:10)
+server_1  |     at Sequelize.query (/src/node_modules/sequelize/lib/sequelize.js:454:28)
+server_1  |     at Sequelize.authenticate (/src/node_modules/sequelize/lib/sequelize.js:783:17)
+server_1  |     at Object.<anonymous> (/src/app.js:60:4)
+server_1  |     at Module._compile (module.js:653:30)
+server_1  |     at Object.Module._extensions..js (module.js:664:10)
+server_1  |     at Module.load (module.js:566:32)
+server_1  |     at tryModuleLoad (module.js:506:12)
+server_1  |     at Function.Module._load (module.js:498:3)
+server_1  |     at Module.require (module.js:597:17)
+server_1  |     at require (internal/module.js:11:18)
+server_1  |     at Object.<anonymous> (/src/bin/www:7:13)
+server_1  |     at Module._compile (module.js:653:30)
+server_1  |     at Object.Module._extensions..js (module.js:664:10)
+server_1  |     at Module.load (module.js:566:32)
+server_1  |     at tryModuleLoad (module.js:506:12)
+server_1  |     at Function.Module._load (module.js:498:3)
+server_1  |     at Function.Module.runMain (module.js:694:10)
+server_1  |     at startup (bootstrap_node.js:204:16)
+server_1  |     at bootstrap_node.js:625:3
+server_1  |      errno: 'ECONNREFUSED',
+server_1  |      code: 'ECONNREFUSED',
+server_1  |      syscall: 'connect',
+server_1  |      address: '127.0.0.1',
+server_1  |      port: 3306,
+server_1  |      fatal: true } }
