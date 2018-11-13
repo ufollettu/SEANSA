@@ -137,3 +137,17 @@ Superactivator 2.0 permette l'utilizzo in multiutenza: i dati visualizzati da ci
 
 Per una migliore gestione del flusso di lavoro è prevista una funzione di mail delle licenze al momento della creazione della stessa o in qualsiasi momento dalla tabella sks. Allo stesso scopo è stato implementata la funzione di "forgot-password": se un utente ha smarrito la password può richiederla via mail all'Admin
 
+---
+
+## Docker
+
+L'app è provvista di file di configurazione per l'installazione in container [Docker](https://www.docker.com/) in uno spazio web. Seguire i seguenti passaggi per avere una installazione completa:
+
+1) Posizionanrsi nella cartella `client/` e lanciare il comando `ng build --prod`. Verrà creata una ssottocatella `dist/` contenente i file di distribuzione per il front-end
+2) Tornare nella cartella di root e lanciare il comando `docker-compose build`. Verranno create tre immagini virtuali e installate le relative dipendenze. Attendere il completamento dell'installazione
+3) Sempre nella root lanciare il comando `docker-compose up` per avviare i containers. Superactivator è in esecuzione e pronta per essere utilizzato
+4) navigare nel browser all'indirizzo `http://localhost:4200` per iniziare ad usare Superactivator
+
+
+
+```

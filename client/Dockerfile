@@ -5,18 +5,6 @@ COPY nginx.conf /etc/nginx/nginx.conf
 WORKDIR /usr/share/nginx/html
 COPY dist/client/ .
 
-## Create a container with dist only (works!)
-
-# 1) ng build --prod (in client/ folder)
-# 2) docker image build -t ngapp .
-# 3) docker run --name ngapp -p 4200:80 -d ngapp
-
-
-## Delete all containers
-# docker rm $(docker ps -a -q)
-## Delete all images
-# docker rmi $(docker images -q)
-
 ## Create a container with angular project
 
 # FROM node:8
@@ -30,8 +18,6 @@ COPY dist/client/ .
 # COPY ./angular.json /src/angular.json
 # COPY ./tsconfig.json /src/tsconfig.json
 # COPY ./tslint.json /src/tslint.json
-# COPY ./README.md /src/README.md
-# COPY ./.env /src/.env
 # COPY ./.editorconfig /src/.editorconfig
 # COPY ./.gitignore /src/.gitignore
 

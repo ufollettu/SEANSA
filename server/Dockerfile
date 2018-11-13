@@ -5,7 +5,6 @@ WORKDIR /src/app
 COPY ./package.json /src/package.json
 COPY ./package-lock.json /src/package-lock.json
 COPY ./nodemon.json /src/nodemon.json
-COPY ./README.md /src/README.md
 COPY ./.sequelizerc /src/.sequelizerc
 COPY ./.eslintrc.json /src/.eslintrc.json
 COPY ./.env /src/.env
@@ -36,19 +35,3 @@ ENV NODE_ENV development
 
 EXPOSE 3000
 CMD ["npm", "start"]
-
-
-## command list
-
-# 1) docker image build -t exapp .
-# 2) docker run -p 3000:3000 --name exapp --link sqldb:mysql -d exapp
-
-## vai in mysql-dump e lancia 
-# 3) docker exec exapp npm run dbinit
-# oppure
-# 3) docker exec -i sqldb /usr/bin/mysql -u root --password=radiohead
-
-## Delete all containers
-# docker rm $(docker ps -a -q)
-## Delete all images
-# docker rmi $(docker images -q)
