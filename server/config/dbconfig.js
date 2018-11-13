@@ -10,7 +10,7 @@ if (CONFIG.app == "dev") {
   CONFIG.db_user = process.env.DB_USER_DEV || "pasquale_sup";
   CONFIG.db_password = process.env.DB_PASSWORD_DEV || "radiohead";
   CONFIG.db_dialect = process.env.DB_DIALECT_DEV || "mysql";
-  CONFIG.db_host = process.env.DB_HOST_DEV || "localhost";
+  CONFIG.db_host = process.env.DB_HOST_DEV || "db";
   CONFIG.db_port = process.env.DB_PORT_DEV || "3306";
 } else if (CONFIG.app == "test") {
   CONFIG.db_name = process.env.DB_NAME_TEST || "webgrit_superactivation_test";

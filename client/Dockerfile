@@ -9,8 +9,13 @@ COPY dist/client/ .
 
 # 1) ng build --prod (in client/ folder)
 # 2) docker image build -t ngapp .
-# 3) docker run -p 4200:80 --rm ngapp
+# 3) docker run --name ngapp -p 4200:80 -d ngapp
 
+
+## Delete all containers
+# docker rm $(docker ps -a -q)
+## Delete all images
+# docker rmi $(docker images -q)
 
 ## Create a container with angular project
 
