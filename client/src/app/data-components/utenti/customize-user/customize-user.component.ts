@@ -196,9 +196,11 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
             this.notificationService.success(
               `user id: ${this.userId} style and logo updated`
             );
-            this.notificationService.warn(
-              `logo changes will showed at the next login`
-            );
+            if (this.currentUsername === this.username) {
+              this.notificationService.warn(
+                `logo changes will showed at the next login`
+              );
+            }
             this.router.navigate(["/utenti"]);
           }
         },

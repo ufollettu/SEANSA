@@ -147,7 +147,3 @@ L'app è provvista di file di configurazione per l'installazione in container [D
 2) Tornare nella cartella di root e lanciare il comando `docker-compose build`. Verranno create tre immagini virtuali e installate le relative dipendenze. Attendere il completamento dell'installazione
 3) Sempre nella root lanciare il comando `docker-compose up` per avviare i containers. Superactivator è in esecuzione e pronta per essere utilizzato
 4) navigare nel browser all'indirizzo `http://localhost:4200` per iniziare ad usare Superactivator
-
-
-
-```
