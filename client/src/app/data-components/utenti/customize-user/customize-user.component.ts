@@ -127,7 +127,7 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
         this.userTheme = style["SCZ_THEME"];
         this.logo = style["SCZ_LOGO_NAME"];
         this.userId = style["SCZ_SU_ID"];
-        this.url = `../../assets/images/${style["SCZ_LOGO_NAME"]}` || this.url;
+        this.url = `/assets/usr-img/${style["SCZ_LOGO_NAME"]}` || this.url;
         this.onSetTheme(style["SCZ_THEME"]);
         this.customizeService.changeLogo(style["SCZ_LOGO_NAME"]);
         this.customizeService.changePrimaryColor(style["SCZ_PRIMARY_COLOR"]);
@@ -195,6 +195,9 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
           if (res instanceof HttpResponse) {
             this.notificationService.success(
               `user id: ${this.userId} style and logo updated`
+            );
+            this.notificationService.warn(
+              `logo changes will showed at the next login`
             );
             this.router.navigate(["/utenti"]);
           }

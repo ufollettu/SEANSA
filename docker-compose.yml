@@ -6,7 +6,10 @@ services:
     image: "ngapp"
     build: "client/."
     ports:
-      - "4200:80"
+      - "4200:4200"
+      - "49153:49153"
+    volumes:
+      - ./userimages:/src/assets/usr-img
     container_name: client
   # Server
   server:
@@ -18,21 +21,26 @@ services:
       - db
     depends_on:
       - db
-    container_name: server  
-  # MySQL
+    volumes:
+      - ./userimages:/src/public/images
+    container_name: server
+  # database
   db:
     image: mysql:5.7
     restart: always
-    volumes: 
-      - ./mysql-dump/data:/docker-entrypoint-initdb.d
+    volumes:
+      - ./database/db:/docker-entrypoint-initdb.d
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: pasquale_sup
       MYSQL_PASSWORD: radiohead
       MYSQL_DATABASE: webgrit_superactivation
-    container_name: database  
+    container_name: database
 
-## commands 
+# volumes:
+#   images:
+
+## commands
 # 1) docker-compose build
 # 2) docker-compose up
 
@@ -40,3 +48,14 @@ services:
 # docker rm $(docker ps -a -q)
 ## Delete all images
 # docker rmi $(docker images -q)
+
+##explore docker volumes
+# 1) in console type:  docker run --rm -it -v /:/docker alpine:edge sh
+# 2) cd /docker/var/lib/docker/volumes
+# 3) ls (list of volumes) 
+
+## explore ounted volumes 
+# docker inspect -f '{{.Mounts}}' container-name-or-id
+
+# /assets/user-img/logo-201811140851-toyota.png
+# /assets/usr-img/logo-201811140851-toyota.png

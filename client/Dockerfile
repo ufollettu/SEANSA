@@ -1,36 +1,43 @@
-FROM nginx:alpine
+# FROM nginx:alpine
 
-COPY nginx.conf /etc/nginx/nginx.conf
+# COPY nginx.conf /etc/nginx/nginx.conf
 
-WORKDIR /usr/share/nginx/html
-COPY dist/client/ .
+# WORKDIR /usr/share/nginx/html
+# COPY dist/client/ .
 
 ## Create a container with angular project
 
-# FROM node:8
+FROM node:8
 
-# RUN mkdir -p /src
+RUN mkdir -p /src
 
-# WORKDIR /src
+WORKDIR /src
 
-# COPY ./package.json /src/package.json
-# COPY ./package-lock.json /src/package-lock.json
-# COPY ./angular.json /src/angular.json
-# COPY ./tsconfig.json /src/tsconfig.json
-# COPY ./tslint.json /src/tslint.json
-# COPY ./.editorconfig /src/.editorconfig
-# COPY ./.gitignore /src/.gitignore
+COPY ./package.json /src/package.json
+COPY ./package-lock.json /src/package-lock.json
+COPY ./angular.json /src/angular.json
+COPY ./tsconfig.json /src/tsconfig.json
+COPY ./tslint.json /src/tslint.json
+COPY ./.editorconfig /src/.editorconfig
+COPY ./.gitignore /src/.gitignore
 
-# RUN npm cache verify
-# RUN npm install
-# RUN npm audit fix
+RUN mkdir /home/node/.npm-global
+ENV PATH=/home/node/.npm-global/bin:$PATH
+ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
+RUN npm install -g @angular/cli
 
-# COPY ./dist /src/dist
-# COPY ./e2e /src/e2e
-# COPY ./src /src/src
+RUN npm cache verify
+RUN npm install
+RUN npm audit fix
 
-# ENV NODE_ENV development
+COPY ./dist /src/dist
+COPY ./e2e /src/e2e
+COPY ./src /src/src
 
-# EXPOSE 4200
+ENV NODE_ENV development
+
+# 49153 port for hotreload
+EXPOSE 4200 49153
 
 # CMD ["npm","start"]
+CMD ng serve --host 0.0.0.0 --poll=2000

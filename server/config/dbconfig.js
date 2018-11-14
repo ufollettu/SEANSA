@@ -2,7 +2,7 @@ require("dotenv").config(); //instatiate environment variables
 
 CONFIG = {}; //Make this global to use all over the application
 
-CONFIG.app = process.env.APP || "test";
+CONFIG.app = process.env.APP || "dev";
 CONFIG.port = process.env.PORT || "3000";
 
 if (CONFIG.app == "dev") {
@@ -17,7 +17,7 @@ if (CONFIG.app == "dev") {
   CONFIG.db_user = process.env.DB_USER_TEST || "pasquale_sup";
   CONFIG.db_password = process.env.DB_PASSWORD_TEST || "radiohead";
   CONFIG.db_dialect = process.env.DB_DIALECT_TEST || "mysql";
-  CONFIG.db_host = process.env.DB_HOST_TEST || "localhost";
+  CONFIG.db_host = process.env.DB_HOST_TEST || "db";
   CONFIG.db_port = process.env.DB_PORT_TEST || "3306";
 } else if (CONFIG.app == "prod") {
   CONFIG.db_name = process.env.DB_NAME_PROD;

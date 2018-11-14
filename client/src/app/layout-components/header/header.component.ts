@@ -69,10 +69,10 @@ export class HeaderComponent implements OnInit {
 
   getLogo() {
     this.customizeService.getLogo().subscribe(logo => {
-      if (logo.startsWith("logo") || logo.startsWith("raniero")) {
-        this.logoPath = "assets/images/" + logo;
-      } else {
+      if (logo.startsWith('data:image')) {
         this.logoPath = logo;
+      } else {
+        this.logoPath = '/assets/usr-img/' + logo;
       }
       this.cdRef.detectChanges();
     });

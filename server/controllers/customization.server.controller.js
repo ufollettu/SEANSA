@@ -72,9 +72,9 @@ const update = async (req, res) => {
     .findOne(userId)
     .then(style => {
       const oldLogoPath =
-        global.__basedir + "/src/assets/images/" + style["SCZ_LOGO_NAME"];
+        global.__basedir + "/public/images/" + style["SCZ_LOGO_NAME"];
       const defaultLogoPath =
-        global.__basedir + "/src/assets/images/raniero.png";
+        global.__basedir + "/public/images/raniero.png";
 
       return style.update(newData).then(self => {
         if (oldLogoPath !== defaultLogoPath) {

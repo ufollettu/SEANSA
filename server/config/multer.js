@@ -4,7 +4,7 @@ const moment = require("moment");
 //multer config
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "src/assets/images");
+    cb(null, "public/images");
   },
   filename: (req, file, cb) => {
     cb(

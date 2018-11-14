@@ -18,7 +18,7 @@
     </div>
 
     <div class="logo-wrapper">
-      <img class="logo" [src]="logoPath">
+      <img class="logo" [src]="logoPath && logoPath.length > 0 ? logoPath : '/assets/images/raniero.png' ">
     </div>
 
     <div class="table-name">
