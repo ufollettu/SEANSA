@@ -4,6 +4,14 @@ services:
   # Client
   client:
     image: "ngapp"
+    deploy:
+      replicas: 5
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+      restart_policy:
+        condition: on-failure
     build: "client/."
     ports:
       - "4200:4200"
@@ -11,9 +19,19 @@ services:
     volumes:
       - ./userimages:/src/assets/usr-img
     container_name: client
+    networks:
+      - webnet
   # Server
   server:
     image: "exapp"
+    deploy:
+      replicas: 5
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+      restart_policy:
+        condition: on-failure
     build: "server/."
     ports:
       - "3000:3000"
@@ -24,9 +42,19 @@ services:
     volumes:
       - ./userimages:/src/public/images
     container_name: server
+    networks:
+      - webnet
   # database
   db:
     image: mysql:5.7
+    deploy:
+      replicas: 5
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+      restart_policy:
+        condition: on-failure
     restart: always
     volumes:
       - ./database/db:/docker-entrypoint-initdb.d
@@ -36,7 +64,10 @@ services:
       MYSQL_PASSWORD: radiohead
       MYSQL_DATABASE: webgrit_superactivation
     container_name: database
-
+    networks:
+      - webnet
+networks:
+  webnet:
 # volumes:
 #   images:
 
@@ -56,6 +87,3 @@ services:
 
 ## explore ounted volumes 
 # docker inspect -f '{{.Mounts}}' container-name-or-id
-
-# /assets/user-img/logo-201811140851-toyota.png
-# /assets/usr-img/logo-201811140851-toyota.png

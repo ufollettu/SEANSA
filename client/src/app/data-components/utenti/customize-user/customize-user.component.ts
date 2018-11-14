@@ -176,7 +176,7 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
     if (this.currentUsername === this.username) {
       const logoName =
         this.selectedFile !== null
-          ? `logo-${moment().format("YYYYMMDDhhmm")}-${this.selectedFile.name}`
+          ? `logo-${moment().format("YYYYMMDDmmss")}-${this.selectedFile.name}`
           : localStorage.getItem("customLogo");
       localStorage.setItem("customLogo", logoName);
       localStorage.setItem("customStyle", this.userTheme);
@@ -196,11 +196,6 @@ export class CustomizeUserComponent implements OnInit, OnDestroy {
             this.notificationService.success(
               `user id: ${this.userId} style and logo updated`
             );
-            if (this.currentUsername === this.username) {
-              this.notificationService.warn(
-                `logo changes will showed at the next login`
-              );
-            }
             this.router.navigate(["/utenti"]);
           }
         },

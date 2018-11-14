@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
       null,
       file.fieldname +
         "-" +
-        moment().format("YYYYMMDDhhmm") +
+        moment().format("YYYYMMDDmmss") +
         "-" +
         file.originalname
     );
