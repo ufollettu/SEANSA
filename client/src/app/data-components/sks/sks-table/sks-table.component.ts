@@ -1,4 +1,5 @@
-import { Subscription } from "rxjs";
+import { Subscription, of } from "rxjs";
+import { map, flatMap, catchError } from "rxjs/operators";
 import {
   Component,
   OnInit,
@@ -37,6 +38,10 @@ import { MatricoleApiService } from "src/app/services/api-services/matricole-api
 import { AuthService } from "./../../../services/auth-services/auth.service";
 import { DataComponentsManagementService } from "src/app/services/shared-services/data-components-management.service";
 import { DataService } from "../../../services/shared-services/data.service";
+import { NotificationService } from "src/app/services/layout-services/notification.service";
+import { DialogService } from "src/app/services/layout-services/dialog.service";
+import { PacksApiService } from "src/app/services/api-services/packs-api.service";
+import { PacksHistoryApiService } from "src/app/services/api-services/packs-history-api.service";
 
 @Component({
   selector: "app-sks-table",
@@ -106,7 +111,11 @@ export class SksTableComponent implements OnInit, OnDestroy {
     private clientiApi: ClientiApiService,
     private pcsApi: PcApiService,
     private matricoleApi: MatricoleApiService,
-    private authService: AuthService
+    private packsApi: PacksApiService,
+    private packsHistoryApi: PacksHistoryApiService,
+    private authService: AuthService,
+    private notificationService: NotificationService,
+    private dialogService: DialogService
   ) {
     this.title = "Sks";
     this.loading = true;
@@ -145,9 +154,7 @@ export class SksTableComponent implements OnInit, OnDestroy {
   mapSks(sks: Sks[]) {
     sks.map(sk => {
       sk["sksPcHwId"] = this.getPcHwId(sk["SS_SP_ID"]);
-      sk["sksPcLastConnection"] = this.getPcLastConnection(
-        sk["SS_SP_ID"]
-      );
+      sk["sksPcLastConnection"] = this.getPcLastConnection(sk["SS_SP_ID"]);
       sk["sksCustomerName"] = this.getCustomerName(sk["SS_SC_ID"]);
       sk["sksOems"] = this.manager.fetchOemsValue(sk["SS_OEM"]);
       sk["sksStatus"] = sk["SS_STATUS"] ? "abilitata" : "disabilitata";
@@ -187,30 +194,144 @@ export class SksTableComponent implements OnInit, OnDestroy {
   }
 
   decouplePC(id) {
-    const decPc: Subscription = this.manager.decouplePC(id).add(td => {
-      this.refreshSkssList();
-    });
+    const status = 1;
+    const decPc: Subscription = this.sksApi.getSks(id).subscribe(
+      key => {
+        if (key["SS_SP_ID"] === 0) {
+          this.notificationService.warn(
+            `non ci sono pc associati a questa chiave`
+          );
+        } else {
+          // TODO fix: in dev funziona, in docker no... try to unchain observables
+          this.sksApi
+            .updateSks(id, { SS_SP_ID: "", SS_STATUS: status })
+            .subscribe(res => {
+              console.log(res);
+              this.notificationService.success(
+                `chiave ${res["SS_KEY"]} disassociata`
+              );
+              this.refreshSkssList();
+            });
+        }
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
     this.manager.subscriptions.push(decPc);
   }
 
   disableSks(id) {
-    const disSks: Subscription = this.manager.disableSks(id).add(td => {
-      this.refreshSkssList();
-    });
+    const status = 0;
+    const disSks: Subscription = this.sksApi
+      .updateSks(id, { SS_STATUS: status })
+      .subscribe(
+        res => {
+          this.notificationService.warn(`chiave ${res["SS_KEY"]} disabilitata`);
+          this.refreshSkssList();
+        },
+        err => {
+          this.authService.handleLoginError(err);
+        }
+      );
     this.manager.subscriptions.push(disSks);
   }
 
   enableSks(id) {
-    const enaSks: Subscription = this.manager.enableSks(id).add(td => {
-      this.refreshSkssList();
-    });
+    const status = 1;
+    const enaSks: Subscription = this.sksApi
+      .updateSks(id, { SS_STATUS: status })
+      .subscribe(
+        res => {
+          this.notificationService.success(`chiave ${res["SS_KEY"]} abilitata`);
+          this.refreshSkssList();
+        },
+        err => {
+          this.authService.handleLoginError(err);
+        }
+      );
     this.manager.subscriptions.push(enaSks);
   }
 
+  // deleteSks(id) {
+  //   const delSks: Subscription = this.dialogService
+  //     .openConfirmDialog(`sei sicuro?`)
+  //     .afterClosed()
+  //     .subscribe(res => {
+  //       if (res) {
+  //         const status = -1;
+  //         this.sksApi.updateSks(id, { SS_STATUS: status }).subscribe(
+  //           key => {
+  //             this.packsApi.getPack(key["SS_SPK_ID"]).subscribe(pack => {
+  //               this.packsApi
+  //                 .updatePack(key["SS_SPK_ID"], {
+  //                   SPK_USED_SKS_COUNT: pack["SPK_USED_SKS_COUNT"] - 1
+  //                 })
+  //                 .subscribe(updatedPack => {
+  //                   this.notificationService.warn(
+  //                     `chiave ${key["SS_KEY"]} eliminata`
+  //                   );
+  //                   this.refreshSkssList();
+  //                 });
+  //               this.packsHistoryApi
+  //                 .postPack({
+  //                   SPKH_SPK_ID: pack["SPK_ID"],
+  //                   SPKH_SU_ID: pack["SPK_SU_OWNER_ID"],
+  //                   SPKH_SS_ID: key["SS_ID"],
+  //                   SPKH_ACTION: "sks deleted"
+  //                 })
+  //                 .subscribe(history => {
+  //                   console.log("new history row created");
+  //                 });
+  //             });
+  //           },
+  //           err => {
+  //             this.authService.handleLoginError(err);
+  //           }
+  //         );
+  //       }
+  //     });
+  //   this.manager.subscriptions.push(delSks);
+  // }
+
   deleteSks(id) {
-    const delSks: Subscription = this.manager.deleteSks(id).add(td => {
-      this.refreshSkssList();
-    });
+    const packHistoryRow = { SPKH_ACTION: "sks deleted" };
+    const delSks: Subscription = this.dialogService
+      .openConfirmDialog(`sei sicuro?`)
+      .afterClosed()
+      .pipe(
+        flatMap(res => {
+          if (res) {
+            const status = -1;
+            return this.sksApi.updateSks(id, { SS_STATUS: status });
+          }
+        }),
+        flatMap(key => {
+          packHistoryRow["SPKH_SS_ID"] = key["SS_ID"];
+
+          this.notificationService.warn(`chiave ${key["SS_KEY"]} eliminata`);
+          return this.packsApi.getPack(key["SS_SPK_ID"]);
+        }),
+        flatMap(pack => {
+          packHistoryRow["SPKH_SPK_ID"] = pack["SPK_ID"];
+          packHistoryRow["SPKH_SU_ID"] = pack["SPK_SU_OWNER_ID"];
+
+          return this.packsApi.updatePack(pack["SPK_ID"], {
+            SPK_USED_SKS_COUNT: pack["SPK_USED_SKS_COUNT"] - 1
+          });
+        }),
+        catchError(err => {
+          return of(this.authService.handleLoginError(err));
+        })
+      )
+      .subscribe(updatedPack => {
+        console.log(packHistoryRow);
+        this.packsHistoryApi.postPack(packHistoryRow).subscribe(history => {
+          console.log("new history row created");
+        });
+        this.refreshSkssList();
+      });
+
     this.manager.subscriptions.push(delSks);
   }
 
@@ -222,16 +343,18 @@ export class SksTableComponent implements OnInit, OnDestroy {
   }
 
   fetchClienti() {
-    const fetchCust: Subscription = this.clientiApi.getCustomers().subscribe(clienti => {
-      this.clienti = clienti;
-      const clientiMap = clienti.map(cliente => {
-        const resClienti = {};
-        resClienti["value"] = cliente["SC_ID"];
-        resClienti["name"] = cliente["SC_NOME"];
-        return resClienti;
+    const fetchCust: Subscription = this.clientiApi
+      .getCustomers()
+      .subscribe(clienti => {
+        this.clienti = clienti;
+        const clientiMap = clienti.map(cliente => {
+          const resClienti = {};
+          resClienti["value"] = cliente["SC_ID"];
+          resClienti["name"] = cliente["SC_NOME"];
+          return resClienti;
+        });
+        this.clientiMap = clientiMap;
       });
-      this.clientiMap = clientiMap;
-    });
     this.manager.subscriptions.push(fetchCust);
   }
 
@@ -282,21 +405,23 @@ export class SksTableComponent implements OnInit, OnDestroy {
   }
 
   fetchMatricole() {
-    const fetchMatr: Subscription = this.matricoleApi.getMatricole().subscribe(matricole => {
-      const matricoleCount = matricole
-        .map(matricola => {
-          return matricola["SM_SS_ID"];
-        })
-        .reduce((allIds, id) => {
-          if (id in allIds) {
-            allIds[id]++;
-          } else {
-            allIds[id] = 1;
-          }
-          return allIds;
-        }, {});
-      this.serials = matricoleCount;
-    });
+    const fetchMatr: Subscription = this.matricoleApi
+      .getMatricole()
+      .subscribe(matricole => {
+        const matricoleCount = matricole
+          .map(matricola => {
+            return matricola["SM_SS_ID"];
+          })
+          .reduce((allIds, id) => {
+            if (id in allIds) {
+              allIds[id]++;
+            } else {
+              allIds[id] = 1;
+            }
+            return allIds;
+          }, {});
+        this.serials = matricoleCount;
+      });
     this.manager.subscriptions.push(fetchMatr);
   }
 

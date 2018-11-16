@@ -228,7 +228,7 @@ export class DataComponentsManagementService implements OnDestroy {
             }
           );
         });
-        this.router.navigate([destUrl, sksId]);
+        this.router.navigate([destUrl]);
       });
   }
 

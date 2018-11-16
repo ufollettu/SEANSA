@@ -5,7 +5,7 @@ services:
   client:
     image: "ngapp"
     deploy:
-      replicas: 5
+      replicas: 3
       resources:
         limits:
           cpus: "0.1"
@@ -15,7 +15,6 @@ services:
     build: "client/."
     ports:
       - "4200:4200"
-      - "49153:49153"
     volumes:
       - ./userimages:/src/assets/usr-img
     container_name: client
@@ -25,7 +24,7 @@ services:
   server:
     image: "exapp"
     deploy:
-      replicas: 5
+      replicas: 3
       resources:
         limits:
           cpus: "0.1"
@@ -48,7 +47,7 @@ services:
   db:
     image: mysql:5.7
     deploy:
-      replicas: 5
+      replicas: 1
       resources:
         limits:
           cpus: "0.1"

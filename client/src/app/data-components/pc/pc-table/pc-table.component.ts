@@ -18,6 +18,7 @@ import {
   trigger
 } from "@angular/animations";
 import { MatSort, MatTableDataSource, MatPaginator } from "@angular/material";
+import { NotificationService } from "src/app/services/layout-services/notification.service";
 
 @Component({
   selector: "app-pc-table",
@@ -63,7 +64,8 @@ export class PcTableComponent implements OnInit, OnDestroy {
     private changeDetectorRefs: ChangeDetectorRef,
     private manager: DataComponentsManagementService,
     private pcsApi: PcApiService,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) {
     this.title = "Pc";
     this.loading = true;
@@ -100,16 +102,30 @@ export class PcTableComponent implements OnInit, OnDestroy {
   }
 
   banPc(id: number) {
-    const banPc: Subscription = this.manager.banPc(id).add(td => {
-      this.refreshPcsList();
-    });
+    const status = 1;
+    const banPc: Subscription = this.pcsApi.updatePc(id, { SP_STATUS: status }).subscribe(
+      res => {
+        this.notificationService.warn(`pc ${res["SP_HW_ID"]} bannato`);
+        this.refreshPcsList();
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
     this.manager.subscriptions.push(banPc);
   }
 
   unbanPc(id: number) {
-    const unbanPc: Subscription = this.manager.unbanPc(id).add(td => {
-      this.refreshPcsList();
-    });
+    const status = 0;
+    const unbanPc: Subscription = this.pcsApi.updatePc(id, { SP_STATUS: status }).subscribe(
+      res => {
+        this.notificationService.success(`pc ${res["SP_HW_ID"]} sbannato`);
+        this.refreshPcsList();
+      },
+      err => {
+        this.authService.handleLoginError(err);
+      }
+    );
     this.manager.subscriptions.push(unbanPc);
   }
 

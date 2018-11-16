@@ -50,7 +50,7 @@ export class MatricoleCloneComponent implements OnInit, OnDestroy {
     const cloneMatr: Subscription = this.manager.cloneMatricoleFromSksId(
       licenseId,
       this.sksId,
-      "/matricole"
+      "/sks"
     );
     this.manager.subscriptions.push(cloneMatr);
   }
