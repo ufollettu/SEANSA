@@ -4,7 +4,8 @@ import { DialogService } from "./../../../services/layout-services/dialog.servic
 import { NotificationService } from "./../../../services/layout-services/notification.service";
 import { Cliente } from "./../../../models/cliente";
 import { ClientiApiService } from "./../../../services/api-services/clienti-api.service";
-import { Subscription } from "rxjs";
+import { Subscription, of } from "rxjs";
+import { map, flatMap, catchError } from "rxjs/operators";
 import { DataComponentsManagementService } from "./../../../services/shared-services/data-components-management.service";
 import {
   Component,
@@ -102,24 +103,46 @@ export class ClientiTableComponent implements OnInit, OnDestroy {
     const deleteCust: Subscription = this.dialogService
       .openConfirmDialog("sei sicuro?")
       .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          const deleted = 1;
-          this.clientiApi.updateCustomer(id, { SC_DELETED: deleted }).subscribe(
-            cust => {
-              this.notificationService.warn(
-                `cliente ${cust["SC_NOME"]} rimosso`
-              );
-              this.onRefreshCustomersList();
-            },
-            err => {
-              this.authService.handleLoginError(err);
-            }
-          );
-        }
+      .pipe(
+        flatMap(res => {
+          if (res) {
+            const deleted = 1;
+            return this.clientiApi.updateCustomer(id, { SC_DELETED: deleted });
+          }
+        }),
+        catchError(err => {
+          return of(this.authService.handleLoginError(err));
+        })
+      )
+      .subscribe(cust => {
+        this.notificationService.warn(`cliente ${cust["SC_NOME"]} rimosso`);
+        this.onRefreshCustomersList();
       });
     this.manager.subscriptions.push(deleteCust);
   }
+
+  // onDeleteCustomer(id: number) {
+  //   const deleteCust: Subscription = this.dialogService
+  //     .openConfirmDialog("sei sicuro?")
+  //     .afterClosed()
+  //     .subscribe(res => {
+  //       if (res) {
+  //         const deleted = 1;
+  //         this.clientiApi.updateCustomer(id, { SC_DELETED: deleted }).subscribe(
+  //           cust => {
+  //             this.notificationService.warn(
+  //               `cliente ${cust["SC_NOME"]} rimosso`
+  //             );
+  //             this.onRefreshCustomersList();
+  //           },
+  //           err => {
+  //             this.authService.handleLoginError(err);
+  //           }
+  //         );
+  //       }
+  //     });
+  //   this.manager.subscriptions.push(deleteCust);
+  // }
 
   ngOnDestroy(): void {
     this.manager.unsubAll();

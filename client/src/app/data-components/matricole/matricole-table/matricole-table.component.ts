@@ -20,7 +20,8 @@ import {
 } from "@angular/animations";
 import { ActivatedRoute } from "@angular/router";
 import { MatSort, MatTableDataSource } from "@angular/material";
-import { Subscription } from "rxjs";
+import { Subscription, of } from "rxjs";
+import { flatMap, catchError } from "rxjs/operators";
 
 @Component({
   selector: "app-matricole-table",
@@ -97,22 +98,45 @@ export class MatricoleTableComponent implements OnInit, OnDestroy {
     this.manager.subscriptions.push(getMatr);
   }
 
+  // onDeleteMatricola(id) {
+  //   const deleteMatr: Subscription = this.dialogService
+  //     .openConfirmDialog("Sei sicuro?")
+  //     .afterClosed()
+  //     .subscribe(res => {
+  //       if (res) {
+  //         this.matricoleApi.deleteMatricola(id).subscribe(
+  //           matr => {
+  //             this.notificationService.warn(`Matricola ${id} rimossa`);
+  //             this.refreshMatricoleList();
+  //           },
+  //           err => {
+  //             this.authService.handleLoginError(err);
+  //           }
+  //         );
+  //       }
+  //     });
+  //   this.manager.subscriptions.push(deleteMatr);
+  // }
+
   onDeleteMatricola(id) {
     const deleteMatr: Subscription = this.dialogService
       .openConfirmDialog("Sei sicuro?")
       .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          this.matricoleApi.deleteMatricola(id).subscribe(
-            matr => {
-              this.notificationService.warn(`Matricola ${id} rimossa`);
-              this.refreshMatricoleList();
-            },
-            err => {
-              this.authService.handleLoginError(err);
-            }
-          );
+      .pipe(
+        flatMap(res => {
+          if (res) {
+            return this.matricoleApi.deleteMatricola(id);
+          }
+        }),
+        catchError(err => {
+          return of(this.authService.handleLoginError(err));
+        })
+      )
+      .subscribe(matr => {
+        if (matr) {
+          this.notificationService.warn(`Matricola ${id} rimossa`);
         }
+        this.refreshMatricoleList();
       });
     this.manager.subscriptions.push(deleteMatr);
   }

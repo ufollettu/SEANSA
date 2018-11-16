@@ -195,31 +195,68 @@ export class SksTableComponent implements OnInit, OnDestroy {
 
   decouplePC(id) {
     const status = 1;
-    const decPc: Subscription = this.sksApi.getSks(id).subscribe(
-      key => {
-        if (key["SS_SP_ID"] === 0) {
-          this.notificationService.warn(
-            `non ci sono pc associati a questa chiave`
-          );
-        } else {
-          // TODO fix: in dev funziona, in docker no... try to unchain observables
-          this.sksApi
-            .updateSks(id, { SS_SP_ID: "", SS_STATUS: status })
-            .subscribe(res => {
-              console.log(res);
-              this.notificationService.success(
-                `chiave ${res["SS_KEY"]} disassociata`
-              );
-              this.refreshSkssList();
+    const decPc: Subscription = this.sksApi
+      .getSks(id)
+      .pipe(
+        flatMap(key => {
+          if (key["SS_SP_ID"] === 0) {
+            return of(
+              this.notificationService.warn(
+                `non ci sono pc associati a questa chiave`
+              )
+            );
+          } else {
+            return this.sksApi.updateSks(id, {
+              SS_SP_ID: "",
+              SS_STATUS: status
             });
+          }
+        })
+      )
+      .subscribe(
+        res => {
+          console.log(res);
+          if (res !== undefined) {
+            this.notificationService.success(
+              `chiave ${res["SS_KEY"]} disassociata`
+            );
+          }
+          this.refreshSkssList();
+        },
+        err => {
+          this.authService.handleLoginError(err);
         }
-      },
-      err => {
-        this.authService.handleLoginError(err);
-      }
-    );
+      );
     this.manager.subscriptions.push(decPc);
   }
+
+  // decouplePC(id) {
+  //   const status = 1;
+  //   const decPc: Subscription = this.sksApi.getSks(id).subscribe(
+  //     key => {
+  //       if (key["SS_SP_ID"] === 0) {
+  //         this.notificationService.warn(
+  //           `non ci sono pc associati a questa chiave`
+  //         );
+  //       } else {
+  //         // TODO fix: in dev funziona, in docker no... try to unchain observables
+  //         this.sksApi
+  //           .updateSks(id, { SS_SP_ID: "", SS_STATUS: status })
+  //           .subscribe(res => {
+  //             console.log(res);
+  //             this.notificationService.success(
+  //               `chiave ${res["SS_KEY"]} disassociata`
+  //             );
+  //             this.refreshSkssList();
+  //           });
+  //       }
+  //     },
+  //     err => {
+  //       this.authService.handleLoginError(err);
+  //     }
+  //   );
+  //   this.manager.subscriptions.push(decPc);
+  // }
 
   disableSks(id) {
     const status = 0;

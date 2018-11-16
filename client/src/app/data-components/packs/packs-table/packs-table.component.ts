@@ -13,7 +13,8 @@ import {
 import { MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
 import { DataService } from "src/app/services/shared-services/data.service";
 import * as moment from "moment";
-import { Subscription } from "rxjs";
+import { Subscription, of } from "rxjs";
+import { map, flatMap, catchError } from "rxjs/operators";
 import { PacksApiService } from "src/app/services/api-services/packs-api.service";
 import { UtentiApiService } from "src/app/services/api-services/utenti-api.service";
 import { Utente } from "src/app/models/utente";
@@ -110,33 +111,62 @@ export class PacksTableComponent implements OnInit, OnDestroy {
     const deletePack: Subscription = this.dialogService
       .openConfirmDialog("sei sicuro?")
       .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          this.packsApi.deletePack(id).subscribe(
-            pack => {
-              this.packsHistoryApi
-              .postPack({
-                SPKH_SPK_ID: id,
-                SPKH_SU_ID: owner,
-                SPKH_ACTION: "pack deleted"
-              })
-              .subscribe(
-                ph => {
-                  console.log("new history row created");
-                },
-                err => console.log(err)
-              );
-              this.notificationService.warn(`pacchetto rimosso`);
-              this.refreshPacksList();
-            },
-            err => {
-              this.authService.handleLoginError(err);
-            }
-          );
-        }
+      .pipe(
+        flatMap(res => {
+          if (res) {
+            return this.packsApi.deletePack(id);
+          }
+        }),
+        flatMap(pack => {
+          return this.packsHistoryApi.postPack({
+            SPKH_SPK_ID: id,
+            SPKH_SU_ID: owner,
+            SPKH_ACTION: "pack deleted"
+          });
+        }),
+        catchError(err => {
+          return of(this.authService.handleLoginError(err));
+        })
+      )
+      .subscribe(ph => {
+        this.notificationService.warn(`pacchetto ${ph['SPKH_SPK_ID']} rimosso`);
+        console.log("new history row created");
+        this.refreshPacksList();
       });
     this.manager.subscriptions.push(deletePack);
   }
+
+  // onDeletePack(id: number, owner) {
+  //   const deletePack: Subscription = this.dialogService
+  //     .openConfirmDialog("sei sicuro?")
+  //     .afterClosed()
+  //     .subscribe(res => {
+  //       if (res) {
+  //         this.packsApi.deletePack(id).subscribe(
+  //           pack => {
+  //             this.packsHistoryApi
+  //             .postPack({
+  //               SPKH_SPK_ID: id,
+  //               SPKH_SU_ID: owner,
+  //               SPKH_ACTION: "pack deleted"
+  //             })
+  //             .subscribe(
+  //               ph => {
+  //                 console.log("new history row created");
+  //               },
+  //               err => console.log(err)
+  //             );
+  //             this.notificationService.warn(`pacchetto rimosso`);
+  //             this.refreshPacksList();
+  //           },
+  //           err => {
+  //             this.authService.handleLoginError(err);
+  //           }
+  //         );
+  //       }
+  //     });
+  //   this.manager.subscriptions.push(deletePack);
+  // }
 
   fetchUtenti() {
     const fetchUser: Subscription = this.utentiApi.getUtenti().subscribe(

@@ -18,7 +18,8 @@ import {
 } from "@angular/animations";
 import { MatSort, MatTableDataSource, MatPaginator } from "@angular/material";
 import { AuthService } from "../../../services/auth-services/auth.service";
-import { Subscription } from "rxjs";
+import { Subscription, of } from "rxjs";
+import { map, flatMap, catchError } from "rxjs/operators";
 import { UtentiApiService } from "src/app/services/api-services/utenti-api.service";
 
 @Component({
@@ -104,22 +105,44 @@ export class UtentiTableComponent implements OnInit, OnDestroy {
     const delUser: Subscription = this.dialogService
       .openConfirmDialog("sei Sicuro?")
       .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          const deleted = 1;
-          this.utentiApi.updateUtente(id, { SU_DELETED: deleted }).subscribe(
-            user => {
-              this.notificationService.warn(`utente ${user["SU_UNA"]} rimosso`);
-              this.refreshUsersList();
-            },
-            err => {
-              this.authService.handleLoginError(err);
-            }
-          );
-        }
+      .pipe(
+        flatMap(res => {
+          if (res) {
+            const deleted = 1;
+            return this.utentiApi.updateUtente(id, { SU_DELETED: deleted });
+          }
+        }),
+        catchError(err => {
+          return of(this.authService.handleLoginError(err));
+        })
+      )
+      .subscribe(user => {
+        this.notificationService.warn(`utente ${user["SU_UNA"]} rimosso`);
+        this.refreshUsersList();
       });
     this.manager.subscriptions.push(delUser);
   }
+
+  // deleteUser(id: number) {
+  //   const delUser: Subscription = this.dialogService
+  //     .openConfirmDialog("sei Sicuro?")
+  //     .afterClosed()
+  //     .subscribe(res => {
+  //       if (res) {
+  //         const deleted = 1;
+  //         this.utentiApi.updateUtente(id, { SU_DELETED: deleted }).subscribe(
+  //           user => {
+  //             this.notificationService.warn(`utente ${user["SU_UNA"]} rimosso`);
+  //             this.refreshUsersList();
+  //           },
+  //           err => {
+  //             this.authService.handleLoginError(err);
+  //           }
+  //         );
+  //       }
+  //     });
+  //   this.manager.subscriptions.push(delUser);
+  // }
 
   ngOnDestroy() {
     this.manager.unsubAll();
