@@ -10,6 +10,8 @@ import { DataService } from "../../services/shared-services/data.service";
 import { slideInOutAnimation } from "../../animations";
 import { UploadFileService } from "../../services/api-services/upload.service";
 import { NotificationService } from "../../services/layout-services/notification.service";
+import { catchError, flatMap } from "rxjs/operators";
+import { Subscription, of } from "rxjs";
 
 @Component({
   selector: "app-register",
@@ -62,34 +64,41 @@ export class RegisterComponent implements OnInit {
   }
 
   onFormSubmit(form: NgForm) {
-    this.auth.registerUser(form).subscribe(
-      res => {
-        localStorage.setItem("token", res["idToken"]);
-        const userId = res["user"]["SU_ID"];
-
-        this.uploadService.getCustomStyle(userId).subscribe(style => {
+    this.auth
+      .registerUser(form)
+      .pipe(
+        flatMap(res => {
+          localStorage.setItem("token", res["idToken"]);
+          const userId = res["user"]["SU_ID"];
+          this.sendUser(res["user"]);
+          this.notificationService.success(
+            `utente ${res["user"]["SU_UNA"]} creato`
+          );
+          return this.uploadService.getCustomStyle(userId);
+        }),
+        catchError(err => {
+          return of(this.auth.handleLoginError(err));
+        })
+      )
+      .subscribe(
+        style => {
           console.log(style);
           localStorage.setItem("customLogo", style["SCZ_LOGO_NAME"]);
           localStorage.setItem("customStyle", style["SCZ_THEME"]);
           this.customizeService.changeTheme(style["SCZ_THEME"]);
           this.customizeService.changeLogo(style["SCZ_LOGO_NAME"]);
-        });
-        this.sendUser(res["user"]);
-        this.notificationService.success(
-          `utente ${res["user"]["SU_UNA"]} creato`
-        );
-        this.router.navigate(["/clienti"]);
-      },
-      err => {
-        console.log(err);
-        if (err instanceof HttpErrorResponse) {
-          if (err.status === 422) {
-            this.notificationService.warn("user exists");
-            this.router.navigate(["/register"]);
+          this.router.navigate(["/clienti"]);
+        },
+        err => {
+          console.log(err);
+          if (err instanceof HttpErrorResponse) {
+            if (err.status === 422) {
+              this.notificationService.warn("user exists");
+              this.router.navigate(["/register"]);
+            }
           }
         }
-      }
-    );
+      );
   }
 
   sendUser(user) {
