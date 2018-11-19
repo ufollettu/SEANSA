@@ -118,12 +118,15 @@ module.exports.show = show;
 
 // Update
 const update = async (req, res) => {
+  // console.log(req)
   const id = req.params.id;
   const newData = req.body;
   repository
     .findById(id)
     .then(sks => {
+      console.log(sks);
       return sks.update(newData).then(self => {
+        console.log(self);
         res.json(self);
       });
     })
